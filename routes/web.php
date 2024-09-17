@@ -1,0 +1,158 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\EspecialistaController;
+use App\Http\Controllers\SecretariaController;
+use App\Http\Controllers\RepresentanteController;
+use App\Http\Controllers\PacienteController;
+use App\Http\Controllers\CitaController;
+
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth'])->name('dashboard');
+
+require __DIR__.'/auth.php';
+
+// Ruta para la lista de especialistas
+Route::get('especialista', [EspecialistaController::class, 'index'])
+    ->name('especialista.index')
+    ->middleware('auth');
+
+// Ruta para almacenar un nuevo especialista
+Route::post('especialista', [EspecialistaController::class, 'store'])
+    ->name('especialista.store')
+    ->middleware('auth');
+
+// Ruta para mostrar un especialista específico
+Route::get('especialista/{id}', [EspecialistaController::class, 'show'])
+    ->name('especialista.show')
+    ->middleware('auth');
+
+// Ruta para mostrar el formulario de edición de un especialista
+Route::get('especialista/{id}/edit', [EspecialistaController::class, 'edit'])
+    ->name('especialista.edit')
+    ->middleware('auth');
+
+// Ruta para actualizar un especialista específico
+Route::put('especialista/{id}', [EspecialistaController::class, 'update'])
+    ->name('especialista.update')
+    ->middleware('auth');
+
+// Ruta para eliminar un especialista específico
+Route::delete('especialista/{id}', [EspecialistaController::class, 'destroy'])
+    ->name('especialista.destroy')
+    ->middleware('auth');
+
+// Ruta para la lista de secreatria
+Route::get('secretaria', [SecretariaController::class, 'index'])
+    ->name('secretaria.index')
+    ->middleware('auth');
+
+// Ruta para almacenar un nuevo secretaria
+Route::post('secretaria', [SecretariaController::class, 'store'])
+    ->name('secretaria.store')
+    ->middleware('auth');
+
+// Ruta para eliminar un secretaria
+Route::delete('secretaria/{id}', [SecretariaController::class, 'destroy'])
+    ->name('secretaria.destroy')
+    ->middleware('auth');
+
+// Ruta para mostrar el formulario de edición de un secretaria
+Route::get('secretaria/{id}/edit', [SecretariaController::class, 'edit'])
+    ->name('secretaria.edit')
+    ->middleware('auth');
+
+// Ruta para actualizar un secretaria
+Route::put('secretaria/{id}', [SecretariaController::class, 'update'])
+    ->name('secretaria.update')
+    ->middleware('auth');
+
+// Ruta para la lista de representante
+Route::get('representante', [RepresentanteController::class, 'index'])
+    ->name('representante.index')
+    ->middleware('auth');
+
+// Ruta para almacenar un nuevo representante
+Route::post('representante', [RepresentanteController::class, 'store'])
+    ->name('representante.store')
+    ->middleware('auth');
+
+// Ruta para eliminar un representante
+Route::delete('representante/{id}', [RepresentanteController::class, 'destroy'])
+    ->name('representante.destroy')
+    ->middleware('auth');
+
+// Ruta para mostrar el formulario de edición de un representante
+Route::get('representante/{id}/edit', [RepresentanteController::class, 'edit'])
+    ->name('representante.edit')
+    ->middleware('auth');
+
+// Ruta para actualizar un representante
+Route::put('representante/{id}', [RepresentanteController::class, 'update'])
+->name('representante.update')
+->middleware('auth');
+
+// Ruta para la lista de paciente
+Route::get('paciente', [PacienteController::class, 'index'])
+    ->name('paciente.index')
+    ->middleware('auth');
+
+// Ruta para almacenar un nuevo paciente
+Route::post('paciente', [PacienteController::class, 'store'])
+    ->name('paciente.store')
+    ->middleware('auth');
+
+// Ruta para eliminar un paciente
+Route::delete('paciente/{id}', [PacienteController::class, 'destroy'])
+    ->name('paciente.destroy')
+    ->middleware('auth');
+
+// Ruta para mostrar el formulario de edición de un paciente
+Route::get('paciente/{id}/edit', [PacienteController::class, 'edit'])
+    ->name('paciente.edit')
+    ->middleware('auth');
+
+// Ruta para pacientes y especialistas
+Route::get('citas', [CitaController::class, 'index'])
+    ->name('citas.index')
+    ->middleware('auth');
+
+// Ruta para mostrar las citas 
+Route::get('citas/web', [CitaController::class, 'indexWeb'])
+    ->name('citas.indexWeb')
+    ->middleware('auth');
+
+// Ruta para agendar nueva cita
+Route::post('citas', [CitaController::class, 'store'])
+    ->name('citas.store')
+    ->middleware('auth');
+
+    Route::get('citas/{id}/edit', [CitaController::class, 'edit'])
+    ->name('citas.edit')
+    ->middleware('auth');
+
+// Ruta para actualizar el status de la cita
+Route::put('citas/{id}', [CitaController::class, 'update'])
+    ->name('citas.update')
+    ->middleware('auth');
+
+// Ruta para descargar reporte de todas las citas
+Route::get('pdf/citas', [CitaController::class, 'generarPdfTodasLasCitas'])
+    ->name('pdf.citas')
+    ->middleware('auth');
+
+// Ruta para descargar reporte de todas las citas del dia
+Route::get('pdf/citas_hoy', [CitaController::class, 'citasDeHoy'])
+    ->name('pdf.citas_hoy')
+    ->middleware('auth');
+
+// Ruta para descargar reporte de una cita
+Route::get('pdf/generarPdfCita/{id}', [CitaController::class, 'generarPdfCita'])
+    ->name('pdf.generarPdfCita')
+    ->middleware('auth');
