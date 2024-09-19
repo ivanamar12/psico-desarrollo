@@ -25,9 +25,7 @@ class SecretariaController extends Controller
             $secretarias = DB::select('SELECT * FROM secretarias');
             return DataTables::of($secretarias)
                 ->addColumn('action', function($secretaria) { 
-                    // Concatenar las acciones
-                    $acciones = '<a href="javascript:void(0)" onclick="mostrarespecialista('.$secretaria->id.')" class="btn btn-info btn-raised btn-xs"><i class="zmdi zmdi-eye"></i></a>';
-                    $acciones .= '<a href="javascript:void(0)" onclick="editsecretaria('.$secretaria->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+                    $acciones = '<a href="javascript:void(0)" onclick="editsecretaria('.$secretaria->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
                     $acciones .= '<button type="button" name="delete" id="'.$secretaria->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
                     return $acciones;
                 })
@@ -92,12 +90,12 @@ class SecretariaController extends Controller
 
     public function destroy($id)
     {
-        $secretaria = Secretaria::with('direccion')->find($id); // Cargar la relación
+        $secretaria = Secretaria::with('direccion')->find($id); 
         if (!$secretaria) {
             return response()->json(['message' => 'secretaria no encontrado'], 404);
         }
     
-        $direccion = $secretaria->direccion; // Ahora debería estar disponible
+        $direccion = $secretaria->direccion; 
         if (!$direccion) {
             return response()->json(['message' => 'Dirección no encontrada'], 404);
         }
@@ -146,16 +144,15 @@ class SecretariaController extends Controller
         ]);
         
     
-        $secretaria = Secretaria::with('direccion')->find($id); // Cargar la relación
+        $secretaria = Secretaria::with('direccion')->find($id); 
         if (!$secretaria) {
             return response()->json(['message' => 'Especialista no encontrado'], 404);
         }
     
         \DB::transaction(function () use ($validatedData, $secretaria) {
-            // Actualizar dirección
-            $direccion = $secretaria->direccion; // Ahora debería estar disponible
+            $direccion = $secretaria->direccion; 
             if (!$direccion) {
-                throw new \Exception('Dirección no encontrada'); // Lanza una excepción si no se encuentra
+                throw new \Exception('Dirección no encontrada'); 
             }
     
             $direccion->update([
@@ -165,7 +162,6 @@ class SecretariaController extends Controller
                 'sector' => $validatedData['sector'],
             ]);
     
-            // Actualizar especialista
             $secretaria->update([
                 'nombre' => $validatedData['nombre'],
                 'apellido' => $validatedData['apellido'],

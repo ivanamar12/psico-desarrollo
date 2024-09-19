@@ -257,10 +257,8 @@ $(document).ready(function() {
             }
             $('#eventModal').modal('show');
             $('#saveEvent').off('click').on('click', function() {
-    // Primero, validamos la hora
     validateHour();
 
-    // Si la hora es válida, procedemos a enviar el formulario
     if (document.getElementById('hora').validity.valid) {
         var formData = {
             paciente_id: $('#paciente_id').val(),
@@ -307,26 +305,25 @@ $.ajax({
         $('#noAsistioRadio').prop('checked', false);
         $('#errorMessage').hide();
 
-        // Mostrar/Ocultar opciones según el estado de la cita
         if (data.status === 'confirmada') {
             $('#confirmRadio').closest('.form-check').hide();
             $('#cancelRadio').closest('.form-check').hide();
-            $('#asistioRadio').closest('.form-check').show(); // Mostrar opciones
-            $('#noAsistioRadio').closest('.form-check').show(); // Mostrar opciones
-            $('#saveStatusButton').show(); // Mostrar el botón
+            $('#asistioRadio').closest('.form-check').show(); 
+            $('#noAsistioRadio').closest('.form-check').show(); 
+            $('#saveStatusButton').show(); 
         } else if (data.status === 'pendiente') {
             $('#confirmRadio').closest('.form-check').show();
             $('#cancelRadio').closest('.form-check').show();
             $('#asistioRadio').closest('.form-check').hide();
             $('#noAsistioRadio').closest('.form-check').hide();
-            $('#saveStatusButton').show(); // Mostrar el botón
+            $('#saveStatusButton').show(); 
         } else if (data.status === 'cancelada' || data.status === 'asistio' || data.status === 'no asistio') {
             $('#confirmRadio').closest('.form-check').hide();
             $('#cancelRadio').closest('.form-check').hide();
             $('#asistioRadio').closest('.form-check').hide();
             $('#noAsistioRadio').closest('.form-check').hide();
             $('#statusModal .modal-body').append(`<p><strong>Estado:</strong> ${data.status}</p>`);
-            $('#saveStatusButton').hide(); // Ocultar el botón
+            $('#saveStatusButton').hide(); 
         }
 
         $('#saveStatusButton').off('click').on('click', function() {

@@ -26,9 +26,7 @@ class RepresentanteController extends Controller
             $representantes = DB::select('SELECT * FROM representantes');
             return DataTables::of($representantes)
                 ->addColumn('action', function($representante) { 
-                    // Concatenar las acciones
-                    $acciones = '<a href="javascript:void(0)" onclick="mostrarrepresentante('.$representante->id.')" class="btn btn-info btn-raised btn-xs"><i class="zmdi zmdi-eye"></i></a>';
-                    $acciones .= '<a href="javascript:void(0)" onclick="editrepresentante('.$representante->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+                    $acciones = '<a href="javascript:void(0)" onclick="editrepresentante('.$representante->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
                     $acciones .= '<button type="button" name="delete" id="'.$representante->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
                     return $acciones;
                 })
@@ -126,16 +124,15 @@ class RepresentanteController extends Controller
         ]);
         
     
-        $representante = Representante::with('direccion')->find($id); // Cargar la relación
+        $representante = Representante::with('direccion')->find($id); 
         if (!$representante) {
             return response()->json(['message' => 'Especialista no encontrado'], 404);
         }
     
         \DB::transaction(function () use ($validatedData, $representante) {
-            // Actualizar dirección
-            $direccion = $representante->direccion; // Ahora debería estar disponible
+            $direccion = $representante->direccion; 
             if (!$direccion) {
-                throw new \Exception('Dirección no encontrada'); // Lanza una excepción si no se encuentra
+                throw new \Exception('Dirección no encontrada'); 
             }
     
             $direccion->update([
@@ -145,7 +142,6 @@ class RepresentanteController extends Controller
                 'sector' => $validatedData['sector'],
             ]);
     
-            // Actualizar especialista
             $representante->update([
                 'nombre' => $validatedData['nombre'],
                 'apellido' => $validatedData['apellido'],
@@ -162,12 +158,12 @@ class RepresentanteController extends Controller
     }
     public function destroy($id)
     {
-        $representante = Representante::with('direccion')->find($id); // Cargar la relación
+        $representante = Representante::with('direccion')->find($id); 
         if (!$representante) {
             return response()->json(['message' => 'secretaria no encontrado'], 404);
         }
     
-        $direccion = $representante->direccion; // Ahora debería estar disponible
+        $direccion = $representante->direccion; 
         if (!$direccion) {
             return response()->json(['message' => 'Dirección no encontrada'], 404);
         }

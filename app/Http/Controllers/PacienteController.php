@@ -37,10 +37,7 @@ class PacienteController extends Controller
                     return $paciente->representante_nombre . ' ' . $paciente->representante_apellido;
                 })
                 ->addColumn('action', function($paciente) { 
-                    // Concatenar las acciones
-                    $acciones = '<a href="javascript:void(0)" onclick="mostrarepaciente('.$paciente->id.')" class="btn btn-info btn-raised btn-xs"><i class="zmdi zmdi-eye"></i></a>';
-                    $acciones .= '<a href="javascript:void(0)" onclick="editpaciente('.$paciente->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-                    $acciones .= '<button type="button" name="delete" id="'.$paciente->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
+                    $acciones = '<button type="button" name="delete" id="'.$paciente->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -65,7 +62,6 @@ class PacienteController extends Controller
 
     public function store(Request $request)
 {
-    // Validar los datos de entrada
     $validatedData = $request->validate([
         'nombre' => 'required|string|max:255',
         'apellido' => 'required|string|max:255',
@@ -93,14 +89,12 @@ class PacienteController extends Controller
         'estado_civil' => 'required|string|max:120',
         'custodia_niño' => 'required|string|max:120',
         'sector' => 'required|string|max:255',
-        // Validaciones para la dirección de los padres
         'estado_vive_id' => 'required|exists:estados,id',
         'municipio_vive_id' => 'required|exists:municipios,id',
         'parroquia_vive_id' => 'required|exists:parroquias,id',
     ]);
 
     \DB::transaction(function () use ($validatedData) {
-        // Crear el lugar de nacimiento
         $lugarNacimiento = LugarNacimiento::create([
             'estado_id' => $validatedData['estado_nacimiento_id'],
             'municipio_id' => $validatedData['municipio_nacimiento_id'],
@@ -108,7 +102,6 @@ class PacienteController extends Controller
             'lugar' => $validatedData['lugar'],
         ]);
 
-        // Crear la dirección de los padres
         $direccionPadres = Direccion::create([
             'estado_id' => $validatedData['estado_vive_id'],
             'municipio_id' => $validatedData['municipio_vive_id'],
@@ -116,7 +109,6 @@ class PacienteController extends Controller
             'sector' => $validatedData['sector'],
         ]);
 
-        // Crear el padre
         $padre = Padres::create([
             'nombre_mama' => $validatedData['nombre_mama'],
             'apellido_mama' => $validatedData['apellido_mama'],
@@ -134,10 +126,9 @@ class PacienteController extends Controller
             'email_papa' => $validatedData['email_papa'],
             'estado_civil' => $validatedData['estado_civil'],
             'custodia_niño' => $validatedData['custodia_niño'],
-            'direccion_id' => $direccionPadres->id, // Asignar la dirección al padre
+            'direccion_id' => $direccionPadres->id, 
         ]);
 
-        // Crear el paciente
         Paciente::create([
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
@@ -146,7 +137,6 @@ class PacienteController extends Controller
             'representante_id' => $validatedData['representante_id'],
             'padre_id' => $padre->id,
             'genero_id' => $validatedData['genero_id'],
-            // Agrega más campos según sea necesario
         ]);
     });
 
@@ -162,7 +152,6 @@ class PacienteController extends Controller
 
     public function edit($id) {
         try {
-            // Cargar el paciente junto con el padre, la dirección y el lugar de nacimiento
             $paciente = Paciente::with(['padre.direccion', 'lugarNacimiento'])->find($id);
             
             if (!$paciente) {
@@ -178,17 +167,13 @@ class PacienteController extends Controller
 
     public function update(Request $request, $id)
 {
-    // Validar los datos de entrada
     $validatedData = $request->validate([
-        // Aquí van las mismas validaciones que tienes en el método store
     ]);
 
     \DB::transaction(function () use ($validatedData, $id) {
-        // Encontrar el paciente existente
         $paciente = Paciente::findOrFail($id);
         
-        // Actualizar el lugar de nacimiento
-        $lugarNacimiento = $paciente->lugarNacimiento; // Asumiendo que tienes la relación definida
+        $lugarNacimiento = $paciente->lugarNacimiento; 
         $lugarNacimiento->update([
             'estado_id' => $validatedData['estado_nacimiento_id'],
             'municipio_id' => $validatedData['municipio_nacimiento_id'],
@@ -196,8 +181,7 @@ class PacienteController extends Controller
             'lugar' => $validatedData['lugar'],
         ]);
 
-        // Encontrar al padre
-        $padre = $paciente->padre; // Asumiendo que tienes la relación definida
+        $padre = $paciente->padre; 
         $padre->update([
             'nombre_mama' => $validatedData['nombre_mama'],
             'apellido_mama' => $validatedData['apellido_mama'],
@@ -215,11 +199,10 @@ class PacienteController extends Controller
             'email_papa' => $validatedData['email_papa'],
             'estado_civil' => $validatedData['estado_civil'],
             'custodia_niño' => $validatedData['custodia_niño'],
-            'direccion_id' => $padre->direccion_id, // Mantener la dirección existente
+            'direccion_id' => $padre->direccion_id, 
         ]);
 
-        // Actualizar la dirección
-        $direccionPadres = $padre->direccion; // Asumiendo que tienes la relación definida
+        $direccionPadres = $padre->direccion; 
         $direccionPadres->update([
             'estado_id' => $validatedData['estado_vive_id'],
             'municipio_id' => $validatedData['municipio_vive_id'],
@@ -227,7 +210,6 @@ class PacienteController extends Controller
             'sector' => $validatedData['sector'],
         ]);
 
-        // Actualizar el paciente
         $paciente->update([
             'nombre' => $validatedData['nombre'],
             'apellido' => $validatedData['apellido'],
@@ -236,7 +218,6 @@ class PacienteController extends Controller
             'representante_id' => $validatedData['representante_id'],
             'padre_id' => $padre->id,
             'genero_id' => $validatedData['genero_id'],
-            // Agrega más campos según sea necesario
         ]);
     });
 

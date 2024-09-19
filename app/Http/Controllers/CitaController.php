@@ -13,7 +13,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
-use PDF; // Asegúrate de importar la clase PDF
+use PDF; 
 
 class CitaController extends Controller
 {
@@ -151,12 +151,10 @@ class CitaController extends Controller
 
     public function citasDeHoy(Request $request)
     {
-        // Obtener la fecha actual
         $fechaHoy = now()->format('Y-m-d');
 
-        // Filtrar las citas por la fecha de hoy
         $citas = Cita::with(['paciente', 'especialista'])
-                    ->whereDate('fecha_consulta', $fechaHoy) // Asegúrate de que 'fecha' es el campo correcto
+                    ->whereDate('fecha_consulta', $fechaHoy) 
                     ->get();
 
         if ($citas->isEmpty()) {
@@ -169,7 +167,6 @@ class CitaController extends Controller
 
     public function generarPdfCita($id)
 {
-    // Obtener la cita específica por ID
     $cita = Cita::with(['paciente', 'especialista'])->find($id);
 
     if (!$cita) {
