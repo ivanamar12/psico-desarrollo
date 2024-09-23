@@ -6,7 +6,7 @@ use App\Http\Controllers\SecretariaController;
 use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\CitaController;
-
+use App\Http\Controllers\HistoriaController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -156,3 +156,9 @@ Route::get('pdf/citas_hoy', [CitaController::class, 'citasDeHoy'])
 Route::get('pdf/generarPdfCita/{id}', [CitaController::class, 'generarPdfCita'])
     ->name('pdf.generarPdfCita')
     ->middleware('auth');
+
+// Ruta para la lista de historias
+Route::get('historias', [HistoriaController::class, 'index'])
+    ->name('historias.index')
+    ->middleware('auth');
+

@@ -62,7 +62,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="{{ route('paciente.index') }}" class="btn-sideBar-SubMenu">
+					<a href="{{ route('historias.index') }}" class="btn-sideBar-SubMenu">
 						<i class="zmdi zmdi-file zmdi-hc-fw"></i> Historias Clinicas <i class="zmdi zmdi-caret-"></i>
 					</a>
 				</li>
