@@ -162,3 +162,7 @@ Route::get('historias', [HistoriaController::class, 'index'])
     ->name('historias.index')
     ->middleware('auth');
 
+// Ruta para creae nueva historia
+Route::post('historias', [HistoriaController::class, 'store'])
+    ->name('historias.store')
+    ->middleware('auth');
