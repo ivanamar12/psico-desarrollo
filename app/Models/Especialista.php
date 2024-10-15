@@ -9,7 +9,7 @@ class Especialista extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'especialidad', 'telefono', 'email','genero_id', 'direccion_id'];
+    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'especialidad', 'telefono', 'email','especialidad_id','genero_id', 'direccion_id'];
 
     public function direccion(){
 
@@ -20,6 +20,12 @@ class Especialista extends Model
     public function genero(){
 
     	return $this->belongsTo(Genero::class);
+    	
+    }
+
+    public function especialidad(){
+
+    	return $this->belongsTo(Especialidad::class);
     	
     }
 

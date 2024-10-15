@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateAnimalsTable extends Migration
+class CreateEspecialidadsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,9 @@ class CreateAnimalsTable extends Migration
      */
     public function up()
     {
-        Schema::create('animals', function (Blueprint $table) {
+        Schema::create('especialidads', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre',30);
-            $table->string('animal',30);
-            $table->string('genero',30);
+            $table->string('especialidad',30);
             $table->timestamps();
         });
     }
@@ -29,6 +27,6 @@ class CreateAnimalsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('animals');
+        Schema::dropIfExists('especialidads');
     }
 }

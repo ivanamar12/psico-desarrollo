@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Paciente extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'apellido', 'fecha_nac', 'lugar_id', 'representante_id', 'padre_id', 'genero_id'];
+    protected $fillable = ['nombre', 'apellido', 'fecha_nac', 'lugar_id', 'representante_id', 'genero_id'];
 
     public function lugarNacimientos(){
 
@@ -22,9 +22,9 @@ class Paciente extends Model
         
     }
 
-    public function padre(){
+    public function parentescos(){
 
-        return $this->belongsTo(Padres::class);
+        return $this->hasMany(Parentesco::class);
         
     }
 
@@ -37,12 +37,6 @@ class Paciente extends Model
     public function citas(){
 
     	return $this->hasMany(Cita::class);
-    	 
-    }
-
-    public function historiaclinicas(){
-
-    	return $this->hasMany(HistoriaClinica::class);
     	 
     }
 }

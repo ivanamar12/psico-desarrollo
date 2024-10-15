@@ -9,11 +9,11 @@ class Parentesco extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['datosocioeconomico_id', 'nombre', 'apellido', 'fecha_nac','parentesco', 'discapacidad', 'tipo_discapacidad', 'enfermedad_cronica', 'tipo_enfermedad'];
+    protected $fillable = ['paciente_id', 'nombre', 'apellido', 'fecha_nac','parentesco', 'discapacidad', 'tipo_discapacidad', 'enfermedad_cronica', 'tipo_enfermedad'];
 
-    public function datossocioeconomico(){
+    public function paciente(){
 
-        return $this->belongsTo(DatosSocioeconomico::class);
+        return $this->belongsTo(Paciente::class);
         
     }
 

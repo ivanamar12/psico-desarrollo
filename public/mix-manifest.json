@@ -1,4 +1,7 @@
 {
+    "/js/especialistas.js": "/js/especialistas.js",
+    "/js/registroespecialista.js": "/js/registroespecialista.js",
+    "/js/telefonovalidacion.js": "/js/telefonovalidacion.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css"
 }

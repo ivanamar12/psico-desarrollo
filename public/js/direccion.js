@@ -1,43 +1,61 @@
-const estado_id = document.getElementById("estado_id");
-const municipio_id = document.getElementById('municipio_id')
-const parroquia_id = document.getElementById('parroquia_id')
 
-const showMunicipios = (filteredMunicipios)=> {
-	municipio_id.innerHTML = '<option value="0">Municipio</option>';
 
-	filteredMunicipios.forEach(item => {
-		const option = document.createElement("OPTION")
-		option.value = item.id
-		option.text = item.municipio 
-		municipio_id.appendChild(option)	
-	})
-}
+$(document).ready(function() {
+    const municipios = @json($municipios); // Asegúrate de que esto esté bien definido
+    const parroquias = @json($parroquias); // Asegúrate de que esto esté bien definido
 
-const filterMunicipios = id => {
-	const filteredMunicipios = municipios.filter(item => item.estado_id == id)
-	showMunicipios(filteredMunicipios)
-}
+    // Inicializar Select2 para municipio y parroquia
+    $('#municipio_id').select2({
+        placeholder: "Seleccione su municipio",
+        allowClear: true
+    });
 
-estado_id.addEventListener('change', e => {
-  filterMunicipios(e.target.value)
-})
+    $('#parroquia_id').select2({
+        placeholder: "Seleccione su parroquia",
+        allowClear: true
+    });
 
-const showParroquias = (filteredParroquias)=> {
-	parroquia_id.innerHTML = '<option value="0">Parroquia</option>';
+    const showMunicipios = (filteredMunicipios) => {
+        $('#municipio_id').empty().append('<option selected disabled>Seleccione su municipio</option>');
 
-	filteredParroquias.forEach(item => {
-		const option = document.createElement("OPTION")
-		option.value = item.id
-		option.text = item.parroquia 
-		parroquia_id.appendChild(option)	
-	})
-}
+        filteredMunicipios.forEach(item => {
+            const option = new Option(item.municipio, item.id, false, false);
+            $('#municipio_id').append(option);
+        });
 
-const filterParroquias = id => {
-	const filteredParroquias = parroquias.filter(item => item.municipio_id == id)
-	showParroquias(filteredParroquias)
-}
+        $('#municipio_id').trigger('change');
+    };
 
-municipio_id.addEventListener('change', e => {
-  filterParroquias(e.target.value)
-})
+    const filterMunicipios = (id) => {
+        const filteredMunicipios = municipios.filter(item => item.estado_id == id);
+        showMunicipios(filteredMunicipios);
+    };
+
+    const showParroquias = (filteredParroquias) => {
+        $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
+
+        filteredParroquias.forEach(item => {
+            const option = new Option(item.parroquia, item.id, false, false);
+            $('#parroquia_id').append(option);
+        });
+
+        $('#parroquia_id').trigger('change');
+    };
+
+    const filterParroquias = (id) => {
+        const filteredParroquias = parroquias.filter(item => item.municipio_id == id);
+        showParroquias(filteredParroquias);
+    };
+
+    $('#estado_id').on('change', function(e) {
+        const estadoId = $(this).val();
+        filterMunicipios(estadoId);
+        // Limpiar parroquias al cambiar de estado
+        $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
+    });
+
+    $('#municipio_id').on('change', function(e) {
+        const municipioId = $(this).val();
+        filterParroquias(municipioId);
+    });
+});

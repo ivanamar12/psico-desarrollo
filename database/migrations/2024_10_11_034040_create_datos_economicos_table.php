@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDatosSocioeconomicosTable extends Migration
+class CreateDatosEconomicosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateDatosSocioeconomicosTable extends Migration
      */
     public function up()
     {
-        Schema::create('datos_socioeconomicos', function (Blueprint $table) {
+        Schema::create('datos_economicos', function (Blueprint $table) {
             $table->id();
             $table->string('tipo_vivienda',);
             $table->string('cantidad_habitaciones',);
@@ -37,6 +37,6 @@ class CreateDatosSocioeconomicosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('datos_socioeconomicos');
+        Schema::dropIfExists('datos_economicos');
     }
 }

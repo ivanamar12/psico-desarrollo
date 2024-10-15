@@ -9,7 +9,7 @@ class Genero extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['id','genero'];
+    protected $fillable = ['genero'];
 
     public function especialistas(){
 

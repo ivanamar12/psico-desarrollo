@@ -18,14 +18,12 @@ class CreatePacientesTable extends Migration
             $table->string('nombre',120);
             $table->string('apellido',120);
             $table->date('fecha_nac');
-            $table->unsignedBigInteger('lugar_id')->nullable();
-           $table->foreign('lugar_id')->references('id')->on('lugar_nacimientos')->onDelete('cascade');
-
+            
            $table->unsignedBigInteger('representante_id')->nullable();
            $table->foreign('representante_id')->references('id')->on('representantes')->onDelete('cascade');
 
-           $table->unsignedBigInteger('padre_id')->nullable();
-           $table->foreign('padre_id')->references('id')->on('padres')->onDelete('cascade');
+           $table->unsignedBigInteger('datoseconomico_id')->nullable();
+           $table->foreign('datoseconomico_id')->references('id')->on('datos_economicos')->onDelete('cascade');
 
            $table->unsignedBigInteger('genero_id')->nullable();
            $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');

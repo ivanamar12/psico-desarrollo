@@ -8,6 +8,7 @@ use App\Models\Genero;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Parroquia;
+use App\Models\Especialidad;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -38,12 +39,14 @@ class EspecialistaController extends Controller
     $estados = Estado::all();
     $municipios = Municipio::all();
     $parroquias = Parroquia::all();
+    $especialidades = Especialidad::all();
     return view('especialista.index', [
         'especialistas' => $especialistas, 
         'generos' => $generos,
         'estados' => $estados, 
         'municipios' => $municipios, 
-        'parroquias' => $parroquias
+        'parroquias' => $parroquias,
+        'especialidades' => $especialidades
     ]);
 }
 
@@ -55,7 +58,7 @@ class EspecialistaController extends Controller
             'apellido' => 'required|string|max:255',
             'ci' => 'required|string|max:255',
             'fecha_nac' => 'required|date|max:10',
-            'especialidad' => 'required|string|max:255',
+            'especialidad_id' => 'required|string|max:255',
             'telefono' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:especialistas,email',
             'genero_id' => 'required|exists:generos,id',
@@ -64,7 +67,6 @@ class EspecialistaController extends Controller
             'parroquia_id' => 'required|exists:parroquias,id',
             'sector' => 'required|string|max:255',
         ]);
-
         \DB::transaction(function () use ($validatedData) {
             $direccion = Direccion::create([
                 'estado_id' => $validatedData['estado_id'],
@@ -72,20 +74,18 @@ class EspecialistaController extends Controller
                 'parroquia_id' => $validatedData['parroquia_id'],
                 'sector' => $validatedData['sector'],
             ]);
-
             Especialista::create([
                 'nombre' => $validatedData['nombre'],
                 'apellido' => $validatedData['apellido'],
                 'ci' => $validatedData['ci'],
                 'fecha_nac' => $validatedData['fecha_nac'],
-                'especialidad' => $validatedData['especialidad'],
+                'especialidad_id' => $validatedData['especialidad_id'],
                 'telefono' => $validatedData['telefono'],
                 'email' => $validatedData['email'],
                 'genero_id' => $validatedData['genero_id'],
                 'direccion_id' => $direccion->id,
             ]);
         });
-
         return response()->json(['success' => true]);
     }
 
@@ -134,7 +134,7 @@ class EspecialistaController extends Controller
             'apellido' => $especialista->apellido,
             'ci' => $especialista->ci,
             'fecha_nac' => $especialista->fecha_nac,
-            'especialidad' => $especialista->especialidad,
+            'especialidad_id' => $especialista->especialidad_id,
             'telefono' => $especialista->telefono,
             'email' => $especialista->email,
             'genero' => $especialista->genero ? $especialista->genero->nombre : null,
@@ -152,7 +152,7 @@ class EspecialistaController extends Controller
             'apellido' => 'required|string|max:255',
             'ci' => 'required|string|max:255',
             'fecha_nac' => 'required|date|max:10',
-            'especialidad' => 'required|string|max:255',
+            'especialidad_id' => 'required|string|max:255',
             'telefono' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:especialistas,email,' . $id,
             'genero_id' => 'required|exists:generos,id',
@@ -186,7 +186,7 @@ class EspecialistaController extends Controller
                 'apellido' => $validatedData['apellido'],
                 'ci' => $validatedData['ci'],
                 'fecha_nac' => $validatedData['fecha_nac'],
-                'especialidad' => $validatedData['especialidad'],
+                'especialidad_id' => $validatedData['especialidad_id'],
                 'telefono' => $validatedData['telefono'],
                 'email' => $validatedData['email'],
                 'genero_id' => $validatedData['genero_id'],

@@ -34,10 +34,16 @@ class Direccion extends Model
       return $this->hasMany(Especialista::class);
        
   }
+   
+  public function secretarias(){
 
-  public function padres(){
+    return $this->hasMany(Secretaria::class);
+     
+}
+ 
+public function representantes(){
 
-    return $this->hasMany(Padres::class);
+    return $this->hasMany(Representante::class);
      
 }
    
