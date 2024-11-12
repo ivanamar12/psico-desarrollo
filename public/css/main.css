@@ -609,3 +609,7 @@ body, html{
     background-color: #d3d3d3; /* Color gris claro */
     pointer-events: none; /* Deshabilita la interacción */
 }
+
+.modal-custom {
+	max-width: 800px; /* Ajusta el ancho según tus necesidades */
+}

@@ -1,168 +1,154 @@
 @extends('layouts.app')
 
-@section('title', 'Secretarias')
+@section('title', 'Representantes')
 
 @section('content')
 <section class="full-box dashboard-contentPage">
-	<!-- NavBar -->
-<nav class="full-box dashboard-Navbar">
-			<ul class="full-box list-unstyled text-right">
-				<li class="pull-left">
-					<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-				</li>
-				<li>
-					<a href="#!" class="btn-Notifications-area">
-						<i class="zmdi zmdi-notifications-none"></i>
-						<span class="badge">7</span>
-					</a>
-				</li>
-				<li>
-					<a href="#!" class="btn-search">
-						<i class="zmdi zmdi-search"></i>
-					</a>
-				</li>
-				<li>
-					<a href="#!" class="btn-modal-help">
-						<i class="zmdi zmdi-help-outline"></i>
-					</a>
-				</li>
-			</ul>
-		</nav>
-		
-		<!-- Content page -->
-		<div class="container-fluid">
-			<div class="page-header">
-			  <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Secratarias</h1>
-			</div>
-			<p class="lead">
-			</div>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-xs-12">
-					<ul class="nav nav-tabs" style="margin-bottom: 15px;">
-					  	<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-					  	<li><a href="#new" data-toggle="tab">Nuevo</a></li>
-					</ul>
-					<div id="myTabContent" class="tab-content">
-						
-					  	<div class="tab-pane fade active in" id="list">
-								<div class="table-responsive">
-									<table class="table table-hover text-center" id="tab-secretaria">
-										<thead>
-											<tr>
-												<th class="text-center">#</th>
-												<th class="text-center">Nombre</th>
-												<th class="text-center">Apellido</th>
-												<th class="text-center">CI</th>
-												<th class="text-center">Correo</th>
-												<th class="text-center">Telefono</th>
-												<th class="text-center">Acciones</th>
-											</tr>
-										</thead>
-									
-									</table>
-									
-								</div>
-					  	</div>
-							<div class="tab-pane fade in" id="new">
-								<div class="container-fluid">
-									<div class="row">
-										<div class="col-xs-12 col-md-10 col-md-offset-1">
-											<form id="registro-secretaria">@csrf
-												<div id="paso1">
-													<h3>Datos Personales</h3>
-													<div class="fila-formulario">
-													<div class="form-group label-floating col-md-6">
-															<label class="control-label">Nombre</label>
-															<input class="form-control" id="nombre" name="nombre" type="text">
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">Apellido</label>
-															<input class="form-control" id="apellido" name="apellido" type="text" required>
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">CI</label>
-															<input class="form-control" id="ci" name="ci" type="number" required max="34000000" oninput="validateInput(this)">
-														</div>
-														<div class="form-group  col-md-6">
-															<input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">Grado</label>
-															<input class="form-control" id="grado" name="grado" type="text" required>
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">Teléfono</label>
-															<input class="form-control" type="tel" id="telefono" name="telefono" required>
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">Correo electrónico</label>
-															<input class="form-control" type="email" id="email" name="email" required>
-														</div>
-														<div class="form-group col-md-6">
-															<select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
-																<option selected disabled>Seleccione su género</option>
-																@foreach ($generos as $genero)
-																	<option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-																@endforeach
-															</select>
-														</div>
-													</div>
-													<p class="centro-texto">
-														<button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button>
-													</p>
-												</div>
-												<div id="paso2" style="display: none;">
-													<h3>Datos de Dirección</h3>
-													<div class="fila-formulario">
-														<div class="form-group label-floating col-md-6">
-															<select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
-																<option selected disabled>Seleccione su estado</option>
-															</select>
-														</div>
-														<div class="form-group col-md-6">
-															<select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
-																<option selected disabled>Seleccione su municipio</option>
-															</select>
-														</div>
-														<div class="form-group col-md-6">
-															<select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
-																<option selected disabled>Seleccione su parroquia</option>
-															</select>
-														</div>
-														<div class="form-group label-floating col-md-6">
-															<label class="control-label">Sector</label>
-															<input class="form-control" type="text" id="sector" name="sector" required>
-														</div>
-													</div>
-													<p class="centro-texto">
-														<button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-														<button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
-													</p>
-												</div>
-											</form>
-										</div>
-									</div>
-								</div>
+    <nav class="full-box dashboard-Navbar">
+		<ul class="full-box list-unstyled text-right">
+			<li class="pull-left">
+				<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+			</li>
+			<li>
+				<a href="#!" class="btn-Notifications-area">
+					<i class="zmdi zmdi-notifications-none"></i>
+					<span class="badge">7</span>
+				</a>
+			</li>
+			<li>
+				<a href="#!" class="btn-search">
+					<i class="zmdi zmdi-search"></i>
+				</a>
+			</li>
+			<li>
+				<a href="#!" class="btn-modal-help">
+					<i class="zmdi zmdi-help-outline"></i>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<div class="container-fluid">
+		<div class="page-header">
+			  <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Representantes</h1>
+		</div>
+		<p class="lead">
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-xs-12">
+				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
+					<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+					<li><a href="#new" data-toggle="tab">Nuevo</a></li>
+				</ul>
+				<div id="myTabContent" class="tab-content">
+					<div class="tab-pane fade active in" id="list">
+						<div class="table-responsive">
+							<table class="table table-hover text-center" id="tab-representante">
+								<thead>
+									<tr>
+										<th class="text-center">#</th>
+										<th class="text-center">Nombre</th>
+										<th class="text-center">Apellido</th>
+										<th class="text-center">CI</th>
+										<th class="text-center">Correo</th>
+										<th class="text-center">Telefono</th>
+										<th class="text-center">Acciones</th>
+									</tr>
+								</thead>
+							</table>	
 						</div>
 					</div>
-				</div>
+                    <div class="tab-pane fade in" id="new">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-12 col-md-10 col-md-offset-1">
+                                    <form id="registro-representante">@csrf
+                                        <div id="paso1">
+										    <h3>Datos Personales</h3>
+											<div class="fila-formulario">
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">Nombre</label>
+													<input class="form-control" id="nombre" name="nombre" type="text">
+												</div>
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">Apellido</label>
+													<input class="form-control" id="apellido" name="apellido" type="text" required>
+												</div>
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">CI</label>
+													<input class="form-control" id="ci" name="ci" type="number" required max="34000000" oninput="validateInput(this)">
+												</div>
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">Teléfono</label>
+													<input class="form-control" type="tel" id="telefono" name="telefono" required>
+												</div>
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">Correo electrónico</label>
+													<input class="form-control" type="email" id="email" name="email" required>
+												</div>
+												<div class="form-group col-md-6">
+													<select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
+														<option selected disabled>Seleccione su género</option>
+															@foreach ($generos as $genero)
+														<option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+															@endforeach
+													</select>
+												</div>
+											</div>
+											<p class="centro-texto">
+												<button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button>
+											</p>
+										</div>
+                                        <div id="paso2" style="display: none;">
+											<h3>Datos de Dirección</h3>
+											<div class="fila-formulario">
+												<div class="form-group label-floating col-md-6">
+													<select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
+														<option selected disabled>Seleccione su estado</option>
+													</select>
+												</div>
+												<div class="form-group col-md-6">
+													<select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
+														<option selected disabled>Seleccione su municipio</option>
+													</select>
+												</div>
+												<div class="form-group col-md-6">
+													<select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
+														<option selected disabled>Seleccione su parroquia</option>
+													</select>
+												</div>
+												<div class="form-group label-floating col-md-6">
+													<label class="control-label">Sector</label>
+													<input class="form-control" type="text" id="sector" name="sector" required>
+												</div>
+											</div>
+											<p class="centro-texto">
+												<button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+												<button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+											</p>
+										</div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>  
+				</div>         
 			</div>
-		</div>
-		
+	    </div>
+	</div>	
 </section>
-<!-- Modal editar -->
-<div class="modal fade" id="editsecretaria" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+<!-- modal editar-->
+<div class="modal fade" id="editRepresentante" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel">Actualizar Secretaria</h2>
+            <h2 class="modal-title" id="staticBackdropLabel">Actualizar Representante</h2>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="row">
 					<div class="col-xs-12 col-md-10 col-md-offset-1">
-                        <form id="editar-secretaria">@csrf
+                        <form id="editar-representante">@csrf
                         <input type="hidden" id="id" name="id">
                             <div id="paso1_edit">
                                 <h3>Datos Personales</h3>
@@ -178,13 +164,6 @@
                                     <div class="form-group label-floating col-md-6">
                                         <label class="control-label">CI</label>
                                         <input class="form-control" id="ci2" name="ci2" type="number" required max="34000000" oninput="validateInput(this)">
-                                    </div>
-                                    <div class="form-group  col-md-6">
-                                        <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
-                                    </div>
-                                    <div class="form-group label-floating col-md-6">
-                                        <label class="control-label">Grado</label>
-                                        <input class="form-control" id="grado2" name="grado2" type="text" required>
                                     </div>
                                     <div class="form-group label-floating col-md-6">
                                         <label class="control-label">Teléfono</label>
@@ -241,8 +220,8 @@
 </div>
 <!-- modal eliminar -->
 <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <div class="modal-dialog">
+        <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -256,16 +235,15 @@
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
                 <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
             </div>
-            </div>
         </div>
     </div>
-</div> 
-<!-- modal mostrar secretaria -->
-<div id="secretariaModal" class="modal fade" tabindex="-1" role="dialog">
+</div>
+<!-- modal mostrar representante -->
+<div id="representanteModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Especialista</h5>
+                <h5 class="modal-title">Representante</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -273,8 +251,6 @@
             <div class="modal-body">
                 <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
                 <p><strong>Cédula de Identidad:</strong> <span id="ci"></span></p>
-                <p><strong>Fecha de Nacimiento:</strong> <span id="fecha_nac"></span></p>
-                <p><strong>Grado:</strong> <span id="grado"></span></p>
                 <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
                 <p><strong>Email:</strong> <span id="email"></span></p>
                 <p><strong>Género:</strong> <span id="genero"></span></p>
@@ -298,11 +274,11 @@ const parroquias = @json($parroquias);
 </script>
 <script>
 $(document).ready(function(){
-    var tablaSecretaria = $('#tab-secretaria').DataTable({
+    var tablaRepresentante = $('#tab-representante').DataTable({
         processing:true,
         serverSide:true,
         ajax:{
-            url: "{{ route('secretaria.index')}}",
+            url: "{{ route('representantes.index')}}",
         },
         columns:[
             {data: 'id'},
@@ -330,13 +306,11 @@ $(document).ready(function(){
         $("#paso1").show(); 
     });
 
-        $("#registro-secretaria").submit(function(event) {
+        $("#registro-representante").submit(function(event) {
             event.preventDefault(); 
             var nombre = $('#nombre').val();
             var apellido = $('#apellido').val();
             var ci = $('#ci').val();
-            var fecha_nac = $('#fecha_nac').val();
-            var grado = $('#grado').val(); 
             var telefono = $('#telefono').val();
             var email = $('#email').val();
             var genero_id = $('#genero_id').val();
@@ -347,14 +321,12 @@ $(document).ready(function(){
             var _token = $("input[name=_token]").val();
 
             $.ajax({
-                url: "{{ route('secretaria.store') }}", 
+                url: "{{ route('representantes.store') }}", 
                 type: "POST",
                 data: {
                     nombre: nombre,
                     apellido: apellido,
                     ci: ci,
-                    fecha_nac: fecha_nac,
-                    grado: grado,
                     telefono: telefono,
                     email: email,
                     genero_id: genero_id,
@@ -366,16 +338,16 @@ $(document).ready(function(){
                 },
                 success: function(response) {
                     if (response.success) {
-                        $('#registro-secretaria')[0].reset(); 
+                        $('#registro-representante')[0].reset(); 
                         toastr.success('El registro se ingresó correctamente', 'Nuevo registro', { timeOut: 5000 });
-                        $('#tab-secretaria').DataTable().ajax.reload(); 
+                        $('#tab-representante').DataTable().ajax.reload(); 
                         $("#paso1").show(); 
                         $("#paso2").hide();
                     }
                 },
                 error: function(xhr) {
                     console.error(xhr.responseText);
-                    toastr.error('Ocurrió un error al registrar el especialista', 'Error', { timeOut: 5000 });
+                    toastr.error('Ocurrió un error al registrar el representante', 'Error', { timeOut: 5000 });
                 }
             });
         });
@@ -385,13 +357,10 @@ $(document).ready(function(){
 document.getElementById('telefono').addEventListener('input', function() {
     const telefonoInput = this.value;
     const validPrefixes = ['0412', '0424', '0414', '0416', '0426'];
-
     if (telefonoInput.length > 11) {
         this.value = telefonoInput.slice(0, 11); 
     }
-
     const isValidPrefix = validPrefixes.some(prefix => telefonoInput.startsWith(prefix));
-
     if (telefonoInput.length === 11 && !isValidPrefix) {
         toastr.warning('El número debe comenzar con 0412, 0424, 0414, 0416 o 0426.', 'Advertencia', { timeOut: 5000 });
         this.value = ''; 
@@ -399,22 +368,8 @@ document.getElementById('telefono').addEventListener('input', function() {
 });
 </script>
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const fechaNacInput = document.getElementById('fecha_nac');
-    
-    const today = new Date();
-    
-    const yearEighteen = today.getFullYear() - 18;
-
-    const minDate = `${yearEighteen}-01-01`;
-    fechaNacInput.setAttribute('min', '1900-01-01'); 
-    fechaNacInput.setAttribute('max', `${yearEighteen}-12-31`); 
-});
-</script>
-<script>
 function validateInput(input) {
     const value = input.value.toString();
-    
     if (parseInt(value) > 34000000 || value.length > 8) {
         toastr.warning('El número de cédula es incorrecto. Debe ser un número de hasta 8 dígitos y no mayor a 34,000,000.', 'Advertencia', { timeOut: 5000 });
         input.value = '';
@@ -443,17 +398,14 @@ $(document).ready(function() {
             }
         }
     });
-
     $('#municipio_id').select2({
         placeholder: "Seleccione su municipio",
         allowClear: true
     });
-
     $('#parroquia_id').select2({
         placeholder: "Seleccione su parroquia",
         allowClear: true
     });
-
     const showMunicipios = (filteredMunicipios) => {
         $('#municipio_id').empty().append('<option selected disabled>Seleccione su municipio</option>');
         filteredMunicipios.forEach(item => {
@@ -462,12 +414,10 @@ $(document).ready(function() {
         });
         $('#municipio_id').trigger('change');
     };
-
     const filterMunicipios = (id) => {
         const filteredMunicipios = municipios.filter(item => item.estado_id == id);
         showMunicipios(filteredMunicipios);
     };
-
     const showParroquias = (filteredParroquias) => {
         $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
         filteredParroquias.forEach(item => {
@@ -476,18 +426,15 @@ $(document).ready(function() {
         });
         $('#parroquia_id').trigger('change');
     };
-
     const filterParroquias = (id) => {
         const filteredParroquias = parroquias.filter(item => item.municipio_id == id);
         showParroquias(filteredParroquias);
     };
-
     $('#estado_id').on('change', function(e) {
         const estadoId = $(this).val();
         filterMunicipios(estadoId);
         $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
     });
-
     $('#municipio_id').on('change', function(e) {
         const municipioId = $(this).val();
         filterParroquias(municipioId);
@@ -495,34 +442,64 @@ $(document).ready(function() {
 });
 </script>
 <script>
-function editsecretaria(id) {
-    $.get('/secretaria/' + id + '/edit', function(secretaria) {
-        $('#id').val(secretaria.id);
-        $('#nombre2').val(secretaria.nombre);
-        $('#apellido2').val(secretaria.apellido);
-        $('#ci2').val(secretaria.ci);
-        $('#fecha_nac2').val(secretaria.fecha_nac);
-		$('#grado2').val(secretaria.grado);
-        $('#telefono2').val(secretaria.telefono);
-        $('#email2').val(secretaria.email);
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
 
-        if (secretaria.direccion) {
-            $('#estado_id2').val(secretaria.direccion.estado_id).trigger('change');
+var id;
+$(document).on('click', '.delete', function(){
+    id = $(this).attr('id');
+    $('#confirModal').modal('show');
+});
 
-            filterMunicipios(secretaria.direccion.estado_id);
-            $('#municipio_id2').val(secretaria.direccion.municipio_id).trigger('change');
+$('#btnEliminar').click(function(){
+    $.ajax({
+        url: "/representantes/" + id, 
+        type: 'DELETE',
+        beforeSend: function(){
+            $('#btnEliminar').text('Eliminando...');
+        },
+        success: function(data){
+            $('#confirModal').modal('hide');
+            toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', { timeOut: 5000 });
+            location.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al eliminar el registro:', error);
+            toastr.error('No se pudo eliminar el registro', 'Error', { timeOut: 5000 });
+        }
+    });
+});
+</script>
+<script>
+function editRepresentante(id) {
+    $.get('/representantes/' + id + '/edit', function(representante) {
+        $('#id').val(representante.id);
+        $('#nombre2').val(representante.nombre);
+        $('#apellido2').val(representante.apellido);
+        $('#ci2').val(representante.ci);
+        $('#telefono2').val(representante.telefono);
+        $('#email2').val(representante.email);
 
-            filterParroquias(secretaria.direccion.municipio_id);
-            $('#parroquia_id2').val(secretaria.direccion.parroquia_id).trigger('change');
+        if (representante.direccion) {
+            $('#estado_id2').val(representante.direccion.estado_id).trigger('change');
 
-            $('#sector2').val(secretaria.direccion.sector);
+            filterMunicipios(representante.direccion.estado_id);
+            $('#municipio_id2').val(representante.direccion.municipio_id).trigger('change');
+
+            filterParroquias(representante.direccion.municipio_id);
+            $('#parroquia_id2').val(representante.direccion.parroquia_id).trigger('change');
+
+            $('#sector2').val(representante.direccion.sector);
         }
         
-        $('#editsecretaria').modal('show');
+        $('#editRepresentante').modal('show');
     });
 }
 
-$('#editsecretaria').on('shown.bs.modal', function () {
+$('#editRepresentante').on('shown.bs.modal', function () {
     initSelect2('#estado_id2', "Seleccione su estado", estados, 'estado');
     initSelect2('#municipio_id2', "Seleccione su municipio", municipios, 'municipio');
     initSelect2('#parroquia_id2', "Seleccione su parroquia", parroquias, 'parroquia');
@@ -560,7 +537,7 @@ const initSelect2 = (selector, placeholder, data, type) => {
                 success({ results: results });
             }
         },
-        dropdownParent: $('#editsecretaria .modal-body')
+        dropdownParent: $('#editRepresentante .modal-body')
     });
 };
 
@@ -593,38 +570,6 @@ const filterParroquias = (municipioId) => {
 };
 </script>
 <script>
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
-var id;
-$(document).on('click', '.delete', function(){
-    id = $(this).attr('id');
-    $('#confirModal').modal('show');
-});
-
-$('#btnEliminar').click(function(){
-    $.ajax({
-        url: "/secretaria/" + id, 
-        type: 'DELETE',
-        beforeSend: function(){
-            $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data){
-            $('#confirModal').modal('hide');
-            toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', { timeOut: 5000 });
-            $('#tab-secretaria').DataTable().ajax.reload();
-        },
-        error: function(xhr, status, error) {
-            console.error('Error al eliminar el registro:', error);
-            toastr.error('No se pudo eliminar el registro', 'Error', { timeOut: 5000 });
-        }
-    });
-});
-</script>
-<script>
 $(document).ready(function() {
     $("#paso1_edit").show();
     $("#paso2_edit").hide(); 
@@ -639,15 +584,13 @@ $(document).ready(function() {
         $("#paso1_edit").show();
     });
 
-    $("#editar-secretaria").submit(function(event) {
+    $("#editar-representante").submit(function(event) {
         event.preventDefault(); 
 
         var id = $('#id').val(); 
         var nombre = $('#nombre2').val();
         var apellido = $('#apellido2').val();
         var ci = $('#ci2').val();
-        var fecha_nac = $('#fecha_nac2').val();
-        var grado = $('#grado2').val(); 
         var telefono = $('#telefono2').val();
         var email = $('#email2').val();
         var genero_id = $('#genero_id2').val();
@@ -658,15 +601,13 @@ $(document).ready(function() {
         var _token = $("input[name=_token]").val();
 
         $.ajax({
-            url: "/secretaria/" + id,
+            url: "/representantes/" + id,
             type: "PUT",
             data: {
                 id: id,
                 nombre: nombre,
                 apellido: apellido,
                 ci: ci,
-                fecha_nac: fecha_nac,
-                grado: grado,
                 telefono: telefono,
                 email: email,
                 genero_id: genero_id,
@@ -680,9 +621,9 @@ $(document).ready(function() {
                 console.log("Respuesta del servidor:", response); 
                 if (response.success) {
                     console.log("Cerrando el modal..."); 
-                    $('#editseretaria').modal('hide'); 
+                    $('#editRepresentante').modal('hide'); 
                     toastr.info('El registro se actualizó correctamente', 'Actualizar registro', { timeOut: 5000 });
-                    $('#tab-secretaria').DataTable().ajax.reload(); 
+                    $('#tab-representante').DataTable().ajax.reload(); 
                 } else {
                     console.log("No se pudo actualizar el registro."); 
                 }
@@ -697,30 +638,28 @@ $(document).ready(function() {
 </script>
 <script>
 $(document).ready(function() {
-    $(document).on('click', '.ver-secretaria', function() {
-        var secretariaId = $(this).data('id'); 
+    $(document).on('click', '.ver-representante', function() {
+        var representanteId = $(this).data('id'); 
         $.ajax({
-            url: '/secretaria/' + secretariaId, 
+            url: '/representantes/' + representanteId, 
             type: 'GET',
-            success: function(secretaria) { 
-                console.log('Datos de la secretaria:', secretaria); 
-                $('#nombre').text(secretaria[0].nombre + ' ' + secretaria[0].apellido);
-                $('#ci').text(secretaria[0].ci);
-                $('#fecha_nac').text(secretaria[0].fecha_nac);
-                $('#telefono').text(secretaria[0].telefono);
-                $('#email').text(secretaria[0].email);
-                $('#grado').text(secretaria[0].grado);
-                $('#genero').text(secretaria[0].genero);
-                $('#estado').text(secretaria[0].estado);
-                $('#municipio').text(secretaria[0].municipio);
-                $('#parroquia').text(secretaria[0].parroquia);
-                $('#sector').text(secretaria[0].sector);
+            success: function(representante) { 
+                console.log('Datos de la secretaria:', representante); 
+                $('#nombre').text(representante[0].nombre + ' ' + representante[0].apellido);
+                $('#ci').text(representante[0].ci);
+                $('#telefono').text(representante[0].telefono);
+                $('#email').text(representante[0].email);
+                $('#genero').text(representante[0].genero);
+                $('#estado').text(representante[0].estado);
+                $('#municipio').text(representante[0].municipio);
+                $('#parroquia').text(representante[0].parroquia);
+                $('#sector').text(representante[0].sector);
 
-                $('#secretariaModal').modal('show');
+                $('#representanteModal').modal('show');
             },
                         error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error al obtener los datos de la secretaria:', textStatus, errorThrown);
-                alert('Ocurrió un error al obtener los datos de la secretaria. Intenta nuevamente.');
+                console.error('Error al obtener los datos del representante:', textStatus, errorThrown);
+                alert('Ocurrió un error al obtener los datos del representanteModal. Intenta nuevamente.');
             }
         });
     });

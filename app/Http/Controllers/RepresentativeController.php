@@ -17,17 +17,18 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use DataTables;
 
-
-class RepresentanteController extends Controller
+class RepresentativeController extends Controller
 {
+    
     public function index(Request $request)
     {
         if ($request->ajax()) {
             $representantes = DB::select('SELECT * FROM representantes');
             return DataTables::of($representantes)
                 ->addColumn('action', function($representante) { 
-                    $acciones = '<a href="javascript:void(0)" onclick="editrepresentante('.$representante->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-                    $acciones .= '<button type="button" name="delete" id="'.$representante->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
+                    $acciones = '<a href="javascript:void(0)" onclick="editRepresentante('.$representante->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+                    $acciones .= '<button type="button" name="delete" id="'.$representante->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+                    $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-representante" data-id="'.$representante->id.'"><i class="zmdi zmdi-eye"></i></button>'; 
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -39,7 +40,7 @@ class RepresentanteController extends Controller
         $estados = Estado::all();
         $municipios = Municipio::all();
         $parroquias = Parroquia::all();
-        return view('representante.index', [
+        return view('representantes.index', [
             'representantes' => $representantes, 
             'generos' => $generos,
             'estados' => $estados, 
@@ -54,8 +55,6 @@ class RepresentanteController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'ci' => 'required|string|max:255',
-            'fecha_nac' => 'required|date|max:10',
-            'grado' => 'required|string|max:255',
             'telefono' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:representantes,email',
             'genero_id' => 'required|exists:generos,id',
@@ -77,8 +76,6 @@ class RepresentanteController extends Controller
                 'nombre' => $validatedData['nombre'],
                 'apellido' => $validatedData['apellido'],
                 'ci' => $validatedData['ci'],
-                'fecha_nac' => $validatedData['fecha_nac'],
-                'grado' => $validatedData['grado'],
                 'telefono' => $validatedData['telefono'],
                 'email' => $validatedData['email'],
                 'genero_id' => $validatedData['genero_id'],
@@ -91,7 +88,36 @@ class RepresentanteController extends Controller
 
     public function show($id)
     {
-        //
+        $representante = DB::select("
+            SELECT 
+                representantes.id AS representante, 
+                representantes.nombre AS nombre, 
+                representantes.apellido AS apellido, 
+                representantes.ci AS ci, 
+                representantes.telefono AS telefono, 
+                representantes.email AS email, 
+                generos.genero AS genero, 
+                estados.estado AS estado, 
+                municipios.municipio AS municipio, 
+                parroquias.parroquia AS parroquia, 
+                direccions.sector AS sector
+            FROM 
+                representantes
+            JOIN 
+                generos ON representantes.genero_id = generos.id 
+            JOIN 
+                direccions ON representantes.direccion_id = direccions.id
+            JOIN 
+                estados ON direccions.estado_id = estados.id
+            JOIN 
+                municipios ON direccions.municipio_id = municipios.id
+            JOIN 
+                parroquias ON direccions.parroquia_id = parroquias.id
+            WHERE 
+                representantes.id = ?
+        ", [$id]);
+
+        return response()->json($representante);
     }
 
     public function edit($id) {
@@ -112,10 +138,8 @@ class RepresentanteController extends Controller
             'nombre' => 'required|string|max:255',
             'apellido' => 'required|string|max:255',
             'ci' => 'required|string|max:255',
-            'fecha_nac' => 'required|date|max:10',
-            'grado' => 'required|string|max:255',
             'telefono' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:representantes,email,' . $id,
+            'email' => 'required|string|email|max:255',
             'genero_id' => 'required|exists:generos,id',
             'estado_id' => 'required|exists:estados,id',
             'municipio_id' => 'required|exists:municipios,id',
@@ -146,8 +170,6 @@ class RepresentanteController extends Controller
                 'nombre' => $validatedData['nombre'],
                 'apellido' => $validatedData['apellido'],
                 'ci' => $validatedData['ci'],
-                'fecha_nac' => $validatedData['fecha_nac'],
-                'grado' => $validatedData['grado'],
                 'telefono' => $validatedData['telefono'],
                 'email' => $validatedData['email'],
                 'genero_id' => $validatedData['genero_id'],
@@ -156,11 +178,12 @@ class RepresentanteController extends Controller
     
         return response()->json(['success' => true]);
     }
+
     public function destroy($id)
     {
         $representante = Representante::with('direccion')->find($id); 
         if (!$representante) {
-            return response()->json(['message' => 'secretaria no encontrado'], 404);
+            return response()->json(['message' => 'representante no encontrado'], 404);
         }
     
         $direccion = $representante->direccion; 
@@ -175,6 +198,4 @@ class RepresentanteController extends Controller
     
         return response()->json(['success' => true]);
     }
-
-
 }

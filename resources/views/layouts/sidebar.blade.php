@@ -47,7 +47,7 @@
 					</a>
 				</li>
 				<li>
-					<a href="{{ route('representante.index') }}" class="btn-sideBar-SubMenu">
+					<a href="{{ route('representantes.index') }}" class="btn-sideBar-SubMenu">
 						<i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Representantes <i class="zmdi zmdi-caret-"></i>
 					</a>
 				</li>

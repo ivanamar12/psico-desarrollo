@@ -26,7 +26,8 @@ class SecretariaController extends Controller
             return DataTables::of($secretarias)
                 ->addColumn('action', function($secretaria) { 
                     $acciones = '<a href="javascript:void(0)" onclick="editsecretaria('.$secretaria->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-                    $acciones .= '<button type="button" name="delete" id="'.$secretaria->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
+                    $acciones .= '<button type="button" name="delete" id="'.$secretaria->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+                    $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-secretaria" data-id="'.$secretaria->id.'"><i class="zmdi zmdi-eye"></i></button>'; 
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -111,7 +112,38 @@ class SecretariaController extends Controller
 
     public function show($id)
     {
-        //
+        $secretaria = DB::select("
+            SELECT 
+                secretarias.id AS secretaria, 
+                secretarias.nombre AS nombre, 
+                secretarias.apellido AS apellido, 
+                secretarias.ci AS ci, 
+                secretarias.fecha_nac AS fecha_nac, 
+                secretarias.telefono AS telefono, 
+                secretarias.email AS email, 
+                secretarias.grado AS grado,
+                generos.genero AS genero, 
+                estados.estado AS estado, 
+                municipios.municipio AS municipio, 
+                parroquias.parroquia AS parroquia, 
+                direccions.sector AS sector
+            FROM 
+                secretarias
+            JOIN 
+                generos ON secretarias.genero_id = generos.id 
+            JOIN 
+                direccions ON secretarias.direccion_id = direccions.id
+            JOIN 
+                estados ON direccions.estado_id = estados.id
+            JOIN 
+                municipios ON direccions.municipio_id = municipios.id
+            JOIN 
+                parroquias ON direccions.parroquia_id = parroquias.id
+            WHERE 
+                secretarias.id = ?
+        ", [$id]);
+
+        return response()->json($secretaria);
     }
 
     public function edit($id) {
@@ -135,7 +167,7 @@ class SecretariaController extends Controller
             'fecha_nac' => 'required|date|max:10',
             'grado' => 'required|string|max:255',
             'telefono' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:especialistas,email,' . $id,
+            'email' => 'required|string|email|max:255',
             'genero_id' => 'required|exists:generos,id',
             'estado_id' => 'required|exists:estados,id',
             'municipio_id' => 'required|exists:municipios,id',

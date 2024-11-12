@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Representante extends Model
 {
     use HasFactory;
-    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'grado', 'telefono', 'email','genero_id', 'direccion_id'];
+    protected $fillable = ['nombre', 'apellido', 'ci', 'telefono', 'email','genero_id', 'direccion_id'];
 
     public function direccion(){
 
@@ -20,11 +20,5 @@ class Representante extends Model
 
     	return $this->belongsTo(Genero::class);
     	
-    }
-
-    public function pacientes(){
-
-        return $this->hasMany(Paciente::class);
-         
     }
 }
