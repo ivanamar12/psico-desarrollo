@@ -17,9 +17,4 @@ class DatosEconomico extends Model
     	 
     }
 
-    public function historiaclinicas(){
-
-    	return $this->hasMany(HistoriaClinica::class);
-    	 
-    }
 }

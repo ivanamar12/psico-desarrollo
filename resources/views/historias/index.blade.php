@@ -29,7 +29,7 @@
 	</nav>
 	<div class="container-fluid">
 		<div class="page-header">
-			  <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Historias</h1>
+			  <h1 class="text-titles"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Historias</h1>
 		</div>
 		<p class="lead">
 	</div>
@@ -337,7 +337,27 @@
             </div>
         </div>
     </div>
-</section> 
+</section>
+<!-- Modal de Confirmación -->
+<div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                ¿Desea eliminar el registro seleccionado?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                <button type="button" id="btnEliminar" class="btn btn-danger">Eliminar</button>
+            </div>
+        </div>
+    </div>
+</div>  
 @endsection
 @section('js')
 <script>
@@ -441,7 +461,7 @@ function toggleEnfermedadInput() {
         tipo_enfermedadinfecciosaInput.style.display = 'block'; 
     } else {
         tipo_enfermedadinfecciosaInput.style.display = 'none'; 
-        tipo_enfermedadinfecciosaInput.value = 'no'; 
+        tipo_enfermedadinfecciosaInput.value = 'no aplica'; 
     }
 }
 
@@ -452,7 +472,7 @@ function toggleEnefermedadNoInput(){
         tipo_enfermedad_noinfecciosaInput.style.display = 'block'; 
     } else {
         tipo_enfermedad_noinfecciosaInput.style.display = 'none'; 
-        tipo_enfermedad_noinfecciosaInput.value = 'no'; 
+        tipo_enfermedad_noinfecciosaInput.value = 'no aplica'; 
     }
 }
 
@@ -463,7 +483,7 @@ function toggleCronicaInput(){
         tipo_enfermedad_cronicaInput.style.display = 'block'; 
     } else {
         tipo_enfermedad_cronicaInput.style.display = 'none'; 
-        tipo_enfermedad_cronicaInput.value = 'no'; 
+        tipo_enfermedad_cronicaInput.value = 'no aplica'; 
     }
 }
 
@@ -474,7 +494,7 @@ function toggleDiscapacidadInput(){
         tipo_discapacidadInput.style.display = 'block'; 
     } else {
         tipo_discapacidadInput.style.display = 'none'; 
-        tipo_discapacidadInput.value = 'no'; 
+        tipo_discapacidadInput.value = 'no aplica'; 
     }
 }
 
@@ -486,7 +506,7 @@ function toggleMedicamentoInput(){
         tipo_medicamentoInput.style.display = 'block'; 
     } else {
         tipo_medicamentoInput.style.display = 'none'; 
-        tipo_medicamentoInput.value = 'no'; 
+        tipo_medicamentoInput.value = 'no aplica'; 
     }
 }
 
@@ -497,7 +517,7 @@ function toggleFumoInput(){
         cantidadInput.style.display = 'block'; 
     } else {
         cantidadInput.style.display = 'none'; 
-        cantidadInput.value = 'no'; 
+        cantidadInput.value = 'no aplica'; 
     }
 }
 
@@ -511,9 +531,9 @@ function toggleAlcoholInput(){
 		cantidad_consumia_alcoholInput.style.display = 'block'; 
     } else {
         tipo_alcoholInput.style.display = 'none'; 
-        tipo_alcoholInput.value = 'no'; 
+        tipo_alcoholInput.value = 'no aplica'; 
 		cantidad_consumia_alcoholInput.style.display = 'none'; 
-        cantidad_consumia_alcoholInput.value = 'no'; 
+        cantidad_consumia_alcoholInput.value = 'no aplica'; 
     }
 }
 function toggleDrogaInput(){
@@ -523,7 +543,7 @@ function toggleDrogaInput(){
         tipo_drogaInput.style.display = 'block'; 
     } else {
         tipo_drogaInput.style.display = 'none'; 
-        tipo_drogaInput.value = 'no'; 
+        tipo_drogaInput.value = 'no aplica'; 
     }
 }
 function toggleCesareaInput(){
@@ -533,7 +553,7 @@ function toggleCesareaInput(){
         razon_cesareaInput.style.display = 'block'; 
     } else {
         razon_cesareaInput.style.display = 'none'; 
-        razon_cesareaInput.value = 'no'; 
+        razon_cesareaInput.value = 'no aplica'; 
     }
 }
 function togglePrematuroInput(){
@@ -543,7 +563,7 @@ function togglePrematuroInput(){
         meses_prematuroInput.style.display = 'block'; 
     } else {
         meses_prematuroInput.style.display = 'none'; 
-        meses_prematuroInput.value = 'no'; 
+        meses_prematuroInput.value = 'no aplica'; 
     }
 }
 function toggleComplicacionesInput(){
@@ -553,7 +573,7 @@ function toggleComplicacionesInput(){
         tipo_complicacionInput.style.display = 'block'; 
     } else {
         tipo_complicacionInput.style.display = 'none'; 
-        tipo_complicacionInput.value = 'no'; 
+        tipo_complicacionInput.value = 'no aplica'; 
     }
 }
 function toggleAlimentacionInput(){
@@ -573,7 +593,7 @@ function toggleDormirInput(){
         tipo_problema_dormirInput.style.display = 'block'; 
     } else {
         tipo_problema_dormirInput.style.display = 'none'; 
-        tipo_problema_dormirInput.value = 'no'; 
+        tipo_problema_dormirInput.value = 'no aplica'; 
     }
 }
 function togglePrimerosInput(){
@@ -583,7 +603,7 @@ function togglePrimerosInput(){
         cuales_problemasInput.style.display = 'block'; 
     } else {
         cuales_problemasInput.style.display = 'none'; 
-        cuales_problemasInput.value = 'no'; 
+        cuales_problemasInput.value = 'no aplica'; 
     }
 }
 function toggleEscolarizadoInput(){
@@ -594,7 +614,7 @@ function toggleEscolarizadoInput(){
         tipo_educaionInput.style.display = 'block'; 
     } else {
         tipo_educaionInput.style.display = 'none'; 
-        tipo_educaionInput.value = 'no'; 
+        tipo_educaionInput.value = 'no aplica'; 
     }
 }
 function toggleTerapiaTutoriaInput(){
@@ -604,7 +624,7 @@ function toggleTerapiaTutoriaInput(){
         tutoria_terapias_cualesInput.style.display = 'block'; 
     } else {
         tutoria_terapias_cualesInput.style.display = 'none'; 
-        tutoria_terapias_cualesInput.value = 'no'; 
+        tutoria_terapias_cualesInput.value = 'no aplica'; 
     }
 }
 </script>
@@ -644,6 +664,38 @@ $(document).ready(function(){
             { data: 'apellido' },
             { data: 'action', orderable: false, searchable: false } // Desactivar orden y búsqueda en la columna de acciones
         ]
+    });
+});
+</script>
+<script>
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+
+var id;
+$(document).on('click', '.delete', function(){
+    id = $(this).attr('id');
+    $('#confirModal').modal('show');
+});
+
+$('#btnEliminar').click(function(){
+    $.ajax({
+        url: "/historias/" + id, 
+        type: 'DELETE',
+        beforeSend: function(){
+            $('#btnEliminar').text('Eliminando...');
+        },
+        success: function(data){
+            $('#confirModal').modal('hide');
+            toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', { timeOut: 5000 });
+            $('#tab-historias').DataTable().ajax.reload();
+        },
+        error: function(xhr, status, error) {
+            console.error('Error al eliminar el registro:', error);
+            toastr.error('No se pudo eliminar el registro', 'Error', { timeOut: 5000 });
+        }
     });
 });
 </script>

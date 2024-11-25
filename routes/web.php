@@ -8,6 +8,7 @@ use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\EspecialidadController;
+use App\Http\Controllers\PruebasController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -188,3 +189,18 @@ Route::post('historias', [HistoriaClinicaController::class, 'store'])
 Route::post('especialidad', [EspecialidadController::class, 'store'])
     ->name('especialidad.store')
     ->middleware('auth'); 
+
+// Ruta para eliminar una historia
+Route::delete('historias/{id}', [HistoriaClinicaController::class, 'destroy'])
+    ->name('historias.destroy')
+    ->middleware('auth');
+    
+// Ruta para descargar reporte de una historia clínica
+Route::get('pdf/generarPdfHistoria/{id}', [HistoriaClinicaController::class, 'generarPdfHistoria'])
+    ->name('pdf.generarPdfHistoria')
+    ->middleware('auth');
+
+// Ruta para la lista de pruebas
+Route::get('pruebas', [PruebasController::class, 'index'])
+    ->name('pruebas.index')
+    ->middleware('auth');

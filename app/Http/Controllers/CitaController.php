@@ -60,7 +60,7 @@ class CitaController extends Controller
                     return $cita->paciente_nombre . ' ' . $cita->paciente_apellido;
                 })
                 ->addColumn('action', function($cita) {
-                    $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> Generar PDF</a>'; // Botón para generar PDF
+                    $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i>PDF</a>';
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -166,14 +166,14 @@ class CitaController extends Controller
     }
 
     public function generarPdfCita($id)
-{
-    $cita = Cita::with(['paciente', 'especialista'])->find($id);
+    {
+        $cita = Cita::with(['paciente', 'especialista'])->find($id);
 
-    if (!$cita) {
-        return response()->json(['error' => 'Cita no encontrada'], 404);
+        if (!$cita) {
+            return response()->json(['error' => 'Cita no encontrada'], 404);
+        }
+
+        $pdf = PDF::loadView('pdf.generarPdfCita', compact('cita'));
+        return $pdf->download('cita_' . $id . '.pdf');
     }
-
-    $pdf = PDF::loadView('pdf.generarPdfCita', compact('cita'));
-    return $pdf->download('cita_' . $id . '.pdf');
-}
 }

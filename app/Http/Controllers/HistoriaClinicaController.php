@@ -29,9 +29,8 @@ class HistoriaClinicaController extends Controller
     
             return DataTables::of($historias)
                 ->addColumn('action', function($historia) { 
-                    $acciones = '<a href="javascript:void(0)" onclick="editsecretaria('.$historia->id.')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+                    $acciones = '<a href="'.route('pdf.generarPdfHistoria', $historia->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
                     $acciones .= '<button type="button" name="delete" id="'.$historia->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-                    $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-secretaria" data-id="'.$historia->id.'"><i class="zmdi zmdi-eye"></i></button>'; 
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -192,6 +191,45 @@ class HistoriaClinicaController extends Controller
 
     public function destroy($id)
     {
-        //
+        $historia = HistoriaClinica::find($id); 
+        if (!$historia) {
+            return response()->json(['message' => 'Historia clínica no encontrada'], 404);
+        }
+
+        $historia->delete();
+
+        return response()->json(['success' => true]);
     }
+
+    public function generarPdfHistoria($id)
+    {
+        // Cargar la historia clínica junto con sus relaciones
+        $historia = HistoriaClinica::with([
+            'paciente', 
+            'paciente.representante', 
+            'paciente.genero', 
+            'paciente.representante.direccion',
+            'paciente.representante.direccion.estado',
+            'paciente.representante.direccion.municipio',
+            'paciente.representante.direccion.parroquia',
+            'historiaDesarrollo',
+            'antecedenteMedico',
+            'historiaEscolar'
+        ])->find($id);
+
+        // Verificar si la historia clínica fue encontrada
+        if (!$historia) {
+            return response()->json(['error' => 'Historia clínica no encontrada'], 404);
+        }
+
+        // Obtener los datos para el PDF usando el método del modelo
+        $datos = $historia->getDatosPdf();
+
+        // Cargar la vista y pasar los datos
+        $pdf = PDF::loadView('pdf.generarPdfHistoria', compact('datos'));
+
+        // Descargar el PDF
+        return $pdf->download('historia_clinica_' . $id . '.pdf');
+    }
+
 }
