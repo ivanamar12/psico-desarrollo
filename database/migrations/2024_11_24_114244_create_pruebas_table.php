@@ -17,6 +17,7 @@ class CreatePruebasTable extends Migration
             $table->id();
             $table->string('nombre',);
             $table->string('descripcion',);
+            $table->string('status',);
             $table->unsignedBigInteger('tipo_prueba_id')->nullable();
             $table->foreign('tipo_prueba_id')->references('id')->on('tipo_pruebas')->onDelete('cascade');
             $table->unsignedBigInteger('area_desarrollo_id')->nullable();

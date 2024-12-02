@@ -521,21 +521,6 @@ function toggleFumoInput(){
     }
 }
 
-function toggleAlcoholInput(){
-	const alcohol_embarazoYes = document.querySelector(`input[name="alcohol_embarazo"][value="si"]`);
-    const tipo_alcoholInput = document.getElementById('tipo_alcohol');
-	const cantidad_consumia_alcoholInput = document.getElementById('cantidad_consumia_alcohol'); 
-
-    if (alcohol_embarazoYes.checked) {
-        tipo_alcoholInput.style.display = 'block'; 
-		cantidad_consumia_alcoholInput.style.display = 'block'; 
-    } else {
-        tipo_alcoholInput.style.display = 'none'; 
-        tipo_alcoholInput.value = 'no aplica'; 
-		cantidad_consumia_alcoholInput.style.display = 'none'; 
-        cantidad_consumia_alcoholInput.value = 'no aplica'; 
-    }
-}
 function toggleDrogaInput(){
 	const droga_embarazoYes = document.querySelector(`input[name="droga_embarazo"][value="si"]`);
     const tipo_drogaInput = document.getElementById('tipo_droga'); 

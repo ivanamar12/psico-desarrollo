@@ -9,7 +9,7 @@ class Prueba extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'descripcion', 'tipo_prueba_id', 'area_desarrollo_id', 'rango_prueba_id'];
+    protected $fillable = ['nombre', 'descripcion', 'status', 'tipo_prueba_id', 'area_desarrollo_id', 'rango_prueba_id'];
 
     public function areaDesarrollo(){
 

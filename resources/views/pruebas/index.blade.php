@@ -41,31 +41,37 @@
 					<li><a href="#new" data-toggle="tab">Nuevo</a></li>
 				</ul>
 				<div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade active in" id="list">
-						<div class="table-responsive">
-							<table class="table table-hover text-center" id="tab-historias">
-								<thead>
-                                    <div class="btn-group">
-                                        <button type="button" class="btn btn-primary" id="btnAreaDesarrollo">
-                                            Área de Desarrollo
-                                        </button>
-                                        <button type="button" class="btn btn-primary" id="btnTipoPrueba">
-                                            Tipos de Pruebas
-                                        </button>
-                                        <button type="button" class="btn btn-primary" id="btnRangoEdad">
-                                            Rangos de Edades
-                                        </button>
-                                    </div>
-									<tr>
-										<th class="text-center">#</th>
-										<th class="text-center">Nombre</th>
-										<th class="text-center">Apellido</th>
-										<th class="text-center">Acciones</th>
-									</tr>
-								</thead>
-							</table>	
-						</div>
-					</div>
+                    <div id="myTabContent" class="tab-content">
+                        <div class="tab-pane fade active in" id="list">
+                            <div class="table-responsive">
+                                <table class="table table-hover text-center" id="tab-pruebas">
+                                    <thead>
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-primary" id="btnAreaDesarrollo">
+                                                Área de Desarrollo
+                                            </button>
+                                            <button type="button" class="btn btn-primary" id="btnTipoPrueba">
+                                                Tipos de Pruebas
+                                            </button>
+                                            <button type="button" class="btn btn-primary" id="btnRangoEdad">
+                                                Rangos de Edades
+                                            </button>
+                                        </div>
+                                        <tr>
+                                            <th class="text-center">#</th>
+                                            <th class="text-center">Nombre</th>
+                                            <th class="text-center">Descripción</th>
+                                            <th class="text-center">Área de Desarrollo</th>
+                                            <th class="text-center">Tipo de Prueba</th>
+                                            <th class="text-center">Rango de Edad</th>
+                                            <th class="text-center">Status</th>
+                                            <th class="text-center">Acciones</th>
+                                        </tr>
+                                    </thead>
+                                </table>    
+                            </div>
+                        </div>
+                    </div>
                     <div class="tab-pane fade in" id="new">
                         <div class="row">
 							<div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -98,7 +104,7 @@
                                                 </select>
                                             </div>
                                             <div class="form-grup col-md-6">
-                                                <select class="form-control select2" required style="width: 100%;" id="tipo_prueba_id" name="tipo_prueba_id">
+                                                <select class="form-control select2" required style="width: 100%;" id="rango_edad_id" name="rango_edad_id">
                                                     <option selected disabled>Seleccione el rango de edad</option>
                                                         @foreach ($rangoPruebas as $rangoPrueba)
                                                     <option value="{{ $rangoPrueba->id }}">{{ $rangoPrueba->rango_edad }}</option>
@@ -112,21 +118,29 @@
                                     </div>
                                     <div id="paso2">
                                         <h3>Items de la Prueba</h3>
-                                        <div class="form-group label-floating col-md-6">
-											<label class="control-label">Item</label>
-											<input class="form-control" id="item" name="item" type="text">
-										</div>
-                                        <div class="form-group label-floating col-md-6">
-                                            <h5>¿El item tiene algun valor?</h5>
-                                            <div class="d-flex align-items-center">
-                                                <label><input type="radio" name="valorI" value="si" required onclick="toggleValor()"> Sí</label>
-												<label><input type="radio" name="valorI" value="no" onclick="toggleValor()"> No</label>
-                                                <input class="form-control" name="valor" id="valor" type="text" placeholder="Especificar el valor">
-                                                <input class="form-control" name="interpretacion" id="interpretacion" type="text" placeholder="Especificar interpretacion">
+                                        <div id="itemsContainer">
+                                            <div class="fila-formulario" id="formulario-item-0">
+                                                <div class="form-group label-floating col-md-6">
+                                                    <label class="control-label">Item</label>
+                                                    <input class="form-control" name="items[0][nombre]" type="text" required>
+                                                </div>
+                                                <div class="form-group label-floating col-md-6">
+                                                    <h5>¿El item tiene algún valor?</h5>
+                                                    <div class="d-flex align-items-center">
+                                                        <label><input type="radio" name="items[0][valorI]" value="si" required onclick="toggleValorInput(0)"> Sí</label>
+                                                        <label><input type="radio" name="items[0][valorI]" value="no" onclick="toggleValorInput(0)"> No</label>
+                                                        <input class="form-control valor" name="items[0][valor]" type="text" placeholder="Especificar el valor" style="display: none;">
+                                                        <input class="form-control interpretacion" name="items[0][interpretacion]" type="text" placeholder="Especificar interpretación" style="display: none;">
+                                                    </div>
+                                                </div>
+                                                <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
                                             </div>
                                         </div>
-                                        <button type="button" id="regresar" class="btn btn-primary">Regresar</button>
-                                        <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+                                        <p class="centro-texto">
+                                            <button type="button" id="addItem" class="btn btn-primary">Agregar Item</button>
+                                            <button type="button" id="regresar" class="btn btn-primary">Regresar</button>
+                                            <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+                                        </p>
                                     </div>
                                 </form>
                             </div>
@@ -220,22 +234,7 @@ $(document).ready(function() {
         $("#paso1").show();
     });
 
-    function toggleValor(){
-	const valorIYes = document.querySelector(`input[name="valor"][value="si"]`);
-    const tipo_alcoholInput = document.getElementById('tipo_alcohol');
-	const cantidad_consumia_alcoholInput = document.getElementById('cantidad_consumia_alcohol'); 
-
-    if (alcohol_embarazoYes.checked) {
-        tipo_alcoholInput.style.display = 'block'; 
-		cantidad_consumia_alcoholInput.style.display = 'block'; 
-    } else {
-        tipo_alcoholInput.style.display = 'none'; 
-        tipo_alcoholInput.value = 'no aplica'; 
-		cantidad_consumia_alcoholInput.style.display = 'none'; 
-        cantidad_consumia_alcoholInput.value = 'no aplica'; 
-    }
-}
-
+  
 
     $.ajaxSetup({
         headers: {
@@ -302,9 +301,95 @@ $(document).ready(function() {
             }
         });
     });
+
+    $("#registro-prueba").on("submit", function(event) {
+        event.preventDefault(); 
+        const formData = $(this).serialize(); 
+        console.log(formData); 
+        $.ajax({
+            url: "{{ route('pruebas.storePrueba') }}", 
+            type: 'POST', 
+            data: formData, 
+            success: function(response) {
+                console.log(response); 
+                toastr.success("Prueba registrada exitosamente."); 
+                $("#registro-prueba")[0].reset(); 
+                location.reload(); 
+            },
+            error: function(xhr, status, error) {
+                console.error(xhr.responseText); 
+                toastr.error("Error al registrar la prueba: " + xhr.responseText); 
+            }
+        });
+    });
+
+    let contadorItems = 1;
+
+    $("#addItem").click(function () {
+        const nuevoItemFormulario = `
+            <div class="fila-formulario" id="formulario-item-${contadorItems}">
+                <div class="form-group label-floating col-md-6">
+                    <label class="control-label">Item</label>
+                    <input class="form-control" name="items[${contadorItems}][nombre]" type="text" required>
+                </div>
+                <div class="form-group label-floating col-md-6">
+                    <h5>¿El item tiene algún valor?</h5>
+                    <div class="d-flex align-items-center">
+                        <label><input type="radio" name="items[${contadorItems}][valorI]" value="si" required onclick="toggleValorInput(${contadorItems})"> Sí</label>
+                        <label><input type="radio" name="items[${contadorItems}][valorI]" value="no" onclick="toggleValorInput(${contadorItems})"> No</label>
+                        <input class="form-control valor" name="items[${contadorItems}][valor]" type="text" placeholder="Especificar el valor" style="display: none;">
+                        <input class="form-control interpretacion" name="items[${contadorItems}][interpretacion]" type="text" placeholder="Especificar interpretación" style="display: none;">
+                    </div>
+                </div>
+                <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
+            </div>`;
+        $("#itemsContainer").append(nuevoItemFormulario);
+        contadorItems++;
+    });
 });
+
+function toggleValorInput(index) {
+    const valorInputs = document.querySelectorAll(`input[name="items[${index}][valorI]"]`);
+    const mostrarValor = valorInputs[0].checked;
+    const valorField = document.querySelector(`input[name="items[${index}][valor]"]`);
+    const interpretacionField = document.querySelector(`input[name="items[${index}][interpretacion]"]`);
+
+    if (mostrarValor) {
+        valorField.style.display = "block";
+        interpretacionField.style.display = "block";
+    } else {
+        valorField.style.display = "none";
+        interpretacionField.style.display = "none";
+        valorField.value = "no aplica";
+        interpretacionField.value = "no aplica";
+    }
+}
+
+function eliminarItem(elemento) {
+    elemento.closest(".fila-formulario").remove();
+}
 </script>
 <script>
-
+$(document).ready(function(){
+    var tablaPruebas = $('#tab-pruebas').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "{{ route('pruebas.index') }}", // Asegúrate de que esta ruta sea correcta
+            type: 'GET', 
+        },
+        columns: [
+            { data: 'id' }, // Asegúrate de que 'id' esté en tu consulta
+            { data: 'nombre' },
+            { data: 'descripcion' },
+            { data: 'areaDesarrollo' }, // Columna para el área de desarrollo
+            { data: 'tipo' }, // Columna para el tipo de prueba
+            { data: 'rangoEdad' }, // Columna para el rango de edad
+            { data: 'status' }, // Columna para el estado
+            { data: 'action', orderable: false, searchable: false } // Desactivar orden y búsqueda en la columna de acciones
+        ]
+    });
+});
 </script>
+
 @endsection

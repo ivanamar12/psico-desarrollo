@@ -218,6 +218,10 @@ Route::middleware(['web', 'auth'])->group(function () {
     // Ruta para almacenar un nuevo rango de prueba
     Route::post('pruebas/rango-prueba', [PruebasController::class, 'storeRangoPrueba'])
         ->name('pruebas.storeRangoPrueba');
+
+    // Ruta para almacenar un nueva prueba
+    Route::post('pruebas/prueba', [PruebasController::class, 'storePrueba'])
+        ->name('pruebas.storePrueba');
 });
 
 
