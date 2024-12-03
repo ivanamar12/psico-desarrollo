@@ -222,6 +222,11 @@ Route::middleware(['web', 'auth'])->group(function () {
     // Ruta para almacenar un nueva prueba
     Route::post('pruebas/prueba', [PruebasController::class, 'storePrueba'])
         ->name('pruebas.storePrueba');
+
+    Route::post('pruebas/cambiar-estatus', [PruebasController::class, 'cambiarEstatus'])
+        ->name('pruebas.cambiarEstatus');
 });
 
-
+Route::get('pruebas/{id}', [PruebasController::class, 'show'])
+    ->name('pruebas.show')
+    ->middleware('auth'); 

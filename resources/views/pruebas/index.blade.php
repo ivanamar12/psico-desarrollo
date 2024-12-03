@@ -217,6 +217,51 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-labelledby="modalTitulo" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="modalTitulo">Título de la prueba</h2>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Descripción:</strong> <span id="modalDescripcion"></span></p>
+                <p><strong>Área de Desarrollo:</strong> <span id="modalareaDesarrollo"></span></p>
+                <p><strong>Rango de Edad:</strong> <span id="modalrangoEdad"></span></p>
+                <p><strong>Tipo:</strong> <span id="modalTipo"></span></p>
+                <p><strong>Ítems:</strong></p>
+                <ul id="modalItems"></ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal Cambiar Estatus -->
+<div class="modal fade" id="modalCambiarEstatus" tabindex="-1" aria-labelledby="modalCambiarEstatusLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalCambiarEstatusLabel">Cambiar Estatus de la Prueba</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="formCambiarEstatus">
+                    <input type="hidden" id="pruebaId" name="pruebaId">
+                    <div class="mb-3">
+                        <label for="nuevoEstatus" class="form-label">Nuevo Estatus</label>
+                        <select class="form-select" id="nuevoEstatus" name="nuevoEstatus" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('js')
 <script>
@@ -375,21 +420,86 @@ $(document).ready(function(){
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('pruebas.index') }}", // Asegúrate de que esta ruta sea correcta
+            url: "{{ route('pruebas.index') }}", 
             type: 'GET', 
         },
         columns: [
-            { data: 'id' }, // Asegúrate de que 'id' esté en tu consulta
+            { data: 'id' },
             { data: 'nombre' },
             { data: 'descripcion' },
-            { data: 'areaDesarrollo' }, // Columna para el área de desarrollo
-            { data: 'tipo' }, // Columna para el tipo de prueba
-            { data: 'rangoEdad' }, // Columna para el rango de edad
-            { data: 'status' }, // Columna para el estado
-            { data: 'action', orderable: false, searchable: false } // Desactivar orden y búsqueda en la columna de acciones
+            { data: 'areaDesarrollo' },
+            { data: 'tipo' }, 
+            { data: 'rangoEdad' },
+            { data: 'status' },
+            { data: 'action', orderable: false, searchable: false } 
         ]
     });
 });
-</script>
 
+</script>
+<script>
+$(document).on('click', '.btn-ver-prueba', function () {
+    const pruebaId = $(this).data('id'); 
+    $.ajax({
+        url: `/pruebas/${pruebaId}`, 
+        method: 'GET',
+        success: function (data) {
+            console.log(data); // Asegúrate de que los datos lleguen correctamente
+
+            // Actualiza el modal con los datos
+            $('#modalTitulo').text(data.nombre || 'Sin título');
+            $('#modalDescripcion').text(data.descripcion || 'Sin descripción');
+            $('#modalareaDesarrollo').text(data.areaDesarrollo || 'Área no definida');
+            $('#modalrangoEdad').text(data.rangoEdad || 'Rango no definido');
+            $('#modalTipo').text(data.tipo || 'Tipo no definido');
+
+            // Genera la lista de ítems
+            let itemsHtml = '';
+            if (Array.isArray(data.items)) {
+                data.items.forEach(item => {
+                    itemsHtml += `<li>${item}</li>`;
+                });
+            } else {
+                itemsHtml = '<li>No hay ítems disponibles</li>';
+            }
+            $('#modalItems').html(itemsHtml);
+
+            // Muestra el modal
+            $('#modalPrueba').modal('show');
+        },
+        error: function (error) {
+            console.error('Error al obtener los datos:', error);
+            alert('Error al obtener los datos de la prueba');
+        }
+    });
+});
+
+function abrirModalCambiarEstatus(id, status) {
+    document.getElementById('pruebaId').value = id;
+    document.getElementById('nuevoEstatus').value = status;
+    $('#modalCambiarEstatus').modal('show');
+}
+
+document.getElementById('formCambiarEstatus').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const formData = new FormData(this);
+
+    fetch('/pruebas/cambiar-estatus', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            $('#modalCambiarEstatus').modal('hide');
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(error => console.error('Error:', error));
+});
+
+
+</script>
 @endsection

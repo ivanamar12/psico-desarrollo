@@ -40,12 +40,31 @@ class PruebasController extends Controller
             ');
         
             return DataTables::of($pruebas)
-                ->addColumn('action', function($prueba) { 
-                    $acciones = '<button type="button" name="delete" id="'.$prueba->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>'; 
-                    return $acciones;
-                })
-                ->rawColumns(['action'])
-                ->make(true); 
+            ->addColumn('action', function ($prueba) {
+                $acciones = '';
+
+                // Botón Ver
+                $acciones .= '<button class="btn btn-info btn-raised btn-xs btn-ver-prueba" 
+                    data-id="' . $prueba->id . '"><i class="zmdi zmdi-eye"></i></button>';
+
+                // Botón Editar Prueba
+                $acciones .= '<button type="button" class="btn btn-primary btn-raised btn-xs" 
+                    data-bs-toggle="modal" data-bs-target="#modalEditarPrueba" 
+                    onclick="abrirModalEditarPrueba(' . $prueba->id . ')">
+                    <i class="zmdi zmdi-edit"></i>
+                </button>';
+
+                // Botón Cambiar Estatus
+                $acciones .= '<button type="button" class="btn btn-warning btn-raised btn-xs" 
+                    data-bs-toggle="modal" data-bs-target="#modalCambiarEstatus" 
+                    onclick="abrirModalCambiarEstatus(' . $prueba->id . ', \'' . $prueba->status . '\')">
+                    <i class="zmdi zmdi-refresh"></i>
+                </button>';
+
+                return $acciones;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
         }
             
 
@@ -165,5 +184,42 @@ class PruebasController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+    
+    public function show($id)
+    {
+        $prueba = (new Prueba())->obtenerDatosFormato($id);
+
+        if (!$prueba) {
+            return response()->json(['error' => 'Prueba no encontrada'], 404);
+        }
+
+        return response()->json($prueba);
+    }
+
+    public function obtenerDatosPrueba($id)
+    {
+        $prueba = Prueba::with('itemPruebas')->findOrFail($id);
+
+        return response()->json([
+            'id' => $prueba->id,
+            'nombre' => $prueba->nombre,
+            'descripcion' => $prueba->descripcion,
+            'items' => $prueba->itemPruebas->pluck('item')->toArray()
+        ]);
+    }
+
+    public function cambiarEstatus(Request $request) {
+        $pruebaId = $request->input('pruebaId');
+        $nuevoEstatus = $request->input('nuevoEstatus');
+
+        $prueba = Prueba::find($pruebaId);
+        if ($prueba) {
+            $prueba->status = $nuevoEstatus;
+            $prueba->save();
+            return response()->json(['success' => true, 'message' => 'Estatus actualizado correctamente.']);
+        }
+
+        return response()->json(['success' => false, 'message' => 'Prueba no encontrada.'], 404);
     }
 }

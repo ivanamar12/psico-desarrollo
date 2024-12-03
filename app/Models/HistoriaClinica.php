@@ -31,7 +31,6 @@ class HistoriaClinica extends Model
         return $this->belongsTo(HistoriaEscolar::class); 
     }
 
-    // Método para obtener datos en formato PDF
     public function getDatosPdf() {
         return [
             'nombrePaciente' => $this->paciente->nombre,
