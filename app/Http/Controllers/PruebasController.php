@@ -54,12 +54,13 @@ class PruebasController extends Controller
                     <i class="zmdi zmdi-edit"></i>
                 </button>';
 
-                // Botón Cambiar Estatus
-                $acciones .= '<button type="button" class="btn btn-warning btn-raised btn-xs" 
-                    data-bs-toggle="modal" data-bs-target="#modalCambiarEstatus" 
-                    onclick="abrirModalCambiarEstatus(' . $prueba->id . ', \'' . $prueba->status . '\')">
-                    <i class="zmdi zmdi-refresh"></i>
-                </button>';
+                // Botón para cambiar el estado
+                $acciones .= '<a href="javascript:void(0)" onclick="abrirModalCambiarEstatus('.$prueba->id.')" class="btn btn-warning btn-raised btn-xs">
+                <i class="zmdi zmdi-refresh"></i>
+                </a>';
+
+
+
 
                 return $acciones;
             })
@@ -209,17 +210,18 @@ class PruebasController extends Controller
         ]);
     }
 
-    public function cambiarEstatus(Request $request) {
-        $pruebaId = $request->input('pruebaId');
-        $nuevoEstatus = $request->input('nuevoEstatus');
-
-        $prueba = Prueba::find($pruebaId);
-        if ($prueba) {
-            $prueba->status = $nuevoEstatus;
-            $prueba->save();
-            return response()->json(['success' => true, 'message' => 'Estatus actualizado correctamente.']);
-        }
-
-        return response()->json(['success' => false, 'message' => 'Prueba no encontrada.'], 404);
+    public function cambiarEstatus(Request $request)
+    {
+        $request->validate([
+            'id' => 'required|integer|exists:pruebas,id',
+            'status' => 'required|string|in:activa,inactiva',
+        ]);
+    
+        $prueba = Prueba::find($request->id);
+        $prueba->status = $request->status;
+        $prueba->save();
+    
+        return response()->json(['message' => 'Estado actualizado correctamente.']);
     }
+    
 }

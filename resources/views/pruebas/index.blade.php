@@ -239,25 +239,30 @@
     </div>
 </div>
 <!-- Modal Cambiar Estatus -->
-<div class="modal fade" id="modalCambiarEstatus" tabindex="-1" aria-labelledby="modalCambiarEstatusLabel" aria-hidden="true">
-    <div class="modal-dialog">
+<div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalCambiarEstatusLabel">Cambiar Estatus de la Prueba</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="statusModalLabel">Descripción del estado de la cita</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
-                <form id="formCambiarEstatus">
-                    <input type="hidden" id="pruebaId" name="pruebaId">
-                    <div class="mb-3">
-                        <label for="nuevoEstatus" class="form-label">Nuevo Estatus</label>
-                        <select class="form-select" id="nuevoEstatus" name="nuevoEstatus" required>
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
-                </form>
+                <p>Selecciona el estado de la prueba</p>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="status" id="confirmRadio" value="activa">
+                    <label class="form-check-label" for="activa">Activa</label>
+                </div>
+                <div class="form-check">
+                    <input type="radio" class="form-check-input" name="status" id="cancelRadio" value="inactiva">
+                    <label class="form-check-label" for="inactiva">Inactiva</label>
+                </div>
+                <p class="text-danger" id="errorMessage" style="display:none;"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button id="saveStatusButton" class="btn btn-primary">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -444,16 +449,13 @@ $(document).on('click', '.btn-ver-prueba', function () {
         url: `/pruebas/${pruebaId}`, 
         method: 'GET',
         success: function (data) {
-            console.log(data); // Asegúrate de que los datos lleguen correctamente
-
-            // Actualiza el modal con los datos
+            console.log(data); 
             $('#modalTitulo').text(data.nombre || 'Sin título');
             $('#modalDescripcion').text(data.descripcion || 'Sin descripción');
             $('#modalareaDesarrollo').text(data.areaDesarrollo || 'Área no definida');
             $('#modalrangoEdad').text(data.rangoEdad || 'Rango no definido');
             $('#modalTipo').text(data.tipo || 'Tipo no definido');
 
-            // Genera la lista de ítems
             let itemsHtml = '';
             if (Array.isArray(data.items)) {
                 data.items.forEach(item => {
@@ -464,7 +466,6 @@ $(document).on('click', '.btn-ver-prueba', function () {
             }
             $('#modalItems').html(itemsHtml);
 
-            // Muestra el modal
             $('#modalPrueba').modal('show');
         },
         error: function (error) {
@@ -473,33 +474,55 @@ $(document).on('click', '.btn-ver-prueba', function () {
         }
     });
 });
+</script>
+<script>
+$(document).ready(function() {
+    $('#statusModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget); 
+        var pruebaId = button.data('id'); 
+        $('#saveStatusButton').data('id', pruebaId); 
+    });
 
-function abrirModalCambiarEstatus(id, status) {
-    document.getElementById('pruebaId').value = id;
-    document.getElementById('nuevoEstatus').value = status;
-    $('#modalCambiarEstatus').modal('show');
-}
+    $('#saveStatusButton').click(function() {
+        var pruebaId = $(this).data('id'); 
+        var status = $('input[name="status"]:checked').val(); 
 
-document.getElementById('formCambiarEstatus').addEventListener('submit', function(event) {
-    event.preventDefault();
-    const formData = new FormData(this);
-
-    fetch('/pruebas/cambiar-estatus', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert(data.message);
-            $('#modalCambiarEstatus').modal('hide');
-        } else {
-            alert(data.message);
+        if (!status) {
+            $('#errorMessage').text('Por favor, selecciona un estado.').show();
+            return;
         }
-    })
-    .catch(error => console.error('Error:', error));
+
+        $.ajax({
+            url: '/pruebas/cambiar-estatus', 
+            type: 'POST',
+            data: {
+                id: pruebaId,
+                status: status,
+                _token: '{{ csrf_token() }}' 
+            },
+            success: function(response) {
+                toastr.success('Estado actualizado correctamente.');
+
+                actualizarTabla(pruebaId, status);
+
+                $('#statusModal').modal('hide');
+            },
+            error: function(xhr) {
+                $('#errorMessage').text('Error al actualizar el estado.').show();
+            }
+        });
+    });
 });
 
+function abrirModalCambiarEstatus(pruebaId) {
+    $('#saveStatusButton').data('id', pruebaId); 
+    $('#statusModal').modal('show'); 
+}
 
+function actualizarTabla(pruebaId, status) {
+    var row = $('#tab-pruebas').find('tr[data-id="' + pruebaId + '"]'); 
+    row.find('.status-column').text(status); 
+}
 </script>
+
 @endsection

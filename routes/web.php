@@ -225,6 +225,7 @@ Route::middleware(['web', 'auth'])->group(function () {
 
     Route::post('pruebas/cambiar-estatus', [PruebasController::class, 'cambiarEstatus'])
         ->name('pruebas.cambiarEstatus');
+    
 });
 
 Route::get('pruebas/{id}', [PruebasController::class, 'show'])
