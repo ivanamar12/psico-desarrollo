@@ -28,11 +28,12 @@ class HistoriaClinicaController extends Controller
                 JOIN pacientes ON historia_clinicas.paciente_id = pacientes.id');
     
             return DataTables::of($historias)
-                ->addColumn('action', function($historia) { 
-                    $acciones = '<a href="'.route('pdf.generarPdfHistoria', $historia->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
-                    $acciones .= '<button type="button" name="delete" id="'.$historia->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-                    return $acciones;
-                })
+            ->addColumn('action', function($historia) { 
+                $acciones = '<a href="'.route('pdf.generarPdfHistoria', $historia->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
+                $acciones .= '<button type="button" class="verHistoria btn btn-info btn-raised btn-xs" data-id="'.$historia->id.'"><i class="zmdi zmdi-eye"></i></button>';
+                $acciones .= '<button type="button" name="delete" id="'.$historia->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+                return $acciones;
+            })
                 ->rawColumns(['action'])
                 ->make(true); 
         }
@@ -203,7 +204,6 @@ class HistoriaClinicaController extends Controller
 
     public function generarPdfHistoria($id)
     {
-        // Cargar la historia clínica junto con sus relaciones
         $historia = HistoriaClinica::with([
             'paciente', 
             'paciente.representante', 
@@ -217,19 +217,133 @@ class HistoriaClinicaController extends Controller
             'historiaEscolar'
         ])->find($id);
 
-        // Verificar si la historia clínica fue encontrada
         if (!$historia) {
             return response()->json(['error' => 'Historia clínica no encontrada'], 404);
         }
 
-        // Obtener los datos para el PDF usando el método del modelo
         $datos = $historia->getDatosPdf();
 
-        // Cargar la vista y pasar los datos
         $pdf = PDF::loadView('pdf.generarPdfHistoria', compact('datos'));
 
-        // Descargar el PDF
         return $pdf->download('historia_clinica_' . $id . '.pdf');
     }
 
+    public function verHistoria($id, $tipo)
+    {
+        $historia = HistoriaClinica::obtenerHistoriaCompleta($id);
+
+        if (!$historia) {
+            if ($tipo === 'api') {
+                return response()->json(['error' => 'Historia clínica no encontrada.'], 404);
+            }
+            return redirect()->back()->with('error', 'La historia clínica no fue encontrada.');
+        }
+
+        $paciente = $historia->paciente;
+
+        if (!$paciente) {
+            if ($tipo === 'api') {
+                return response()->json(['error' => 'Paciente no encontrado.'], 404);
+            }
+            return redirect()->back()->with('error', 'El paciente no fue encontrado.');
+        }
+
+        if ($paciente->datosEconomico) {
+            $riesgoSocial = $this->calcularRiesgoSocial($paciente->datosEconomico);
+        } else {
+            $riesgoSocial = 0; 
+        }
+
+        $riesgoBiologico = $this->calcularRiesgoBiologico($historia);
+        $riesgoGlobal = $this->calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico);
+
+        if ($tipo === 'api') {
+            return response()->json([
+                'historia' => $historia,
+                'riesgoSocial' => $riesgoSocial,
+                'riesgoBiologico' => $riesgoBiologico,
+                'riesgoGlobal' => $riesgoGlobal,
+            ]);
+        }
+
+        return view('historia.ver', compact('historia', 'riesgoSocial', 'riesgoBiologico', 'riesgoGlobal'));
+    }
+
+
+    private function calcularRiesgoSocial($datosEconomico)
+    {
+        $riesgo = 0;
+
+        $tiposViviendaRiesgo = [
+            'casa_unifamiliar' => 1,
+            'apartamento' => 1,
+            'vivienda social' => 2,
+            'precaria' => 3,
+        ];
+        $riesgo += $tiposViviendaRiesgo[$datosEconomico->tipo_vivienda] ?? 0;
+
+        $riesgo += ($datosEconomico->cantidad_personas > ($datosEconomico->cantidad_habitaciones + 5)) ? 1 : 0;
+
+        $serviciosNo = collect([
+            $datosEconomico->servecio_agua_potable,
+            $datosEconomico->servecio_gas,
+            $datosEconomico->servecio_electricidad,
+            $datosEconomico->servecio_drenaje,
+            $datosEconomico->disponibilidad_internet,
+        ])->filter(fn($v) => $v === 'no')->count();
+
+        $riesgo += match (true) {
+            $serviciosNo >= 3 => 3,
+            $serviciosNo === 2 => 2,
+            default => 1,
+        };
+
+        return $riesgo;
+    }
+
+    private function calcularRiesgoBiologico($historia)
+{
+    $riesgo = 0;
+
+    // Verificar si parentescos no es nulo y es iterable
+    if ($historia->parentescos) {
+        foreach ($historia->parentescos as $familiar) {
+            if ($familiar->discapacidad === 'si') $riesgo += 1;
+            if ($familiar->enfermedad_cronica === 'si') $riesgo += 1;
+        }
+    }
+
+    $antecedentes = $historia->antecedenteMedico;
+    if ($antecedentes) {
+        $riesgo += collect([
+            $antecedentes->enfermedad_infecciosa,
+            $antecedentes->enfermedad_no_infecciosa,
+            $antecedentes->enfermedad_cronica,
+            $antecedentes->discapacidad,
+        ])->filter(fn($v) => $v === 'si')->count();
+    }
+
+    $desarrollo = $historia->historiaDesarrollo;
+    if ($desarrollo) {
+        $riesgo += collect([
+            $desarrollo->medicamento_embarazo,
+            $desarrollo->fumo_embarazo,
+            $desarrollo->alcohol_embarazo,
+            $desarrollo->droga_embarazo,
+        ])->filter(fn($v) => $v === 'si')->count();
+    }
+
+    return $riesgo;
+}
+
+    private function calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico)
+    {
+        $riesgoTotal = $riesgoSocial + $riesgoBiologico;
+
+        return match (true) {
+            $riesgoTotal >= 15 => 'alto',
+            $riesgoTotal >= 8 => 'medio',
+            default => 'bajo',
+        };
+    }
 }

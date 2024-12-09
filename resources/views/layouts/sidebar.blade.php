@@ -67,9 +67,17 @@
 					</a>
 				</li>
 				<li>
-					<a href="{{ route('pruebas.index') }}" class="btn-sideBar-SubMenu">
-						<i class="zmdi zmdi-book zmdi-hc-fw"></i> Pruebas<i class="zmdi zmdi-caret-"></i>
+					<a href="#!" class="btn-sideBar-SubMenu">
+						<i class="zmdi zmdi-book zmdi-hc-fw"></i> Pruebas <i class="zmdi zmdi-caret-"></i>
 					</a>
+					<ul class="list-unstyled full-box">
+						<li>
+							<a href="{{ route('pruebas.index') }}"><i class="zmdi zmdi-assignment"></i> Registrar Pruebas</a>
+						</li>
+						<li>
+							<a href="payments.html"><i class="zmdi zmdi-money zmdi-hc-fw"></i> Aplicar Pruebas</a>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</div>

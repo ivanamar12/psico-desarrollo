@@ -95,4 +95,20 @@ class HistoriaClinica extends Model
             'otros' => optional($this->antecedenteMedico)->otros,
         ]; 
     }
+
+    public static function obtenerHistoriaCompleta($id)
+    {
+        return self::with([
+            // Relaciones principales
+            'paciente.representante.direccion.estado',
+            'paciente.representante.direccion.municipio',
+            'paciente.representante.direccion.parroquia',
+            'paciente.datosEconomico',
+            'paciente.parentescos',
+            'antecedenteMedico',
+            'historiaDesarrollo'
+        ])
+        ->where('id', $id)
+        ->firstOrFail();
+    }   
 }

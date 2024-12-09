@@ -358,6 +358,33 @@
         </div>
     </div>
 </div>  
+<div class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Detalles de la Historia</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Código:</strong> <span id="codigo"></span></p>
+                <p><strong>Referencia:</strong> <span id="referencia"></span></p>
+                <p><strong>Motivo:</strong> <span id="motivo"></span></p>
+                <p><strong>Paciente:</strong> <span id="paciente"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
+                <p><strong>Representante:</strong> <span id="representante"></span></p>
+                <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+                <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span></p>
+                <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span></p>
+                <p><strong>Riesgo Global:</strong> <span id="riesgoGlobal"></span></p>
+                <p><strong>Peso al Nacer:</strong> <span id="peso"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @section('js')
 <script>
@@ -684,4 +711,46 @@ $('#btnEliminar').click(function(){
     });
 });
 </script>
+<script>
+$(document).on('click', '.verHistoria', function () {
+    const id = $(this).data('id');
+    if (!id) {
+        alert('No se encontró el ID de la historia.');
+        return;
+    }
+
+    $('#modalVerHistoria').modal('show');
+
+    $.ajax({
+        url: `/api/historia/${id}`,
+        type: 'GET',
+        success: function (data) {
+            console.log(data); 
+
+            if (!data.historia) {
+                $('#modalVerHistoria .modal-body').html('<p>No se encontraron datos para esta historia.</p>');
+                return;
+            }
+
+            $('#codigo').text(data.historia.codigo || 'N/A');
+            $('#referencia').text(data.historia.referencia || 'N/A');
+            $('#motivo').text(data.historia.motivo || 'N/A');
+            $('#paciente').text(`${data.historia.paciente.nombre || ''} ${data.historia.paciente.apellido || ''}`);
+            $('#fechaNacimiento').text(data.historia.fecha_nac || 'N/A'); // Asegúrate de que este campo exista
+            $('#representante').text(`${data.historia.representanteNombre || ''} ${data.historia.representanteApellido || ''}`); // Asegúrate de que estos campos existan
+            $('#direccion').text(data.historia.direccion || 'N/A'); // Asegúrate de que este campo exista
+            $('#riesgoSocial').text(data.riesgoSocial || 'N/A');
+            $('#riesgoBiologico').text(data.riesgoBiologico || 'N/A');
+            $('#riesgoGlobal').text(data.riesgoGlobal || 'N/A');
+            $('#peso').text(data.historia.peso_nacer_niño || 'N/A'); // Asegúrate de que este campo exista
+        },
+        error: function (xhr) {
+            const errorMessage = xhr.status === 404 ? 'Historia no encontrada.' : 'Error al cargar los datos.';
+            $('#modalVerHistoria .modal-body').html(`<p>${errorMessage}</p>`);
+            console.error('Error en la solicitud:', xhr); // Para depuración
+        }
+    });
+});
+</script>
+
 @endsection

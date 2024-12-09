@@ -154,4 +154,108 @@ class HistoriaController extends Controller
     {
         //
     }
+
+    public function verHistoria($id, $tipo)
+    {
+        $historia = HistoriaClinica::obtenerHistoriaCompleta($id);
+
+        if (!$historia) {
+            if ($tipo === 'api') {
+                return response()->json(['error' => 'Historia clínica no encontrada.'], 404);
+            }
+            return redirect()->back()->with('error', 'La historia clínica no fue encontrada.');
+        }
+
+        // Calcular riesgos
+        $riesgoSocial = $this->calcularRiesgoSocial($historia->datosEconomicos);
+        $riesgoBiologico = $this->calcularRiesgoBiologico($historia);
+        $riesgoGlobal = $this->calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico);
+
+        if ($tipo === 'api') {
+            return response()->json([
+                'historia' => $historia,
+                'riesgoSocial' => $riesgoSocial,
+                'riesgoBiologico' => $riesgoBiologico,
+                'riesgoGlobal' => $riesgoGlobal,
+            ]);
+        }
+
+        return view('historia.ver', compact('historia', 'riesgoSocial', 'riesgoBiologico', 'riesgoGlobal'));
+    }
+
+    private function calcularRiesgoSocial($datosEconomicos)
+    {
+        $riesgo = 0;
+
+        // Tipo de vivienda
+        $tiposViviendaRiesgo = [
+            'unifamiliar' => 1,
+            'apartamento' => 1,
+            'vivienda social' => 2,
+            'precaria' => 3,
+        ];
+        $riesgo += $tiposViviendaRiesgo[$datosEconomicos->tipo_vivienda] ?? 0;
+
+        // Personas por habitación
+        $riesgo += ($datosEconomicos->cantidad_personas > ($datosEconomicos->cantidad_habitaciones + 5)) ? 1 : 0;
+
+        // Servicios básicos
+        $serviciosNo = collect([
+            $datosEconomicos->servecio_agua_potable,
+            $datosEconomicos->servecio_gas,
+            $datosEconomicos->servecio_electricidad,
+            $datosEconomicos->servecio_drenaje,
+            $datosEconomicos->disponibilidad_internet,
+        ])->filter(fn($v) => $v === 'no')->count();
+
+        $riesgo += match (true) {
+            $serviciosNo >= 3 => 3,
+            $serviciosNo === 2 => 2,
+            default => 1,
+        };
+
+        return $riesgo;
+    }
+
+    private function calcularRiesgoBiologico($historia)
+    {
+        $riesgo = 0;
+
+        // Condiciones familiares
+        foreach ($historia->parentescos as $familiar) {
+            if ($familiar->discapacidad === 'si') $riesgo += 1;
+            if ($familiar->enfermedad_cronica === 'si') $riesgo += 1;
+        }
+
+        // Antecedentes médicos
+        $antecedentes = $historia->antecedenteMedico;
+        $riesgo += collect([
+            $antecedentes->enfermedad_infecciosa,
+            $antecedentes->enfermedad_no_infecciosa,
+            $antecedentes->enfermedad_cronica,
+            $antecedentes->discapacidad,
+        ])->filter(fn($v) => $v === 'si')->count();
+
+        // Desarrollo infantil
+        $desarrollo = $historia->historiaDesarrollo;
+        $riesgo += collect([
+            $desarrollo->medicamento_embarazo,
+            $desarrollo->fumo_embarazo,
+            $desarrollo->alcohol_embarazo,
+            $desarrollo->droga_embarazo,
+        ])->filter(fn($v) => $v === 'si')->count();
+
+        return $riesgo;
+    }
+
+    private function calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico)
+    {
+        $riesgoTotal = $riesgoSocial + $riesgoBiologico;
+
+        return match (true) {
+            $riesgoTotal >= 15 => 'alto',
+            $riesgoTotal >= 8 => 'medio',
+            default => 'bajo',
+        };
+    }
 }
