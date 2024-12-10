@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 02-12-2024 a las 10:48:24
+-- Tiempo de generación: 10-12-2024 a las 03:21:01
 -- Versión del servidor: 10.11.6-MariaDB-0+deb12u1
--- Versión de PHP: 8.2.24
+-- Versión de PHP: 8.2.26
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,6 +42,14 @@ CREATE TABLE `antecedente_medicos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `antecedente_medicos`
+--
+
+INSERT INTO `antecedente_medicos` (`id`, `enfermedad_infecciosa`, `tipo_enfermedad_infecciosa`, `enfermedad_no_infecciosa`, `tipo_enfermedad_no_infecciosa`, `enfermedad_cronica`, `tipo_enfermedad_cronica`, `discapacidad`, `tipo_discapacidad`, `otros`, `created_at`, `updated_at`) VALUES
+(1, 'no', 'no aplica', 'si', 'fiebre', 'no', 'no aplica', 'no', 'no aplica', 'no aplica', '2024-12-07 15:48:30', '2024-12-07 15:48:30'),
+(2, 'si', 'malaria', 'si', 'virus', 'no', 'no aplica', 'si', 'visual', 'aun no camina', '2024-12-10 03:15:33', '2024-12-10 03:15:33');
+
 -- --------------------------------------------------------
 
 --
@@ -61,7 +69,8 @@ CREATE TABLE `area_desarrollos` (
 
 INSERT INTO `area_desarrollos` (`id`, `area_desarrollo`, `created_at`, `updated_at`) VALUES
 (1, 'Cognitiva', '2024-11-30 14:15:34', '2024-11-30 14:15:34'),
-(2, 'Lenguaje', '2024-12-02 03:34:35', '2024-12-02 03:34:35');
+(2, 'Lenguaje', '2024-12-02 03:34:35', '2024-12-02 03:34:35'),
+(3, 'Motricidad gruesa', '2024-12-04 23:53:29', '2024-12-04 23:53:29');
 
 -- --------------------------------------------------------
 
@@ -79,6 +88,13 @@ CREATE TABLE `citas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `citas`
+--
+
+INSERT INTO `citas` (`id`, `paciente_id`, `especialista_id`, `fecha_consulta`, `hora`, `status`, `created_at`, `updated_at`) VALUES
+(1, 2, 1, '2024-12-11', '09:30', 'confirmada', '2024-12-10 03:05:54', '2024-12-10 03:06:13');
 
 -- --------------------------------------------------------
 
@@ -103,6 +119,14 @@ CREATE TABLE `datos_economicos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `datos_economicos`
+--
+
+INSERT INTO `datos_economicos` (`id`, `tipo_vivienda`, `cantidad_habitaciones`, `cantidad_personas`, `servecio_agua_potable`, `servecio_gas`, `servecio_electricidad`, `servecio_drenaje`, `disponibilidad_internet`, `tipo_conexion_internet`, `acceso_servcios_publicos`, `fuente_ingreso_familiar`, `created_at`, `updated_at`) VALUES
+(1, 'casa_unifamiliar', '3', '3', 'si', 'si', 'si', 'si', 'no', 'no', 'si', 'sector privado', '2024-12-07 15:43:25', '2024-12-07 15:43:25'),
+(2, 'casa_unifamiliar', '3', '4', 'si', 'no', 'si', 'si', 'si', 'wi fi', 'si', '500', '2024-12-10 03:05:07', '2024-12-10 03:05:07');
+
 -- --------------------------------------------------------
 
 --
@@ -119,6 +143,14 @@ CREATE TABLE `direccions` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `direccions`
+--
+
+INSERT INTO `direccions` (`id`, `estado_id`, `municipio_id`, `parroquia_id`, `sector`, `created_at`, `updated_at`) VALUES
+(2, 4, 37, 115, 'la curia', '2024-12-10 02:57:18', '2024-12-10 02:57:18'),
+(3, 7, 79, 262, 'el mono', '2024-12-10 02:59:52', '2024-12-10 02:59:52');
+
 -- --------------------------------------------------------
 
 --
@@ -131,6 +163,13 @@ CREATE TABLE `especialidads` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `especialidads`
+--
+
+INSERT INTO `especialidads` (`id`, `especialidad`, `created_at`, `updated_at`) VALUES
+(1, 'psicologia infantil', '2024-12-10 02:54:07', '2024-12-10 02:54:07');
 
 -- --------------------------------------------------------
 
@@ -152,6 +191,13 @@ CREATE TABLE `especialistas` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `especialistas`
+--
+
+INSERT INTO `especialistas` (`id`, `nombre`, `apellido`, `ci`, `fecha_nac`, `telefono`, `email`, `especialidad_id`, `genero_id`, `direccion_id`, `created_at`, `updated_at`) VALUES
+(1, 'juan', 'machado', '8741931', '1977-11-22', '04123591123', 'Jm@gmail.com', 1, 1, 2, '2024-12-10 02:57:18', '2024-12-10 02:57:18');
 
 -- --------------------------------------------------------
 
@@ -255,6 +301,13 @@ CREATE TABLE `historia_clinicas` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `historia_clinicas`
+--
+
+INSERT INTO `historia_clinicas` (`id`, `paciente_id`, `historia_desarrollo_id`, `antecedente_medico_id`, `historia_escolar_id`, `codigo`, `referencia`, `especialista_refirio`, `motivo`, `created_at`, `updated_at`) VALUES
+(2, 2, 2, 2, 2, 'HIS83975', 'pediatria', 'pediatra', 'alto riesgo biológco', '2024-12-10 03:15:33', '2024-12-10 03:15:33');
+
 -- --------------------------------------------------------
 
 --
@@ -293,6 +346,14 @@ CREATE TABLE `historia_desarrollos` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `historia_desarrollos`
+--
+
+INSERT INTO `historia_desarrollos` (`id`, `medicamento_embarazo`, `tipo_medicamento`, `fumo_embarazo`, `cantidad`, `alcohol_embarazo`, `tipo_alcohol`, `cantidad_consumia_alcohol`, `droga_embarazo`, `tipo_droga`, `forceps_parto`, `cesarea`, `razon_cesarea`, `niño_prematuro`, `meses_prematuro`, `peso_nacer_niño`, `complicaciones_nacer`, `tipo_complicacion`, `problema_alimentacion`, `tipo_problema_alimenticio`, `problema_dormir`, `tipo_problema_dormir`, `tranquilo_recien_nacido`, `gustaba_cargaran_recien_nacido`, `alerta_recien_nacido`, `problemas_desarrollo_primeros_años`, `cuales_problemas`, `created_at`, `updated_at`) VALUES
+(1, 'no', 'no aplica', 'no', 'no aplica', 'no', 'no', 'no', 'no', 'no aplica', 'no', 'si', 'se adelanto el parto', 'si', '7 meses', '2 kg', 'si', 'encuvadora 2 semanas', 'no', 'no', 'no', 'no aplica', 'si', 'si', 'no', 'no', 'no aplica', '2024-12-07 15:48:30', '2024-12-07 15:48:30'),
+(2, 'si', 'cloroquina', 'si', 'media caja cada tres días', 'si', 'cerveza', '5 al mes', 'no', 'no aplica', 'no', 'no', 'no aplica', 'si', 'a termino', '2300', 'no', 'no aplica', 'si', 'no succionó', 'si', 'sueño invertido', 'no', 'si', 'si', 'si', 'disminución del peso', '2024-12-10 03:15:33', '2024-12-10 03:15:33');
+
 -- --------------------------------------------------------
 
 --
@@ -312,6 +373,14 @@ CREATE TABLE `historia_escolars` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `historia_escolars`
+--
+
+INSERT INTO `historia_escolars` (`id`, `escolarizado`, `tipo_educaion`, `tutoria_terapias`, `tutoria_terapias_cuales`, `dificultad_lectura`, `dificultad_aritmetica`, `dificultad_escribir`, `agrada_escuela`, `created_at`, `updated_at`) VALUES
+(1, 'no', 'no aplica', 'no', 'no aplica', 'no', 'no', 'no', 'no', '2024-12-07 15:48:30', '2024-12-07 15:48:30'),
+(2, 'no', 'no aplica', 'no', 'no aplica', 'no', 'no', 'no', 'no', '2024-12-10 03:15:33', '2024-12-10 03:15:33');
 
 -- --------------------------------------------------------
 
@@ -629,7 +698,88 @@ INSERT INTO `item_pruebas` (`id`, `item`, `prueba_id`, `created_at`, `updated_at
 (295, 'Mantiene una conversación con un adulto y usa con precisión sus gestos', 44, '2024-12-02 09:16:51', '2024-12-02 09:16:51'),
 (296, 'Relata experiencias del acontecer diario empleando “ayer” y “mañana”', 44, '2024-12-02 09:16:51', '2024-12-02 09:16:51'),
 (297, 'Define por su uso las figuras que se le presentan en láminas. Ejemplo: una pelota o un carro, un peine, un cuchillo, una sombrilla.', 44, '2024-12-02 09:16:51', '2024-12-02 09:16:51'),
-(298, 'Relata cuentos usando particulares de enlace (luego, después, etc) y sus ideas tienen un inicio, desarrollo y final', 44, '2024-12-02 09:16:51', '2024-12-02 09:16:51');
+(298, 'Relata cuentos usando particulares de enlace (luego, después, etc) y sus ideas tienen un inicio, desarrollo y final', 44, '2024-12-02 09:16:51', '2024-12-02 09:16:51'),
+(299, 'Sostiene la cabeza cuando está en brazos del cuidador.', 45, '2024-12-04 23:57:01', '2024-12-04 23:57:01'),
+(300, 'Despierto, intenta girar la cabeza de derecha a izquierda', 45, '2024-12-04 23:57:01', '2024-12-04 23:57:01'),
+(301, 'Postura en flexión con la cabeza rotada no la alinea', 45, '2024-12-04 23:57:01', '2024-12-04 23:57:01'),
+(302, 'Bambolea la cabeza, si se le deja sin apoyo.', 46, '2024-12-05 00:01:05', '2024-12-05 00:01:05'),
+(303, 'Levanta la cabeza y hay mayor extensión del cuello', 46, '2024-12-05 00:01:05', '2024-12-05 00:01:05'),
+(304, 'Comienza a alinear la cabeza y disminuye la posición en flexión', 46, '2024-12-05 00:01:05', '2024-12-05 00:01:05'),
+(305, 'Alinea la cabeza y la mueve buscando los estímulos', 47, '2024-12-05 00:04:03', '2024-12-05 00:04:03'),
+(306, 'Comienza a levantar la cabeza apoyado en el antebrazo', 47, '2024-12-05 00:04:03', '2024-12-05 00:04:03'),
+(307, 'Logra una posición simétrica del cuerpo con movimientos armónicos', 47, '2024-12-05 00:04:03', '2024-12-05 00:04:03'),
+(308, 'Alinea la cabeza cuando se le habla sobre el hombro', 47, '2024-12-05 00:04:03', '2024-12-05 00:04:03'),
+(309, 'Controla la cabeza y voltea', 48, '2024-12-05 00:09:34', '2024-12-05 00:09:34'),
+(310, 'Se apoya en un ante brazo para alcanzar un objeto con el otro brazo.', 48, '2024-12-05 00:09:34', '2024-12-05 00:09:34'),
+(311, 'Une sus manos en línea media', 48, '2024-12-05 00:09:34', '2024-12-05 00:09:34'),
+(312, 'Se mantiene sentado con apoyo en sus manos', 48, '2024-12-05 00:09:34', '2024-12-05 00:09:34'),
+(313, 'Mantiene la cabeza erguida e inicia el control del tronco', 49, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(314, 'Se voltea estando boca abajo se pone boca arriba', 49, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(315, 'Levanta cabeza y hombros en un intento de agarrar sus pies', 49, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(316, 'Sostenido por las manos, los miembros inferiores cuelgan', 49, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(317, 'Repta rodándose o arrastrándose hacia atrás', 49, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(318, 'Sostiene la cabeza erguida apoyado en las manos', 50, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(319, 'Levanta la cabeza contra la gravedad, cuando es alzado por los brazos', 50, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(320, 'Sostenido por las manos, descarga su peso sobre los pies', 50, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(321, 'Se apoya en cuatro puntos: manos y rodillas', 50, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(322, 'Se consolida el equilibrio acostado boca abajo', 50, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(323, 'Boca abajo, dobla el tronco para alcanzar un juguete que esta fuera de su alcance.', 51, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(324, 'Lleva al pie a la boca y levanta la cabeza de la almohada', 51, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(325, 'Se mantiene sentado, hay control del tronco.', 51, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(326, 'Se para cuándo lo halan por las manos, desde la posición sentado', 51, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(327, 'Se desplaza lazándose hacia adelante', 51, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(328, 'Pasa a posición de sentado con apoyo en una mano', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(329, 'Pasa a la posición de sentado con ayuda de sus codos y manos', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(330, 'Se sienta desde la posición acostada boca abajo.', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(331, 'Intenta pararse en la cuna pero se cae', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(332, 'Gatea unos pocos pasos cuando lo llaman, apoyándose en sus manos y rodillas', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(333, 'Adquiere equilibrio apoyado en sus manos y rodillas', 52, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(334, 'Se sienta sin ayuda', 53, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(335, 'Pasa a la posición de sentado con ayuda de sus codos y manos', 53, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(336, 'Permanece parado con apoyo vertical', 53, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(337, 'Gatea con soltura y buena coordinación de manos y piernas', 53, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(338, 'Se consolida el equilibrio sentado', 53, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(339, 'Pasa a la posición de sentado con ayuda de sus codos y manos', 54, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(340, 'De sentado pasa a otras posiciones', 54, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(341, 'Se para con apoyo desde la posición de gateo', 54, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(342, 'Se pone de pie con apoyo', 54, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(343, 'Se consolida el equilibrio sentado', 54, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(344, 'Pasa a la posición sentado con apoyo de sus manos.', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(345, 'Se sienta y se para sosteniéndose de algo', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(346, 'Se para y se sienta con soltura, sostenido de algo', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(347, 'Gatea rápidamente y supera pequeños obstáculos', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(348, 'Da pasitos sostenido de ambas manos', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(349, 'Intenta subir un escalón gateando, pero no logra y se sienta', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(350, 'Se consolida el equilibrio sentado', 55, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(351, 'Es capaz de sentarse desde la posición de pies dejándose caer', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(352, 'Se mantiene parado solo por unos momentos (aprox. 10 seg)', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(353, 'Sube escaleras gateando', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(354, 'Intenta caminar por la habitación con apoyo y sin supervisión', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(355, 'Sube las escaleras gateando, con ayuda del adulto', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(356, 'Baja las escaleras acostado boca abajo o sentado, con el apoyo del cuidador', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(357, 'Se mantiene parado y sin apoyo', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(358, 'Preferencia manual intermitente', 56, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(359, 'Se sienta en diferentes tipos de muebles, muros, etc.', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(360, 'Se para sin apoyo', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(361, 'Camina sin ayuda levantando los brazos y ampliando su base de sustentación', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(362, 'Intenta caminar rápido, como si corriera, pero se cae', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(363, 'Sube las escaleras gateando, sin ayuda', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(364, 'Baja despacio, gateando hacia atrás al lado del cuidador', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(365, 'Se mantiene parado apoyándose en un columpio', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(366, 'Orece la pelota para que otro lo patee', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(367, 'Inicia lanzar la pelota grande con el estímulo del cuidador', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(368, 'Preferencia manual intermitente', 57, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(369, 'Se sube con esfuerzo a una silla alta y se sienta', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(370, 'Camina solo: se detiene a voluntad y mantiene el equilibrio', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(371, 'Camina rápido hacia adelante pero n cambia de dirección ni frena', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(372, 'Se sube y se baja de una silla con poca ayuda', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(373, 'Sube las escalones uno a uno, sin alternar los pies con apoyo de un adulto', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(374, 'Baja solo en posición de gateo', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(375, 'Camina y mantiene el equilibrio', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(376, 'Empuja la pelota con el pie', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(377, 'Utiliza todo el brazo para lanzar la pelota grande', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(378, 'Demuestra interés por la pelota grande, la sigue pero no puede agarrarla', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(379, 'Evidencia preferencia manual', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59');
 
 -- --------------------------------------------------------
 
@@ -1049,6 +1199,13 @@ CREATE TABLE `pacientes` (
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Volcado de datos para la tabla `pacientes`
+--
+
+INSERT INTO `pacientes` (`id`, `nombre`, `apellido`, `fecha_nac`, `representante_id`, `datoseconomico_id`, `genero_id`, `created_at`, `updated_at`) VALUES
+(2, 'greisis', 'manoa', '2023-04-03', 2, 2, 2, '2024-12-10 03:05:07', '2024-12-10 03:05:07');
+
 -- --------------------------------------------------------
 
 --
@@ -1070,6 +1227,13 @@ CREATE TABLE `parentescos` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `parentescos`
+--
+
+INSERT INTO `parentescos` (`id`, `paciente_id`, `nombre`, `apellido`, `fecha_nac`, `parentesco`, `discapacidad`, `tipo_discapacidad`, `enfermedad_cronica`, `tipo_enfermedad`, `genero_id`, `created_at`, `updated_at`) VALUES
+(3, 2, 'juana', 'manoa', '1969-01-24', 'abuela materna', 'si', 'no aplica', 'si', 'no aplica', NULL, '2024-12-10 03:05:07', '2024-12-10 03:05:07');
 
 -- --------------------------------------------------------
 
@@ -2283,13 +2447,13 @@ CREATE TABLE `pruebas` (
 --
 
 INSERT INTO `pruebas` (`id`, `nombre`, `descripcion`, `status`, `tipo_prueba_id`, `area_desarrollo_id`, `rango_prueba_id`, `created_at`, `updated_at`) VALUES
-(1, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 1, '2024-11-30 14:53:09', '2024-11-30 14:53:09'),
+(1, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'inactiva', 1, 1, 1, '2024-11-30 14:53:09', '2024-12-03 22:44:11'),
 (2, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 2, '2024-11-30 14:57:29', '2024-11-30 14:57:29'),
-(3, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 3, '2024-11-30 15:05:43', '2024-11-30 15:05:43'),
-(4, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 4, '2024-11-30 15:13:32', '2024-11-30 15:13:32'),
+(3, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'inactiva', 1, 1, 3, '2024-11-30 15:05:43', '2024-12-04 01:08:35'),
+(4, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'inactiva', 1, 1, 4, '2024-11-30 15:13:32', '2024-12-04 01:21:10'),
 (5, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 5, '2024-11-30 15:17:59', '2024-11-30 15:17:59'),
-(6, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 6, '2024-11-30 15:28:02', '2024-11-30 15:28:02'),
-(7, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 7, '2024-11-30 15:31:36', '2024-11-30 15:31:36'),
+(6, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'inactiva', 1, 1, 6, '2024-11-30 15:28:02', '2024-12-04 01:22:18'),
+(7, 'Descubre su entorno', 'Se le estaran presnetando distintos estimolos al niño para observar su reaccion', 'inactiva', 1, 1, 7, '2024-11-30 15:31:36', '2024-12-04 01:20:50'),
 (8, 'Descubre su entorno', 'Se le estaran presentando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 8, '2024-12-02 01:44:08', '2024-12-02 01:44:08'),
 (9, 'Descubre su entorno', 'Se le estaran presentando distintos estimolos al niño para observar su reaccion', 'activa', 1, 1, 9, '2024-12-02 02:06:34', '2024-12-02 02:06:34'),
 (10, 'Descubre su entorno', 'Se le estaran presentando distintos estimulos al niño para observar su reaccion', 'activa', 1, 1, 10, '2024-12-02 02:12:21', '2024-12-02 02:12:21'),
@@ -2326,7 +2490,21 @@ INSERT INTO `pruebas` (`id`, `nombre`, `descripcion`, `status`, `tipo_prueba_id`
 (41, 'Area del lenguaje', 'Al niño se le estaran presentando distintos estimulos para observar su reaccion', 'activa', 1, 2, 19, '2024-12-02 09:08:41', '2024-12-02 09:08:41'),
 (42, 'Area del lenguaje', 'Al niño se le estaran presentando distintos estimulos para observar su reaccion', 'activa', 1, 2, 20, '2024-12-02 09:11:31', '2024-12-02 09:11:31'),
 (43, 'Area del lenguaje', 'Al niño se le estaran presentando distintos estimulos para observar su reaccion', 'activa', 1, 2, 21, '2024-12-02 09:14:11', '2024-12-02 09:14:11'),
-(44, 'Area del lenguaje', 'Al niño se le estaran presentando distintos estimulos para observar su reaccion', 'activa', 1, 2, 22, '2024-12-02 09:16:51', '2024-12-02 09:16:51');
+(44, 'Area del lenguaje', 'Al niño se le estaran presentando distintos estimulos para observar su reaccion', 'activa', 1, 2, 22, '2024-12-02 09:16:51', '2024-12-02 09:16:51'),
+(45, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 1, '2024-12-04 23:57:01', '2024-12-04 23:57:01'),
+(46, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 2, '2024-12-05 00:01:05', '2024-12-05 00:01:05'),
+(47, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 3, '2024-12-05 00:04:03', '2024-12-05 00:04:03'),
+(48, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 4, '2024-12-05 00:09:34', '2024-12-05 00:09:34'),
+(49, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 5, '2024-12-05 00:13:19', '2024-12-05 00:13:19'),
+(50, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 6, '2024-12-05 00:17:49', '2024-12-05 00:17:49'),
+(51, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 7, '2024-12-05 00:21:44', '2024-12-05 00:21:44'),
+(52, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 8, '2024-12-05 00:24:45', '2024-12-05 00:24:45'),
+(53, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 9, '2024-12-05 00:27:38', '2024-12-05 00:27:38'),
+(54, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 10, '2024-12-05 00:31:35', '2024-12-05 00:31:35'),
+(55, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 11, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
+(56, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 12, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
+(57, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 13, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
+(58, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 14, '2024-12-05 01:00:59', '2024-12-05 01:00:59');
 
 -- --------------------------------------------------------
 
@@ -2387,6 +2565,13 @@ CREATE TABLE `representantes` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `representantes`
+--
+
+INSERT INTO `representantes` (`id`, `nombre`, `apellido`, `ci`, `telefono`, `email`, `genero_id`, `direccion_id`, `created_at`, `updated_at`) VALUES
+(2, 'herlin', 'casas', '23214569', '0412639874', 'hc@yahoo.com', 2, 3, '2024-12-10 02:59:52', '2024-12-10 02:59:52');
 
 -- --------------------------------------------------------
 
@@ -2451,7 +2636,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'ivana', 'galenoivana9@gmail.com', NULL, '$2y$10$Rgtu.nlYvkYYLUIdXthBsOvl.9NiuKHbBpaXgvWXc6Kv2GeffwDxu', NULL, '2024-11-30 14:09:17', '2024-11-30 14:09:17');
+(1, 'ivana', 'galenoivana9@gmail.com', NULL, '$2y$10$Rgtu.nlYvkYYLUIdXthBsOvl.9NiuKHbBpaXgvWXc6Kv2GeffwDxu', NULL, '2024-11-30 14:09:17', '2024-11-30 14:09:17'),
+(2, 'marta juanchez', 'mjj@gmail.com', NULL, '$2y$10$.Q8s/jI70yejl0n4WufOoeuUgbeAJBb1xM4wLn7V.f3EiePkLoCKS', NULL, '2024-12-10 02:53:22', '2024-12-10 02:53:22');
 
 -- --------------------------------------------------------
 
@@ -2680,43 +2866,43 @@ ALTER TABLE `valor_items`
 -- AUTO_INCREMENT de la tabla `antecedente_medicos`
 --
 ALTER TABLE `antecedente_medicos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `area_desarrollos`
 --
 ALTER TABLE `area_desarrollos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
 --
 ALTER TABLE `citas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `datos_economicos`
 --
 ALTER TABLE `datos_economicos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `direccions`
 --
 ALTER TABLE `direccions`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidads`
 --
 ALTER TABLE `especialidads`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `especialistas`
 --
 ALTER TABLE `especialistas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `estados`
@@ -2740,25 +2926,25 @@ ALTER TABLE `generos`
 -- AUTO_INCREMENT de la tabla `historia_clinicas`
 --
 ALTER TABLE `historia_clinicas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `historia_desarrollos`
 --
 ALTER TABLE `historia_desarrollos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `historia_escolars`
 --
 ALTER TABLE `historia_escolars`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `item_pruebas`
 --
 ALTER TABLE `item_pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=299;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=380;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
@@ -2776,13 +2962,13 @@ ALTER TABLE `municipios`
 -- AUTO_INCREMENT de la tabla `pacientes`
 --
 ALTER TABLE `pacientes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `parentescos`
 --
 ALTER TABLE `parentescos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT de la tabla `parroquias`
@@ -2800,7 +2986,7 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `pruebas`
 --
 ALTER TABLE `pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT de la tabla `rango_pruebas`
@@ -2812,7 +2998,7 @@ ALTER TABLE `rango_pruebas`
 -- AUTO_INCREMENT de la tabla `representantes`
 --
 ALTER TABLE `representantes`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `secretarias`
@@ -2830,7 +3016,7 @@ ALTER TABLE `tipo_pruebas`
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `valor_items`

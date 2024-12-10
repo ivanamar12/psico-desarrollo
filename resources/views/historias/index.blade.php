@@ -366,12 +366,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <p><strong>Código:</strong> <span id="codigo"></span></p>
-                <p><strong>Referencia:</strong> <span id="referencia"></span></p>
-                <p><strong>Motivo:</strong> <span id="motivo"></span></p>
-                <p><strong>Paciente:</strong> <span id="paciente"></span></p>
+                <p><strong>Código:</strong> <span id="codigoV"></span></p>
+                <p><strong>Referencia:</strong> <span id="referenciaV"></span></p>
+                <p><strong>Motivo:</strong> <span id="motivoV"></span></p>
+                <p><strong>Paciente:</strong> <span id="pacienteV"></span></p>
                 <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
-                <p><strong>Representante:</strong> <span id="representante"></span></p>
+                <p><strong>Representante:</strong> <span id="representanteV"></span></p>
                 <p><strong>Dirección:</strong> <span id="direccion"></span></p>
                 <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span></p>
                 <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span></p>
@@ -732,12 +732,12 @@ $(document).on('click', '.verHistoria', function () {
                 return;
             }
 
-            $('#codigo').text(data.historia.codigo || 'N/A');
-            $('#referencia').text(data.historia.referencia || 'N/A');
-            $('#motivo').text(data.historia.motivo || 'N/A');
-            $('#paciente').text(`${data.historia.paciente.nombre || ''} ${data.historia.paciente.apellido || ''}`);
+            $('#codigoV').text(data.historia.codigo || 'N/A');
+            $('#referenciaV').text(data.historia.referencia || 'N/A');
+            $('#motivoV').text(data.historia.motivo || 'N/A');
+            $('#pacienteV').text(`${data.historia.paciente.nombre || ''} ${data.historia.paciente.apellido || ''}`);
             $('#fechaNacimiento').text(data.historia.fecha_nac || 'N/A'); // Asegúrate de que este campo exista
-            $('#representante').text(`${data.historia.representanteNombre || ''} ${data.historia.representanteApellido || ''}`); // Asegúrate de que estos campos existan
+            $('#representanteV').text(`${data.historia.representanteNombre || ''} ${data.historia.representanteApellido || ''}`); // Asegúrate de que estos campos existan
             $('#direccion').text(data.historia.direccion || 'N/A'); // Asegúrate de que este campo exista
             $('#riesgoSocial').text(data.riesgoSocial || 'N/A');
             $('#riesgoBiologico').text(data.riesgoBiologico || 'N/A');

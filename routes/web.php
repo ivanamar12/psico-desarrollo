@@ -121,6 +121,7 @@ Route::get('paciente', [PacienteController::class, 'index'])
     ->name('paciente.index')
     ->middleware('auth');
 
+
 // Ruta para almacenar un nuevo paciente
 Route::post('paciente', [PacienteController::class, 'store'])
     ->name('paciente.store')
