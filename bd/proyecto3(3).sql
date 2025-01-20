@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost:3306
--- Tiempo de generación: 10-12-2024 a las 03:21:01
+-- Tiempo de generación: 20-01-2025 a las 10:32:31
 -- Versión del servidor: 10.11.6-MariaDB-0+deb12u1
 -- Versión de PHP: 8.2.26
 
@@ -70,7 +70,74 @@ CREATE TABLE `area_desarrollos` (
 INSERT INTO `area_desarrollos` (`id`, `area_desarrollo`, `created_at`, `updated_at`) VALUES
 (1, 'Cognitiva', '2024-11-30 14:15:34', '2024-11-30 14:15:34'),
 (2, 'Lenguaje', '2024-12-02 03:34:35', '2024-12-02 03:34:35'),
-(3, 'Motricidad gruesa', '2024-12-04 23:53:29', '2024-12-04 23:53:29');
+(3, 'Motricidad gruesa', '2024-12-04 23:53:29', '2024-12-04 23:53:29'),
+(4, 'Psicomotricidad', '2025-01-19 11:33:51', '2025-01-19 11:33:51'),
+(5, 'Desarrollo Verbal', '2025-01-19 11:34:33', '2025-01-19 11:34:33'),
+(6, 'Desarrollo no Verbal', '2025-01-19 11:34:46', '2025-01-19 11:34:46'),
+(7, 'Lenguaje Articulatorio', '2025-01-19 11:35:01', '2025-01-19 11:35:01'),
+(8, 'Lenguaje Expresivo', '2025-01-19 11:35:43', '2025-01-19 11:35:43'),
+(9, 'Lenguaje Comprensivo', '2025-01-19 11:36:02', '2025-01-19 11:36:02'),
+(10, 'Estructuracion Espacial', '2025-01-19 11:36:32', '2025-01-19 11:36:32'),
+(11, 'Visopercepcion', '2025-01-19 11:36:46', '2025-01-19 11:36:46'),
+(12, 'Memoria Iconica', '2025-01-19 11:37:04', '2025-01-19 11:37:04'),
+(13, 'Ritmo', '2025-01-19 11:37:18', '2025-01-19 11:37:18'),
+(14, 'Fluidez Verbal', '2025-01-19 11:37:38', '2025-01-19 11:37:38'),
+(15, 'Atencion', '2025-01-19 11:37:54', '2025-01-19 11:37:54'),
+(16, 'Lectura', '2025-01-19 11:38:11', '2025-01-19 11:38:11'),
+(17, 'Escritura', '2025-01-19 11:38:26', '2025-01-19 11:38:26');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `atencions`
+--
+
+CREATE TABLE `atencions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `atencions`
+--
+
+INSERT INTO `atencions` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(28, 12, '99', '19-20', '19-20', '19-20', '20', '20', 'NULL', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(29, 12, '98', '18', '18', '-', '19', '19', 'NULL', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(30, 12, '97', '17', '17', '18', '-', '-', '20', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(31, 12, '96', '16', '16', '-', '18', '-', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(32, 12, '95', '14-15', '13-15', '17', '-', '18', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(33, 12, '90', '11-13', '12', '15-16', '16-17', '17', '19', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(34, 12, '85', '10', '11', '14', '14-15', '16', '18', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(35, 12, '80', '9', '10', '13', '13', '15', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(36, 12, '75', '8', '9', '12', '-', '14', '17', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(37, 12, '70', '7', '-', '-', '12', '-', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(38, 12, '65', '6', '-', '11', '-', '13', '16', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(39, 12, '60', '5', '8', '10', '11', '-', '15', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(40, 12, '55', '-', '-', '-', '10', '12', '14', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(41, 12, '50', '4', '7', '9', '9', '-', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(42, 12, '45', '-', '-', '-', '-', '-', '13', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(43, 12, '40', '2-3', '6', '8', '8', '11', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(44, 12, '35', '1', '-', '-', '-', '10', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(45, 12, '30', '-', '5', '7', '-', '-', '12', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(46, 12, '25', '-', '-', '6', '7', '9', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(47, 12, '20', '-', '4', '-', '6', '8', '11', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(48, 12, '15', '0', '2-3', '5', '5', '7', '9-10', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(49, 12, '10', 'NULL', '1', '-', '4', '6', '8', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(50, 12, '5', 'NULL', '0', '4', '3', '5', '6-7', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(51, 12, '4', 'NULL', 'NULL', '3', '2', '3-4', '5', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(52, 12, '3', 'NULL', 'NULL', '2', '1', '2', '-', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(53, 12, '2', 'NULL', 'NULL', '-', '0', '1', '1-4', '2025-01-14 03:14:19', '2025-01-14 03:14:19'),
+(54, 12, '1', 'NULL', 'NULL', '0', 'NULL', '0', '0', '2025-01-14 03:14:19', '2025-01-14 03:14:19');
 
 -- --------------------------------------------------------
 
@@ -94,7 +161,7 @@ CREATE TABLE `citas` (
 --
 
 INSERT INTO `citas` (`id`, `paciente_id`, `especialista_id`, `fecha_consulta`, `hora`, `status`, `created_at`, `updated_at`) VALUES
-(1, 2, 1, '2024-12-11', '09:30', 'confirmada', '2024-12-10 03:05:54', '2024-12-10 03:06:13');
+(1, 2, 1, '2024-12-11', '09:30', 'asistio', '2024-12-10 03:05:54', '2025-01-18 14:47:40');
 
 -- --------------------------------------------------------
 
@@ -130,6 +197,212 @@ INSERT INTO `datos_economicos` (`id`, `tipo_vivienda`, `cantidad_habitaciones`, 
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `desarrollo_globals`
+--
+
+CREATE TABLE `desarrollo_globals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `prueba` varchar(255) NOT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `desarrollo_globals`
+--
+
+INSERT INTO `desarrollo_globals` (`id`, `prueba`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `descripcion`, `created_at`, `updated_at`) VALUES
+(1, 'CUMANIN', '99', '48-86', '59-86', '66-86', '75-86', '76-86', '81-86', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:02', '2025-01-07 04:32:02'),
+(2, 'CUMANIN', '98', '47', '55-58', '65', '74', '75', '80', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:02', '2025-01-07 04:32:02'),
+(3, 'CUMANIN', '97', '43-46', '54', '64', '73', '74', '79', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:02', '2025-01-07 04:32:02'),
+(4, 'CUMANIN', '96', '-', '53', '63', '72', '73', '78', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(5, 'CUMANIN', '95', '40-42', '50-52', '59-62', '69-71', '72', '77', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(6, 'CUMANIN', '90', '37-39', '46-49', '58', '65-68', '70-71', '75-76', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(7, 'CUMANIN', '85', '36', '44-45', '54-57', '62-64', '67-69', '73-74', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(8, 'CUMANIN', '80', '35', '44-43', '51-53', '60-61', '66', '72', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(9, 'CUMANIN', '75', '32-34', '40', '50', '59', '64-65', '71', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(10, 'CUMANIN', '70', '30-31', '38-39', '48-49', '57-58', '63', '69-70', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(11, 'CUMANIN', '65', '28-29', '36-37', '47', '55-56', '62', '68', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(12, 'CUMANIN', '60', '26-27', '34-35', '44-46', '53-54', '61', '67', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(13, 'CUMANIN', '55', '23-25', '32-33', '42-43', '52', '60', '65-66', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(14, 'CUMANIN', '50', '21-22', '30-31', '41', '49-51', '58-59', '64', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(15, 'CUMANIN', '45', '19-20', '29', '40', '47-48', '57', '-', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(16, 'CUMANIN', '40', '18', '28', '38-39', '45-46', '56', '61-62', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(17, 'CUMANIN', '35', '17', '27', '37', '43-44', '55', '63', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(18, 'CUMANIN', '30', '15-16', '26', '35-36', '40-42', '52-54', '60', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(19, 'CUMANIN', '25', '14', '24-25', '32-34', '37-39', '50-51', '58-59', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(20, 'CUMANIN', '20', '12-13', '22-23', '31', '34-36', '48-49', '56-57', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(21, 'CUMANIN', '15', '9-11', '18-21', '28-30', '32-33', '43-47', '54-55', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(22, 'CUMANIN', '10', '5-8', '16-17', '23-27', '27-31', '33-42', '48-53', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(23, 'CUMANIN', '5', '3-4', '11-15', '17-22', '22-26', '22-32', '44-47', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(24, 'CUMANIN', '4', '2', '10', '16', '19-21', '19-21', '40-43', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(25, 'CUMANIN', '3', '-', '8-9', '15', '18', '11-18', '38-39', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(26, 'CUMANIN', '2', '1', '1-7', '14', '16-17', '9-10', '37', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03'),
+(27, 'CUMANIN', '1', '0', '0', '0-13', '0-15', '0-8', '0-36', 'Puntuacion de los 83 elementos', '2025-01-07 04:32:03', '2025-01-07 04:32:03');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `desarrollo_no_verbals`
+--
+
+CREATE TABLE `desarrollo_no_verbals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `desarrollo_no_verbals`
+--
+
+INSERT INTO `desarrollo_no_verbals` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `descripcion`, `created_at`, `updated_at`) VALUES
+(1, 2, '99', '27-58', '35-58', '41-58', '46-58', '47-58', '49-58', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(2, 2, '98', '26', '34', '40', '44-45', '46', '48', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(3, 2, '97', '-', '-', '38-39', '43', '-', '-', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(4, 2, '96', '25', '33', '37', '42', '45', '-', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(5, 2, '95', '23-24', '31-32', '36', '41', '43-44', '47', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(6, 2, '90', '22', '29-30', '35', '40', '42', '45-46', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(7, 2, '85', '21', '27-28', '32-34', '38-39', '41', '44', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(8, 2, '80', '19-20', '26', '31', '36-37', '40', '43', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(9, 2, '75', '18', '25', '30', '34-35', '38-39', '42', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(10, 2, '70', '-', '23-24', '29', '33', '37', '-', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(11, 2, '65', '17', '22', '28', '32', '-', '41', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(12, 2, '60', '16', '-', '27', '-', '36', '40', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(13, 2, '55', '15', '21', '-', '30-31', '-', '-', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(14, 2, '50', '14', '20', '26', '29', '35', '39', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(15, 2, '45', '13', '19', '-', '28', '-', '38', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(16, 2, '40', '12', '18', '25', '27', '34', '37', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(17, 2, '35', '11', '17', '24', '26', '33', '36', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(18, 2, '30', '9-10', '16', '23', '25', '31-32', '35', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:26', '2025-01-07 16:23:26'),
+(19, 2, '25', '8', '15', '21-22', '24', '29-30', '33-34', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(20, 2, '20', '8', '14', '20', '23', '28', '32', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(21, 2, '15', '-', '12-13', '19', '22', '27', '-', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(22, 2, '10', '6-7', '11', '18', '19-21', '24-26', '30-31', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(23, 2, '5', '3-5', '9-10', '14-17', '17-18', '19-23', '27-29', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(24, 2, '4', '2', '7-8', '-', '16', '15-18', '26', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(25, 2, '3', '-', '6', '13', '12-15', '14', '25', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(26, 2, '2', '0-1', '1-5', '-', '11', '11-13', '21-24', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27'),
+(27, 2, '1', 'NULL', '0', '0-12', '0-10', '0-10', '0-20', 'Puntuacion en los elementos de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo', '2025-01-07 16:23:27', '2025-01-07 16:23:27');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `desarrollo_verbals`
+--
+
+CREATE TABLE `desarrollo_verbals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `descripcion` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `desarrollo_verbals`
+--
+
+INSERT INTO `desarrollo_verbals` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `descripcion`, `created_at`, `updated_at`) VALUES
+(1, 1, '99', '25-28', '24-28', '26-28', '27-28', '26-28', '28', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(2, 1, '98', '-', '-', '25', '-', '-', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(3, 1, '97', '24', '23', '-', '-', '-', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(4, 1, '96', '-', '-', '-', '26', '-', '27', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(5, 1, '95', '22-23', '22', '24', '25', '-', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(6, 1, '90', '21', '-', '23', '-', '25', '26', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(7, 1, '85', '19-20', '21', '-', '24', '24', '25', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(8, 1, '80', '18', '20', '22', '-', '-', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(9, 1, '75', '17', '-', '21', '23', '23', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(10, 1, '70', '15-16', '19', '-', '22', '-', '24', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(11, 1, '65', '14', '18', '20', '-', '22', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(12, 1, '60', '12-13', '17', '18-19', '21', '-', '23', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(13, 1, '55', '11', '16', '17', '20', '-', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(14, 1, '50', '10', '14-15', '16', '19', '21', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(15, 1, '45', '9', '13', '15', '18', '-', '22', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(16, 1, '40', '8', '12', '14', '17', '20', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(17, 1, '35', '7', '11', '12-13', '16', '-', '21', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(18, 1, '30', '4', '10', '-', '15', '18-19', '20', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(19, 1, '25', '14', '9', '11', '13-14', '17', '19', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(20, 1, '20', '2-3', '8', '9-10', '12', '15-16', '-', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(21, 1, '15', '1', '6-7', '7-8', '10-11', '13-14', '18', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(22, 1, '10', '-', '4-5', '5-6', '8-9', '10-12', '16-17', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(23, 1, '5', '0', '3', '4', '6-7', '3-9', '13-15', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(24, 1, '4', 'NULL', '-', '-', '-', '2', '11-12', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(25, 1, '3', 'NULL', '1-2', '3', '5', '1', '10', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(26, 1, '2', 'NULL', '0', '2', '2-4', '-', '8-9', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:33', '2025-01-07 14:52:33'),
+(27, 1, '1', 'NULL', 'NULL', '0-1', '0-1', '0', '0-7', 'Puntuacion en los elementos de las 3 escalas de lenguaje: articulatorio, comprensivo y expresivo', '2025-01-07 14:52:34', '2025-01-07 14:52:34');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `dibujo_figura_humanas`
+--
+
+CREATE TABLE `dibujo_figura_humanas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `items` varchar(255) NOT NULL,
+  `nivel` varchar(255) NOT NULL,
+  `masculino_5_años` varchar(255) NOT NULL,
+  `femenino_5_años` varchar(255) NOT NULL,
+  `masculino_6_años` varchar(255) NOT NULL,
+  `femenino_6_años` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `dibujo_figura_humanas`
+--
+
+INSERT INTO `dibujo_figura_humanas` (`id`, `sub_escala_id`, `items`, `nivel`, `masculino_5_años`, `femenino_5_años`, `masculino_6_años`, `femenino_6_años`, `created_at`, `updated_at`) VALUES
+(1, 15, 'Cabeza', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(2, 15, 'Ojos', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(3, 15, 'Nariz', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(4, 15, 'Boca', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(5, 15, 'Cuerpo', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(6, 15, 'Piernas', 'Esperado', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(7, 15, 'Brazos', 'Esperado', '-', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(8, 15, 'pies', 'Esperado', '-', '-', '-', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(9, 15, 'Rodilla', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(10, 15, 'Perfil', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(11, 15, 'Codo', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(12, 15, 'Dos Labios', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(13, 15, 'Fosas Nasales', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(14, 15, 'Proporciones', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(15, 15, 'Braz. u. Homb.', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(16, 15, 'Ropa: 4 prendas', 'Excepcional', 'X', 'X', 'X', 'X', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(17, 15, 'Pies 2', 'Excepcional', 'X', 'X', '-', '-', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(18, 15, 'Cinco dedos', 'Excepcional', 'X', '-', '-', '-', '2025-01-15 15:21:23', '2025-01-15 15:21:23'),
+(19, 15, 'Pupilas', 'Excepcional', 'X', '-', '-', '-', '2025-01-15 15:21:23', '2025-01-15 15:21:23');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `direccions`
 --
 
@@ -150,6 +423,50 @@ CREATE TABLE `direccions` (
 INSERT INTO `direccions` (`id`, `estado_id`, `municipio_id`, `parroquia_id`, `sector`, `created_at`, `updated_at`) VALUES
 (2, 4, 37, 115, 'la curia', '2024-12-10 02:57:18', '2024-12-10 02:57:18'),
 (3, 7, 79, 262, 'el mono', '2024-12-10 02:59:52', '2024-12-10 02:59:52');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `escrituras`
+--
+
+CREATE TABLE `escrituras` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-72 meses` varchar(255) NOT NULL,
+  `73-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `escrituras`
+--
+
+INSERT INTO `escrituras` (`id`, `sub_escala_id`, `percentil`, `61-66 meses`, `67-72 meses`, `73-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 14, '99', '7-12', '12', '12', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(2, 14, '98', '6', '-', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(3, 14, '97', '5', '-', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(4, 14, '96', '4', '-', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(5, 14, '95', '3', '11', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(6, 14, '90', '2', '10', '11', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(7, 14, '85', '-', '9', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(8, 14, '80', '1', '7-8', '10', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(9, 14, '75', '-', '4-6', '9', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(10, 14, '70', '-', '1-3', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(11, 14, '65', '-', '1-2', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(12, 14, '60', '-', '-', '8', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(13, 14, '55', '0', '-', '7', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(14, 14, '50', '-', '-', '6', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(15, 14, '45', '-', '-', '5', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(16, 14, '40', '0', '-', '3-4', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(17, 14, '35', 'NULL', '0', '2', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(18, 14, '30', 'NULL', 'NULL', '1', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(19, 14, '25', 'NULL', 'NULL', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(20, 14, '20', 'NULL', 'NULL', '-', '2025-01-14 14:28:26', '2025-01-14 14:28:26'),
+(21, 14, '15', 'NULL', 'NULL', '0', '2025-01-14 14:28:26', '2025-01-14 14:28:26');
 
 -- --------------------------------------------------------
 
@@ -247,6 +564,59 @@ INSERT INTO `estados` (`id`, `estado`, `iso_3166-2`, `created_at`, `updated_at`)
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `estructuracion_esapacials`
+--
+
+CREATE TABLE `estructuracion_esapacials` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `estructuracion_esapacials`
+--
+
+INSERT INTO `estructuracion_esapacials` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 7, '99', '9-15', '11-15', '12-15', '12-15', '12-15', '13-15', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(2, 7, '98', '-', '-', '-', '-', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(3, 7, '97', '-', '10', '-', '-', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(4, 7, '96', '-', '-', '-', '-', '-', '12', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(5, 7, '95', '8', '-', '11', '11', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(6, 7, '90', '-', '9', '10', '-', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(7, 7, '85', '7', '-', '-', '-', '11', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(8, 7, '80', '-', '8', '9', '10', '-', '11', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(9, 7, '75', '-', '-', '-', '-', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(10, 7, '70', '6', '-', '-', '9', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(11, 7, '65', '-', '7', '8', '-', '10', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(12, 7, '60', '-', '-', '-', '8', '-', '10', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(13, 7, '55', '-', '-', '-', '-', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(14, 7, '50', '5', '6', '7', '-', '9', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(15, 7, '45', '-', '-', '-', '7', '-', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(16, 7, '40', '4', '-', '-', '-', '-', '9', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(17, 7, '35', '-', '-', '-', '-', '8', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(18, 7, '30', '3', '5', '6', '6', '-', '8', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(19, 7, '25', '-', '-', '-', '-', '7', '7', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(20, 7, '20', '2', '4', '5', '-', '6', '6', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(21, 7, '15', '1', '-', '-', '5', '5', '5', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(22, 7, '10', '-', '2-3', '4', '4', '4', '4', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(23, 7, '5', '0', '1', '-', '-', '3', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(24, 7, '4', 'NULL', '-', '3', '-', '2', '-', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(25, 7, '3', 'NULL', '0', '2', '3', '1', '3', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(26, 7, '2', 'NULL', 'NULL', '1', '1-2', '-', '1-2', '2025-01-10 21:56:25', '2025-01-10 21:56:25'),
+(27, 7, '1', 'NULL', 'NULL', '0', '0', '0', '0', '2025-01-10 21:56:25', '2025-01-10 21:56:25');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `failed_jobs`
 --
 
@@ -259,6 +629,86 @@ CREATE TABLE `failed_jobs` (
   `exception` longtext NOT NULL,
   `failed_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `fluidez_verbals`
+--
+
+CREATE TABLE `fluidez_verbals` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `fluidez_verbals`
+--
+
+INSERT INTO `fluidez_verbals` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 11, '99', '8-99', '31-99', '34-99', '43-99', '39-99', '48-99', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(2, 11, '98', '6-7', '24-30', '30-33', '41-42', '38', '45-47', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(3, 11, '97', '5', '21-23', '26-29', '38-40', '36-37', '40-44', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(4, 11, '96', '-', '18-20', '25', '35-37', '35', '38-39', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(5, 11, '95', '4', '16-17', '21-24', '32-34', '32-34', '34-37', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(6, 11, '90', '1-3', '12-15', '20', '27-31', '27-31', '32-33', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(7, 11, '85', '-', '11', '17-19', '25-26', '25-26', '29-31', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(8, 11, '80', '-', '9-10', '12-16', '20-24', '22-24', '27-28', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(9, 11, '75', '-', '6-8', '11', '17-19', '20-21', '25-26', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(10, 11, '70', '-', '5', '9-10', '14-16', '19', '24', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(11, 11, '65', '-', '1-4', '7-8', '12-13', '18', '23', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(12, 11, '60', '-', '-', '6', '9-11', '16-17', '22', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(13, 11, '55', '-', '-', '1-5', '5-8', '12-15', '21', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(14, 11, '50', '-', '-', '-', '4', '11', '20', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(15, 11, '45', '0', '-', '-', '1-3', '9-10', '19', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(16, 11, '40', 'NULL', '-', '-', '-', '8', '18', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(17, 11, '35', 'NULL', '0', '-', '-', '7', '16-17', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(18, 11, '30', 'NULL', 'NULL', '0', '-', '5-6', '12-15', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(19, 11, '25', 'NULL', 'NULL', 'NULL', '0', '1-4', '10-11', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(20, 11, '20', 'NULL', 'NULL', 'NULL', 'NULL', '-', '9', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(21, 11, '15', 'NULL', 'NULL', 'NULL', 'NULL', '-', '3-8', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(22, 11, '10', 'NULL', 'NULL', 'NULL', 'NULL', '0', '1-2', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(23, 11, '5', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '0', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(24, 11, '4', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(25, 11, '3', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(26, 11, '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(27, 11, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-13 22:19:25', '2025-01-13 22:19:25'),
+(28, 11, '99', '8-99', '31-99', '34-99', '43-99', '39-99', '48-99', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(29, 11, '98', '6-7', '24-30', '30-33', '41-42', '38', '45-47', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(30, 11, '97', '5', '21-23', '26-29', '38-40', '36-37', '40-44', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(31, 11, '96', '-', '18-20', '25', '35-37', '35', '38-39', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(32, 11, '95', '4', '16-17', '21-24', '32-34', '32-34', '34-37', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(33, 11, '90', '1-3', '12-15', '20', '27-31', '27-31', '32-33', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(34, 11, '85', '-', '11', '17-19', '25-26', '25-26', '29-31', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(35, 11, '80', '-', '9-10', '12-16', '20-24', '22-24', '27-28', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(36, 11, '75', '-', '6-8', '11', '17-19', '20-21', '25-26', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(37, 11, '70', '-', '5', '9-10', '14-16', '19', '24', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(38, 11, '65', '-', '1-4', '7-8', '12-13', '18', '23', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(39, 11, '60', '-', '-', '6', '9-11', '16-17', '22', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(40, 11, '55', '-', '-', '1-5', '5-8', '12-15', '21', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(41, 11, '50', '-', '-', '-', '4', '11', '20', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(42, 11, '45', '0', '-', '-', '1-3', '9-10', '19', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(43, 11, '40', 'NULL', '-', '-', '-', '8', '18', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(44, 11, '35', 'NULL', '0', '-', '-', '7', '16-17', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(45, 11, '30', 'NULL', 'NULL', '0', '-', '5-6', '12-15', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(46, 11, '25', 'NULL', 'NULL', 'NULL', '0', '1-4', '10-11', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(47, 11, '20', 'NULL', 'NULL', 'NULL', 'NULL', '-', '9', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(48, 11, '15', 'NULL', 'NULL', 'NULL', 'NULL', '-', '3-8', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(49, 11, '10', 'NULL', 'NULL', 'NULL', 'NULL', '0', '1-2', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(50, 11, '5', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '0', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(51, 11, '4', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(52, 11, '3', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(53, 11, '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-14 02:41:40', '2025-01-14 02:41:40'),
+(54, 11, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-14 02:41:40', '2025-01-14 02:41:40');
 
 -- --------------------------------------------------------
 
@@ -381,6 +831,34 @@ CREATE TABLE `historia_escolars` (
 INSERT INTO `historia_escolars` (`id`, `escolarizado`, `tipo_educaion`, `tutoria_terapias`, `tutoria_terapias_cuales`, `dificultad_lectura`, `dificultad_aritmetica`, `dificultad_escribir`, `agrada_escuela`, `created_at`, `updated_at`) VALUES
 (1, 'no', 'no aplica', 'no', 'no aplica', 'no', 'no', 'no', 'no', '2024-12-07 15:48:30', '2024-12-07 15:48:30'),
 (2, 'no', 'no aplica', 'no', 'no aplica', 'no', 'no', 'no', 'no', '2024-12-10 03:15:33', '2024-12-10 03:15:33');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+--
+
+CREATE TABLE `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `puntaje_dfh` varchar(255) NOT NULL,
+  `nivel_capacidad_mental` varchar(255) NOT NULL,
+  `CI` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+--
+
+INSERT INTO `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s` (`id`, `puntaje_dfh`, `nivel_capacidad_mental`, `CI`, `created_at`, `updated_at`) VALUES
+(1, '8-7', 'Normal alto a superior', '110 o mas', '2025-01-15 16:25:35', '2025-01-15 16:25:35'),
+(2, '6', 'Normal a superior', '90-135', '2025-01-15 16:25:36', '2025-01-15 16:25:36'),
+(3, '5', 'Normal  alto', '85-120', '2025-01-15 16:25:36', '2025-01-15 16:25:36'),
+(4, '4', 'Normal bajo a normal', '80-110', '2025-01-15 16:25:36', '2025-01-15 16:25:36'),
+(5, '3', 'Normal bajo', '70-90', '2025-01-15 16:25:36', '2025-01-15 16:25:36'),
+(6, '2', 'Bordeline', '60-80', '2025-01-15 16:25:36', '2025-01-15 16:25:36'),
+(7, '1-0', 'Deficiente o Funcionando en un nivel deficiente debido a problemas emocionales', '-', '2025-01-15 16:25:36', '2025-01-15 16:25:36');
 
 -- --------------------------------------------------------
 
@@ -779,7 +1257,341 @@ INSERT INTO `item_pruebas` (`id`, `item`, `prueba_id`, `created_at`, `updated_at
 (376, 'Empuja la pelota con el pie', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
 (377, 'Utiliza todo el brazo para lanzar la pelota grande', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
 (378, 'Demuestra interés por la pelota grande, la sigue pero no puede agarrarla', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
-(379, 'Evidencia preferencia manual', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59');
+(379, 'Evidencia preferencia manual', 58, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(380, 'La pata coja', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(381, 'Tocar la nariz con el dedo', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(382, 'Estimulacion con los dedos, Derecha: 1-Corazon   2-Anular', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(383, 'Estimulacion con los dedos, Izquierda: 1-Pulgar   2-Anular', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(384, 'Estimulacion con los dedos, Derecha: 1-Meñique   2-Corazon  3-Pulgar', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(385, 'Estimulacion con los dedos, Izquierda: 1-Pulgar   2-Corazon  3-Meñique', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(386, 'Estimulacion con los dedos, Derecha: 1-Indice   2-Anular   3-Pulgar', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(387, 'Andar en equilibrio', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(388, 'Saltar con los pies juntos', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(389, 'En cunclillas con los brazon en cruz', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(390, 'Tocar con el pulgar todos los dedos de la mano', 59, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(391, 'Rosa', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(392, 'Espada', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(393, 'Escalera', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(394, 'Almeja', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(395, 'Pardo', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(396, 'Ermita', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(397, 'Prudente', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(398, 'Cromo', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(399, 'Gracioso', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(400, 'Transparente', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(401, 'Dragon', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(402, 'Esterilidad', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(403, 'Influencia', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(404, 'Pradera', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(405, 'Entrada', 60, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(406, 'En la fruteria venden peras verdes', 61, '2025-01-19 23:15:54', '2025-01-19 23:15:54'),
+(407, 'El sol sale por detras de las montañas', 61, '2025-01-19 23:15:54', '2025-01-19 23:15:54'),
+(408, 'La estufa da mucho calor en el invierno', 61, '2025-01-19 23:15:54', '2025-01-19 23:15:54'),
+(409, 'El jardinero planto rosas blancas y amarillas', 61, '2025-01-19 23:15:54', '2025-01-19 23:15:54'),
+(410, '¿Como se llamaba la niña?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(411, '¿Cuando fue al circo?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(412, '¿Donde estaba el circo?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(413, '¿Que llevaba el domador?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(414, '¿Como eran los payasos?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(415, '¿Que le paso a un trapecista?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(416, '¿Que le compro su papá?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(417, '¿Donde fue al terminar la función?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(418, '¿Que fue lo que mas le gusto?', 62, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(419, 'Pon el lapiz debajo de la mesa', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(420, 'Pon el lapiz encima del papel', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(421, 'Ponte delante de mi', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(422, 'Ponde detras de mi', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(423, 'Levanta la mano derecha', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(424, 'Levanta la mano izquierda', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(425, 'Con la mano derecha, tocate la oreja derecha', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(426, 'Con la mano izquierda, tapate el ojo izquierdo', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(427, 'Con la mano derecha, tocate la pierna izquierda', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(428, 'Con la mano izquierda, tocate la oreja derecha', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(429, 'Con tu mano derecha, tocame mi ojo izquierdo', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(430, 'Un cuadrado hacia la derecha (anexo 1)', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(431, 'Dos cuadrados hacia arriba (anexo 1)', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(432, 'Dos cuadrados hacia la izquierda (anexo 1)', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(433, 'Un cuadrado hacia abajo (anexo 1)', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(434, 'Mano usada', 63, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(435, '1', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(436, '2', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(437, '3', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(438, '4', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(439, '5', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(440, '6', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(441, '7', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(442, '8', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(443, '9', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(444, '10', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(445, '11', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(446, '12', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(447, '13', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(448, '14', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(449, '15', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(450, 'Mano usada', 64, '2025-01-20 01:25:17', '2025-01-20 01:25:17'),
+(451, 'Luna', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(452, 'Globos', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(453, 'Television', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(454, 'Lapicero', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(455, 'Bebe', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(456, 'Paraguas', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(457, 'Balon', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(458, 'Bicicleta', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(459, 'Casa', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48'),
+(460, 'Perro', 65, '2025-01-20 02:30:48', '2025-01-20 02:30:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lecturas`
+--
+
+CREATE TABLE `lecturas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-72 meses` varchar(255) NOT NULL,
+  `73-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lecturas`
+--
+
+INSERT INTO `lecturas` (`id`, `sub_escala_id`, `percentil`, `61-66 meses`, `67-72 meses`, `73-78 meses`, `created_at`, `updated_at`) VALUES
+(2, 13, '98', '12', 'NULL', 'NULL', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(3, 13, '97', '-', '20', 'NULL', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(4, 13, '96', '11', '-', 'NULL', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(5, 13, '95', '9-10', '12', '12', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(6, 13, '90', '3-8', '-', '-', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(7, 13, '85', '1-2', '-', '-', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(8, 13, '80', '-', '10-11', '-', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(9, 13, '75', '-', '6-9', '-', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(10, 13, '70', '-', '3-5', '11', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(11, 13, '65', '-', '1-2', '-', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(12, 13, '60', '-', '-', '10', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(13, 13, '55', '-', '-', '9', '2025-01-14 03:37:59', '2025-01-14 03:37:59'),
+(14, 13, '50', '-', '-', '7-8', '2025-01-14 03:38:00', '2025-01-14 03:38:00'),
+(15, 13, '45', '-', '-', '5-6', '2025-01-14 03:38:00', '2025-01-14 03:38:00'),
+(16, 13, '40', '0', '-', '1-4', '2025-01-14 03:38:00', '2025-01-14 03:38:00'),
+(17, 13, '35', 'NULL', '-', '-', '2025-01-14 03:38:00', '2025-01-14 03:38:00'),
+(18, 13, '30', 'NULL', '0', '-', '2025-01-14 03:38:00', '2025-01-14 03:38:00'),
+(19, 13, '25', 'NULL', 'NULL', '0', '2025-01-14 03:38:00', '2025-01-14 03:38:00');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lenguaje_articulatorios`
+--
+
+CREATE TABLE `lenguaje_articulatorios` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lenguaje_articulatorios`
+--
+
+INSERT INTO `lenguaje_articulatorios` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 4, '99', '14-15', 'NULL', '15', 'NULL', '15', 'NULL', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(2, 4, '98', '-', 'NULL', '-', 'NULL', '-', 'NULL', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(3, 4, '97', '-', '15', '-', 'NULL', '-', 'NULL', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(4, 4, '96', '-', '-', '-', 'NULL', '-', 'NULL', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(5, 4, '95', '13', '-', '-', '15', '-', 'NULL', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(6, 4, '90', '12', '14', '14', '-', '-', '15', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(7, 4, '85', '11', '-', '-', '-', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(8, 4, '80', '10', '13', '13', '-', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(9, 4, '75', '-', '-', '-', '14', '14', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(10, 4, '70', '9', '-', '12', '-', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(11, 4, '65', '8', '12', '-', '-', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(12, 4, '60', '7', '-', '11', '13', '13', '14', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(13, 4, '55', '6', '11', '10', '-', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(14, 4, '50', '5', '10', '9', '12', '12', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(15, 4, '45', '4', '9', '8', '11', '-', '-', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(16, 4, '40', '3', '8', '7', '-', '11', '13', '2025-01-10 14:58:21', '2025-01-10 14:58:21'),
+(17, 4, '35', '1-2', '6-7', '6', '10', '10', '-', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(18, 4, '30', '-', '5', '5', '9', '8-9', '-', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(19, 4, '25', '0', '-', '4', '8', '5-7', '12', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(20, 4, '20', 'NULL', '4', '3', '6-7', '2-4', '11', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(21, 4, '15', 'NULL', '3', '2', '5', '0-1', '8-10', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(22, 4, '10', 'NULL', '1-2', '1', '2-4', 'NULL', '0-7', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(23, 4, '5', 'NULL', '0', '0', '1', 'NULL', 'NULL', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(24, 4, '4', 'NULL', 'NULL', 'NULL', '0', 'NULL', 'NULL', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(25, 4, '3', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(26, 4, '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-10 14:58:22', '2025-01-10 14:58:22'),
+(27, 4, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-10 14:58:22', '2025-01-10 14:58:22');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lenguaje_comprensivos`
+--
+
+CREATE TABLE `lenguaje_comprensivos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lenguaje_comprensivos`
+--
+
+INSERT INTO `lenguaje_comprensivos` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 6, '99', '7-9', '8-9', '9', '9', '9', '9', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(2, 6, '98', '6', '7', '8', '-', '8', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(3, 6, '97', '-', '-', '-', '8', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(4, 6, '96', '5', '-', '-', '-', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(5, 6, '95', '-', '6', '-', '-', '7', '8', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(6, 6, '90', '4', '-', '7', '7', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(7, 6, '85', '-', '5', '-', '-', '-', '7', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(8, 6, '80', '3', '-', '6', '-', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(9, 6, '75', '-', '-', '-', '6', '6', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(10, 6, '70', '2', '4', '-', '-', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(11, 6, '65', '-', '-', '5', '-', '-', '6', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(12, 6, '60', '-', '3', '-', '5', '5', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(13, 6, '55', '-', '-', '-', '-', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(14, 6, '50', '1', '-', '4', '-', '-', '5', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(15, 6, '45', '-', '-', '-', '4', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(16, 6, '40', '-', '2', '3', '-', '4', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(17, 6, '35', '-', '-', '-', '-', '-', '4', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(18, 6, '30', '0', '-', '-', '3', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(19, 6, '25', 'NULL', '1', '2', '-', '3', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(20, 6, '20', 'NULL', '-', '-', '2', '-', '3', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(21, 6, '15', 'NULL', '-', '1', '-', '2', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(22, 6, '10', 'NULL', '0', '-', '1', '-', '2', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(23, 6, '5', 'NULL', 'NULL', '-', '-', '1', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(24, 6, '4', 'NULL', 'NULL', '0', '-', '-', '1', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(25, 6, '3', 'NULL', 'NULL', 'NULL', '0', '-', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(26, 6, '2', 'NULL', 'NULL', 'NULL', 'NULL', '0', '-', '2025-01-10 16:17:04', '2025-01-10 16:17:04'),
+(27, 6, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '0', '2025-01-10 16:17:04', '2025-01-10 16:17:04');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `lenguaje_expresivos`
+--
+
+CREATE TABLE `lenguaje_expresivos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `lenguaje_expresivos`
+--
+
+INSERT INTO `lenguaje_expresivos` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 5, '99', '1-4', 'NULL', 'NULL', 'NULL', '4', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(2, 5, '98', '-', 'NULL', 'NULL', 'NULL', '-', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(3, 5, '97', '-', 'NULL', 'NULL', 'NULL', '-', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(4, 5, '96', '-', 'NULL', 'NULL', 'NULL', '-', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(5, 5, '95', '-', '4', 'NULL', 'NULL', '-', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(6, 5, '90', '-', '-', '4', '4', '-', '4', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(7, 5, '85', '-', '-', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(8, 5, '80', '-', '-', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(9, 5, '75', '-', '-', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(10, 5, '70', '0', '3', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(11, 5, '65', 'NULL', '-', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(12, 5, '60', 'NULL', '-', '-', '3', '3', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(13, 5, '55', 'NULL', '-', '3', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(14, 5, '50', 'NULL', '-', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(15, 5, '45', 'NULL', '2', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(16, 5, '40', 'NULL', '-', '-', '-', '-', '3', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(17, 5, '35', 'NULL', '-', '-', '2', '2', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(18, 5, '30', 'NULL', '1', '2', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(19, 5, '25', 'NULL', '-', '-', '-', '1', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(20, 5, '20', 'NULL', '-', '1', '1', '-', '2', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(21, 5, '15', 'NULL', '0', '-', '-', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(22, 5, '10', 'NULL', 'NULL', '0', '-', '-', '1', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(23, 5, '5', 'NULL', 'NULL', 'NULL', '0', '-', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(24, 5, '4', 'NULL', 'NULL', 'NULL', 'NULL', '0', '-', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(25, 5, '3', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '0', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(26, 5, '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01'),
+(27, 5, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-10 15:38:01', '2025-01-10 15:38:01');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `memoria_iconicas`
+--
+
+CREATE TABLE `memoria_iconicas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `memoria_iconicas`
+--
+
+INSERT INTO `memoria_iconicas` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 9, '99', '6-10', '10', '9-10', '10', '9-10', '10', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(2, 9, '98', '-', '9', '-', '-', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(3, 9, '97', '-', '-', '-', '9', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(4, 9, '96', '-', '-', '-', '-', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(5, 9, '95', '5', '8', '-', '-', '-', '9', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(6, 9, '90', '-', '7', '8', '8', '8', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(7, 9, '85', '-', '-', '-', '-', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(8, 9, '80', '4', '6', '7', '-', '-', '8', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(9, 9, '75', '-', '-', '-', '7', '7', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(10, 9, '70', '-', '-', '-', '-', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(11, 9, '65', '3', '-', '6', '-', '-', '-', '2025-01-11 06:12:12', '2025-01-11 06:12:12'),
+(12, 9, '60', '-', '5', '-', '6', '-', '7', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(13, 9, '55', '-', '-', '-', '-', '-', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(14, 9, '50', '2', '-', '-', '-', '6', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(15, 9, '45', '-', '4', '5', '-', '-', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(16, 9, '40', '1', '-', '-', '5', '-', '6', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(17, 9, '35', '-', '-', '-', '-', '-', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(18, 9, '30', '-', '-', '-', '-', '5', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(19, 9, '25', '0', '3', '4', '4', '-', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(20, 9, '20', 'NULL', '-', '-', '-', '-', '5', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(21, 9, '15', 'NULL', '2', '3', '-', '4', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(22, 9, '10', 'NULL', '1', '-', '3', '-', '4', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(23, 9, '5', 'NULL', '-', '2', '1-2', '3', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(24, 9, '4', 'NULL', '-', '-', '-', '2', '-', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(25, 9, '3', 'NULL', '0', '-', '-', '-', '3', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(26, 9, '2', 'NULL', 'NULL', '1', '0', '0-1', '2', '2025-01-11 06:12:13', '2025-01-11 06:12:13'),
+(27, 9, '1', 'NULL', 'NULL', '0', 'NULL', 'NULL', '0-1', '2025-01-11 06:12:13', '2025-01-11 06:12:13');
 
 -- --------------------------------------------------------
 
@@ -824,7 +1636,27 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (102, '2024_11_24_114226_create_rango_pruebas_table', 1),
 (103, '2024_11_24_114244_create_pruebas_table', 1),
 (104, '2024_11_24_114300_create_item_pruebas_table', 1),
-(105, '2024_11_24_163119_create_valor_items_table', 1);
+(105, '2024_11_24_163119_create_valor_items_table', 1),
+(106, '2025_01_06_204103_sub_escalas', 2),
+(107, '2025_01_06_210850_create_desarrollo_globals_table', 3),
+(108, '2025_01_07_095624_create_desarrollo_verbals_table', 4),
+(109, '2025_01_07_101043_desarrollo_verbals', 5),
+(110, '2025_01_07_111745_create_desarrollo_no_verbals_table', 6),
+(111, '2025_01_08_234841_create_psicomotricidad_cumanins_table', 7),
+(112, '2025_01_10_102455_create_lenguaje_articulatorios_table', 8),
+(113, '2025_01_10_105954_create_lenguaje_expresivos_table', 9),
+(114, '2025_01_10_113855_create_lenguaje_comprensivos_table', 10),
+(115, '2025_01_10_133228_create_estructuracion_esapacials_table', 11),
+(116, '2025_01_10_175940_create_visopercepcions_table', 12),
+(117, '2025_01_11_011532_create_memoria_iconicas_table', 13),
+(118, '2025_01_11_021819_create_ritmos_table', 14),
+(119, '2025_01_13_173700_create_fluidez_verbals_table', 15),
+(120, '2025_01_13_224159_create_atencions_table', 16),
+(121, '2025_01_13_231509_create_lecturas_table', 17),
+(122, '2025_01_14_101540_create_escrituras_table', 18),
+(123, '2025_01_14_114337_create_dibujo_figura_humana_5años_table', 19),
+(124, '2025_01_15_104515_create_dibujo_figura_humanas_table', 20),
+(125, '2025_01_15_115557_create_interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s_table', 21);
 
 -- --------------------------------------------------------
 
@@ -2433,7 +3265,7 @@ CREATE TABLE `personal_access_tokens` (
 CREATE TABLE `pruebas` (
   `id` bigint(20) UNSIGNED NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `descripcion` varchar(255) NOT NULL,
+  `descripcion` varchar(600) NOT NULL,
   `status` varchar(255) NOT NULL,
   `tipo_prueba_id` bigint(20) UNSIGNED DEFAULT NULL,
   `area_desarrollo_id` bigint(20) UNSIGNED DEFAULT NULL,
@@ -2504,7 +3336,67 @@ INSERT INTO `pruebas` (`id`, `nombre`, `descripcion`, `status`, `tipo_prueba_id`
 (55, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 11, '2024-12-05 00:35:47', '2024-12-05 00:35:47'),
 (56, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 12, '2024-12-05 00:51:04', '2024-12-05 00:51:04'),
 (57, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 13, '2024-12-05 00:56:02', '2024-12-05 00:56:02'),
-(58, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 14, '2024-12-05 01:00:59', '2024-12-05 01:00:59');
+(58, 'Motricidad gruesa', 'Al niño se le observara en distintas sircunstancias para ver su desarrollo motor', 'activa', 1, 3, 14, '2024-12-05 01:00:59', '2024-12-05 01:00:59'),
+(59, 'CUMANIN', 'El niño debera seguir las intrucciones del especialista, esto con el fin de definir su lateralidad', 'activa', 2, 4, 24, '2025-01-19 11:59:11', '2025-01-19 11:59:11'),
+(60, 'CUMANIN', 'El especialista debe pronunciar cada palabra articulando con claridad y el niño debe repetirlas', 'activa', 2, 7, 24, '2025-01-19 23:09:54', '2025-01-19 23:09:54'),
+(61, 'CUMANIN', 'El especialista pronunciara despacio cada frase y el niño las repetira a continuacion, cada frase pronuciada  bien se valorara en 1 punto', 'activa', 2, 8, 23, '2025-01-19 23:15:54', '2025-01-19 23:15:54'),
+(62, 'CUMANIN', 'A continuación el especialista le leerá un breve cuento al niño y el deberá responder las preguntas que se le realicen al final de la lectura. \"Raquel fue al circo el domingo por la tarde. El circo estaba en la plaza. Su papá le compro palomitas. Actuó un domador de leones, que llevaba una capa, y también payasos muy divertidos. Uno de los trapecistas se cayo sobre la red, y la gente se asusto mucho. Al terminar la función la niña se marcho a casa de sus abuelos y le contó que lo que mas le había gustado fue la función de las focas\"', 'activa', 2, 9, 24, '2025-01-19 23:45:11', '2025-01-19 23:45:11'),
+(63, 'CUMANIN', 'El especialista se situara frente al niño y deberá realizar las ordenes que se le indiquen. Para la ultima tarea se usara el anexo numero uno de la prueba, en caso de que el niño no cumpla todos los objetivos de la prueba, se le pedirá que trace los puntos de la figura del anexo y se marcara con que mano lo hizo, de lo contrario si los completa deberá, seguir estas instrucciones realizando los dibujos en la parte inferior de la hoja, tomando en cuenta el punto del medio \"Dibuja dos cuadrados hacia abajo, dos cuadrados hacia la derecha, un cuadrado hacia arriba y un cuadrado hacia la izquierda\"', 'activa', 2, 10, 24, '2025-01-20 01:02:59', '2025-01-20 01:02:59'),
+(64, 'CUMANIN', 'El niño reproducirá, con un lapicero las figuras que se le representan en las tres paginas del anexo dos, no se usara borra y si se equivoca se le recomendara hacer mejor la próxima figura, se acabara la prueba cuando se reproduzcan mal cuatro imágenes seguidas. Al niño se le indicara lo siguiente \"Copia estos dibujos lo mejor que puedas\"', 'activa', 2, 11, 24, '2025-01-20 01:25:16', '2025-01-20 01:25:16'),
+(65, 'CUMANIN', 'El especialista presenta al niño una lamina con unas imagenes durante un minuto, despues se le preguntara al niño durante 90 segundos cuales eran las imagenes y el niño debe responder las que se acuerde. Al niño se le daran las siguientes instrucciones \"Te voy a enseñar una lamina con unos dibujos durante un rato, presta mucha antencion y despues me responderas los dibujjos que recuerdes\"', 'activa', 2, 12, 24, '2025-01-20 02:30:48', '2025-01-20 02:30:48');
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `psicomotricidad_cumanins`
+--
+
+CREATE TABLE `psicomotricidad_cumanins` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `psicomotricidad_cumanins`
+--
+
+INSERT INTO `psicomotricidad_cumanins` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 3, '99', '11', '10-11', '11', '11', '11', 'NULL', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(2, 3, '98', '10', '-', '-', '-', '-', 'NULL', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(3, 3, '97', '-', '-', '-', '-', '-', 'NULL', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(4, 3, '96', '9', '9', '-', '-', '-', '11', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(5, 3, '95', '8', '-', '10', '10', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(6, 3, '90', '-', '-', '-', '-', '10', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(7, 3, '85', '7', '8', '9', '-', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(8, 3, '80', '-', '-', '-', '9', '-', '10', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(9, 3, '75', '6', '-', '8', '-', '9', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(10, 3, '70', '-', '7', '-', '-', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(11, 3, '65', '-', '-', '-', '8', '-', '9', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(12, 3, '60', '-', '-', '-', '-', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(13, 3, '55', '5', '6', '-', '-', '8', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(14, 3, '50', '-', '-', '7', '-', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(15, 3, '45', '-', '-', '-', '-', '-', '8', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(16, 3, '40', '-', '-', '-', '7', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(17, 3, '35', '4', '5', '-', '-', '-', '-', '2025-01-09 04:24:00', '2025-01-09 04:24:00'),
+(18, 3, '30', '-', '-', '6', '-', '7', '-', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(19, 3, '25', '3', '-', '-', '-', '-', '-', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(20, 3, '20', '-', '4', '-', '6', '-', '7', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(21, 3, '15', '2', '-', '5', '-', '6', '-', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(22, 3, '10', '-', '-', '-', '5', '-', '6', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(23, 3, '5', '1', '3', '4', '4', '4-5', '-', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(24, 3, '4', '-', '-', '-', '3', '-', '5', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(25, 3, '3', '0', '2', '-', '2', '3', '-', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(26, 3, '2', 'NULL', '1', '3', '1', '2', '4', '2025-01-09 04:24:01', '2025-01-09 04:24:01'),
+(27, 3, '1', 'NULL', '0', '0-2', '0', '0-1', '0-3', '2025-01-09 04:24:01', '2025-01-09 04:24:01');
 
 -- --------------------------------------------------------
 
@@ -2545,7 +3437,9 @@ INSERT INTO `rango_pruebas` (`id`, `rango_edad`, `created_at`, `updated_at`) VAL
 (19, '37-42 meses', '2024-12-02 01:49:42', '2024-12-02 01:49:42'),
 (20, '43-48 meses', '2024-12-02 01:50:00', '2024-12-02 01:50:00'),
 (21, '49-60 meses', '2024-12-02 01:50:13', '2024-12-02 01:50:13'),
-(22, '61-72 meses', '2024-12-02 01:50:31', '2024-12-02 01:50:31');
+(22, '61-72 meses', '2024-12-02 01:50:31', '2024-12-02 01:50:31'),
+(23, '36-86 meses', '2025-01-19 11:29:01', '2025-01-19 11:29:01'),
+(24, '36-78 meses', '2025-01-19 12:01:16', '2025-01-19 12:01:16');
 
 -- --------------------------------------------------------
 
@@ -2576,6 +3470,59 @@ INSERT INTO `representantes` (`id`, `nombre`, `apellido`, `ci`, `telefono`, `ema
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `ritmos`
+--
+
+CREATE TABLE `ritmos` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `ritmos`
+--
+
+INSERT INTO `ritmos` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(28, 10, '99', '4-7', '6-7', '5-7', '6-7', '7', '7', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(29, 10, '98', '-', '5', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(30, 10, '97', '3', '-', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(31, 10, '96', '-', '4', '-', '-', '6', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(32, 10, '95', '-', '-', '4', '5', '-', '6', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(33, 10, '90', '2', '3', '-', '-', '5', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(34, 10, '85', '-', '-', '3', '4', '-', '5', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(35, 10, '80', '-', '-', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(36, 10, '75', '-', '2', '-', '-', '4', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(37, 10, '70', '1', '-', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(38, 10, '65', '-', '-', '2', '3', '-', '4', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(39, 10, '60', '-', '1', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(40, 10, '55', '-', '-', '-', '-', '3', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(41, 10, '50', '-', '-', '-', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(42, 10, '45', '-', '-', '-', '2', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(43, 10, '40', '-', '-', '1', '-', '-', '-', '2025-01-13 21:49:05', '2025-01-13 21:49:05'),
+(44, 10, '35', '-', '-', '-', '-', '-', '3', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(45, 10, '30', '0', '-', '-', '-', '2', '-', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(46, 10, '25', 'NULL', '0', '-', '1', '-', '-', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(47, 10, '20', 'NULL', 'NULL', '-', '-', '-', '2', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(48, 10, '15', 'NULL', 'NULL', '0', '-', '1', '-', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(49, 10, '10', 'NULL', 'NULL', 'NULL', '0', '-', '', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(50, 10, '5', 'NULL', 'NULL', 'NULL', 'NULL', '-', '1', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(51, 10, '4', 'NULL', 'NULL', 'NULL', 'NULL', '0', '-', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(52, 10, '3', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '-', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(53, 10, '2', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '0', '2025-01-13 21:49:06', '2025-01-13 21:49:06'),
+(54, 10, '1', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', 'NULL', '2025-01-13 21:49:06', '2025-01-13 21:49:06');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `secretarias`
 --
 
@@ -2597,6 +3544,41 @@ CREATE TABLE `secretarias` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `sub_escalas`
+--
+
+CREATE TABLE `sub_escalas` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `prueba` varchar(255) NOT NULL,
+  `escala` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `sub_escalas`
+--
+
+INSERT INTO `sub_escalas` (`id`, `prueba`, `escala`, `created_at`, `updated_at`) VALUES
+(1, 'CUMANIN', 'Desarrollo Verbal', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(2, 'CUMANIN', 'Desarrollo no Verbal', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(3, 'CUMANIN', 'Psicomotricidad', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(4, 'CUMANIN', 'Lenguaje Articulatorio', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(5, 'CUMANIN', 'Lenguaje Expresivo', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(6, 'CUMANIN', 'Lenguaje Comprensivo', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(7, 'CUMANIN', 'Estructuracion Espacial', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(8, 'CUMANIN', 'Visopercepcion', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(9, 'CUMANIN', 'Memoria Iconica', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(10, 'CUMANIN', 'Ritmo', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(11, 'CUMANIN', 'Fluidez Verbal', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(12, 'CUMANIN', 'Atencion', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(13, 'CUMANIN', 'Lectura', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(14, 'CUMANIN', 'Escritura', '2025-01-07 01:07:28', '2025-01-07 01:07:28'),
+(15, 'KOPPITZ', 'Dibujo Figura Humana', NULL, NULL);
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `tipo_pruebas`
 --
 
@@ -2612,7 +3594,8 @@ CREATE TABLE `tipo_pruebas` (
 --
 
 INSERT INTO `tipo_pruebas` (`id`, `tipo`, `created_at`, `updated_at`) VALUES
-(1, 'guia observacion', '2024-11-30 14:15:41', '2024-11-30 14:15:41');
+(1, 'guia observacion', '2024-11-30 14:15:41', '2024-11-30 14:15:41'),
+(2, 'Estandarizada', '2025-01-19 11:40:18', '2025-01-19 11:40:18');
 
 -- --------------------------------------------------------
 
@@ -2637,7 +3620,9 @@ CREATE TABLE `users` (
 
 INSERT INTO `users` (`id`, `name`, `email`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
 (1, 'ivana', 'galenoivana9@gmail.com', NULL, '$2y$10$Rgtu.nlYvkYYLUIdXthBsOvl.9NiuKHbBpaXgvWXc6Kv2GeffwDxu', NULL, '2024-11-30 14:09:17', '2024-11-30 14:09:17'),
-(2, 'marta juanchez', 'mjj@gmail.com', NULL, '$2y$10$.Q8s/jI70yejl0n4WufOoeuUgbeAJBb1xM4wLn7V.f3EiePkLoCKS', NULL, '2024-12-10 02:53:22', '2024-12-10 02:53:22');
+(2, 'marta juanchez', 'mjj@gmail.com', NULL, '$2y$10$.Q8s/jI70yejl0n4WufOoeuUgbeAJBb1xM4wLn7V.f3EiePkLoCKS', NULL, '2024-12-10 02:53:22', '2024-12-10 02:53:22'),
+(3, 'maria', 'maria@gmail.com', NULL, '$2y$10$CzaBdhq5aBMX/chAaN1E.uTZCuuMzUTsBu7g0TsKHLCANLRIR6/Dm', NULL, '2025-01-06 15:35:02', '2025-01-06 15:35:02'),
+(4, 'maria', 'ffff@gmail.com', NULL, '$2y$10$AAPHiFTCowk4676BVn9mDOhcVtn2ZYnCvPB6Djm/warCEEfolyb.a', NULL, '2025-01-06 15:44:20', '2025-01-06 15:44:20');
 
 -- --------------------------------------------------------
 
@@ -2653,6 +3638,59 @@ CREATE TABLE `valor_items` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `visopercepcions`
+--
+
+CREATE TABLE `visopercepcions` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `sub_escala_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `percentil` varchar(255) NOT NULL,
+  `36-42 meses` varchar(255) NOT NULL,
+  `43-48 meses` varchar(255) NOT NULL,
+  `49-54 meses` varchar(255) NOT NULL,
+  `55-60 meses` varchar(255) NOT NULL,
+  `61-66 meses` varchar(255) NOT NULL,
+  `67-78 meses` varchar(255) NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Volcado de datos para la tabla `visopercepcions`
+--
+
+INSERT INTO `visopercepcions` (`id`, `sub_escala_id`, `percentil`, `36-42 meses`, `43-48 meses`, `49-54 meses`, `55-60 meses`, `61-66 meses`, `67-78 meses`, `created_at`, `updated_at`) VALUES
+(1, 8, '99', '3-15', '9-15', '14-15', '15', '15', 'NULL', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(2, 8, '98', '-', '-', '13', '14', '-', 'NULL', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(3, 8, '97', '-', '8', '12', '-', '-', '15', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(4, 8, '96', '-', '-', '-', '13', '14', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(5, 8, '95', '2', '7', '10-11', '12', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(6, 8, '90', '-', '6', '9', '11', '13', '14', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(7, 8, '85', '-', '5', '-', '10', '12', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(8, 8, '80', '1', '-', '8', '-', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(9, 8, '75', '-', '-', '7', '9', '11', '13', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(10, 8, '70', '-', '4', '6', '-', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(11, 8, '65', '-', '-', '-', '8', '10', '12', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(12, 8, '60', '-', '3', '-', '-', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(13, 8, '55', '-', '-', '5', '7', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(14, 8, '50', '-', '-', '-', '-', '9', '11', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(15, 8, '45', '0', '2', '-', '6', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(16, 8, '40', 'NULL', '-', '4', '-', '8', '10', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(17, 8, '35', 'NULL', '1', '-', '5', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(18, 8, '30', 'NULL', '-', '-', '-', '7', '9', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(19, 8, '25', 'NULL', '-', '3', '-', '-', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(20, 8, '20', 'NULL', '-', '-', '4', '6', '-', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(21, 8, '15', 'NULL', '0', '2', '3', '5', '8', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(22, 8, '10', 'NULL', 'NULL', '1', '2', '4', '7', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(23, 8, '5', 'NULL', 'NULL', '-', '1', '2-3', '6', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(24, 8, '4', 'NULL', 'NULL', '-', '-', '1', '5', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(25, 8, '3', 'NULL', 'NULL', '0', '-', '-', '4', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(26, 8, '2', 'NULL', 'NULL', 'NULL', '0', '-', '2-3', '2025-01-11 04:55:57', '2025-01-11 04:55:57'),
+(27, 8, '1', 'NULL', 'NULL', 'NULL', 'NULL', '0', '0', '2025-01-11 04:55:57', '2025-01-11 04:55:57');
 
 --
 -- Índices para tablas volcadas
@@ -2671,6 +3709,13 @@ ALTER TABLE `area_desarrollos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `atencions`
+--
+ALTER TABLE `atencions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `atencions_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- Indices de la tabla `citas`
 --
 ALTER TABLE `citas`
@@ -2685,6 +3730,33 @@ ALTER TABLE `datos_economicos`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `desarrollo_globals`
+--
+ALTER TABLE `desarrollo_globals`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indices de la tabla `desarrollo_no_verbals`
+--
+ALTER TABLE `desarrollo_no_verbals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `desarrollo_no_verbals_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `desarrollo_verbals`
+--
+ALTER TABLE `desarrollo_verbals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `desarrollo_verbals_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `dibujo_figura_humanas`
+--
+ALTER TABLE `dibujo_figura_humanas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `dibujo_figura_humanas_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- Indices de la tabla `direccions`
 --
 ALTER TABLE `direccions`
@@ -2692,6 +3764,13 @@ ALTER TABLE `direccions`
   ADD KEY `direccions_estado_id_foreign` (`estado_id`),
   ADD KEY `direccions_municipio_id_foreign` (`municipio_id`),
   ADD KEY `direccions_parroquia_id_foreign` (`parroquia_id`);
+
+--
+-- Indices de la tabla `escrituras`
+--
+ALTER TABLE `escrituras`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `escrituras_sub_escala_id_foreign` (`sub_escala_id`);
 
 --
 -- Indices de la tabla `especialidads`
@@ -2715,11 +3794,25 @@ ALTER TABLE `estados`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `estructuracion_esapacials`
+--
+ALTER TABLE `estructuracion_esapacials`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `estructuracion_esapacials_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- Indices de la tabla `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `failed_jobs_uuid_unique` (`uuid`);
+
+--
+-- Indices de la tabla `fluidez_verbals`
+--
+ALTER TABLE `fluidez_verbals`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fluidez_verbals_sub_escala_id_foreign` (`sub_escala_id`);
 
 --
 -- Indices de la tabla `generos`
@@ -2750,11 +3843,52 @@ ALTER TABLE `historia_escolars`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indices de la tabla `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+--
+ALTER TABLE `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indices de la tabla `item_pruebas`
 --
 ALTER TABLE `item_pruebas`
   ADD PRIMARY KEY (`id`),
   ADD KEY `item_pruebas_prueba_id_foreign` (`prueba_id`);
+
+--
+-- Indices de la tabla `lecturas`
+--
+ALTER TABLE `lecturas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lecturas_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `lenguaje_articulatorios`
+--
+ALTER TABLE `lenguaje_articulatorios`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lenguaje_articulatorios_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `lenguaje_comprensivos`
+--
+ALTER TABLE `lenguaje_comprensivos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lenguaje_comprensivos_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `lenguaje_expresivos`
+--
+ALTER TABLE `lenguaje_expresivos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `lenguaje_expresivos_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
+-- Indices de la tabla `memoria_iconicas`
+--
+ALTER TABLE `memoria_iconicas`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `memoria_iconicas_sub_escala_id_foreign` (`sub_escala_id`);
 
 --
 -- Indices de la tabla `migrations`
@@ -2817,6 +3951,13 @@ ALTER TABLE `pruebas`
   ADD KEY `pruebas_rango_prueba_id_foreign` (`rango_prueba_id`);
 
 --
+-- Indices de la tabla `psicomotricidad_cumanins`
+--
+ALTER TABLE `psicomotricidad_cumanins`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `psicomotricidad_cumanins_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- Indices de la tabla `rango_pruebas`
 --
 ALTER TABLE `rango_pruebas`
@@ -2831,12 +3972,25 @@ ALTER TABLE `representantes`
   ADD KEY `representantes_direccion_id_foreign` (`direccion_id`);
 
 --
+-- Indices de la tabla `ritmos`
+--
+ALTER TABLE `ritmos`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ritmos_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- Indices de la tabla `secretarias`
 --
 ALTER TABLE `secretarias`
   ADD PRIMARY KEY (`id`),
   ADD KEY `secretarias_genero_id_foreign` (`genero_id`),
   ADD KEY `secretarias_direccion_id_foreign` (`direccion_id`);
+
+--
+-- Indices de la tabla `sub_escalas`
+--
+ALTER TABLE `sub_escalas`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indices de la tabla `tipo_pruebas`
@@ -2859,6 +4013,13 @@ ALTER TABLE `valor_items`
   ADD KEY `valor_items_item_prueba_id_foreign` (`item_prueba_id`);
 
 --
+-- Indices de la tabla `visopercepcions`
+--
+ALTER TABLE `visopercepcions`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `visopercepcions_sub_escala_id_foreign` (`sub_escala_id`);
+
+--
 -- AUTO_INCREMENT de las tablas volcadas
 --
 
@@ -2872,7 +4033,13 @@ ALTER TABLE `antecedente_medicos`
 -- AUTO_INCREMENT de la tabla `area_desarrollos`
 --
 ALTER TABLE `area_desarrollos`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=18;
+
+--
+-- AUTO_INCREMENT de la tabla `atencions`
+--
+ALTER TABLE `atencions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `citas`
@@ -2887,10 +4054,40 @@ ALTER TABLE `datos_economicos`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `desarrollo_globals`
+--
+ALTER TABLE `desarrollo_globals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `desarrollo_no_verbals`
+--
+ALTER TABLE `desarrollo_no_verbals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `desarrollo_verbals`
+--
+ALTER TABLE `desarrollo_verbals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `dibujo_figura_humanas`
+--
+ALTER TABLE `dibujo_figura_humanas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
 -- AUTO_INCREMENT de la tabla `direccions`
 --
 ALTER TABLE `direccions`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT de la tabla `escrituras`
+--
+ALTER TABLE `escrituras`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `especialidads`
@@ -2911,10 +4108,22 @@ ALTER TABLE `estados`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
+-- AUTO_INCREMENT de la tabla `estructuracion_esapacials`
+--
+ALTER TABLE `estructuracion_esapacials`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
 -- AUTO_INCREMENT de la tabla `failed_jobs`
 --
 ALTER TABLE `failed_jobs`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT de la tabla `fluidez_verbals`
+--
+ALTER TABLE `fluidez_verbals`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
 
 --
 -- AUTO_INCREMENT de la tabla `generos`
@@ -2941,16 +4150,52 @@ ALTER TABLE `historia_escolars`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+--
+ALTER TABLE `interpretacion_puntajes_optenidos__k_o_p_p_i_t_z_s`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT de la tabla `item_pruebas`
 --
 ALTER TABLE `item_pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=380;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=461;
+
+--
+-- AUTO_INCREMENT de la tabla `lecturas`
+--
+ALTER TABLE `lecturas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+
+--
+-- AUTO_INCREMENT de la tabla `lenguaje_articulatorios`
+--
+ALTER TABLE `lenguaje_articulatorios`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `lenguaje_comprensivos`
+--
+ALTER TABLE `lenguaje_comprensivos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `lenguaje_expresivos`
+--
+ALTER TABLE `lenguaje_expresivos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
+-- AUTO_INCREMENT de la tabla `memoria_iconicas`
+--
+ALTER TABLE `memoria_iconicas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=106;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
 
 --
 -- AUTO_INCREMENT de la tabla `municipios`
@@ -2986,13 +4231,19 @@ ALTER TABLE `personal_access_tokens`
 -- AUTO_INCREMENT de la tabla `pruebas`
 --
 ALTER TABLE `pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=66;
+
+--
+-- AUTO_INCREMENT de la tabla `psicomotricidad_cumanins`
+--
+ALTER TABLE `psicomotricidad_cumanins`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `rango_pruebas`
 --
 ALTER TABLE `rango_pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `representantes`
@@ -3001,22 +4252,34 @@ ALTER TABLE `representantes`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
+-- AUTO_INCREMENT de la tabla `ritmos`
+--
+ALTER TABLE `ritmos`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=55;
+
+--
 -- AUTO_INCREMENT de la tabla `secretarias`
 --
 ALTER TABLE `secretarias`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `sub_escalas`
+--
+ALTER TABLE `sub_escalas`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
 -- AUTO_INCREMENT de la tabla `tipo_pruebas`
 --
 ALTER TABLE `tipo_pruebas`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT de la tabla `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT de la tabla `valor_items`
@@ -3025,8 +4288,20 @@ ALTER TABLE `valor_items`
   MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `visopercepcions`
+--
+ALTER TABLE `visopercepcions`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+
+--
 -- Restricciones para tablas volcadas
 --
+
+--
+-- Filtros para la tabla `atencions`
+--
+ALTER TABLE `atencions`
+  ADD CONSTRAINT `atencions_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `citas`
@@ -3034,6 +4309,24 @@ ALTER TABLE `valor_items`
 ALTER TABLE `citas`
   ADD CONSTRAINT `citas_especialista_id_foreign` FOREIGN KEY (`especialista_id`) REFERENCES `especialistas` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `citas_paciente_id_foreign` FOREIGN KEY (`paciente_id`) REFERENCES `pacientes` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `desarrollo_no_verbals`
+--
+ALTER TABLE `desarrollo_no_verbals`
+  ADD CONSTRAINT `desarrollo_no_verbals_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `desarrollo_verbals`
+--
+ALTER TABLE `desarrollo_verbals`
+  ADD CONSTRAINT `desarrollo_verbals_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `dibujo_figura_humanas`
+--
+ALTER TABLE `dibujo_figura_humanas`
+  ADD CONSTRAINT `dibujo_figura_humanas_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `direccions`
@@ -3044,12 +4337,30 @@ ALTER TABLE `direccions`
   ADD CONSTRAINT `direccions_parroquia_id_foreign` FOREIGN KEY (`parroquia_id`) REFERENCES `parroquias` (`id`) ON DELETE CASCADE;
 
 --
+-- Filtros para la tabla `escrituras`
+--
+ALTER TABLE `escrituras`
+  ADD CONSTRAINT `escrituras_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `especialistas`
 --
 ALTER TABLE `especialistas`
   ADD CONSTRAINT `especialistas_direccion_id_foreign` FOREIGN KEY (`direccion_id`) REFERENCES `direccions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `especialistas_especialidad_id_foreign` FOREIGN KEY (`especialidad_id`) REFERENCES `especialidads` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `especialistas_genero_id_foreign` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `estructuracion_esapacials`
+--
+ALTER TABLE `estructuracion_esapacials`
+  ADD CONSTRAINT `estructuracion_esapacials_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `fluidez_verbals`
+--
+ALTER TABLE `fluidez_verbals`
+  ADD CONSTRAINT `fluidez_verbals_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `historia_clinicas`
@@ -3065,6 +4376,36 @@ ALTER TABLE `historia_clinicas`
 --
 ALTER TABLE `item_pruebas`
   ADD CONSTRAINT `item_pruebas_prueba_id_foreign` FOREIGN KEY (`prueba_id`) REFERENCES `pruebas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `lecturas`
+--
+ALTER TABLE `lecturas`
+  ADD CONSTRAINT `lecturas_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `lenguaje_articulatorios`
+--
+ALTER TABLE `lenguaje_articulatorios`
+  ADD CONSTRAINT `lenguaje_articulatorios_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `lenguaje_comprensivos`
+--
+ALTER TABLE `lenguaje_comprensivos`
+  ADD CONSTRAINT `lenguaje_comprensivos_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `lenguaje_expresivos`
+--
+ALTER TABLE `lenguaje_expresivos`
+  ADD CONSTRAINT `lenguaje_expresivos_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `memoria_iconicas`
+--
+ALTER TABLE `memoria_iconicas`
+  ADD CONSTRAINT `memoria_iconicas_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `municipios`
@@ -3102,11 +4443,23 @@ ALTER TABLE `pruebas`
   ADD CONSTRAINT `pruebas_tipo_prueba_id_foreign` FOREIGN KEY (`tipo_prueba_id`) REFERENCES `tipo_pruebas` (`id`) ON DELETE CASCADE;
 
 --
+-- Filtros para la tabla `psicomotricidad_cumanins`
+--
+ALTER TABLE `psicomotricidad_cumanins`
+  ADD CONSTRAINT `psicomotricidad_cumanins_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
+
+--
 -- Filtros para la tabla `representantes`
 --
 ALTER TABLE `representantes`
   ADD CONSTRAINT `representantes_direccion_id_foreign` FOREIGN KEY (`direccion_id`) REFERENCES `direccions` (`id`) ON DELETE CASCADE,
   ADD CONSTRAINT `representantes_genero_id_foreign` FOREIGN KEY (`genero_id`) REFERENCES `generos` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `ritmos`
+--
+ALTER TABLE `ritmos`
+  ADD CONSTRAINT `ritmos_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 
 --
 -- Filtros para la tabla `secretarias`
@@ -3120,6 +4473,12 @@ ALTER TABLE `secretarias`
 --
 ALTER TABLE `valor_items`
   ADD CONSTRAINT `valor_items_item_prueba_id_foreign` FOREIGN KEY (`item_prueba_id`) REFERENCES `item_pruebas` (`id`) ON DELETE CASCADE;
+
+--
+-- Filtros para la tabla `visopercepcions`
+--
+ALTER TABLE `visopercepcions`
+  ADD CONSTRAINT `visopercepcions_sub_escala_id_foreign` FOREIGN KEY (`sub_escala_id`) REFERENCES `sub_escalas` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

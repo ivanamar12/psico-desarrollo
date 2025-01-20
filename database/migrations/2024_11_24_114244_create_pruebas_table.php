@@ -16,7 +16,7 @@ class CreatePruebasTable extends Migration
         Schema::create('pruebas', function (Blueprint $table) {
             $table->id();
             $table->string('nombre',);
-            $table->string('descripcion',);
+            $table->string('descripcion',600);
             $table->string('status',);
             $table->unsignedBigInteger('tipo_prueba_id')->nullable();
             $table->foreign('tipo_prueba_id')->references('id')->on('tipo_pruebas')->onDelete('cascade');

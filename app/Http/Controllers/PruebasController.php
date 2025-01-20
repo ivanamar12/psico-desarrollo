@@ -132,7 +132,7 @@ class PruebasController extends Controller
         // Validación de los datos
         $request->validate([
             'nombre' => 'required|string|max:255',
-            'descripcion' => 'required|string|max:255',
+            'descripcion' => 'required|string|max:600',
             'area_desarrollo_id' => 'required|exists:area_desarrollos,id',
             'tipo_prueba_id' => 'required|exists:tipo_pruebas,id',
             'rango_edad_id' => 'required|exists:rango_pruebas,id',

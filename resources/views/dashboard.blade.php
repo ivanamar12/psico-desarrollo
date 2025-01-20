@@ -5,7 +5,6 @@
 @section('content')
 <
 <section class="full-box dashboard-contentPage">
-		<!-- NavBar -->
 		<nav class="full-box dashboard-Navbar">
 			<ul class="full-box list-unstyled text-right">
 				<li class="pull-left">
