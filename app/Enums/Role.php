@@ -9,24 +9,24 @@ enum Role: string
   use BaseEnum;
 
   case ADMIN = 'ADMIN';
-  case DELIVERY_MAN = 'DELIVERY_MAN';
-  case CUSTOMER = 'CUSTOMER';
+  case SPECIALIST = 'SPECIALIST';
+  case SECRETARY = 'SECRETARY';
 
   public static function translation()
   {
     return [
       'ADMIN' => 'ADMIN',
-      'DELIVERY_MAN' => 'REPARTIDOR',
-      'CUSTOMER' => 'CLIENTE',
+      'SPECIALIST' => 'ESPECIALISTA',
+      'SECRETARY' => 'SECRETARIA',
     ];
   }
 
   public function label(): string
   {
     return match ($this) {
-      static::ADMIN => 'Writers',
-      static::DELIVERY_MAN => 'Editors',
-      static::CUSTOMER => 'User Managers',
+      static::ADMIN => 'ADMIN',
+      static::SPECIALIST => 'SPECIALIST',
+      static::SECRETARY => 'SECRETARY',
     };
   }
 }
