@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
+
 <body>
   <!-- Header -->
   <header>
@@ -18,18 +20,21 @@
         <li><a href="#servicios">Servicios</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
+
       <!-- Botones para los modales -->
       @guest
+      <div class="auth-buttons">
         <a href="#" class="btn" id="open-login-modal">Iniciar Sesión</a>
         <a href="#" class="btn" id="open-register-modal">Regístrate</a>
+      </div>
       @else
-        <a href="{{ route('logout') }}" class="btn" 
-          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-          Cerrar Sesión
-        </a>
-        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-          @csrf
-        </form>
+      <a href="{{ route('logout') }}" class="btn"
+        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+        Cerrar Sesión
+      </a>
+      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+        @csrf
+      </form>
       @endguest
     </nav>
   </header>
@@ -43,60 +48,60 @@
     </div>
   </section>
 
-    <!-- Áreas de Desarrollo -->
-<section id="areas" class="development-areas">
-  <h2>Áreas de Desarrollo Infantil</h2>
-  <div class="grid">
-    <div class="area">
-      <img src="{{ asset('assets/img/image.jpg') }}" alt="Desarrollo Cognitivo">
-      <h3>Desarrollo Cognitivo</h3>
-      <p>Potenciamos el aprendizaje y la creatividad.</p>
+  <!-- Áreas de Desarrollo -->
+  <section id="areas" class="development-areas">
+    <h2>Áreas de Desarrollo Infantil</h2>
+    <div class="grid">
+      <div class="area">
+        <img src="{{ asset('assets/img/image.jpg') }}" alt="Desarrollo Cognitivo">
+        <h3>Desarrollo Cognitivo</h3>
+        <p>Potenciamos el aprendizaje y la creatividad.</p>
+      </div>
+      <div class="area">
+        <img src="{{ asset('assets/img/image8.jpg') }}" alt="Desarrollo Motor">
+        <h3>Desarrollo Motor</h3>
+        <p>Estimulación física para fortalecer habilidades motoras.</p>
+      </div>
+      <div class="area">
+        <img src="{{ asset('assets/img/image4.png') }}" alt="Desarrollo del Lenguaje">
+        <h3>Desarrollo del Lenguaje</h3>
+        <p>Fomentamos habilidades de comunicación y expresión.</p>
+      </div>
+      <div class="area">
+        <img src="{{ asset('assets/img/image6.jpeg') }}" alt="Desarrollo Social">
+        <h3>Desarrollo Social</h3>
+        <p>Impulsamos la empatía y las relaciones sociales.</p>
+      </div>
+      <div class="area">
+        <img src="{{ asset('assets/img/image2.jpg') }}" alt="Desarrollo Sensorial">
+        <h3>Desarrollo Sensorial</h3>
+        <p>Exploración y aprendizaje a través de los sentidos.</p>
+      </div>
     </div>
-    <div class="area">
-      <img src="{{ asset('assets/img/image8.jpg') }}" alt="Desarrollo Motor">
-      <h3>Desarrollo Motor</h3>
-      <p>Estimulación física para fortalecer habilidades motoras.</p>
-    </div>
-    <div class="area">
-      <img src="{{ asset('assets/img/image4.png') }}" alt="Desarrollo del Lenguaje">
-      <h3>Desarrollo del Lenguaje</h3>
-      <p>Fomentamos habilidades de comunicación y expresión.</p>
-    </div>
-    <div class="area">
-      <img src="{{ asset('assets/img/image6.jpeg') }}" alt="Desarrollo Social">
-      <h3>Desarrollo Social</h3>
-      <p>Impulsamos la empatía y las relaciones sociales.</p>
-    </div>
-    <div class="area">
-      <img src="{{ asset('assets/img/image2.jpg') }}" alt="Desarrollo Sensorial">
-      <h3>Desarrollo Sensorial</h3>
-      <p>Exploración y aprendizaje a través de los sentidos.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
-   <!-- Servicios -->
-<section id="servicios" class="services">
-  <h2>Nuestros Servicios</h2>
-  <p>Descubre todo lo que ofrecemos:</p>
-  <div class="services-list">
-    <div class="service-card">
-      <img src="{{ asset('assets/img/image10.jpg') }}" alt="Gestión de Historias">
-      <h4>Gestión de Historias</h4>
-      <p>Registra y organiza la información de cada niño.</p>
+  <!-- Servicios -->
+  <section id="servicios" class="services">
+    <h2>Nuestros Servicios</h2>
+    <p>Descubre todo lo que ofrecemos:</p>
+    <div class="services-list">
+      <div class="service-card">
+        <img src="{{ asset('assets/img/image10.jpg') }}" alt="Gestión de Historias">
+        <h4>Gestión de Historias</h4>
+        <p>Registra y organiza la información de cada niño.</p>
+      </div>
+      <div class="service-card">
+        <img src="{{ asset('assets/img/image11.jpg') }}" alt="Evaluaciones Psicológicas">
+        <h4>Evaluaciones Psicológicas</h4>
+        <p>Pruebas personalizadas para cada etapa de desarrollo.</p>
+      </div>
+      <div class="service-card">
+        <img src="{{ asset('assets/img/image12.jpeg') }}" alt="Informes Detallados">
+        <h4>Informes Detallados</h4>
+        <p>Obtén diagnósticos claros y orientados a resultados.</p>
+      </div>
     </div>
-    <div class="service-card">
-      <img src="{{ asset('assets/img/image11.jpg') }}" alt="Evaluaciones Psicológicas">
-      <h4>Evaluaciones Psicológicas</h4>
-      <p>Pruebas personalizadas para cada etapa de desarrollo.</p>
-    </div>
-    <div class="service-card">
-      <img src="{{ asset('assets/img/image12.jpeg') }}" alt="Informes Detallados">
-      <h4>Informes Detallados</h4>
-      <p>Obtén diagnósticos claros y orientados a resultados.</p>
-    </div>
-  </div>
-</section>
+  </section>
 
   <!-- Contacto -->
   <section id="contacto" class="contact">
@@ -118,13 +123,13 @@
         <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
         <button type="submit" class="btn">Entrar</button>
         @if ($errors->any())
-          <div class="error-messages">
-            <ul>
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
+        <div class="error-messages">
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
         @endif
       </form>
     </div>
@@ -147,13 +152,13 @@
         <input type="password" id="password-confirm" name="password_confirmation" placeholder="Confirme su contraseña" required>
         <button type="submit" class="btn">Registrarse</button>
         @if ($errors->any())
-          <div class="error-messages">
-            <ul>
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div>
+        <div class="error-messages">
+          <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+          </ul>
+        </div>
         @endif
       </form>
     </div>
@@ -196,4 +201,5 @@
     });
   </script>
 </body>
+
 </html>
