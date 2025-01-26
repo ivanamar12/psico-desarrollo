@@ -34,6 +34,12 @@ require __DIR__ . '/specialist.php';
  */
 require __DIR__ . '/secretary.php';
 
+Route::middleware(['auth', 'role:ADMIN'])->group(function () {
+  // Audit Logs
+  Route::get('bitacora', [AuditLogController::class, 'index'])
+    ->name('bitacora.index');
+});
+
 Route::middleware('auth')->group(function () {
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
@@ -128,10 +134,6 @@ Route::middleware('auth')->group(function () {
   // Ruta para la lista de pruebas
   Route::get('pruebas', [PruebasController::class, 'index'])
     ->name('pruebas.index');
-
-  // Ruta para la lista de pruebas
-  Route::get('bitacora', [AuditLogController::class, 'index'])
-    ->name('bitacora.index');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
