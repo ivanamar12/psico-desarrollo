@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class EspecialidadController extends Controller
 {
-    public function store(Request $request)
-    {
-        $validatedData = $request->validate([
-            'especialidad' => 'required|string|max:30|unique:especialidads', // Asegúrate de que el nombre de la tabla sea correcto
-        ]);
+  public function store(Request $request)
+  {
+    $validatedData = $request->validate([
+      'especialidad' => 'required|string|max:30|unique:especialidads', // Asegúrate de que el nombre de la tabla sea correcto
+    ]);
 
-        Especialidad::create([
-            'especialidad' => $validatedData['especialidad'],
-        ]);
+    Especialidad::create([
+      'especialidad' => $validatedData['especialidad'],
+    ]);
 
-        return response()->json(['success' => true, 'message' => 'Especialidad registrada con éxito']);
-    }
+    return response()->json(['success' => true, 'message' => 'Especialidad registrada con éxito']);
+  }
 }

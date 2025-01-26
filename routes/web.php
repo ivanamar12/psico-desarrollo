@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuditLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\PacienteController;
@@ -127,6 +128,10 @@ Route::middleware('auth')->group(function () {
   // Ruta para la lista de pruebas
   Route::get('pruebas', [PruebasController::class, 'index'])
     ->name('pruebas.index');
+
+  // Ruta para la lista de pruebas
+  Route::get('bitacora', [AuditLogController::class, 'index'])
+    ->name('bitacora.index');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
