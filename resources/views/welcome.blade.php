@@ -39,7 +39,9 @@
       @guest
       <div class="auth-buttons">
         <a href="#" class="btn" id="open-login-modal">Iniciar Sesión</a>
-        <a href="#" class="btn" id="open-register-modal">Regístrate</a>
+        <!-- 
+          <a href="#" class="btn" id="open-register-modal">Regístrate</a>
+        -->
       </div>
       @else
       <a href="{{ route('logout') }}" class="btn"
