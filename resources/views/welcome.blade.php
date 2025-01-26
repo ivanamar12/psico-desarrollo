@@ -10,6 +10,20 @@
 </head>
 
 <body>
+
+  <!-- Notification -->
+  @if ($errors->any())
+  <div class="notification">
+    <span class="icon">⚠️</span>
+    <div class="notification-content">
+      @foreach ($errors->all() as $error)
+      <span>{{ $error }}</span>
+      @endforeach
+    </div>
+    <button class="close-btn">&times;</button>
+  </div>
+  @endif
+
   <!-- Header -->
   <header>
     <nav class="navbar">
@@ -122,15 +136,6 @@
         <label for="password-login">Contraseña:</label>
         <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
         <button type="submit" class="btn">Entrar</button>
-        @if ($errors->any())
-        <div class="error-messages">
-          <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-        @endif
       </form>
     </div>
   </div>
@@ -151,15 +156,6 @@
         <label for="password-confirm">Confirmar Contraseña:</label>
         <input type="password" id="password-confirm" name="password_confirmation" placeholder="Confirme su contraseña" required>
         <button type="submit" class="btn">Registrarse</button>
-        @if ($errors->any())
-        <div class="error-messages">
-          <ul>
-            @foreach ($errors->all() as $error)
-            <li>{{ $error }}</li>
-            @endforeach
-          </ul>
-        </div>
-        @endif
       </form>
     </div>
   </div>
@@ -198,6 +194,15 @@
     window.addEventListener('click', (e) => {
       if (e.target === loginModal) loginModal.style.display = 'none';
       if (e.target === registerModal) registerModal.style.display = 'none';
+    });
+  </script>
+
+  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script>
+    $(document).ready(function() {
+      $('.close-btn').click(function() {
+        $('.notification').fadeOut(300); // Desvanecimiento más suave
+      });
     });
   </script>
 </body>
