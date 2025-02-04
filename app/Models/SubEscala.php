@@ -9,90 +9,23 @@ class SubEscala extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['prueba','escala'];
+    protected $fillable = ['prueba_id', 'sub_escala', 'descripcion'];
 
+    public function prueba(){
 
-    public function desarrolloVerbals(){
-
-    	return $this->hasMany(DesarrolloVerbal::class);
-    	 
+        return $this->belongsTo(Prueba::class);
+        
     }
 
-    public function desarrolloNoVerbals(){
+    public function Items(){
 
-    	return $this->hasMany(DesarrolloNoVerbal::class);
-    	 
+    	return $this->hasMany(Item::class);
+    	
     }
 
-    public function psicomotricidadCumanins(){
+    public function Baremos(){
 
-    	return $this->hasMany(PsicomotricidadCumanin::class);
-    	 
-    }
-
-    public function lenguajeArticulatorios(){
-
-    	return $this->hasMany(LenguajeArticulatorio::class);
-    	 
-    }
-
-    public function lenguajeExpresivos(){
-
-    	return $this->hasMany(LenguajeExpresivo::class);
-    	 
-    }
-
-    public function lenguajeComprensivos(){
-
-    	return $this->hasMany(LenguajeComprensivo::class);
-    	 
-    }
-
-    public function estructuracionEsapacials(){
-
-    	return $this->hasMany(EstructuracionEsapacial::class);
-    	 
-    }
-
-    public function Visopercepcions(){
-
-    	return $this->hasMany(Visopercepcion::class);
-    	 
-    }
-
-    public function memoriaIconicas(){
-
-    	return $this->hasMany(MemoriaIconica::class);
-    	 
-    }
-
-    public function ritmos(){
-
-    	return $this->hasMany(Ritmo::class);
-    	 
-    }
-
-    public function fluidezVerbals(){
-
-    	return $this->hasMany(FluidezVerbal::class);
-    	 
-    }
-
-    public function atencions(){
-
-    	return $this->hasMany(Atencion::class);
-    	 
-    }
-
-    public function lecturas(){
-
-    	return $this->hasMany(Lectura::class);
-    	 
-    }
-
-    public function dibujoFiguraHumanas(){
-
-    	return $this->hasMany(DibujoFiguraHumana::class);
-    	 
+    	return $this->hasMany(Baremos::class);
+    	
     }
 }

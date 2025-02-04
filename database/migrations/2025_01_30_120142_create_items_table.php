@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class SubEscalas extends Migration
+class CreateItemsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,14 @@ class SubEscalas extends Migration
      */
     public function up()
     {
-        Schema::create('sub_escalas', function (Blueprint $table) {
+        Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('prueba',);
-            $table->string('escala',);
+            $table->foreignId('sub-escala_id')
+                  ->nullable()
+                  ->constrained('sub_escalas')
+                  ->cascadeOnUpdate()
+                  ->cascadeOnDelete();
+            $table->string('item',700);
             $table->timestamps();
         });
     }
@@ -28,6 +32,6 @@ class SubEscalas extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('items');
     }
 }

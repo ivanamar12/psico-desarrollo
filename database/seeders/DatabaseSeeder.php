@@ -21,5 +21,8 @@ class DatabaseSeeder extends Seeder
     $this->call(MunicipioTableSeeder::class);
     $this->call(ParroquiaTableSeeder::class);
     $this->call(GeneroTableSeeder::class);
+    $this->call(PruebaTableSeeder::class);
+    $this->call(SubEscalaSeeder::class);
+    $this->call(BaremosSeeder::class);
   }
 }
