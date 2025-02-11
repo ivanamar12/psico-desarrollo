@@ -24,6 +24,7 @@ class SubEscalaSeeder extends Seeder
         SubEscala::create(['prueba_id' => '1','sub_escala' => 'Lateralidad','descripcion' => 'En esta prueba el especialista recapitulara segun las pruebas anteriores cual fue la mano o cual fue la lateralidad predominante del paciente, agragndo unas sries de pasos a la prueba']);
         SubEscala::create(['prueba_id' => '1','sub_escala' => 'Desarrollo Verbal','descripcion' => 'Esta puntuacion segenerara segun los resultados obtenidos de las evaluaciones de las 3 escalas de lenguaje: Articulatorio, Comprensivo y Expresivo']);
         SubEscala::create(['prueba_id' => '1','sub_escala' => 'Desarrollo no Verbal','descripcion' => 'Esta puntuacion segenerara segun los resultados obtenidos de las evaluaciones de las escalas de Psicomotricidad, Estructuracion espacial, Visopercepcion, Memoria iconica y Ritmo']);
+        SubEscala::create(['prueba_id' => '1','sub_escala' => 'Desarrollo Global','descripcion' => 'Puntuacion de los 83 elementos']);
         SubEscala::create(['prueba_id' => '2','sub_escala' => 'Dibujo de Figura Humana','descripcion' => 'Esta subescala es útil en la identificación de retrasos en el desarrollo, dificultades de aprendizaje y aspectos emocionales subyacentes']);
 
     }

@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
     $this->call(GeneroTableSeeder::class);
     $this->call(PruebaTableSeeder::class);
     $this->call(SubEscalaSeeder::class);
+    $this->call(ItemSeeder::class);
     $this->call(BaremosSeeder::class);
   }
 }

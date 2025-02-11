@@ -9,15 +9,15 @@ enum Role: string
   use BaseEnum;
 
   case ADMIN = 'ADMIN';
-  case SPECIALIST = 'SPECIALIST';
-  case SECRETARY = 'SECRETARY';
+  case ESPECIALISTA = 'ESPECIALISTA';
+  case SECRETARIA = 'SECRETARIA';
 
   public static function translation()
   {
     return [
       'ADMIN' => 'ADMIN',
-      'SPECIALIST' => 'ESPECIALISTA',
-      'SECRETARY' => 'SECRETARIA',
+      'ESPECIALISTA' => 'ESPECIALISTA',
+      'SECRETARIA' => 'SECRETARIA',
     ];
   }
 
@@ -25,8 +25,8 @@ enum Role: string
   {
     return match ($this) {
       static::ADMIN => 'ADMIN',
-      static::SPECIALIST => 'SPECIALIST',
-      static::SECRETARY => 'SECRETARY',
+      static::ESPECIALISTA => 'ESPECIALISTA',
+      static::SECRETARIA => 'SECRETARIA',
     };
   }
 }

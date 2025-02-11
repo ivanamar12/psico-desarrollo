@@ -15,7 +15,7 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sub-escala_id')
+            $table->foreignId('sub_escala_id')
                   ->nullable()
                   ->constrained('sub_escalas')
                   ->cascadeOnUpdate()

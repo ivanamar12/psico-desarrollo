@@ -7,7 +7,8 @@ use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\EspecialidadController;
-use App\Http\Controllers\PruebasController;
+use App\Http\Controllers\PruebaController;
+use App\Http\Controllers\AplicarPruebaController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -132,32 +133,32 @@ Route::middleware('auth')->group(function () {
     ->name('pdf.generarPdfHistoria');
 
   // Ruta para la lista de pruebas
-  Route::get('pruebas', [PruebasController::class, 'index'])
+  Route::get('pruebas', [PruebaController::class, 'index'])
     ->name('pruebas.index');
+
+    // Ruta para aplicar prueba
+  Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])
+  ->name('aplicar_prueba.index');
+
+  Route::get('aplicar-prueba/{id}', [AplicarPruebaController::class, 'obtenerPrueba']);
+
+  Route::post('/aplicar-prueba/guardar', [AplicarPruebaController::class, 'guardarRespuestas']);
+
+  Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
+
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
 Route::middleware(['web', 'auth'])->group(function () {
-  // Ruta para almacenar una nueva área de desarrollo
-  Route::post('pruebas/area-desarrollo', [PruebasController::class, 'storeAreaDesarrollo'])
-    ->name('pruebas.storeAreaDesarrollo');
-
-  // Ruta para almacenar un nuevo tipo de prueba
-  Route::post('pruebas/tipo-prueba', [PruebasController::class, 'storeTipoPrueba'])
-    ->name('pruebas.storeTipoPrueba');
-
-  // Ruta para almacenar un nuevo rango de prueba
-  Route::post('pruebas/rango-prueba', [PruebasController::class, 'storeRangoPrueba'])
-    ->name('pruebas.storeRangoPrueba');
 
   // Ruta para almacenar un nueva prueba
-  Route::post('pruebas/prueba', [PruebasController::class, 'storePrueba'])
+  Route::post('pruebas/prueba', [PruebaController::class, 'storePrueba'])
     ->name('pruebas.storePrueba');
 
-  Route::post('pruebas/cambiar-estatus', [PruebasController::class, 'cambiarEstatus'])
-    ->name('pruebas.cambiarEstatus');
+  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
+    ->name('pruebas.destroy');
 });
 
-Route::get('pruebas/{id}', [PruebasController::class, 'show'])
+Route::get('pruebas/{id}', [PruebaController::class, 'show'])
   ->name('pruebas.show')
   ->middleware('auth');

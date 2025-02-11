@@ -11,9 +11,13 @@ class Prueba extends Model
 
     protected $fillable = ['nombre', 'descripcion', 'rango_edad', 'area_desarrollo', 'tipo'];
 
-    public function subEscalas(){
-
+    public function subEscalas()
+    {
     	return $this->hasMany(SubEscala::class);
-    	
+    }
+
+    public function aplicacionPruebas()
+    {
+    	return $this->hasMany(AplicacionPrueba::class);
     }
 }

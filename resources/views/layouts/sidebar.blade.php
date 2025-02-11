@@ -74,7 +74,7 @@
 						<a href="{{ route('pruebas.index') }}"><i class="zmdi zmdi-assignment"></i> Registrar Pruebas</a>
 					</li>
 					<li>
-						<a href="payments.html"><i class="zmdi zmdi-money zmdi-hc-fw"></i> Aplicar Pruebas</a>
+						<a href="{{ route('aplicar_prueba.index') }}"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i> Aplicar Pruebas</a>
 					</li>
 				</ul>
 			</li>

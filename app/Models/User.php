@@ -53,4 +53,9 @@ class User extends Authenticatable
   {
     return $this->hasMany(AuditLog::class);
   }
+
+  public function aplicacionPruebas()
+    {
+    	return $this->hasMany(AplicacionPrueba::class);
+    }
 }

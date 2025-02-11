@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Especialista;
 use App\Models\Direccion;
 use App\Models\Genero;
@@ -16,6 +17,7 @@ use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use DataTables;
 
 class EspecialistaController extends Controller
@@ -91,40 +93,58 @@ class EspecialistaController extends Controller
 
   public function store(Request $request)
   {
-    $validatedData = $request->validate([
-      'nombre' => 'required|string|max:255',
-      'apellido' => 'required|string|max:255',
-      'ci' => 'required|string|max:255',
-      'fecha_nac' => 'required|date|max:10',
-      'especialidad_id' => 'required|string|max:255',
-      'telefono' => 'required|string|max:255',
-      'email' => 'required|string|email|max:255|unique:especialistas,email',
-      'genero_id' => 'required|exists:generos,id',
-      'estado_id' => 'required|exists:estados,id',
-      'municipio_id' => 'required|exists:municipios,id',
-      'parroquia_id' => 'required|exists:parroquias,id',
-      'sector' => 'required|string|max:255',
-    ]);
-    \DB::transaction(function () use ($validatedData) {
-      $direccion = Direccion::create([
-        'estado_id' => $validatedData['estado_id'],
-        'municipio_id' => $validatedData['municipio_id'],
-        'parroquia_id' => $validatedData['parroquia_id'],
-        'sector' => $validatedData['sector'],
+      $validatedData = $request->validate([
+          'nombre' => 'required|string|max:255',
+          'apellido' => 'required|string|max:255',
+          'ci' => 'required|string|max:255',
+          'fecha_nac' => 'required|date|max:10',
+          'especialidad_id' => 'required|string|max:255',
+          'telefono' => 'required|string|max:255',
+          'email' => 'required|string|email|max:255|unique:especialistas,email|unique:users,email',
+          'genero_id' => 'required|exists:generos,id',
+          'estado_id' => 'required|exists:estados,id',
+          'municipio_id' => 'required|exists:municipios,id',
+          'parroquia_id' => 'required|exists:parroquias,id',
+          'sector' => 'required|string|max:255',
       ]);
-      Especialista::create([
-        'nombre' => $validatedData['nombre'],
-        'apellido' => $validatedData['apellido'],
-        'ci' => $validatedData['ci'],
-        'fecha_nac' => $validatedData['fecha_nac'],
-        'especialidad_id' => $validatedData['especialidad_id'],
-        'telefono' => $validatedData['telefono'],
-        'email' => $validatedData['email'],
-        'genero_id' => $validatedData['genero_id'],
-        'direccion_id' => $direccion->id,
-      ]);
-    });
-    return response()->json(['success' => true]);
+
+      \DB::transaction(function () use ($validatedData) {
+          // Crear la dirección del especialista
+          $direccion = Direccion::create([
+              'estado_id' => $validatedData['estado_id'],
+              'municipio_id' => $validatedData['municipio_id'],
+              'parroquia_id' => $validatedData['parroquia_id'],
+              'sector' => $validatedData['sector'],
+          ]);
+
+          // Crear el especialista
+          $especialista = Especialista::create([
+              'nombre' => $validatedData['nombre'],
+              'apellido' => $validatedData['apellido'],
+              'ci' => $validatedData['ci'],
+              'fecha_nac' => $validatedData['fecha_nac'],
+              'especialidad_id' => $validatedData['especialidad_id'],
+              'telefono' => $validatedData['telefono'],
+              'email' => $validatedData['email'],
+              'genero_id' => $validatedData['genero_id'],
+              'direccion_id' => $direccion->id,
+          ]);
+
+          // Crear usuario automáticamente en `users`
+          $user = User::create([
+              'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
+              'email' => $validatedData['email'],
+              'password' => Hash::make('password123'), // Contraseña temporal
+          ]);
+
+          // Asignar el rol "ESPECIALISTA" usando Spatie
+          $user->assignRole('ESPECIALISTA');
+
+          // Relacionar usuario con especialista (si tienes un campo `user_id` en la tabla `especialistas`)
+          $especialista->update(['user_id' => $user->id]);
+      });
+
+      return response()->json(['success' => true, 'message' => 'Especialista y usuario creados correctamente']);
   }
 
   public function edit($id)

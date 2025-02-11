@@ -18,7 +18,7 @@ class RoleSeeder extends Seeder
   {
 
     Role::create(['name' => EnumRole::ADMIN]);
-    Role::create(['name' => EnumRole::SPECIALIST]);
-    Role::create(['name' => EnumRole::SECRETARY]);
+    Role::create(['name' => EnumRole::ESPECIALISTA]);
+    Role::create(['name' => EnumRole::SECRETARIA]);
   }
 }

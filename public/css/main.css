@@ -613,3 +613,8 @@ body, html{
 .modal-custom {
 	max-width: 800px; /* Ajusta el ancho según tus necesidades */
 }
+
+.fila-formulario {
+    display: block;
+    width: 100%; /* Asegúrate de que ocupe el ancho completo */
+}

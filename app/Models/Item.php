@@ -9,7 +9,7 @@ class Item extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sub-escala_id', 'item'];
+    protected $fillable = ['sub_escala_id', 'item'];
 
     public function SubEscala(){
 

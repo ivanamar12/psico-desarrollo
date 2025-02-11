@@ -41,4 +41,9 @@ class Paciente extends Model
     	return $this->hasMany(HistoriaClinica::class);
     	 
     }
+
+    public function aplicacionPruebas()
+    {
+    	return $this->hasMany(AplicacionPrueba::class);
+    }
 }
