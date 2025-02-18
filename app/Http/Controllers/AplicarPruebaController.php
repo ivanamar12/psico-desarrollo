@@ -58,4 +58,20 @@ class AplicarPruebaController extends Controller
             return response()->json(['error' => 'Error al guardar la prueba'], 500);
         }
     }
+
+    public function verResultadosPrueba($prueba_id)
+    {
+        // Obtener la prueba aplicada junto con el paciente
+        $prueba = AplicacionPrueba::with('paciente')->find($prueba_id);
+
+        if (!$prueba) {
+            return response()->json(['error' => 'Prueba no encontrada'], 404);
+        }
+
+        // Retornar los resultados de la prueba
+        return response()->json([
+            'paciente' => $prueba->paciente,
+            'resultados' => json_decode($prueba->respuestas, true),
+        ]);
+    }
 }

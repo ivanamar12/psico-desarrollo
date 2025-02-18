@@ -28,11 +28,21 @@ class EspecialistaController extends Controller
       $especialistas = DB::select('SELECT * FROM especialistas');
       return DataTables::of($especialistas)
         ->addColumn('action', function ($especialista) {
-          $acciones = '<a href="javascript:void(0)" onclick="editespecialista(' . $especialista->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-          $acciones .= '<button type="button" name="delete" id="' . $especialista->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+          $acciones = '';
+      
+          if (auth()->user()->can('editar especialista')) {
+              $acciones .= '<a href="javascript:void(0)" onclick="editespecialista(' . $especialista->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+          }
+      
+          if (auth()->user()->can('eliminar especialista')) {
+              $acciones .= '<button type="button" name="delete" id="' . $especialista->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+          }
+      
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-especialista" data-id="' . $especialista->id . '"><i class="zmdi zmdi-eye"></i></button>';
+      
           return $acciones;
-        })
+      })
+    
         ->rawColumns(['action'])
         ->make(true);
     }
@@ -109,7 +119,6 @@ class EspecialistaController extends Controller
       ]);
 
       \DB::transaction(function () use ($validatedData) {
-          // Crear la dirección del especialista
           $direccion = Direccion::create([
               'estado_id' => $validatedData['estado_id'],
               'municipio_id' => $validatedData['municipio_id'],
@@ -117,7 +126,6 @@ class EspecialistaController extends Controller
               'sector' => $validatedData['sector'],
           ]);
 
-          // Crear el especialista
           $especialista = Especialista::create([
               'nombre' => $validatedData['nombre'],
               'apellido' => $validatedData['apellido'],
@@ -130,17 +138,13 @@ class EspecialistaController extends Controller
               'direccion_id' => $direccion->id,
           ]);
 
-          // Crear usuario automáticamente en `users`
           $user = User::create([
               'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
               'email' => $validatedData['email'],
-              'password' => Hash::make('password123'), // Contraseña temporal
+              'password' => Hash::make('password123'), 
           ]);
 
-          // Asignar el rol "ESPECIALISTA" usando Spatie
           $user->assignRole('ESPECIALISTA');
-
-          // Relacionar usuario con especialista (si tienes un campo `user_id` en la tabla `especialistas`)
           $especialista->update(['user_id' => $user->id]);
       });
 
@@ -162,7 +166,6 @@ class EspecialistaController extends Controller
 
   public function update(Request $request, $id)
   {
-    // Validar los datos de entrada
     $validatedData = $request->validate([
       'nombre' => 'required|string|max:255',
       'apellido' => 'required|string|max:255',
@@ -179,10 +182,8 @@ class EspecialistaController extends Controller
     ]);
 
     \DB::transaction(function () use ($validatedData, $id) {
-      // Buscar el especialista existente
       $especialista = Especialista::findOrFail($id);
 
-      // Actualizar los datos del especialista
       $especialista->update([
         'nombre' => $validatedData['nombre'],
         'apellido' => $validatedData['apellido'],
@@ -194,7 +195,6 @@ class EspecialistaController extends Controller
         'genero_id' => $validatedData['genero_id'],
       ]);
 
-      // Actualizar la dirección si es necesario
       $direccion = Direccion::where('id', $especialista->direccion_id)->first();
       if ($direccion) {
         $direccion->update([

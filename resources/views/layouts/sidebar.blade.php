@@ -35,16 +35,20 @@
 					<i class="zmdi zmdi-view-dashboard zmdi-hc-fw"></i> INICIO
 				</a>
 			</li>
+			@if(auth()->user()->can('ver especialista'))
 			<li>
 				<a href="{{ route('especialista.index') }}" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Especialistas <i class="zmdi zmdi-caret-"></i>
 				</a>
 			</li>
+			@endif
+			@if(auth()->user()->can('ver secretaria'))
 			<li>
 				<a href="{{ route('secretaria.index') }}" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Secretarias <i class="zmdi zmdi-caret-"></i>
 				</a>
 			</li>
+			@endif
 			<li>
 				<a href="{{ route('representantes.index') }}" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Representantes <i class="zmdi zmdi-caret-"></i>
@@ -65,9 +69,11 @@
 					<i class="zmdi zmdi-file zmdi-hc-fw"></i> Historias Clinicas <i class="zmdi zmdi-caret-"></i>
 				</a>
 			</li>
+			@if(auth()->user()->can('pruebas'))
 			<li>
 				<a href="#!" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-book zmdi-hc-fw"></i> Pruebas <i class="zmdi zmdi-caret-"></i>
+				
 				</a>
 				<ul class="list-unstyled full-box">
 					<li>
@@ -78,6 +84,7 @@
 					</li>
 				</ul>
 			</li>
+			@endif
 			<li>
 				<a href="{{ route('bitacora.index') }}" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-file zmdi-hc-fw"></i> Bítacora <i class="zmdi zmdi-caret-"></i>

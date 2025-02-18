@@ -105,7 +105,6 @@
             </div>
             <div class="modal-body">
                 <div id="contenidoPrueba">
-                    <!-- Aquí se mostrarán las preguntas dinámicamente -->
                 </div>
             </div>
             <div class="modal-footer">
@@ -123,10 +122,11 @@ $(document).ready(function () {
     let subescalas = [];
     let currentStep = 0;
 
-    // Iniciar la prueba
     $("#btnIniciarPrueba").click(function () {
         let pruebaId = $("#prueba_id").val();
         let pacienteId = $("#paciente_id").val();
+        let tipoPrueba = $("#prueba_id option:selected").data("tipo");
+        let pruebaNombre = $("#prueba_id option:selected").text();
 
         if (!pacienteId || !pruebaId) {
             alert("Seleccione un paciente y una prueba.");
@@ -137,124 +137,47 @@ $(document).ready(function () {
             url: "/aplicar-prueba/" + pruebaId,
             method: "GET",
             success: function (data) {
-                subescalas = data.subescalas;
+    console.log(data); 
+    subescalas = data.subescalas;
+    if (subescalas.length > 0) {
+        $("#modalPrueba").modal("show");
+        $("#elementoDelModal").text(subescalas.join(", ")); 
 
-                if (subescalas.length > 0) {
-                    mostrarSubescala(currentStep, data.nombre); // Pasar el nombre de la prueba
-                    $("#modalPrueba").modal("show");
-                } else {
-                    alert("Esta prueba no tiene ítems registrados.");
-                }
-            },
-        });
-    });
+        iniciarPruebaCumanin(subescalas);
 
-    // Mostrar subescala actual
-    function mostrarSubescala(step, pruebaNombre) {
-        if (step < 0 || step >= subescalas.length) return;
-
-        let subescala = subescalas[step];
-        let contenido = `<h4>${subescala.sub_escala}</h4><p>${subescala.descripcion}</p><ul>`;
-
-        subescala.items.forEach((item) => {
-            contenido += `<li>${item.item}`;
-
-            // Si la prueba es "CUMANIN", agregar campos específicos
-            if (pruebaNombre === "CUMANIN") {
-                if (subescala.sub_escala === "Psicomotricidad" || 
-                    subescala.sub_escala === "Escritura" || 
-                    subescala.sub_escala === "Estructuración espacial" || 
-                    subescala.sub_escala === "Ritmo") {
-                    contenido += `
-                        <label>¿Con qué mano realizó la actividad?</label>
-                        <input type="checkbox" name="lateralidad_${item.id}" value="derecha"> Derecha
-                        <input type="checkbox" name="lateralidad_${item.id}" value="izquierda"> Izquierda
-                    `;
-                } else if (subescala.sub_escala === "Atención") {
-                    contenido += `
-                        <label>Total de cuadros marcados:</label>
-                        <input type="number" name="cuadros_marcados_${item.id}">
-                        <label>Total de otras figuras marcadas:</label>
-                        <input type="number" name="otras_figuras_marcadas_${item.id}">
-                    `;
-                }
+        if (tipoPrueba === "NO-Estandarizada") {
+            $.getScript("/js/prueba_no_estandarizada.js").done(function() {
+                console.log("Script de prueba no estandarizada cargado.");
+            }).fail(function(jqxhr, settings, exception) {
+                console.error("Error al cargar prueba_no_estandarizada.js:", exception);
+            });
+        } else if (tipoPrueba === "Estandarizada") {
+            if (pruebaNombre.includes("CUMANIN")) {
+                $.getScript("/js/prueba_cumanin.js").done(function() {
+                    console.log("Script de CUMANIN cargado y ejecutado.");
+                    iniciarPruebaCumanin(subescalas);
+                }).fail(function(jqxhr, settings, exception) {
+                    console.error("Error al cargar prueba_cumanin.js:", exception);
+                });
+            } else if (pruebaNombre.includes("Koppitz")) {
+                $.getScript("/js/prueba_koppitz.js").done(function() {
+                    console.log("Script de Koppitz cargado y ejecutado.");
+                }).fail(function(jqxhr, settings, exception) {
+                    console.error("Error al cargar prueba_koppitz.js:", exception);
+                });
+            } else {
+                alert("Tipo de prueba estandarizada desconocida.");
             }
-
-            // Opciones estándar para todas las pruebas
-            contenido += `
-                <input type="radio" name="respuesta_${item.id}" value="si"> Sí 
-                <input type="radio" name="respuesta_${item.id}" value="no"> No
-            </li>`;
-        });
-
-        contenido += `</ul>`;
-        $("#contenidoPrueba").html(contenido);
-
-        // Mostrar/ocultar botones de navegación
-        $("#btnAnterior").toggle(step > 0);
-        $("#btnSiguiente").toggle(step < subescalas.length - 1);
-        $("#btnFinalizar").toggle(step === subescalas.length - 1);
+        }
+    } else {
+        alert("Esta prueba no tiene ítems registrados.");
     }
-
-    // Navegar entre subescalas
-    $("#btnSiguiente").click(function () {
-        currentStep++;
-        mostrarSubescala(currentStep, $("#prueba_id option:selected").text());
-    });
-
-    $("#btnAnterior").click(function () {
-        currentStep--;
-        mostrarSubescala(currentStep, $("#prueba_id option:selected").text());
-    });
-
-    // Finalizar la prueba y enviar datos
-    $("#btnFinalizar").click(function () {
-        let respuestas = {};
-        let lateralidad = {};
-
-        // Recopilar respuestas estándar
-        $("input[type=radio]:checked").each(function () {
-            let name = $(this).attr("name");
-            respuestas[name] = $(this).val();
-        });
-
-        // Recopilar lateralidad si existe
-        $("input[name^='lateralidad_']").each(function () {
-            let itemId = $(this).attr("name").split("_")[1];
-            if (!lateralidad[itemId]) {
-                lateralidad[itemId] = [];
-            }
-            if ($(this).is(":checked")) {
-                lateralidad[itemId].push($(this).val());
-            }
-        });
-
-        // Recopilar cuadros marcados/otras figuras marcadas
-        $("input[type=number]").each(function () {
-            let name = $(this).attr("name");
-            respuestas[name] = $(this).val();
-        });
-
-        // Agregar lateralidad al JSON
-        respuestas["lateralidad"] = lateralidad;
-
-        // Enviar datos al servidor
-        $.ajax({
-            url: "/aplicar-prueba/guardar",
-            method: "POST",
-            data: {
-                paciente_id: $("#paciente_id").val(),
-                prueba_id: $("#prueba_id").val(),
-                respuestas: respuestas,
-                _token: "{{ csrf_token() }}"
-            },
-            success: function (response) {
-                alert("Prueba guardada correctamente.");
-                $("#modalPrueba").modal("hide");
+},
+            error: function(xhr, status, error) {
+                console.error("Error en la solicitud AJAX:", status, error);
             }
         });
     });
 });
-
 </script>
 @endsection

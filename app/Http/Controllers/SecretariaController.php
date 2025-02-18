@@ -27,8 +27,16 @@ class SecretariaController extends Controller
       $secretarias = DB::select('SELECT * FROM secretarias');
       return DataTables::of($secretarias)
         ->addColumn('action', function ($secretaria) {
-          $acciones = '<a href="javascript:void(0)" onclick="editsecretaria(' . $secretaria->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-          $acciones .= '<button type="button" name="delete" id="' . $secretaria->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+          $acciones = '';
+
+          if (auth()->user()->can('editar secretaria')) {
+            $acciones .= '<a href="javascript:void(0)" onclick="editsecretaria(' . $secretaria->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+          }
+
+          if (auth()->user()->can('eliminar secretaria')) {
+            $acciones .= '<button type="button" name="delete" id="' . $secretaria->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+          }
+          
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-secretaria" data-id="' . $secretaria->id . '"><i class="zmdi zmdi-eye"></i></button>';
           return $acciones;
         })
@@ -67,7 +75,6 @@ class SecretariaController extends Controller
       ]);
   
       \DB::transaction(function () use ($validatedData) {
-          // Crear la dirección de la secretaria
           $direccion = Direccion::create([
               'estado_id' => $validatedData['estado_id'],
               'municipio_id' => $validatedData['municipio_id'],
@@ -75,7 +82,6 @@ class SecretariaController extends Controller
               'sector' => $validatedData['sector'],
           ]);
   
-          // Crear la secretaria
           $secretaria = Secretaria::create([
               'nombre' => $validatedData['nombre'],
               'apellido' => $validatedData['apellido'],
@@ -87,18 +93,15 @@ class SecretariaController extends Controller
               'genero_id' => $validatedData['genero_id'],
               'direccion_id' => $direccion->id,
           ]);
-  
-          // Crear usuario automáticamente en `users`
+
           $user = User::create([
               'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
               'email' => $validatedData['email'],
-              'password' => Hash::make('password123'), // Contraseña temporal
+              'password' => Hash::make('password123'), 
           ]);
-  
-          // Asignar el rol "SECRETARIA" usando Spatie
+
           $user->assignRole('SECRETARIA');
-  
-          // Relacionar usuario con secretaria (si tienes un campo `user_id` en la tabla `secretarias`)
+        
           $secretaria->update(['user_id' => $user->id]);
       });
   

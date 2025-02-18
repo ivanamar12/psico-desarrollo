@@ -146,6 +146,7 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 
+  Route::get('/resultados-prueba/{prueba_id}', [TuControlador::class, 'verResultadosPrueba']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

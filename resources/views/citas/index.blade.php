@@ -96,6 +96,8 @@
     </div>
 </section>
 
+<!-- modal para agendar la cita -->
+@if(auth()->user()->can('crear citas'))
 <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -139,7 +141,9 @@
         </div>
     </div>
 </div>
+@endif
 <!-- Modal para editar el estado de la cita -->
+@if(auth()->user()->can('cambiar estado citas'))
 <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -176,6 +180,7 @@
         </div>
     </div>
 </div>
+@endif
 @endsection
 @section('js')
 <script>

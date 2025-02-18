@@ -38,7 +38,9 @@
 				<div class="col-xs-12">
 					<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					  	<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-					  	<li><a href="#new" data-toggle="tab" ><i class="zmdi zmdi-plus ">Nuevo</i></a></li>
+                        @if(auth()->user()->can('registrar especialista'))
+                            <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                        @endif
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						
@@ -325,6 +327,11 @@
 @endsection
 @section('js')
 <script>
+const estados = @json($estados);
+    const municipios = @json($municipios);
+    const parroquias = @json($parroquias);
+</script>
+<script>
 $(document).ready(function(){
     var tablaEspecialista = $('#tab-especialista').DataTable({
         processing:true,
@@ -483,10 +490,6 @@ function validateInput(input) {
 </script>
 <script>
 $(document).ready(function() {
-    const estados = @json($estados);
-    const municipios = @json($municipios);
-    const parroquias = @json($parroquias);
-
     $('#estado_id').select2({
         placeholder: "Seleccione su estado",
         allowClear: true,

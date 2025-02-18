@@ -41,7 +41,9 @@
 				<div class="col-xs-12">
 					<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					  	<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-					  	<li><a href="#new" data-toggle="tab">Nuevo</a></li>
+					  	@if(auth()->user()->can('registrar secretaria'))
+                            <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                        @endif
 					</ul>
 					<div id="myTabContent" class="tab-content">
 						
