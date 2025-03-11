@@ -38,10 +38,8 @@ class PruebaController extends BaseController
         return view('pruebas.index');
     }
     
-    
     public function storePrueba(Request $request)
     {
-        // Validación de datos
         $request->validate([
             'nombre' => 'required|string|max:255',
             'descripcion' => 'required|string|max:600',

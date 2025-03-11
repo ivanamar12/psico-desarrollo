@@ -1,8 +1,14 @@
 $(document).ready(function () {
     let subescalas = [];
     let currentStep = 0;
+    let respuestasCompletas = {}; 
 
-    function iniciarPruebaCumanin(subescalasData) {
+    function iniciarPruebaCumanin(subescalasData, edadEnMeses) {
+        if (!subescalasData || subescalasData.length === 0) {
+            alert("No se recibieron datos de subescalas.");
+            return;
+        }
+
         subescalas = subescalasData.filter(subescala => subescala.items && subescala.items.length > 0);
         
         if (subescalas.length === 0) {
@@ -10,40 +16,46 @@ $(document).ready(function () {
             return;
         }
 
-        currentStep = 0;
-        mostrarSubescalaCumanin(currentStep);
+        currentStep = 0; 
+        respuestasCompletas = {}; 
+        mostrarSubescalaCumanin(currentStep, edadEnMeses); 
     }
 
-    function mostrarSubescalaCumanin(step) {
-        if (step < 0 || step >= subescalas.length) return;
-
+    function mostrarSubescalaCumanin(step, edadEnMeses) {
+        if (step < 0 || step >= subescalas.length) {
+            console.error("El paso está fuera de los límites:", step);
+            return;
+        }
+    
         let subescala = subescalas[step];
-        let contenido = `<h4>${subescala.sub_escala}</h4><p>${subescala.descripcion}</p><ul>`;
+        if (!subescala) {
+            console.error("Subescala no encontrada para el paso:", step);
+            return;
+        }
 
+        let contenido = `<h4>${subescala.sub_escala}</h4><p>${subescala.descripcion}</p>`;
+        contenido += `<table class="table table-bordered"><thead><tr><th>Ítem</th><th>Opciones</th><th>¿Con qué mano realizó la actividad?</th></tr></thead><tbody>`;
+    
         subescala.items.forEach((item) => {
-            contenido += `<li>${item.item}`;
-
-            if (["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo"].includes(subescala.sub_escala)) {
-                contenido += `
-                    <label>¿Con qué mano realizó la actividad?</label>
-                    <input type="checkbox" name="lateralidad_${item.id}" value="derecha"> Derecha
-                    <input type="checkbox" name="lateralidad_${item.id}" value="izquierda"> Izquierda
-                `;
-            } 
-            
-            if (subescala.sub_escala === "Atencion") {
-                contenido += `
-                    <input class="form-control" type="number" name="atencion_${item.id}">
-                `;
-            }
-
+            contenido += `<tr><td>${item.item}</td><td>`;
             contenido += `
                 <input type="radio" name="respuesta_${item.id}" value="si"> Sí 
                 <input type="radio" name="respuesta_${item.id}" value="no"> No
-                </li>`;
+                </td><td>`;
+    
+            if (["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo"].includes(subescala.sub_escala)) {
+                contenido += `
+                    <input type="checkbox" name="lateralidad_${item.id}" value="derecha"> Derecha
+                    <input type="checkbox" name="lateralidad_${item.id}" value="izquierda"> Izquierda
+                `;
+            } else {
+                contenido += "N/A"; 
+            }
+    
+            contenido += `</td></tr>`;
         });
-
-        contenido += `</ul>`;
+    
+        contenido += `</tbody></table>`;
         $("#contenidoPrueba").html(contenido);
         actualizarBotones(step);
     }
@@ -54,18 +66,27 @@ $(document).ready(function () {
         $("#btnFinalizar").toggle(step === subescalas.length - 1);
     }
 
-    $("#btnSiguiente").click(function () {
-        currentStep++;
-        mostrarSubescalaCumanin(currentStep);
-    });
+    function guardarRespuestasActuales() {
+        console.log("Guardando respuestas. Current Step:", currentStep);
+        console.log("Subescalas:", subescalas);
+        
+        if (currentStep < 0 || currentStep >= subescalas.length) {
+            console.error("No se puede guardar respuestas, paso fuera de los límites:", currentStep);
+            return;
+        }
 
-    $("#btnAnterior").click(function () {
-        currentStep--;
-        mostrarSubescalaCumanin(currentStep);
-    });
+        let subescala = subescalas[currentStep];
+        if (!subescala) {
+            console.error("No se puede guardar respuestas, subescala no encontrada para el paso:", currentStep);
+            return;
+        }
 
-    $("#btnFinalizar").click(function () {
-        let respuestas = {};
+        let subescalaId = subescala.id; 
+        if (!respuestasCompletas[subescalaId]) {
+            respuestasCompletas[subescalaId] = { sub_escala: subescala.sub_escala, respuestas: {} };
+        }
+
+        let respuestas = respuestasCompletas[subescalaId].respuestas || {};
         let lateralidad = {};
 
         $("input[type=radio]:checked").each(function () {
@@ -89,28 +110,59 @@ $(document).ready(function () {
         });
 
         respuestas["lateralidad"] = lateralidad;
+        respuestasCompletas[subescalaId].respuestas = respuestas;
 
-        // Enviar datos al backend
+        console.log("Respuestas completas hasta ahora:", respuestasCompletas);
+    }
+
+    $("#btnSiguiente").off("click").on("click", function () {
+        guardarRespuestasActuales(); 
+        if (currentStep < subescalas.length - 1) {
+            currentStep++;
+            console.log("Current Step (Siguiente):", currentStep);
+            mostrarSubescalaCumanin(currentStep, sharedData.edadEnMeses); 
+        }
+    });
+
+    $("#btnAnterior").off("click").on("click", function () {
+        guardarRespuestasActuales(); 
+        if (currentStep > 0) {
+            currentStep--;
+            console.log("Current Step (Anterior):", currentStep); 
+            mostrarSubescalaCumanin(currentStep, sharedData.edadEnMeses); 
+        }
+    });
+
+    $("#btnFinalizar").off("click").on("click", function () {
+        guardarRespuestasActuales();
+        console.log("Enviando respuestas al servidor:", respuestasCompletas);
+    
         $.ajax({
             url: "/aplicar-prueba/guardar",
             method: "POST",
             data: {
                 paciente_id: $("#paciente_id").val(),
                 prueba_id: $("#prueba_id").val(),
-                respuestas: respuestas,
+                respuestas: respuestasCompletas,
+                edad_en_meses: sharedData.edadEnMeses,
                 _token: $('meta[name="csrf-token"]').attr('content')
             },
             success: function (response) {
-                alert("Prueba guardada correctamente.");
                 $("#modalPrueba").modal("hide");
+                $("#contenidoPrueba").html("");
+                $("#paciente_id").val("");
+                $("#prueba_id").val("");
+                toastr.success("Prueba guardada correctamente.");
+                setTimeout(function () {
+                    location.reload();
+                }, 1500);
             },
             error: function (xhr, status, error) {
                 console.error("Error al guardar la prueba:", error);
-                alert("Hubo un error al guardar la prueba.");
+                toastr.error("Hubo un error al guardar la prueba.");
             }
         });
-    });
+    });    
 
     window.iniciarPruebaCumanin = iniciarPruebaCumanin;
 });
-

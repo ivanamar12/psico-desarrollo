@@ -146,7 +146,21 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 
-  Route::get('/resultados-prueba/{prueba_id}', [TuControlador::class, 'verResultadosPrueba']);
+  Route::get('pruebas/{id}', [PruebaController::class, 'show'])
+  ->name('pruebas.show')
+  ->middleware('auth');
+
+  Route::get('/obtener-fecha-nacimiento/{paciente_id}', function ($paciente_id) {
+      $paciente = \App\Models\Paciente::find($paciente_id);
+
+      if (!$paciente) {
+          return response()->json(['error' => 'Paciente no encontrado'], 404);
+      }
+
+      return response()->json(['fecha_nacimiento' => $paciente->fecha_nac]);
+  });
+
+  Route::get('/aplicar-prueba/{prueba_id}/respuestas', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
@@ -160,6 +174,4 @@ Route::middleware(['web', 'auth'])->group(function () {
     ->name('pruebas.destroy');
 });
 
-Route::get('pruebas/{id}', [PruebaController::class, 'show'])
-  ->name('pruebas.show')
-  ->middleware('auth');
+

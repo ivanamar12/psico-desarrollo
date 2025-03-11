@@ -22,6 +22,20 @@ class AplicarPruebaController extends Controller
 {
     public function index(Request $request)
     {
+        if ($request->ajax()) {
+            $aplicaciones = AplicacionPrueba::with('paciente', 'prueba')->get();
+
+            return DataTables::of($aplicaciones)
+                ->addColumn('action', function ($aplicacion) {
+                    $acciones = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '"><i class="zmdi zmdi-eye"></i></button>';
+                    return $acciones;
+                })
+                ->addColumn('fecha', function ($aplicacion) {
+                    return $aplicacion->created_at->format('d/m/Y');
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         $pacientes = Paciente::all();
         $pruebas = Prueba::all();
 
@@ -59,19 +73,27 @@ class AplicarPruebaController extends Controller
         }
     }
 
-    public function verResultadosPrueba($prueba_id)
+    public function verRespuestasPrueba($prueba_id)
     {
-        // Obtener la prueba aplicada junto con el paciente
-        $prueba = AplicacionPrueba::with('paciente')->find($prueba_id);
+        $prueba = AplicacionPrueba::with('paciente')
+            ->select('id', 'user_id', 'paciente_id', 'prueba_id', 'resultados', 'created_at', 'updated_at') 
+            ->find($prueba_id);
 
         if (!$prueba) {
             return response()->json(['error' => 'Prueba no encontrada'], 404);
         }
 
-        // Retornar los resultados de la prueba
         return response()->json([
             'paciente' => $prueba->paciente,
-            'resultados' => json_decode($prueba->respuestas, true),
+            'prueba' => [
+                'id' => $prueba->id,
+                'user_id' => $prueba->user_id,
+                'paciente_id' => $prueba->paciente_id,
+                'prueba_id' => $prueba->prueba_id,
+                'resultados' => json_decode($prueba->resultados, true), 
+                'created_at' => $prueba->created_at,
+                'updated_at' => $prueba->updated_at,
+            ],
         ]);
     }
 }

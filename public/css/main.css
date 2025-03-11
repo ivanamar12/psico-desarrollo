@@ -614,6 +614,11 @@ body, html{
 	max-width: 800px; /* Ajusta el ancho según tus necesidades */
 }
 
+.modal-body {
+    max-height: 70vh; /* Ajusta la altura máxima del cuerpo del modal */
+    overflow-y: auto; /* Activa el scroll si el contenido es muy grande */
+}
+
 .fila-formulario {
     display: block;
     width: 100%; /* Asegúrate de que ocupe el ancho completo */

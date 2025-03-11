@@ -28,7 +28,6 @@
 			</li>
 		</ul>
 	</nav>
-	<!-- Content page -->
 	<div class="container-fluid">
 		<div class="page-header">
 			<h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Pruebas</h1>
@@ -51,8 +50,8 @@
 										<th class="text-center">#</th>
 										<th class="text-center">Paciente</th>
 										<th class="text-center">Prueba</th>
-										<th class="text-center">Especialista</th>
-                                        <th class="text-center">Informe</th>
+										<th class="text-center">Fecha</th>
+                                        <th class="text-center">resultados</th>
 									</tr>
 								</thead>
 							</table>
@@ -144,31 +143,6 @@ $(document).ready(function () {
         $("#elementoDelModal").text(subescalas.join(", ")); 
 
         iniciarPruebaCumanin(subescalas);
-
-        if (tipoPrueba === "NO-Estandarizada") {
-            $.getScript("/js/prueba_no_estandarizada.js").done(function() {
-                console.log("Script de prueba no estandarizada cargado.");
-            }).fail(function(jqxhr, settings, exception) {
-                console.error("Error al cargar prueba_no_estandarizada.js:", exception);
-            });
-        } else if (tipoPrueba === "Estandarizada") {
-            if (pruebaNombre.includes("CUMANIN")) {
-                $.getScript("/js/prueba_cumanin.js").done(function() {
-                    console.log("Script de CUMANIN cargado y ejecutado.");
-                    iniciarPruebaCumanin(subescalas);
-                }).fail(function(jqxhr, settings, exception) {
-                    console.error("Error al cargar prueba_cumanin.js:", exception);
-                });
-            } else if (pruebaNombre.includes("Koppitz")) {
-                $.getScript("/js/prueba_koppitz.js").done(function() {
-                    console.log("Script de Koppitz cargado y ejecutado.");
-                }).fail(function(jqxhr, settings, exception) {
-                    console.error("Error al cargar prueba_koppitz.js:", exception);
-                });
-            } else {
-                alert("Tipo de prueba estandarizada desconocida.");
-            }
-        }
     } else {
         alert("Esta prueba no tiene ítems registrados.");
     }
@@ -180,4 +154,45 @@ $(document).ready(function () {
     });
 });
 </script>
+<script>
+$(document).ready(function () {
+    $('#tab-prueba').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: '{{ route("aplicar_prueba.index") }}', 
+            type: 'GET'
+        },
+        columns: [
+            { data: 'id', name: 'id' }, 
+            { data: 'paciente.nombre', name: 'paciente.nombre' }, 
+			{ data: 'prueba.nombre', name: 'prueba.nombre' }, 
+			{ data: 'fecha', name: 'fecha' }, 
+            { data: 'action', name: 'action', orderable: false, searchable: false }
+        ]
+    });
+
+    $(document).on('click', '.ver-resultados', function () {
+        let aplicacionId = $(this).data('id'); 
+
+        $.ajax({
+            url: '/aplicar-prueba/ver-respuestas/' + aplicacionId, 
+            method: 'GET',
+            success: function (data) {
+                $("#contenidoPrueba").html(`
+                    <h5>Paciente: ${data.paciente.nombre}</h5>
+                    <h5>Prueba: ${data.prueba.id}</h5>
+                    <h5>Resultados: ${JSON.stringify(data.prueba.resultados)}</h5>
+                    <h5>Fecha: ${data.prueba.created_at}</h5>
+                `);
+                $("#modalPrueba").modal("show");
+            },
+            error: function (xhr, status, error) {
+                console.error("Error al obtener los resultados:", status, error);
+            }
+        });
+    });
+});
+</script>
+
 @endsection
