@@ -160,7 +160,7 @@ Route::middleware('auth')->group(function () {
       return response()->json(['fecha_nacimiento' => $paciente->fecha_nac]);
   });
 
-  Route::get('/aplicar-prueba/{prueba_id}/respuestas', [AplicarPruebaController::class, 'verRespuestasPrueba']);
+  Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

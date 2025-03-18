@@ -9,11 +9,6 @@ class Baremos extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['sub-escala_id', 'p_c', 'edad_meses','puntos'];
+    protected $fillable = ['sub_escala', 'p_c', 'edad_meses','puntos'];
 
-    public function SubEscala(){
-
-        return $this->belongsTo(SubEscala::class);
-        
-    }
 }

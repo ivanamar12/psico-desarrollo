@@ -27,8 +27,9 @@ class AplicarPruebaController extends Controller
 
             return DataTables::of($aplicaciones)
                 ->addColumn('action', function ($aplicacion) {
-                    $acciones = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '"><i class="zmdi zmdi-eye"></i></button>';
-                    return $acciones;
+                    return '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '">
+                                <i class="zmdi zmdi-eye"></i> Ver Resultados
+                            </button>';
                 })
                 ->addColumn('fecha', function ($aplicacion) {
                     return $aplicacion->created_at->format('d/m/Y');
@@ -75,25 +76,29 @@ class AplicarPruebaController extends Controller
 
     public function verRespuestasPrueba($prueba_id)
     {
-        $prueba = AplicacionPrueba::with('paciente')
-            ->select('id', 'user_id', 'paciente_id', 'prueba_id', 'resultados', 'created_at', 'updated_at') 
-            ->find($prueba_id);
+        // Buscar el resultado de la prueba en la tabla resultados_pruebas
+        $resultado = \App\Models\ResultadosPruebas::where('aplicacion_pruebas_id', $prueba_id)->first();
 
-        if (!$prueba) {
+        if (!$resultado) {
+            return response()->json(['error' => 'Resultados no encontrados'], 404);
+        }
+
+        // Obtener la información del paciente y la prueba aplicada
+        $pruebaAplicada = \App\Models\AplicacionPrueba::with('paciente', 'prueba')->find($prueba_id);
+
+        if (!$pruebaAplicada) {
             return response()->json(['error' => 'Prueba no encontrada'], 404);
         }
 
         return response()->json([
-            'paciente' => $prueba->paciente,
+            'paciente' => $pruebaAplicada->paciente,
             'prueba' => [
-                'id' => $prueba->id,
-                'user_id' => $prueba->user_id,
-                'paciente_id' => $prueba->paciente_id,
-                'prueba_id' => $prueba->prueba_id,
-                'resultados' => json_decode($prueba->resultados, true), 
-                'created_at' => $prueba->created_at,
-                'updated_at' => $prueba->updated_at,
-            ],
+                'id' => $pruebaAplicada->prueba->id,
+                'nombre' => $pruebaAplicada->prueba->nombre,
+                'resultados' => json_decode($resultado->resultados_finales, true),
+                'fecha' => $pruebaAplicada->created_at->format('d/m/Y')
+            ]
         ]);
     }
+
 }

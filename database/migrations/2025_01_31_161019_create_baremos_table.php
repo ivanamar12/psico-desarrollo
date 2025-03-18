@@ -15,11 +15,7 @@ class CreateBaremosTable extends Migration
     {
         Schema::create('baremos', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('sub_escala_id')
-                  ->nullable()
-                  ->constrained('sub_escalas')
-                  ->cascadeOnUpdate()
-                  ->cascadeOnDelete();
+            $table->string('sub_escala',30);
             $table->string('p_c',30);
             $table->string('edad_meses',11);
             $table->string('puntos',11);

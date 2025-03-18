@@ -114,6 +114,25 @@
         </div>
     </div>
 </div>
+<div id="modalPruebaVer" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Resultados de la Prueba</h5>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div id="contenidoPruebaVer"> <!-- Cambié el ID aquí -->
+                    <p>Cargando resultados...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="btnCerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 @endsection
 @section('js')
 <script>
@@ -194,5 +213,71 @@ $(document).ready(function () {
     });
 });
 </script>
+<script>
+$(document).on('click', '.ver-resultados', function () {
+    let aplicacionId = $(this).data('id'); // Obtener el ID de la aplicación de prueba
 
+    $.ajax({
+        url: `/aplicar-prueba/ver-respuestas/${aplicacionId}`, 
+        method: 'GET',
+        success: function (data) {
+            let resultados = data.prueba.resultados;
+            
+            let contenidoHTML = `
+                <h5><strong>Paciente:</strong> ${data.paciente.nombre}</h5>
+                <h5><strong>Prueba:</strong> ${data.prueba.nombre}</h5>
+                <h5><strong>Fecha:</strong> ${data.prueba.fecha || 'No disponible'}</h5>
+                <hr>
+                <h5><strong>Resultados:</strong></h5>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Subescala</th>
+                            <th>Puntaje</th>
+                            <th>Percentil</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+
+            if (resultados && resultados.resultados) {
+                for (let clave in resultados.resultados) {
+                    let resultado = resultados.resultados[clave];
+                    let puntaje = resultado.puntaje ?? 'N/A';
+                    let percentil = resultado.percentil ?? 'No disponible';
+
+                    contenidoHTML += `
+                        <tr>
+                            <td><strong>${clave}</strong></td>
+                            <td>${puntaje}</td>
+                            <td>${percentil}</td>
+                        </tr>`;
+                }
+            } else {
+                contenidoHTML += `<tr><td colspan="3" class="text-center">No hay resultados disponibles</td></tr>`;
+            }
+
+            contenidoHTML += `
+                    </tbody>
+                </table>`;
+
+            if (resultados.lateralidad) {
+                contenidoHTML += `<h5><strong>Lateralidad:</strong> ${resultados.lateralidad}</h5>`;
+            }
+
+            if (resultados.observaciones) {
+                contenidoHTML += `<h5><strong>Observaciones:</strong> ${resultados.observaciones}</h5>`;
+            }
+
+            // Insertar el contenido en el modal correcto
+            $("#contenidoPruebaVer").html(contenidoHTML);
+            $("#modalPruebaVer").modal("show"); // Asegurar que solo este modal se abre
+        },
+        error: function (xhr, status, error) {
+            console.error("❌ Error al obtener los resultados:", status, error);
+            alert("No se encontraron resultados para esta prueba.");
+        }
+    });
+});
+
+</script>
 @endsection

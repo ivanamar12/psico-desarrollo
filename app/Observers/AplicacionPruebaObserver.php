@@ -9,12 +9,13 @@ class AplicacionPruebaObserver
     public function created(AplicacionPrueba $prueba)
     {
         $tipoPrueba = $prueba->prueba->tipo;
-        $nombrePrueba = $prueba->prueba->nombre; 
+        $nombrePrueba = $prueba->prueba->nombre;
 
+        // 📌 Enviar solicitud solo cuando se cree una nueva prueba
         Http::post(env('APP_URL') . '/api/analizar-prueba', [
             'prueba_id' => $prueba->id,
             'tipo_prueba' => $tipoPrueba,
-            'nombre' => $nombrePrueba 
+            'nombre' => $nombrePrueba
         ]);
     }
 }

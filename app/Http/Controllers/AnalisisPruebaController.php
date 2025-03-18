@@ -21,6 +21,37 @@ use PDF;
 
 class AnalisisPruebaController extends Controller
 {
+    public function guardarResultados(Request $request)
+    {
+        try {
+            $pruebaId = $request->input('prueba_id');
+            $resultados = $request->input('resultados');
+            $edadMeses = $request->input('edad_meses'); 
+            $lateralidad = $request->input('lateralidad');
+            $observaciones = $request->input('observaciones');
+
+            if (ResultadosPruebas::where('aplicacion_pruebas_id', $pruebaId)->exists()) {
+                return response()->json(['mensaje' => 'El resultado ya fue guardado previamente']);
+            }
+
+            $resultado = new ResultadosPruebas();
+            $resultado->aplicacion_pruebas_id = $pruebaId;
+            $resultado->resultados_finales = json_encode([
+                'edad_meses' => $edadMeses, 
+                'resultados' => $resultados,
+                'lateralidad' => $lateralidad,
+                'observaciones' => $observaciones
+            ], JSON_UNESCAPED_UNICODE);
+            $resultado->save();
+
+            return response()->json(['mensaje' => 'Resultados guardados correctamente']);
+
+        } catch (\Exception $e) {
+            \Log::error("❌ Error guardando resultados: " . $e->getMessage());
+            return response()->json(['error' => 'Error al guardar los resultados'], 500);
+        }
+    }
+    
     public function analizarPrueba(Request $request)
     {
         $pruebaId = $request->prueba_id;
@@ -34,4 +65,6 @@ class AnalisisPruebaController extends Controller
             'nombre' => $nombrePrueba
         ]);
     }
+
+    
 }
