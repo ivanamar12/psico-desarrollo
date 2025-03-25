@@ -9,6 +9,7 @@ use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\AplicarPruebaController;
+use App\Http\Controllers\DashboardController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -161,6 +162,15 @@ Route::middleware('auth')->group(function () {
   });
 
   Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
+
+  Route::get('/resultados-pdf/{id}', [AplicarPruebaController::class, 'generarPDF'])->name('resultados.pdf');
+
+  Route::get('/resultados/koppitz/{id}', [AplicarPruebaController::class, 'generarPDFKoppitz'])->name('resultados.koppitz.pdf');
+
+  Route::get('/resultados/no-estandarizada/{id}', [AplicarPruebaController::class, 'generarPDFNoEstandarizada'])
+    ->name('resultados.no_estandarizada.pdf');
+
+  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

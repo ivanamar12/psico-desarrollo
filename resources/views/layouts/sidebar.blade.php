@@ -85,11 +85,13 @@
 				</ul>
 			</li>
 			@endif
+			@if(auth()->user()->can('bitacora'))
 			<li>
 				<a href="{{ route('bitacora.index') }}" class="btn-sideBar-SubMenu">
 					<i class="zmdi zmdi-file zmdi-hc-fw"></i> Bítacora <i class="zmdi zmdi-caret-"></i>
 				</a>
 			</li>
+			@endif
 		</ul>
 	</div>
 </section>

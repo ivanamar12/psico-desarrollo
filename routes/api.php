@@ -57,3 +57,6 @@ Route::get('/ver-respuestas-prueba/{id}', [AplicarPruebaController::class, 'verR
 Route::get('/baremos', function () {
     return response()->json(Baremos::all());
 });
+
+Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, 'obtenerRespuestasPrueba']);
+

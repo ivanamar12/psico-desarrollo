@@ -29,7 +29,6 @@ async function verificarNuevaPrueba() {
 
         console.log(`🔍 Nueva prueba detectada: ID ${pruebaId}, Tipo: ${tipoPrueba}, Nombre: ${nombrePrueba}`);
 
-        // 📌 Iniciar el análisis automáticamente
         await analizarPrueba(pruebaId, tipoPrueba, nombrePrueba);
 
     } catch (error) {
@@ -37,7 +36,6 @@ async function verificarNuevaPrueba() {
     }
 }
 
-// 📌 Llamar a `verificarNuevaPrueba()` solo cuando sea necesario
 document.addEventListener("DOMContentLoaded", verificarNuevaPrueba);
 
 
@@ -45,7 +43,7 @@ setInterval(verificarNuevaPrueba, 10000);
 
 async function obtenerBaremos() {
     try {
-        let response = await fetch('/api/baremos'); // 📌 Asegúrate de que esta API existe en Laravel
+        let response = await fetch('/api/baremos'); 
         let data = await response.json();
         return data;
     } catch (error) {
@@ -56,21 +54,21 @@ async function obtenerBaremos() {
 
 async function analizarPrueba(pruebaId, tipoPrueba, nombrePrueba) {
     try {
-        let response = await fetch(`/api/ver-respuestas-prueba/${pruebaId}`);
+        let response = await fetch(`/api/obtener-respuestas-prueba/${pruebaId}`);
         let data = await response.json();
 
         if (!data.prueba) throw new Error("⚠️ No se encontraron datos de la prueba.");
 
         let paciente = data.paciente;
-        let respuestas = data.prueba.resultados;
         let edadMeses = calcularEdadEnMeses(paciente.fecha_nac);
-        let generoId = paciente.genero_id; 
+        let generoId = paciente.genero_id;
 
         console.log(`📊 Analizando prueba ${nombrePrueba} (${tipoPrueba}) para paciente con ${edadMeses} meses y género ID ${generoId}`);
 
         let resultadosFinales = {};
-        let lateralidad = null;
-        let observaciones = respuestas.observaciones || "";
+        let observaciones = data.prueba.observaciones || ""; 
+
+        let respuestas = data.prueba.resultados; 
 
         if (tipoPrueba === "Estandarizada") {
             if (nombrePrueba === "CUMANIN") {
@@ -79,22 +77,26 @@ async function analizarPrueba(pruebaId, tipoPrueba, nombrePrueba) {
                 resultadosFinales = await analizarKoppitz(respuestas, edadMeses, generoId);
             }
         } else if (tipoPrueba === "NO-Estandarizada") {
-            resultadosFinales = respuestas; 
+            resultadosFinales = {
+                edad_meses: edadMeses,
+                resultados: respuestas, 
+                lateralidad: null, 
+                observaciones: observaciones
+            };
         }
 
-        await guardarResultados(pruebaId, resultadosFinales, lateralidad, observaciones);
+        await guardarResultados(pruebaId, resultadosFinales, null, observaciones);
 
     } catch (error) {
         console.error("❌ Error analizando la prueba:", error);
     }
 }
-// 📌 Agregar esta función antes de `analizarCumanin()`
+
 async function obtenerSubescalas() {
     try {
-        let response = await fetch('/api/subescalas'); // 📌 Asegúrate de que esta API existe en Laravel
+        let response = await fetch('/api/subescalas'); 
         let data = await response.json();
 
-        // 📌 Convertir la lista de subescalas en un diccionario { nombre: id }
         let subescalasMap = {};
         data.forEach(subescala => {
             subescalasMap[subescala.sub_escala] = subescala.id;
@@ -107,13 +109,14 @@ async function obtenerSubescalas() {
     }
 }
 
-// 📌 `obtenerSubescalas()` debe ir antes de `analizarCumanin()`
 async function analizarCumanin(respuestas, edadMeses) {
     let baremos = await obtenerBaremos();
-    let subescalasMap = await obtenerSubescalas(); 
     let puntajes = {};
     let lateralidad = { izquierda: 0, derecha: 0 };
 
+    console.log("📋 Respuestas recibidas:", respuestas); 
+
+    // Calcular puntajes para las subescalas
     for (let subescala in respuestas) {
         let respuestasSubescala = respuestas[subescala];
 
@@ -123,36 +126,71 @@ async function analizarCumanin(respuestas, edadMeses) {
                 if (resp === "Derecha") lateralidad.derecha++;
             });
         } else if (
-            !(edadMeses < 60 && (subescala === "Lectura" || subescala === "Escritura")) // 📌 Excluir lectura y escritura si < 60 meses
+            !(edadMeses < 60 && (subescala === "Lectura" || subescala === "Escritura")) 
         ) {
-            let puntaje = Object.values(respuestasSubescala.respuestas).filter(resp => resp === "si").length;
-            puntajes[subescala] = puntaje;
+            if (subescala === "Atencion" || subescala === "Fluidez Verbal") {
+                let sumaTotal = 0;
+                for (let key in respuestasSubescala.respuestas) {
+                    let valor = parseInt(respuestasSubescala.respuestas[key]);
+                    if (!isNaN(valor)) {
+                        sumaTotal += valor;
+                    }
+                }
+                puntajes[subescala] = sumaTotal;
+                console.log(`📊 ${subescala}: ${sumaTotal}`);
+            } else {
+                let puntaje = Object.values(respuestasSubescala.respuestas).filter(resp => resp === "si").length;
+                puntajes[subescala] = puntaje;
+            }
         }
     }
 
-    // 📌 Determinar la lateralidad final
+    // Calcular Desarrollo Verbal, No Verbal y Global
+    let desarrolloVerbal =
+        (puntajes["Lenguaje Articulatorio"] || 0) +
+        (puntajes["Lenguaje Expresivo"] || 0) +
+        (puntajes["Lenguaje Comprensivo"] || 0);
+
+    let desarrolloNoVerbal =
+        (puntajes["Psicomotricidad"] || 0) +
+        (puntajes["Estructuracion Espacial"] || 0) +
+        (puntajes["Visopercepcion"] || 0) +
+        (puntajes["Memoria Iconica"] || 0) +
+        (puntajes["Ritmo"] || 0);
+
+    let desarrolloGlobal = desarrolloVerbal + desarrolloNoVerbal;
+
+    // Agregar los puntajes de desarrollo a los resultados
+    puntajes["Desarrollo Verbal"] = desarrolloVerbal;
+    puntajes["Desarrollo no Verbal"] = desarrolloNoVerbal;
+    puntajes["Desarrollo Global"] = desarrolloGlobal;
+
     let resultadoLateralidad = null;
     if (lateralidad.izquierda > lateralidad.derecha) {
         resultadoLateralidad = "Izquierda";
     } else if (lateralidad.derecha > lateralidad.izquierda) {
         resultadoLateralidad = "Derecha";
     } else {
-        resultadoLateralidad = "Indefinida"; // En caso de empate
+        resultadoLateralidad = "Indefinida";
     }
 
-    // 📌 Comparar con los baremos
     let resultadosFinales = {};
+    
+    // Comparar cada subescala con los baremos
     for (let subescala in puntajes) {
         let puntaje = puntajes[subescala];
 
-        let baremo = baremos.find(b => {
+        let baremosCoincidentes = baremos.filter(b => {
             if (b.sub_escala !== subescala) return false;
 
-            let rangoEdad = b.edad_meses.split('-').map(n => parseInt(n));
+            let rangoEdad = b.edad_meses.split('-').map(n => parseInt(n.trim()));
             let minEdad = rangoEdad[0];
             let maxEdad = rangoEdad[1] || minEdad;
 
-            let rangoPuntos = b.puntos.split('-').map(n => parseInt(n));
+            let rangoPuntos = b.puntos.includes('-') 
+                ? b.puntos.split('-').map(n => parseInt(n.trim()))
+                : [parseInt(b.puntos.trim())];
+
             let minPuntaje = Math.min(...rangoPuntos);
             let maxPuntaje = Math.max(...rangoPuntos);
 
@@ -162,16 +200,23 @@ async function analizarCumanin(respuestas, edadMeses) {
             );
         });
 
-        resultadosFinales[subescala] = baremo ? {
-            puntaje: puntaje,
-            percentil: baremo.p_c
-        } : { puntaje: puntaje, error: "Baremo no encontrado" };
+        if (baremosCoincidentes.length > 0) {
+            resultadosFinales[subescala] = {
+                puntaje: puntaje,
+                percentil: baremosCoincidentes[0].p_c
+            };
+        } else {
+            resultadosFinales[subescala] = {
+                puntaje: puntaje,
+                error: "Baremo no encontrado"
+            };
+        }
     }
 
-    return { 
+    return {
         edad_meses: edadMeses,
         resultados: resultadosFinales,
-        lateralidad: resultadoLateralidad  // 📌 Ahora sí se enviará la lateralidad correctamente
+        lateralidad: resultadoLateralidad 
     };
 }
 
@@ -179,17 +224,17 @@ async function analizarKoppitz(respuestas, edadMeses, generoId) {
     let baremos = await obtenerBaremos();
     let subescalaNombre = "Dibujo de Figura Humana";
 
-    let puntajeTotal = 0;
+    let puntajeTotal = 8; 
     let detallesPuntaje = {};
+    let itemsExcepcionales = 0; 
 
-    // 📌 Verificar que la subescala existe en las respuestas
     if (!respuestas[subescalaNombre] || !respuestas[subescalaNombre].respuestas) {
         console.error(`⚠️ No se encontraron respuestas para la subescala '${subescalaNombre}'`);
         return { error: "No se encontraron respuestas para la subescala" };
     }
 
-    for (let caracteristica in respuestas[subescalaNombre].respuestas) {
-        let respuesta = respuestas[subescalaNombre].respuestas[caracteristica];
+    for (let itemNombre in respuestas[subescalaNombre].respuestas) {
+        let respuesta = respuestas[subescalaNombre].respuestas[itemNombre]; 
 
         let baremo = baremos.find(b => {
             if (b.sub_escala !== subescalaNombre) return false;
@@ -198,20 +243,30 @@ async function analizarKoppitz(respuestas, edadMeses, generoId) {
             let minEdad = rangoEdad[0];
             let maxEdad = rangoEdad[1] || minEdad;
 
+            let esMasculino = b.p_c.includes("masculino");
+            let esFemenino = b.p_c.includes("femenino");
+
+            let esParaAmbosGeneros = !esMasculino && !esFemenino;
+            let generoCoincide = (esMasculino && generoId === 1) || (esFemenino && generoId === 2);
+
             return (
                 edadMeses >= minEdad && edadMeses <= maxEdad &&
-                b.puntos === respuesta &&
-                (b.p_c.includes("masculino") ? generoId === 1 : generoId === 2)
+                b.p_c === itemNombre &&
+                (esParaAmbosGeneros || generoCoincide) 
             );
         });
 
         if (baremo) {
-            detallesPuntaje[caracteristica] = baremo.p_c;
-            puntajeTotal++;
+            detallesPuntaje[itemNombre] = baremo.p_c;
+
+            if (baremo.puntos === "esperado" && respuesta === "no") {
+                puntajeTotal--; 
+            } else if (baremo.puntos === "excepcional" && respuesta === "si") {
+                itemsExcepcionales++; 
+            }
         }
     }
 
-    // 📌 Determinar la categoría según el puntaje total
     let categoria = "";
     if (puntajeTotal >= 7) categoria = "Normal alto a superior (CI de 110 o más)";
     else if (puntajeTotal === 6) categoria = "Normal a superior (CI 90 - 135)";
@@ -222,11 +277,12 @@ async function analizarKoppitz(respuestas, edadMeses, generoId) {
     else categoria = "Mentalmente deficiente por posibles problemas emocionales";
 
     return {
-        edad_meses: edadMeses, // 📌 Ahora sí se envía correctamente
+        edad_meses: edadMeses, 
         resultados: {
             puntajeTotal: puntajeTotal,
             detallesPuntaje: detallesPuntaje,
-            categoria: categoria
+            categoria: categoria,
+            itemsExcepcionales: itemsExcepcionales 
         }
     };
 }
@@ -240,8 +296,8 @@ async function guardarResultados(pruebaId, resultados, lateralidad, observacione
             },
             body: JSON.stringify({
                 prueba_id: pruebaId,
-                resultados: resultados.resultados,  // 📌 Solo enviamos los resultados
-                edad_meses: resultados.edad_meses, // 📌 Enviamos la edad en meses
+                resultados: resultados.resultados, 
+                edad_meses: resultados.edad_meses, 
                 lateralidad: resultados.lateralidad, 
                 observaciones: observaciones
             })
@@ -258,4 +314,3 @@ async function guardarResultados(pruebaId, resultados, lateralidad, observacione
         console.error("❌ Error en la solicitud al backend:", error);
     }
 }
-

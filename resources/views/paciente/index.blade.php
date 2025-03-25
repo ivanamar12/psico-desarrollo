@@ -15,11 +15,6 @@
 				</a>
 			</li>
 			<li>
-				<a href="#!" class="btn-search">
-					<i class="zmdi zmdi-search"></i>
-				</a>
-			</li>
-			<li>
 				<a href="#!" class="btn-modal-help">
 					<i class="zmdi zmdi-help-outline"></i>
 				</a>

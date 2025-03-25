@@ -42,6 +42,8 @@ class PermissionSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'aplicar prueba']);
         Permission::firstOrCreate(['name' => 'descargar informe']);
         Permission::firstOrCreate(['name' => 'pruebas']);
+        Permission::firstOrCreate(['name' => 'bitacora']);
+        
 
         $admin = Role::where('name', 'ADMIN')->first();
         $secretaria = Role::where('name', 'SECRETARIA')->first();
@@ -54,7 +56,7 @@ class PermissionSeeder extends Seeder
                 'registrar secretaria', 'editar secretaria', 'eliminar secretaria', 'ver secretaria',
                 'registrar representante', 'editar representante', 'eliminar representante', 'ver representante',
                 'registrar paciente', 'editar paciente', 'eliminar paciente', 'ver paciente',
-                'crear historia', 'eliminar historia', 'descargar historia', 'editar historia', 'descargar informe'
+                'crear historia', 'eliminar historia', 'descargar historia', 'editar historia', 'descargar informe', 'bitacora'
             ]);
         }
 

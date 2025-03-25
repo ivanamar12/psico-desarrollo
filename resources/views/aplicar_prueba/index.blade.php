@@ -17,11 +17,6 @@
 				</a>
 			</li>
 			<li>
-				<a href="#!" class="btn-search">
-					<i class="zmdi zmdi-search"></i>
-				</a>
-			</li>
-			<li>
 				<a href="#!" class="btn-modal-help">
 					<i class="zmdi zmdi-help-outline"></i>
 				</a>
@@ -215,50 +210,102 @@ $(document).ready(function () {
 </script>
 <script>
 $(document).on('click', '.ver-resultados', function () {
-    let aplicacionId = $(this).data('id'); // Obtener el ID de la aplicación de prueba
+    let aplicacionId = $(this).data('id');
 
     $.ajax({
-        url: `/aplicar-prueba/ver-respuestas/${aplicacionId}`, 
+        url: `/aplicar-prueba/ver-respuestas/${aplicacionId}`,
         method: 'GET',
         success: function (data) {
+            console.log("Datos recibidos:", data); // 👀 Verifica los datos
             let resultados = data.prueba.resultados;
-            
             let contenidoHTML = `
                 <h5><strong>Paciente:</strong> ${data.paciente.nombre}</h5>
                 <h5><strong>Prueba:</strong> ${data.prueba.nombre}</h5>
                 <h5><strong>Fecha:</strong> ${data.prueba.fecha || 'No disponible'}</h5>
-                <hr>
-                <h5><strong>Resultados:</strong></h5>
-                <table class="table table-bordered">
-                    <thead>
-                        <tr>
-                            <th>Subescala</th>
-                            <th>Puntaje</th>
-                            <th>Percentil</th>
-                        </tr>
-                    </thead>
-                    <tbody>`;
+                <hr>`;
 
-            if (resultados && resultados.resultados) {
-                for (let clave in resultados.resultados) {
-                    let resultado = resultados.resultados[clave];
-                    let puntaje = resultado.puntaje ?? 'N/A';
-                    let percentil = resultado.percentil ?? 'No disponible';
+            // 📌 Verificar si la prueba es Koppitz
+            if (data.prueba.nombre === "Koppitz") {
+                contenidoHTML += `
+                    <h5><strong>Puntaje Total:</strong> ${resultados.resultados.puntajeTotal}</h5>
+                    <h5><strong>Categoría:</strong> ${resultados.resultados.categoria}</h5>
+                    <h5><strong>Ítems Excepcionales:</strong> ${resultados.resultados.itemsExcepcionales}</h5>
+                `;
+            } 
+            // 📌 Verificar si la prueba es CUMANIN
+            else if (data.prueba.nombre === "CUMANIN") {
+                contenidoHTML += `
+                    <h5><strong>Resultados:</strong></h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Subescala</th>
+                                <th>Puntaje</th>
+                                <th>Percentil</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
 
-                    contenidoHTML += `
-                        <tr>
-                            <td><strong>${clave}</strong></td>
-                            <td>${puntaje}</td>
-                            <td>${percentil}</td>
-                        </tr>`;
+                if (resultados && resultados.resultados) {
+                    for (let clave in resultados.resultados) {
+                        let resultado = resultados.resultados[clave];
+                        let puntaje = resultado.puntaje ?? 'N/A';
+                        let percentil = resultado.percentil ?? 'No disponible';
+
+                        contenidoHTML += `
+                            <tr>
+                                <td><strong>${clave}</strong></td>
+                                <td>${puntaje}</td>
+                                <td>${percentil}</td>
+                            </tr>`;
+                    }
+                } else {
+                    contenidoHTML += `<tr><td colspan="3" class="text-center">No hay resultados disponibles</td></tr>`;
                 }
-            } else {
-                contenidoHTML += `<tr><td colspan="3" class="text-center">No hay resultados disponibles</td></tr>`;
-            }
 
-            contenidoHTML += `
-                    </tbody>
-                </table>`;
+                contenidoHTML += `
+                        </tbody>
+                    </table>`;
+            } 
+            // 📌 Para otras pruebas (NO estandarizadas)
+            else {
+                contenidoHTML += `
+                    <h5><strong>Resultados:</strong></h5>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Ítem</th>
+                                <th>Respuesta</th>
+                            </tr>
+                        </thead>
+                        <tbody>`;
+
+                // Verificar si hay resultados y subescalas
+                if (resultados && resultados.resultados) {
+                    // Iterar sobre todas las subescalas
+                    for (let subescala in resultados.resultados) {
+                        let respuestas = resultados.resultados[subescala].respuestas;
+
+                        // Verificar si hay respuestas en la subescala actual
+                        if (respuestas) {
+                            for (let item in respuestas) {
+                                let respuesta = respuestas[item];
+                                contenidoHTML += `
+                                    <tr>
+                                        <td><strong>${item}</strong></td>
+                                        <td>${respuesta}</td>
+                                    </tr>`;
+                            }
+                        }
+                    }
+                } else {
+                    contenidoHTML += `<tr><td colspan="2" class="text-center">No hay respuestas disponibles</td></tr>`;
+                }
+
+                contenidoHTML += `
+                        </tbody>
+                    </table>`;
+            }
 
             if (resultados.lateralidad) {
                 contenidoHTML += `<h5><strong>Lateralidad:</strong> ${resultados.lateralidad}</h5>`;
@@ -268,9 +315,9 @@ $(document).on('click', '.ver-resultados', function () {
                 contenidoHTML += `<h5><strong>Observaciones:</strong> ${resultados.observaciones}</h5>`;
             }
 
-            // Insertar el contenido en el modal correcto
+            // Inyectar el contenido en el modal
             $("#contenidoPruebaVer").html(contenidoHTML);
-            $("#modalPruebaVer").modal("show"); // Asegurar que solo este modal se abre
+            $("#modalPruebaVer").modal("show");
         },
         error: function (xhr, status, error) {
             console.error("❌ Error al obtener los resultados:", status, error);
@@ -278,6 +325,5 @@ $(document).on('click', '.ver-resultados', function () {
         }
     });
 });
-
 </script>
 @endsection

@@ -10,33 +10,25 @@ use Illuminate\Support\Facades\Route;
 
 class AuditLog
 {
-  /**
-   * Handle an incoming request.
-   *
-   * @param  \Illuminate\Http\Request  $request
-   * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-   * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-   */
   public function handle(Request $request, Closure $next)
   {
     $response = $next($request);
-    $route = Route::currentRouteName();
-    $description = $this->descriptions[$route] ?? null;
 
-    if (!$description || !Auth::user()) {
+    if (!Auth::check()) {
       return $response;
     }
 
+    // Obtener el nombre de la ruta actual y el método HTTP
+    $routeName = Route::currentRouteName() ?? 'unknown';
+    $method = $request->method(); // GET, POST, PUT, DELETE
+
+    // Guardar en la bitácora
     ModelsAuditLog::create([
-      'user_id' => Auth::user()->id,
-      'action' => $description,
+      'user_id' => Auth::id(),
+      'action' => "$method $routeName", // Ejemplo: "POST crear_paciente"
     ]);
 
     return $response;
   }
-
-  protected $descriptions = [
-    'index' => 'Ver Página Principal',
-    'dashboard' =>  'Ver Panel de Control',
-  ];
 }
+
