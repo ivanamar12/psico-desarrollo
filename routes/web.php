@@ -87,9 +87,9 @@ Route::middleware('auth')->group(function () {
   Route::get('pacientes/{id}/edit', [PacienteController::class, 'edit'])
     ->name('paciente.edit');
 
-     // Ruta para obtener un paciente específico en formato JSON
+  // Ruta para obtener un paciente específico en formato JSON
   Route::get('paciente/{id}', [PacienteController::class, 'show'])
-  ->name('paciente.show');
+    ->name('paciente.show');
 
   // Ruta para pacientes y especialistas
   Route::get('citas', [CitaController::class, 'index'])
@@ -146,9 +146,9 @@ Route::middleware('auth')->group(function () {
   Route::get('pruebas', [PruebaController::class, 'index'])
     ->name('pruebas.index');
 
-    // Ruta para aplicar prueba
+  // Ruta para aplicar prueba
   Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])
-  ->name('aplicar_prueba.index');
+    ->name('aplicar_prueba.index');
 
   Route::get('aplicar-prueba/{id}', [AplicarPruebaController::class, 'obtenerPrueba']);
 
@@ -157,17 +157,17 @@ Route::middleware('auth')->group(function () {
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 
   Route::get('pruebas/{id}', [PruebaController::class, 'show'])
-  ->name('pruebas.show')
-  ->middleware('auth');
+    ->name('pruebas.show')
+    ->middleware('auth');
 
   Route::get('/obtener-fecha-nacimiento/{paciente_id}', function ($paciente_id) {
-      $paciente = \App\Models\Paciente::find($paciente_id);
+    $paciente = \App\Models\Paciente::find($paciente_id);
 
-      if (!$paciente) {
-          return response()->json(['error' => 'Paciente no encontrado'], 404);
-      }
+    if (!$paciente) {
+      return response()->json(['error' => 'Paciente no encontrado'], 404);
+    }
 
-      return response()->json(['fecha_nacimiento' => $paciente->fecha_nac]);
+    return response()->json(['fecha_nacimiento' => $paciente->fecha_nac]);
   });
 
   Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
@@ -179,10 +179,8 @@ Route::middleware('auth')->group(function () {
   Route::get('/resultados/no-estandarizada/{id}', [AplicarPruebaController::class, 'generarPDFNoEstandarizada'])
     ->name('resultados.no_estandarizada.pdf');
 
-  Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
-
-  Route::get('/estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])->name('estadisticas.pacientes');
-
+  Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
@@ -195,5 +193,3 @@ Route::middleware(['web', 'auth'])->group(function () {
   Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
     ->name('pruebas.destroy');
 });
-
-

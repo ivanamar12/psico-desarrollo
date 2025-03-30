@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HistoriaClinicaController;
 use App\Http\Controllers\AnalisisPruebaController;
 use App\Http\Controllers\AplicarPruebaController;
+use App\Http\Controllers\DashboardController;
 use App\Models\AplicacionPrueba;
 use App\Models\SubEscala;
 use App\Models\Baremos;
@@ -27,7 +28,7 @@ Route::get('/ultima-prueba', function () {
     return response()->json([
         'prueba' => [
             'id' => $prueba->id,
-            'tipo' => $prueba->prueba->tipo,  
+            'tipo' => $prueba->prueba->tipo,
             'nombre' => $prueba->prueba->nombre,
             'genero_id' => $prueba->paciente->genero_id // 📌 Agregamos el ID del género
         ]
@@ -39,7 +40,7 @@ Route::post('/analizar-prueba', [AnalisisPruebaController::class, 'analizarPrueb
 
 Route::get('/subescalas', function () {
     try {
-        $subescalas = SubEscala::all(['id', 'sub_escala']); 
+        $subescalas = SubEscala::all(['id', 'sub_escala']);
         return response()->json($subescalas);
     } catch (\Exception $e) {
         \Log::error("Error obteniendo subescalas: " . $e->getMessage());
@@ -60,3 +61,6 @@ Route::get('/baremos', function () {
 
 Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, 'obtenerRespuestasPrueba']);
 
+
+Route::get('estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])
+    ->name('estadisticas.pacientes');
