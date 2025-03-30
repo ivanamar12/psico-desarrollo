@@ -21,4 +21,16 @@ class Secretaria extends Model
     	return $this->belongsTo(Genero::class);
     	
     }
+
+    public static function obtenerSecretaria($id)
+    {
+        return self::with([
+            'genero',
+            'direccion.estado',
+            'direccion.municipio',
+            'direccion.parroquia'
+        ])
+        ->where('id', $id)
+        ->first();
+    }
 }

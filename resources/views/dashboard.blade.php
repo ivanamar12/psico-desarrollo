@@ -97,6 +97,57 @@
             </div>
         </article>
     </div>
+
+    <div>
+    <h3>Distribución de Género</h3>
+    <canvas id="graficaGenero" width="400" height="400"></canvas>
+</div>
+
+<div>
+    <h3>Distribución de Edades</h3>
+    <canvas id="graficaEdades" width="400" height="400"></canvas>
+</div>
+
 </section>
 
+@endsection
+@section('scripts')
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    fetch("{{ route('estadisticas.pacientes') }}")
+        .then(response => response.json())
+        .then(data => {
+            // Gráfica de Donut (Género)
+            new Chart(document.getElementById('graficaGenero'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Masculino', 'Femenino'],
+                    datasets: [{
+                        data: [data.generos.Masculino, data.generos.Femenino],
+                        backgroundColor: ['#36A2EB', '#FF6384']
+                    }]
+                }
+            });
+
+            // Gráfica de Barras (Edades)
+            new Chart(document.getElementById('graficaEdades'), {
+                type: 'bar',
+                data: {
+                    labels: data.edades.rangos.map(meses => meses + ' meses'),
+                    datasets: [{
+                        label: 'Cantidad de Pacientes',
+                        data: data.edades.cantidad,
+                        backgroundColor: '#4CAF50'
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        })
+        .catch(error => console.error('Error al cargar datos:', error));
+});
+</script>
 @endsection

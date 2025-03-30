@@ -10,11 +10,11 @@ class Paciente extends Model
     use HasFactory;
     protected $fillable = ['nombre', 'apellido', 'fecha_nac', 'lugar_id', 'representante_id', 'datoseconomico_id', 'genero_id'];
 
-    public function datosEconomico(){
-
-        return $this->belongsTo(DatosEconomico::class);
-        
+    public function datosEconomico()
+    {
+        return $this->hasOne(DatosEconomico::class, 'id', 'datoseconomico_id');
     }
+
     public function representante(){
 
         return $this->belongsTo(Representante::class);
@@ -45,5 +45,17 @@ class Paciente extends Model
     public function aplicacionPruebas()
     {
     	return $this->hasMany(AplicacionPrueba::class);
+    }
+
+    public static function obtenerPaciente($id)
+    {
+        return self::with([
+            'genero',
+            'representante',
+            'datosEconomico',
+            'parentescos'
+        ])
+        ->where('id', $id)
+        ->first();
     }
 }

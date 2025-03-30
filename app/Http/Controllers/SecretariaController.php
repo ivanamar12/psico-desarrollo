@@ -131,39 +131,14 @@ class SecretariaController extends Controller
 
   public function show($id)
   {
-    $secretaria = DB::select("
-            SELECT 
-                secretarias.id AS secretaria, 
-                secretarias.nombre AS nombre, 
-                secretarias.apellido AS apellido, 
-                secretarias.ci AS ci, 
-                secretarias.fecha_nac AS fecha_nac, 
-                secretarias.telefono AS telefono, 
-                secretarias.email AS email, 
-                secretarias.grado AS grado,
-                generos.genero AS genero, 
-                estados.estado AS estado, 
-                municipios.municipio AS municipio, 
-                parroquias.parroquia AS parroquia, 
-                direccions.sector AS sector
-            FROM 
-                secretarias
-            JOIN 
-                generos ON secretarias.genero_id = generos.id 
-            JOIN 
-                direccions ON secretarias.direccion_id = direccions.id
-            JOIN 
-                estados ON direccions.estado_id = estados.id
-            JOIN 
-                municipios ON direccions.municipio_id = municipios.id
-            JOIN 
-                parroquias ON direccions.parroquia_id = parroquias.id
-            WHERE 
-                secretarias.id = ?
-        ", [$id]);
+    $secretaria = Secretaria::obtenerSecretaria($id);
+
+    if (!$secretaria) {
+        return response()->json(['error' => 'Secretaria no encontrado'], 404);
+    }
 
     return response()->json($secretaria);
-  }
+}
 
   public function edit($id)
   {

@@ -32,7 +32,7 @@
 				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
 					@if(auth()->user()->can('registrar paciente'))
-                        <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                        <li><a href="#new" data-toggle="tab"> Nuevo</a></li>
                     @endif
 				</ul>
 				<div id="myTabContent" class="tab-content">
@@ -84,7 +84,7 @@
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id="paso2">
@@ -139,8 +139,8 @@
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="agregarFamiliar" class="btn btn-primary">Agregar Familiar</button>
-                                                <button type="button" id="siguiente2" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="agregarFamiliar" class="btn btn-custom" style="color: white;">Agregar Familiar</button>
+                                                <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id= "paso3">
@@ -214,8 +214,8 @@
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-												<button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-												<button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+												<button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+												<button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy" style="color: white;"></i>Registrar</button>
 											</p>
                                         </div>
                                     </form>
@@ -232,7 +232,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -241,12 +241,37 @@
                 ¿Desea eliminar el registro seleccionado?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar" style="color: white;">Eliminar</button>
             </div>
         </div>
     </div>
-</div> 
+</div>
+<!-- modal mostrar paciente -->
+<div id="pacienteModal" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title w-100 text-center" style="color: white;">Paciente</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
+                <p><strong>Fecha de Nacimiento:</strong> <span id="fecha_nac"></span></p>
+                <p><strong>Genero:</strong> <span id="genero"></span></p>
+                <p><strong>Representante:</strong> <span id="representante_nombre"></span></p>
+                <p><strong>Cedula de Identidad:</strong> <span id="representante_ci"></span></p>
+                <p><strong>Telefono:</strong> <span id="representante_telefono"></span></p>
+                <p><strong>Correo Electronico:</strong> <span id="representante_email"></span></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
 @endsection
 @section('js')
 <script>
@@ -496,6 +521,43 @@ $('#btnEliminar').click(function(){
         error: function(xhr, status, error) {
             console.error('Error al eliminar el registro:', error);
             toastr.error('No se pudo eliminar el registro', 'Error', { timeOut: 5000 });
+        }
+    });
+});
+</script>
+<script>
+$(document).on('click', '.ver-paciente', function() {
+    let pacienteId = $(this).data('id');
+
+    $.ajax({
+        url: '/paciente/' + pacienteId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log("Datos del paciente:", data);
+
+            let nombreApellido = data.nombre + " " + data.apellido;
+            let fechaNacimiento = data.fecha_nac;
+            let genero = data.genero ? data.genero.genero : "No disponible";
+            
+            let representanteNombre = data.representante ? data.representante.nombre + " " + data.representante.apellido : "No disponible";
+            let representanteCedula = data.representante ? data.representante.ci : "No disponible";
+            let representanteTelefono = data.representante ? data.representante.telefono : "No disponible";
+            let representanteEmail = data.representante ? data.representante.email : "No disponible";
+            
+            $('#pacienteModal #nombre').text(nombreApellido);
+            $('#pacienteModal #fecha_nac').text(fechaNacimiento);
+            $('#pacienteModal #genero').text(genero);
+            $('#pacienteModal #representante_nombre').text(representanteNombre);
+            $('#pacienteModal #representante_ci').text(representanteCedula);
+            $('#pacienteModal #representante_telefono').text(representanteTelefono);
+            $('#pacienteModal #representante_email').text(representanteEmail);
+
+            $('#pacienteModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al obtener los datos:", error);
+            alert("Hubo un problema al obtener la información del paciente.");
         }
     });
 });

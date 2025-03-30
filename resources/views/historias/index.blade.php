@@ -34,7 +34,7 @@
 				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
 					@if(auth()->user()->can('crear historia'))
-                        <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                        <li><a href="#new" data-toggle="tab"> Nuevo</a></li>
                     @endif
 				</ul>
 				<div id="myTabContent" class="tab-content">
@@ -82,7 +82,7 @@
                                                     <input class="form-control" id="motivo" name="motivo" type="text" required>
                                                 </div>
                                             </div>
-                                            <p class="centro-texto"><button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button></p>
+                                            <p class="centro-texto"><button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button></p>
                                         </div>
                                         <div id="paso2">
                                             <h3>Antecedentes Médicos</h3>
@@ -125,8 +125,8 @@
                                                 </div> 
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="regresar1" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="button" id="siguiente2" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="regresar1" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id="paso3">
@@ -168,8 +168,8 @@
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="regresar2" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="button" id="siguiente3" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="regresar2" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="button" id="siguiente3" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id ="paso4">
@@ -213,8 +213,8 @@
                                                 </div>  
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="regresar3" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="button" id="siguiente4" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="regresar3" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="button" id="siguiente4" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id="paso5">
@@ -268,8 +268,8 @@
                                                 </div>   
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="regresar4" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="button" id="siguiente5" class="btn btn-primary">Siguiente</button>
+                                                <button type="button" id="regresar4" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="button" id="siguiente5" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                             </p>
                                         </div>
                                         <div id="paso6">
@@ -321,8 +321,8 @@
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="regresar5" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+                                                <button type="button" id="regresar5" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Registrar</button>
                                             </p>
                                         </div>  
                                     </form>
@@ -340,7 +340,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmación</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -349,8 +349,8 @@
                 ¿Desea eliminar el registro seleccionado?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnEliminar" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar" style="color: white;">Eliminar</button>
             </div>
         </div>
     </div>
@@ -359,8 +359,10 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Detalles de la Historia</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Detalles de la Historia</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <p><strong>Código:</strong> <span id="codigoV"></span></p>
@@ -370,13 +372,13 @@
                 <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
                 <p><strong>Representante:</strong> <span id="representanteV"></span></p>
                 <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-                <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span></p>
-                <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span></p>
+                <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span>Pts.</p>
+                <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span>Pts.</p>
                 <p><strong>Riesgo Global:</strong> <span id="riesgoGlobal"></span></p>
-                <p><strong>Peso al Nacer:</strong> <span id="peso"></span></p>
+                <p><strong>Peso al Nacer:</strong> <span id="peso"></span>.Kg</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
             </div>
         </div>
     </div>
@@ -729,25 +731,32 @@ $(document).on('click', '.verHistoria', function () {
                 return;
             }
 
-            $('#codigoV').text(data.historia.codigo || 'N/A');
-            $('#referenciaV').text(data.historia.referencia || 'N/A');
-            $('#motivoV').text(data.historia.motivo || 'N/A');
-            $('#pacienteV').text(`${data.historia.paciente.nombre || ''} ${data.historia.paciente.apellido || ''}`);
-            $('#fechaNacimiento').text(data.historia.fecha_nac || 'N/A'); // Asegúrate de que este campo exista
-            $('#representanteV').text(`${data.historia.representanteNombre || ''} ${data.historia.representanteApellido || ''}`); // Asegúrate de que estos campos existan
-            $('#direccion').text(data.historia.direccion || 'N/A'); // Asegúrate de que este campo exista
-            $('#riesgoSocial').text(data.riesgoSocial || 'N/A');
-            $('#riesgoBiologico').text(data.riesgoBiologico || 'N/A');
-            $('#riesgoGlobal').text(data.riesgoGlobal || 'N/A');
-            $('#peso').text(data.historia.peso_nacer_niño || 'N/A'); // Asegúrate de que este campo exista
+            const historia = data.historia;
+            const paciente = historia.paciente || {};
+            const representante = paciente.representante || {};
+            const direccion = representante.direccion || {};
+            const historiaDesarrollo = historia.historia_desarrollo || {};
+
+            $('#codigoV').text(historia.codigo || 'N/A');
+            $('#referenciaV').text(historia.referencia || 'N/A');
+            $('#motivoV').text(historia.motivo || 'N/A');
+            $('#pacienteV').text(`${paciente.nombre || 'N/A'} ${paciente.apellido || 'N/A'}`);
+            $('#fechaNacimiento').text(paciente.fecha_nac || 'N/A');
+            $('#representanteV').text(`${representante.nombre || 'N/A'} ${representante.apellido || 'N/A'}`);
+            $('#direccion').text(`${direccion.estado?.estado || 'N/A'}, ${direccion.municipio?.municipio || 'N/A'}, ${direccion.parroquia?.parroquia || 'N/A'}, ${direccion.sector || 'N/A'}`);
+            $('#riesgoSocial').text(data.riesgoSocial ?? 'N/A');
+            $('#riesgoBiologico').text(data.riesgoBiologico ?? 'N/A');
+            $('#riesgoGlobal').text(data.riesgoGlobal ?? 'N/A');
+            $('#peso').text(historiaDesarrollo.peso_nacer_niño ?? 'N/A');
         },
         error: function (xhr) {
             const errorMessage = xhr.status === 404 ? 'Historia no encontrada.' : 'Error al cargar los datos.';
             $('#modalVerHistoria .modal-body').html(`<p>${errorMessage}</p>`);
-            console.error('Error en la solicitud:', xhr); // Para depuración
+            console.error('Error en la solicitud:', xhr);
         }
     });
 });
+
 </script>
 
 @endsection

@@ -34,7 +34,7 @@
 				<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
 					@if(auth()->user()->can('registrar representante'))
-                        <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                        <li><a href="#new" data-toggle="tab"> Nuevo</a></li>
                     @endif
 				</ul>
 				<div id="myTabContent" class="tab-content">
@@ -93,7 +93,7 @@
 												</div>
 											</div>
 											<p class="centro-texto">
-												<button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button>
+												<button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
 											</p>
 										</div>
                                         <div id="paso2" style="display: none;">
@@ -120,8 +120,8 @@
 												</div>
 											</div>
 											<p class="centro-texto">
-												<button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-												<button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+												<button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+												<button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Registrar</button>
 											</p>
 										</div>
                                     </form>
@@ -139,7 +139,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel">Actualizar Representante</h2>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Actualizar Representante</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
@@ -178,7 +178,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <p class="centro-texto"><button type="button" id="siguiente1_edit" class="btn btn-primary">Siguiente</button></p>
+                                <p class="centro-texto"><button type="button" id="siguiente1_edit" class="btn btn-regresar" style="color: white;">Siguiente</button></p>
                             </div>
                             <div id="paso2_edit" style="display: none;">
                             <h3>Datos de Dirección</h3>
@@ -204,8 +204,8 @@
                                     </div>
                                 </div>
                                 <p class="centro-texto">
-                                    <button type="button" id="regresar_edit" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                    <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Guardar cambios</button>
+                                    <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                    <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Guardar cambios</button>
                                 </p>
                             </div>
                         </form>
@@ -220,7 +220,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -229,8 +229,8 @@
                 ¿Desea eliminar el registro seleccionado?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar" style="color: white;">Eliminar</button>
             </div>
         </div>
     </div>
@@ -240,7 +240,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Representante</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Representante</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -251,13 +251,10 @@
                 <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
                 <p><strong>Email:</strong> <span id="email"></span></p>
                 <p><strong>Género:</strong> <span id="genero"></span></p>
-                <p><strong>Estado:</strong> <span id="estado"></span></p>
-                <p><strong>Municipio:</strong> <span id="municipio"></span></p>
-                <p><strong>Parroquia:</strong> <span id="parroquia"></span></p>
-                <p><strong>Sector:</strong> <span id="sector"></span></p>
+                <p><strong>Dirección:</strong> <span id="direccion"></span></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
             </div>
         </div>
     </div>
@@ -634,31 +631,38 @@ $(document).ready(function() {
 });
 </script>
 <script>
-$(document).ready(function() {
-    $(document).on('click', '.ver-representante', function() {
-        var representanteId = $(this).data('id'); 
-        $.ajax({
-            url: '/representantes/' + representanteId, 
-            type: 'GET',
-            success: function(representante) { 
-                console.log('Datos de la secretaria:', representante); 
-                $('#nombre').text(representante[0].nombre + ' ' + representante[0].apellido);
-                $('#ci').text(representante[0].ci);
-                $('#telefono').text(representante[0].telefono);
-                $('#email').text(representante[0].email);
-                $('#genero').text(representante[0].genero);
-                $('#estado').text(representante[0].estado);
-                $('#municipio').text(representante[0].municipio);
-                $('#parroquia').text(representante[0].parroquia);
-                $('#sector').text(representante[0].sector);
+$(document).on('click', '.ver-representante', function() {
+    let representanteId = $(this).data('id');
 
-                $('#representanteModal').modal('show');
-            },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error al obtener los datos del representante:', textStatus, errorThrown);
-                alert('Ocurrió un error al obtener los datos del representanteModal. Intenta nuevamente.');
-            }
-        });
+    $.ajax({
+        url: '/representantes/' + representanteId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log("Datos del representante:", data);
+
+            let nombreApellido = data.nombre + " " + data.apellido;
+            let cedula = data.ci;
+            let telefono = data.telefono;
+            let email = data.email;
+
+            let genero = data.genero ? data.genero.genero : "No disponible";
+
+            let direccion = `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
+
+            $('#representanteModal #nombre').text(nombreApellido);
+            $('#representanteModal #ci').text(cedula);
+            $('#representanteModal #telefono').text(telefono);
+            $('#representanteModal #email').text(email);
+            $('#representanteModal #genero').text(genero);
+            $('#representanteModal #direccion').text(direccion);
+
+            $('#representanteModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al obtener los datos:", error);
+            alert("Hubo un problema al obtener la información del especialista.");
+        }
     });
 });
 </script>

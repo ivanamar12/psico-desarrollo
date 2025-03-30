@@ -97,7 +97,7 @@
                                                 </div>
 											</div>
 											<p class="centro-texto">
-												<button type="button" id="siguiente" class="btn btn-primary">Siguiente</button>
+												<button type="button" id="siguiente" class="btn btn-regresar" style="color: white;">Siguiente</button>
 											</p>
 										</div>
 										<div id="paso2" style="display: none;">
@@ -108,13 +108,13 @@
                                                         <label class="control-label">Item</label>
                                                         <input class="form-control" name="items[0][nombre]" type="text" required>
                                                     </div>
-                                                    <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
+                                                    <button type="button" class="eliminar btn btn-eliminar" style="color: white;" onclick="eliminarItem(this)">Eliminar</button>
                                                 </div>
                                             </div>
                                             <p class="centro-texto">
-                                                <button type="button" id="addItem" class="btn btn-primary">Agregar Item</button>
-                                                <button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+                                                <button type="button" id="addItem" class="btn btn-regresar" style="color: white;">Agregar Item</button>
+                                                <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Registrar</button>
                                             </p>
                                         </div>
 									</form>
@@ -132,8 +132,10 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h2 class="modal-title" id="modalTitulo">Título de la prueba</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h3 class="modal-title w-100 text-center" id="modalTitulo" style="color: white;">Título de la prueba</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <p><strong>Descripción:</strong> <span id="modalDescripcion"></span></p>
@@ -144,7 +146,7 @@
                 <ul id="modalItems"></ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
             </div>
         </div>
     </div>
@@ -154,7 +156,7 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
                 </button>
@@ -163,8 +165,8 @@
                     ¿Desea eliminar el registro seleccionado?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"  style="color: white;">Eliminar</button>
             </div>
         </div>
     </div>

@@ -45,7 +45,7 @@
                             <table class="table table-hover text-center" id="tab-citas_hoy">
                                 <thead>
                                 <div class="data-table-header">
-                                    <button onclick="window.open('{{ url('/pdf/citas_hoy') }}', '_blank');" class="btn btn-primary">
+                                    <button onclick="window.open('{{ url('/pdf/citas_hoy') }}', '_blank');" class="btn btn-custom" style="color: white;">
                                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas del dia
                                     </button>
                                 </div>
@@ -68,7 +68,7 @@
                             <table class="table table-hover text-center" id="tab-citas">
                                 <thead>
                                 <div class="data-table-header">
-                                    <button onclick="window.open('{{ url('/pdf/citas') }}', '_blank');" class="btn btn-primary">
+                                    <button onclick="window.open('{{ url('/pdf/citas') }}', '_blank');" class="btn btn-custom" style="color: white;">
                                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas
                                     </button>
                                 </div>
@@ -97,7 +97,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="eventModalLabel">Agendar Cita </h5>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Agendar Cita</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -130,8 +130,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button type="button" class="btn btn-primary" id="saveEvent">Agendar Cita </button>
+                <button type="button" class="btn btn-regresar" data-dismiss="modal" style="color: white;">Cerrar</button>
+                <button type="button" class="btn btn-custom" id="saveEvent" style="color: white;">Agendar Cita </button>
             </div>
         </div>
     </div>
@@ -143,7 +143,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="statusModalLabel">Descripción del estado de la cita</h5>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Descripción del estado de la cita</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -169,8 +169,8 @@
                 <p class="text-danger" id="errorMessage" style="display:none;"></p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
-                <button id="saveStatusButton" class="btn btn-primary">Guardar Cambios</button>
+                <button type="button" class="btn btn-regresar" data-dismiss="modal" style="color: white;">Cerrar</button>
+                <button id="saveStatusButton" class="btn btn-custom" style="color: white;">Guardar Cambios</button>
             </div>
         </div>
     </div>
@@ -296,6 +296,7 @@ $.ajax({
     success: function(data) {
         $('#statusModal .modal-body').prepend(`
             <p><strong>Hora:</strong> ${data.hora}</p>
+            <p><strong>Representante:</strong> ${data.representante_nombre}</p>
             <p><strong>Paciente:</strong> ${data.paciente_nombre}</p>
             <p><strong>Especialista:</strong> ${data.especialista_nombre}</p>`);
 

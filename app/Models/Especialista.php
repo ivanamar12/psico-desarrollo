@@ -34,4 +34,17 @@ class Especialista extends Model
     	return $this->hasMany(Cita::class);
     	 
     }
+
+    public static function obtenerEspecialista($id)
+    {
+        return self::with([
+            'genero',
+            'especialidad',
+            'direccion.estado',
+            'direccion.municipio',
+            'direccion.parroquia'
+        ])
+        ->where('id', $id)
+        ->first();
+    }
 }

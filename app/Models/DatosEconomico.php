@@ -11,10 +11,10 @@ class DatosEconomico extends Model
 
     protected $fillable = ['tipo_vivienda', 'cantidad_habitaciones', 'cantidad_personas', 'servecio_agua_potable','servecio_gas', 'servecio_electricidad', 'servecio_drenaje', 'disponibilidad_internet', 'tipo_conexion_internet', 'acceso_servcios_publicos', 'fuente_ingreso_familiar'];
 
-    public function pacientes(){
-
-    	return $this->hasMany(Paciente::class);
-    	 
+    public function paciente()
+    {
+        return $this->belongsTo(Paciente::class, 'id', 'datoseconomico_id');
     }
+    
 
 }

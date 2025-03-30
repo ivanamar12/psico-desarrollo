@@ -9,7 +9,7 @@ Route::middleware('auth')->group(function () {
     ->name('especialista.index');
 
   // Ruta para obtener un especialista específico en formato JSON
-  Route::get('especialista/{id}', [EspecialistaController::class, 'show'])
+  Route::get('especialistas/{id}', [EspecialistaController::class, 'show'])
     ->name('especialista.show');
 
   // Ruta para almacenar un nuevo especialista

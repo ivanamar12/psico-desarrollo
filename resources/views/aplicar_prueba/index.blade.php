@@ -79,7 +79,7 @@
 												@endforeach
 											</select>
 										</div>
-										<button type="button" id="btnIniciarPrueba" class="btn btn-primary">Aplicar Prueba</button>
+										<button type="button" id="btnIniciarPrueba" class="btn btn-custom" style="color: white;">Aplicar Prueba</button>
 									</form>
 								</div>
 							</div>
@@ -94,7 +94,7 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Aplicación de Prueba</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Aplicación de la prueba</h3>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body">
@@ -102,9 +102,9 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btnAnterior" class="btn btn-secondary" style="display: none;">Anterior</button>
-                <button id="btnSiguiente" class="btn btn-primary">Siguiente</button>
-                <button id="btnFinalizar" class="btn btn-success" style="display: none;">Finalizar</button>
+                <button id="btnAnterior" class="btn btn-regresar" style="display: none; color: white;">Anterior</button>
+                <button id="btnSiguiente" class="btn btn-regresar" style="color: white;">Siguiente</button>
+                <button id="btnFinalizar" class="btn btn-custom" style="display: none; color: white;">Finalizar</button>
             </div>
         </div>
     </div>
@@ -113,8 +113,10 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Resultados de la Prueba</h5>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Resultados de la prueba</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
                 <div id="contenidoPruebaVer"> <!-- Cambié el ID aquí -->
@@ -122,7 +124,7 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button id="btnCerrar" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+            <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
             </div>
         </div>
     </div>

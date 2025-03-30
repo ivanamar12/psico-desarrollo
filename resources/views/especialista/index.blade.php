@@ -34,7 +34,7 @@
 					<ul class="nav nav-tabs" style="margin-bottom: 15px;">
 					  	<li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
                         @if(auth()->user()->can('registrar especialista'))
-                            <li><a href="#new" data-toggle="tab"><i class="zmdi zmdi-plus"> Nuevo</i></a></li>
+                            <li><a href="#new" data-toggle="tab">Nuevo</a></li>
                         @endif
 					</ul>
 					<div id="myTabContent" class="tab-content">
@@ -43,7 +43,7 @@
 								<div class="table-responsive">
 									<table class="table table-hover text-center" id="tab-especialista">
 										<thead>
-                                            <button id="openModal" class="btn btn-primary">Especialidades</button>
+                                            <button id="openModal" class="btn btn-custom" style="color: white;">Especialidades</button>
 											<tr>
 												<th class="text-center">#</th>
 												<th class="text-center">Nombre</th>
@@ -108,7 +108,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="centro-texto">
-                                                    <button type="button" id="siguiente1" class="btn btn-primary">Siguiente</button>
+                                                    <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
                                                 </p>
                                             </div>
                                             <div id="paso2" style="display: none;">
@@ -135,8 +135,8 @@
                                                     </div>
                                                 </div>
                                                 <p class="centro-texto">
-                                                    <button type="button" id="regresar" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                                    <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Registrar</button>
+                                                    <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                                    <button type="submit" name="registrar" class="btn btn-custom"  style="color: white;"><i class="zmdi zmdi-floppy"></i>Registrar</button>
                                                 </p>
                                             </div>
                                         </form>
@@ -154,7 +154,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Confirmacion</h5>
+                <h3 class="modal-title w-100 text-center" style="color: white;">Confirmar </h3>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                     </button>
@@ -163,8 +163,8 @@
                     ¿Desea eliminar el registro seleccionado?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-danger">Eliminar</button>
+                    <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+                    <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar" style="color: white;">Eliminar</button>
                 </div>
             </div>
         </div>
@@ -173,9 +173,9 @@
 <div class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             <div class="modal-header">
-            <h2 class="modal-title" id="staticBackdropLabel">Actualizar Especialista</h2>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Editar Especialista</h3>
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -228,7 +228,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <p class="centro-texto"><button type="button" id="siguiente1_edit" class="btn btn-primary">Siguiente</button></p>
+                                <p class="centro-texto"><button type="button" id="siguiente1_edit" class="btn btn-regresar" style="color: white;">Siguiente</button></p>
                             </div>
                             <div id="paso2_edit" style="display: none;">
                             <h3>Datos de Dirección</h3>
@@ -257,8 +257,8 @@
                                     </div>
                                 </div>
                                 <p class="centro-texto">
-                                    <button type="button" id="regresar_edit" class="btn btn-secondary"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                                    <button type="submit" name="registrar" class="btn btn-primary"><i class="zmdi zmdi-floppy"></i>Guardar cambios</button>
+                                    <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                                    <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class=""></i>Guardar cambios</button>
                                 </p>
                             </div>
                         </form>
@@ -273,11 +273,12 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Especialista</h5>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Especialista</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            
             <div class="modal-body">
                 <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
                 <p><strong>Cédula de Identidad:</strong> <span id="ci"></span></p>
@@ -286,23 +287,20 @@
                 <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
                 <p><strong>Email:</strong> <span id="email"></span></p>
                 <p><strong>Género:</strong> <span id="genero"></span></p>
-                <p><strong>Estado:</strong> <span id="estado"></span></p>
-                <p><strong>Municipio:</strong> <span id="municipio"></span></p>
-                <p><strong>Parroquia:</strong> <span id="parroquia"></span></p>
-                <p><strong>Sector:</strong> <span id="sector"></span></p>
+                <p><strong>Dirección:</strong> <span id="direccion"></span></p>
             </div>
+            
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
             </div>
         </div>
     </div>
 </div>
-<!-- modal especialidad -->
 <div class="modal fade" id="especialidadModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="modalLabel">Registrar Especialidad</h5>
+            <h3 class="modal-title w-100 text-center" style="color: white;">Especialista</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -313,7 +311,7 @@
                         <label for="especialidad">Especialidad</label>
                         <input type="text" class="form-control" id="especialidad" name="especialidad" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Registrar</button>
+                    <button type="submit" class="btn btn-custom" style="color: white;">Registrar</button>
                 </form>
             </div>
         </div>
@@ -722,37 +720,45 @@ $(document).ready(function() {
 });
 </script>
 <script>
-$(document).ready(function() {
-    $(document).on('click', '.ver-especialista', function() {
-        var especialistaId = $(this).data('id'); 
-        $.ajax({
-            url: '/especialista/' + especialistaId, 
-            type: 'GET',
-            success: function(especialista) { 
-                console.log('Datos del especialista:', especialista); // Verifica los datos
+$(document).on('click', '.ver-especialista', function() {
+    let especialistaId = $(this).data('id');
 
-                // Accede a las propiedades del primer objeto en el array
-                $('#nombre').text(especialista[0].nombre + ' ' + especialista[0].apellido);
-                $('#ci').text(especialista[0].ci);
-                $('#fecha_nac').text(especialista[0].fecha_nac);
-                $('#especialidad').text(especialista[0].especialidad);
-                $('#telefono').text(especialista[0].telefono);
-                $('#email').text(especialista[0].email);
-                $('#genero').text(especialista[0].genero);
-                $('#estado').text(especialista[0].estado);
-                $('#municipio').text(especialista[0].municipio);
-                $('#parroquia').text(especialista[0].parroquia);
-                $('#sector').text(especialista[0].sector);
+    $.ajax({
+        url: '/especialistas/' + especialistaId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+            console.log("Datos del especialista:", data);
 
-                $('#especialistaModal').modal('show');
-            },
-                        error: function(jqXHR, textStatus, errorThrown) {
-                console.error('Error al obtener los datos del especialista:', textStatus, errorThrown);
-                alert('Ocurrió un error al obtener los datos del especialista. Intenta nuevamente.');
-            }
-        });
+            let nombreApellido = data.nombre + " " + data.apellido;
+            let cedula = data.ci;
+            let fechaNacimiento = data.fecha_nac;
+            let telefono = data.telefono;
+            let email = data.email;
+
+            let especialidad = data.especialidad ? data.especialidad.especialidad : "No disponible";
+            let genero = data.genero ? data.genero.genero : "No disponible";
+
+            let direccion = `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
+
+            $('#especialistaModal #nombre').text(nombreApellido);
+            $('#especialistaModal #ci').text(cedula);
+            $('#especialistaModal #fecha_nac').text(fechaNacimiento);
+            $('#especialistaModal #especialidad').text(especialidad);
+            $('#especialistaModal #telefono').text(telefono);
+            $('#especialistaModal #email').text(email);
+            $('#especialistaModal #genero').text(genero);
+            $('#especialistaModal #direccion').text(direccion);
+
+            $('#especialistaModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+            console.error("Error al obtener los datos:", error);
+            alert("Hubo un problema al obtener la información del especialista.");
+        }
     });
 });
+
 </script>
 <script>
 $(document).ready(function() {

@@ -43,6 +43,11 @@
     <div class="cita-detalle">
         <h2>Detalles de la Cita</h2>
         <p><strong>ID de Cita:</strong> {{ $cita->id }}</p>
+        <p><strong>Representante:</strong> @if($cita->paciente && $cita->paciente->representante)
+                            {{ $cita->paciente->representante->nombre }} {{ $cita->paciente->representante->apellido }}
+                        @else
+                            No registrado
+                        @endif</p>
         <p><strong>Paciente:</strong> {{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</p>
         <p><strong>Especialista:</strong> {{ $cita->especialista->nombre }} {{ $cita->especialista->apellido }}</p>
         <p><strong>Fecha de Consulta:</strong> {{ $cita->fecha_consulta }}</p>

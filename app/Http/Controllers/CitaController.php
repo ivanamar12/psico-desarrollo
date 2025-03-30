@@ -38,7 +38,7 @@ class CitaController extends Controller
                         return $cita->paciente_nombre . ' ' . $cita->paciente_apellido;
                     })
                     ->addColumn('action', function($cita) {
-                        $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> Generar PDF</a>'; // Botón para generar PDF
+                        $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> Generar PDF</a>'; // Botón para generar PDF
                         return $acciones;
                     })
                     ->rawColumns(['action'])
@@ -60,7 +60,7 @@ class CitaController extends Controller
                     return $cita->paciente_nombre . ' ' . $cita->paciente_apellido;
                 })
                 ->addColumn('action', function($cita) {
-                    $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i>PDF</a>';
+                    $acciones = '<a href="'.route('pdf.generarPdfCita', $cita->id).'" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i>PDF</a>';
                     return $acciones;
                 })
                 ->rawColumns(['action'])
@@ -108,17 +108,21 @@ class CitaController extends Controller
 
     public function edit($id) {
         try {
-            $cita = Cita::with(['paciente', 'especialista'])->findOrFail($id);
+            $cita = Cita::with(['paciente.representante', 'especialista'])->findOrFail($id);
             return response()->json([
                 'id' => $cita->id,
                 'hora' => $cita->hora,
                 'paciente_nombre' => $cita->paciente->nombre . ' ' . $cita->paciente->apellido,
                 'especialista_nombre' => $cita->especialista->nombre . ' ' . $cita->especialista->apellido,
+                'representante_nombre' => $cita->paciente->representante 
+                    ? $cita->paciente->representante->nombre . ' ' . $cita->paciente->representante->apellido 
+                    : 'No registrado',
                 'status' => $cita->status,
             ]);
         } catch (\Exception $e) {
             return response()->json(['error' => 'Cita no encontrada'], 404);
         }
+        
     }      
     
     public function update(Request $request, $id) {
@@ -167,7 +171,7 @@ class CitaController extends Controller
 
     public function generarPdfCita($id)
     {
-        $cita = Cita::with(['paciente', 'especialista'])->find($id);
+        $cita = Cita::with(['paciente.representante', 'especialista'])->find($id);
 
         if (!$cita) {
             return response()->json(['error' => 'Cita no encontrada'], 404);

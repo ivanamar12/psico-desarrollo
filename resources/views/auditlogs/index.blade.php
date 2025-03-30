@@ -53,7 +53,6 @@
                     <th class="text-center">Rol</th>
                     <th class="text-center">Acción</th>
                     <th class="text-center">Fecha</th>
-                    <th class="text-center">Acciones</th>
                   </tr>
                 </thead>
               </table>
@@ -67,38 +66,22 @@
 @endsection
 @section('js')
 <script>
-  $(document).ready(function() {
-    var tablaAuditLogs = $('#tab-auditLogs').DataTable({
-      processing: true,
-      serverSide: true,
-      ajax: {
-        url: "{{ route('bitacora.index')}}",
-      },
-      columns: [{
-          data: 'id'
-        },
-        {
-          data: 'name'
-        },
-        {
-          data: 'email'
-        },
-        {
-          data: 'role'
-        },
-        {
-          data: 'auditAction'
-        },
-        {
-          data: 'created'
-        },
-        {
-          data: 'action',
-          orderable: false
-        }
-      ]
-    });
-  });
+ var tablaAuditLogs = $('#tab-auditLogs').DataTable({
+  processing: true,
+  serverSide: true,
+  ajax: {
+    url: "{{ route('bitacora.index')}}",
+  },
+  columns: [
+    { data: 'id' },
+    { data: 'name' },
+    { data: 'email' },
+    { data: 'role' },
+    { data: 'auditAction' },
+    { data: 'created' }
+  ]
+});
+
 </script>
 <script>
   $(document).ready(function() {

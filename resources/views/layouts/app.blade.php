@@ -52,13 +52,14 @@
 	<script src="./js/select2.min.js"></script>
 	<script src="./js/jquery.mCustomScrollbar.concat.min.js"></script>
 	<script src="./js/main.js"></script>
-	<script src="./js/chart.js"></script>
 	<script src="./js/pruebas.js"></script>
 	<script src="./js/evaluacion_pruebas.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js" integrity="sha512-VEd+nq25CkR676O+pLBnDW09R7VQX9Mdiij052gVCp5yVH3jGtH70Ho/UUv4mJDsEdTvqRCFZg0NKGiojGnUCw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdn.datatables.net/v/dt/dt-2.1.4/datatables.min.js"></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+	<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 	<script src='/js/es.js'></script>
 
 	<script>

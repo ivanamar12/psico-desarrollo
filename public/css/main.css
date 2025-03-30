@@ -623,3 +623,26 @@ body, html{
     display: block;
     width: 100%; /* Asegúrate de que ocupe el ancho completo */
 }
+
+.modal-header {
+    background: linear-gradient(to right, #149ea5, #0a7b7e);
+}
+
+.btn-custom {
+    background-color: #329b84;
+    color: #179198;
+}
+
+.close {
+    color: gray; /* Color gris para el botón de cerrar */
+}
+
+.btn-regresar {
+    background-color: #14abb0;
+    color: #1cd3dd;
+}
+
+.btn-eliminar {
+    background-color: #f81313;
+    color: #1cd3dd;
+}

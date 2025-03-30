@@ -21,4 +21,16 @@ class Representante extends Model
     	return $this->belongsTo(Genero::class);
     	
     }
+
+    public static function obtenerRepresentante($id)
+    {
+        return self::with([
+            'genero',
+            'direccion.estado',
+            'direccion.municipio',
+            'direccion.parroquia'
+        ])
+        ->where('id', $id)
+        ->first();
+    }
 }

@@ -29,7 +29,7 @@ class HistoriaClinicaController extends Controller
     
             return DataTables::of($historias)
             ->addColumn('action', function($historia) { 
-                $acciones = '<a href="'.route('pdf.generarPdfHistoria', $historia->id).'" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
+                $acciones = '<a href="'.route('pdf.generarPdfHistoria', $historia->id).'" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
                 $acciones .= '<button type="button" class="verHistoria btn btn-info btn-raised btn-xs" data-id="'.$historia->id.'"><i class="zmdi zmdi-eye"></i></button>';
                 $acciones .= '<button type="button" name="delete" id="'.$historia->id.'" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
                 return $acciones;

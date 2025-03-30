@@ -64,42 +64,17 @@ class EspecialistaController extends Controller
   }
 
   public function show($id)
-  {
-    $especialista = DB::select("
-            SELECT 
-                especialistas.id AS especialista, 
-                especialistas.nombre AS nombre, 
-                especialistas.apellido AS apellido, 
-                especialistas.ci AS ci, 
-                especialistas.fecha_nac AS fecha_nac, 
-                especialistas.telefono AS telefono, 
-                especialistas.email AS email, 
-                generos.genero AS genero, 
-                especialidads.especialidad AS especialidad, 
-                estados.estado AS estado, 
-                municipios.municipio AS municipio, 
-                parroquias.parroquia AS parroquia, 
-                direccions.sector AS sector
-            FROM 
-                especialistas
-            JOIN 
-                generos ON especialistas.genero_id = generos.id 
-            JOIN 
-                especialidads ON especialistas.especialidad_id = especialidads.id 
-            JOIN 
-                direccions ON especialistas.direccion_id = direccions.id
-            JOIN 
-                estados ON direccions.estado_id = estados.id
-            JOIN 
-                municipios ON direccions.municipio_id = municipios.id
-            JOIN 
-                parroquias ON direccions.parroquia_id = parroquias.id
-            WHERE 
-                especialistas.id = ?
-        ", [$id]);
+    {
+        $especialista = Especialista::obtenerEspecialista($id);
+    
+        if (!$especialista) {
+            return response()->json(['error' => 'Especialista no encontrado'], 404);
+        }
+    
+        return response()->json($especialista);
+    }
+  
 
-    return response()->json($especialista);
-  }
 
   public function store(Request $request)
   {

@@ -13,7 +13,7 @@ Route::middleware('auth')->group(function () {
     ->name('secretaria.store');
 
   // Ruta para obtener una secretaria específico en formato JSON
-  Route::get('secretaria/{id}', [SecretariaController::class, 'show'])
+  Route::get('secretarias/{id}', [SecretariaController::class, 'show'])
     ->name('secretaria.show');
 
   // Ruta para eliminar un secretaria

@@ -79,8 +79,12 @@ Route::middleware('auth')->group(function () {
     ->name('paciente.destroy');
 
   // Ruta para mostrar el formulario de edición de un paciente
-  Route::get('paciente/{id}/edit', [PacienteController::class, 'edit'])
+  Route::get('pacientes/{id}/edit', [PacienteController::class, 'edit'])
     ->name('paciente.edit');
+
+     // Ruta para obtener un paciente específico en formato JSON
+  Route::get('paciente/{id}', [PacienteController::class, 'show'])
+  ->name('paciente.show');
 
   // Ruta para pacientes y especialistas
   Route::get('citas', [CitaController::class, 'index'])
@@ -171,6 +175,9 @@ Route::middleware('auth')->group(function () {
     ->name('resultados.no_estandarizada.pdf');
 
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+  Route::get('/estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])->name('estadisticas.pacientes');
+
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

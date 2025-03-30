@@ -88,35 +88,12 @@ class RepresentativeController extends Controller
 
     public function show($id)
     {
-        $representante = DB::select("
-            SELECT 
-                representantes.id AS representante, 
-                representantes.nombre AS nombre, 
-                representantes.apellido AS apellido, 
-                representantes.ci AS ci, 
-                representantes.telefono AS telefono, 
-                representantes.email AS email, 
-                generos.genero AS genero, 
-                estados.estado AS estado, 
-                municipios.municipio AS municipio, 
-                parroquias.parroquia AS parroquia, 
-                direccions.sector AS sector
-            FROM 
-                representantes
-            JOIN 
-                generos ON representantes.genero_id = generos.id 
-            JOIN 
-                direccions ON representantes.direccion_id = direccions.id
-            JOIN 
-                estados ON direccions.estado_id = estados.id
-            JOIN 
-                municipios ON direccions.municipio_id = municipios.id
-            JOIN 
-                parroquias ON direccions.parroquia_id = parroquias.id
-            WHERE 
-                representantes.id = ?
-        ", [$id]);
-
+        $representante = Representante::obtenerRepresentante($id);
+    
+        if (!$representante) {
+            return response()->json(['error' => 'Representante no encontrado'], 404);
+        }
+    
         return response()->json($representante);
     }
 

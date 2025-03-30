@@ -66,6 +66,7 @@
             <thead>
                 <tr>
                     <th>ID</th>
+                    <th>Represenante</th>
                     <th>Paciente</th>
                     <th>Especialista</th>
                     <th>Fecha</th>
@@ -76,12 +77,19 @@
             <tbody>
                 @foreach ($citas as $cita)
                     <tr>
-                        <td>{{ $cita->id }}</td>
-                        <td>{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</td>
-                        <td>{{ $cita->especialista->nombre }} {{ $cita->especialista->apellido }}</td>
-                        <td>{{ $cita->fecha_consulta }}</td>
-                        <td>{{ $cita->status }}</td>
-                        <td>{{ $cita->hora }}</td>
+                    <td>{{ $cita->id }}</td>
+                    <td>
+                        @if($cita->paciente && $cita->paciente->representante)
+                            {{ $cita->paciente->representante->nombre }} {{ $cita->paciente->representante->apellido }}
+                        @else
+                            No registrado
+                        @endif
+                    </td>
+                    <td>{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</td>
+                    <td>{{ $cita->especialista->nombre }} {{ $cita->especialista->apellido }}</td>
+                    <td>{{ $cita->fecha_consulta }}</td>
+                    <td>{{ $cita->status }}</td>
+                    <td>{{ $cita->hora }}</td>
                     </tr>
                 @endforeach
             </tbody>
