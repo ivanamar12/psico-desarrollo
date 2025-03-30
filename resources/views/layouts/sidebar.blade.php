@@ -13,7 +13,7 @@
 			</figure>
 			<ul class="full-box list-unstyled text-center">
 				<li>
-					<a href="#!">
+					<a href="{{ route('perfil.index') }}">
 						<i class="zmdi zmdi-settings"></i>
 					</a>
 				</li>

@@ -111,7 +111,7 @@
 </section>
 
 @endsection
-@section('scripts')
+@section('js')
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     fetch("{{ route('estadisticas.pacientes') }}")

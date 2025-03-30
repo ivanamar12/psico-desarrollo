@@ -10,6 +10,7 @@ use App\Http\Controllers\EspecialidadController;
 use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\AplicarPruebaController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PerfilController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -43,6 +44,10 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+  Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
+  Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
 
