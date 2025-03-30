@@ -7,55 +7,63 @@ use Illuminate\Database\Eloquent\Model;
 
 class Paciente extends Model
 {
-    use HasFactory;
-    protected $fillable = ['nombre', 'apellido', 'fecha_nac', 'lugar_id', 'representante_id', 'datoseconomico_id', 'genero_id'];
+  use HasFactory;
+  protected $fillable = [
+    'nombre',
+    'apellido',
+    'fecha_nac',
+    'lugar_id',
+    'representante_id',
+    'datoseconomico_id',
+    'genero_id'
+  ];
 
-    public function datosEconomico()
-    {
-        return $this->hasOne(DatosEconomico::class, 'id', 'datoseconomico_id');
-    }
+  public function datosEconomico()
+  {
+    return $this->hasOne(DatosEconomico::class, 'id', 'datoseconomico_id');
+  }
 
-    public function representante(){
+  public function representante()
+  {
 
-        return $this->belongsTo(Representante::class);
-        
-    }
-    public function parentescos(){
+    return $this->belongsTo(Representante::class);
+  }
+  public function parentescos()
+  {
 
-        return $this->hasMany(Parentesco::class);
-        
-    }
-    public function genero(){
+    return $this->hasMany(Parentesco::class);
+  }
+  public function genero()
+  {
 
-        return $this->belongsTo(Genero::class);
-        
-    }
-    public function citas(){
+    return $this->belongsTo(Genero::class);
+  }
+  public function citas()
+  {
 
-    	return $this->hasMany(Cita::class);
-    	 
-    }
+    return $this->hasMany(Cita::class);
+  }
 
-    public function historiaclinicas(){
+  public function historiaclinicas()
+  {
 
-    	return $this->hasMany(HistoriaClinica::class);
-    	 
-    }
+    return $this->hasMany(HistoriaClinica::class);
+  }
 
-    public function aplicacionPruebas()
-    {
-    	return $this->hasMany(AplicacionPrueba::class);
-    }
+  public function aplicacionPruebas()
+  {
+    return $this->hasMany(AplicacionPrueba::class);
+  }
 
-    public static function obtenerPaciente($id)
-    {
-        return self::with([
-            'genero',
-            'representante',
-            'datosEconomico',
-            'parentescos'
-        ])
-        ->where('id', $id)
-        ->first();
-    }
+  public static function obtenerPaciente($id)
+  {
+    return self::with([
+      'genero',
+      'representante',
+      'datosEconomico',
+      'parentescos'
+    ])
+      ->where('id', $id)
+      ->first();
+  }
 }
