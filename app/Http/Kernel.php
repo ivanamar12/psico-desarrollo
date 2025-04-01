@@ -23,6 +23,7 @@ class Kernel extends HttpKernel
     \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
     \Fruitcake\Cors\HandleCors::class,
     \App\Http\Middleware\AuditLog::class,
+    \App\Http\Middleware\UpdateLastActivity::class,
   ];
 
   /**
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
     'permission' => \Spatie\Permission\Middleware\PermissionMiddleware::class,
     'role_or_permission' => \Spatie\Permission\Middleware\RoleOrPermissionMiddleware::class,
     'audit_log' => \App\Http\Middleware\AuditLog::class,
+    'update_last_activity' => \App\Http\Middleware\UpdateLastActivity::class,
   ];
 }

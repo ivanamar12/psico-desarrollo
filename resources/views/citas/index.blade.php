@@ -11,7 +11,7 @@
 				<li>
 					<a href="#!" class="btn-Notifications-area">
 						<i class="zmdi zmdi-notifications-none"></i>
-						<span class="badge">7</span>
+						<span class="badge"></span>
 					</a>
 				</li>
 				<li>

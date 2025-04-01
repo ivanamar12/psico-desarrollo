@@ -5,31 +5,32 @@
 @section('content')
 
 <section class="full-box dashboard-contentPage">
-  <nav class="full-box dashboard-Navbar">
-    <ul class="full-box list-unstyled text-right">
-      <li class="pull-left">
-        <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-      </li>
-      <li>
-        <a href="#!" class="btn-Notifications-area">
-          <i class="zmdi zmdi-notifications-none"></i>
-          <span class="badge">7</span>
-        </a>
-      </li>
-      <li>
-        <a href="#!" class="btn-modal-help">
-          <i class="zmdi zmdi-help-outline"></i>
-        </a>
-      </li>
-    </ul>
-  </nav>
-</section>
-
-<section class="full-box dashboard-contentPage">
-  <div class="container-fluid">
-    <div class="page-header">
-    </div>
-  </div>
+	<!-- NavBar -->
+    <nav class="full-box dashboard-Navbar">
+		<ul class="full-box list-unstyled text-right">
+			<li class="pull-left">
+				<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
+			</li>
+			<li>
+				<a href="#!" class="btn-Notifications-area">
+					<i class="zmdi zmdi-notifications-none"></i>
+					<span class="badge">7</span>
+				</a>
+			</li>
+			<li>
+				<a href="#!" class="btn-modal-help">
+					<i class="zmdi zmdi-help-outline"></i>
+				</a>
+			</li>
+		</ul>
+	</nav>
+	<!-- Content page -->
+	<div class="container-fluid">
+		<div class="page-header">
+			<h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Inicio</h1>
+		</div>
+		<p class="lead">
+	</div>
 
   <div class="full-box text-center" style="padding: 30px 10px;">
     <article class="full-box tile">
@@ -134,26 +135,6 @@
 </section>
 
 @endsection
-<<<<<<< HEAD
-@section('js')
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    fetch("{{ route('estadisticas.pacientes') }}")
-        .then(response => response.json())
-        .then(data => {
-            // Gráfica de Donut (Género)
-            new Chart(document.getElementById('graficaGenero'), {
-                type: 'doughnut',
-                data: {
-                    labels: ['Masculino', 'Femenino'],
-                    datasets: [{
-                        data: [data.generos.Masculino, data.generos.Femenino],
-                        backgroundColor: ['#36A2EB', '#FF6384']
-                    }]
-                }
-            });
-=======
->>>>>>> f5a18a05f449086c04ea35cc45fc0919a4c600d3
 
 @section('js')
 <script>

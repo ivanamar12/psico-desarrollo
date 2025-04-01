@@ -11,6 +11,7 @@ use App\Http\Controllers\PruebaController;
 use App\Http\Controllers\AplicarPruebaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\NotificacionController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -43,10 +44,26 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
     ->name('bitacora.index');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware('auth', 'update_last_activity')->group(function () {
 
   Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
-  Route::post('/perfil', [PerfilController::class, 'update'])->name('perfil.update');
+  Route::post('/perfil/update', [PerfilController::class, 'update'])->name('perfil.update');
+  Route::get('/perfil/list', [PerfilController::class, 'list'])->name('perfil.list');
+  Route::get('/perfil/show/{id}', [PerfilController::class, 'show']);
+  Route::get('/perfil/edit/{id}', [PerfilController::class, 'edit']);
+
+  Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])->name('perfil.delete');
+
+  Route::get('/notificaciones', [NotificacionController::class, 'getNotifications'])->name('notificaciones.get');
+  Route::post('/notificaciones/leer/{id}', [NotificacionController::class, 'markAsRead'])->name('notificaciones.leer');
+  Route::post('/notificaciones/leer-todas', [NotificacionController::class, 'markAllAsRead'])->name('notificaciones.leer_todas');
+  Route::delete('/notificaciones/eliminar/{id}', [NotificacionController::class, 'deleteNotification'])->name('notificaciones.eliminar');
+
+  Route::post('/verify-email', [RecoveryController::class, 'verifyEmail']);
+  Route::post('/validate-answer', [RecoveryController::class, 'validateAnswer']);
+  Route::get('/reset-password', [RecoveryController::class, 'showResetForm'])->name('password.reset');
+  Route::post('/reset-password', [RecoveryController::class, 'resetPassword']);
+
 
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
