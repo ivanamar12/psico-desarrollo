@@ -61,6 +61,14 @@ php artisan migrate --seed
 php artisan serve
 ```
 
+6. Ingresa a http://localhost:8000 con los siguientes datos:
+
+- ADMIN:
+
+- Email: ivana@gmail.com
+- Password: Ivana123. 
+
+
 ## Despliegue 📦
 
 _notas adicionales sobre como hacer deploy_
