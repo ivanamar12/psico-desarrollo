@@ -1,6 +1,6 @@
 # Psico Desarrollo
 
-_Psicodesarrollo es una aplicación web dirigida a la gestión de historias clínicas, gestión de citas y a la gestión y aplicaciones de pruebas en las áreas de desarrollo de la primera infancia a niños de 0 a 6 años_
+_PsicoDesarrollo es un sistema web diseñado para la gestión integral de evaluaciones psicológicas en la primera infancia (0 a 6 años). Permite a especialistas registrar historias clínicas, agendar citas, aplicar y evaluar pruebas psicológicas estandarizadas y no estandarizadas (como CUMANIN y Koppitz), y generar informes detallados. Desarrollado con Laravel 8, MySQL y tecnologías web modernas, el sistema busca optimizar el seguimiento del desarrollo infantil mediante herramientas digitales accesibles y estructuradas._
 
 ## Comenzando 🚀
 
@@ -78,6 +78,7 @@ _notas adicionales sobre como hacer deploy_
 - [Laravel](https://laravel.com/) - El Framework web usado
 - [jQuery](https://jquery.com/) - La Librería de front-end usada
 - [Alpine.js](https://alpinejs.dev/) - La Librería de front-end usada
+- [Bootstrap](https://getbootstrap.com/) - El Framework de CSS usado
 - [Tailwind CSS](https://tailwindcss.com/) - El Framework de CSS usado
 - [Composer](https://getcomposer.org/) - Manejador de dependencias para php
 - [Npm](https://www.npmjs.com/) - Manejador de dependencias para JavaScript
