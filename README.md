@@ -12,7 +12,7 @@ git clone https://github.com/ivanamar12/psico-desarrollo.git
 
 ### Pre-requisitos 📋
 
-- PHP v^7.3
+- PHP v^8.2
 - Node.js v^18 (Recomendado)
 - MySQL o MariaDB
 
