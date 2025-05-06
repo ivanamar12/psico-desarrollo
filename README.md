@@ -7,7 +7,7 @@ _Psicodesarrollo es una aplicación web dirigida a la gestión de historias clí
 1. Clonar proyecto:
 
 ```bash
-  git clone https://github.com/ivanamar12/psico-desarrollo.git
+git clone https://github.com/ivanamar12/psico-desarrollo.git
 ```
 
 ### Pre-requisitos 📋
@@ -21,44 +21,44 @@ _Psicodesarrollo es una aplicación web dirigida a la gestión de historias clí
 1. Instalar dependencias:
 
 ```bash
-  composer install
+composer install
 ```
 
 ```bash
-  npm install
+npm install
 ```
 
 2. Compilar para producción:
 
 ```bash
-  npm run build
+npm run build
 ```
 
 3. Renombrar ".env.example" a ".env" y configurar conexión a la base de datos
 
 ```bash
-  cp .env.example .env
+cp .env.example .env
 ```
 
 ```.env
-  DB_CONNECTION=mysql
-  DB_HOST=127.0.0.1
-  DB_PORT=3306
-  DB_DATABASE=laravel
-  DB_USERNAME=root
-  DB_PASSWORD=
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=laravel
+DB_USERNAME=root
+DB_PASSWORD=
 ```
 
 4. Ejecutar migraciones:
 
 ```bash
-  php artisan migrate --seed
+php artisan migrate --seed
 ```
 
 5. Ejecutar servidor local:
 
 ```bash
-  php artisan serve
+php artisan serve
 ```
 
 ## Despliegue 📦
