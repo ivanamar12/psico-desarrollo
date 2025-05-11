@@ -49,13 +49,19 @@ DB_USERNAME=root
 DB_PASSWORD=
 ```
 
-4. Ejecutar migraciones:
+4. Generar clave de app:
+
+```bash
+php artisan key:generate
+```
+
+5. Ejecutar migraciones:
 
 ```bash
 php artisan migrate --seed
 ```
 
-5. Ejecutar servidor local:
+6. Ejecutar servidor local:
 
 ```bash
 php artisan serve
