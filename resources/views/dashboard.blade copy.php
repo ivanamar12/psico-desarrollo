@@ -1,9 +1,6 @@
-@extends('layouts.root')
+@extends('layouts.app')
 
 @section('title', 'Inicio')
-
-@section('css')
-@endsection
 
 @section('content')
 
@@ -153,8 +150,6 @@
 @endsection
 
 @section('js')
-<script src="./js/chart/chart.js"></script>
-
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     fetch("{{ route('estadisticas.pacientes') }}")
