@@ -8,45 +8,41 @@
 @section('content')
 
 <section class="full-box dashboard-contentPage">
-	<!-- NavBar -->
-    <nav class="full-box dashboard-Navbar">
-		<ul class="full-box list-unstyled text-right">
-			<li class="pull-left">
-				<a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-			</li>
-			<li>
-				<a href="#!" class="btn-Notifications-area">
-					<i class="zmdi zmdi-notifications-none"></i>
-					<span class="badge">7</span>
-				</a>
-			</li>
-      <li class="dropdown" style="position: relative;">
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-          Dropdown
-          <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu z-3" style="z-index: 4000;" aria-labelledby="dropdownMenu1">
-          <li><a href="#">Action</a></li>
-          <li><a href="#">Another action</a></li>
-          <li><a href="#">Something else here</a></li>
-          <li role="separator" class="divider"></li>
-          <li><a href="#">Separated link</a></li>
-        </ul>
+  <!-- NavBar -->
+  <nav class="full-box dashboard-Navbar">
+    <ul class="full-box list-unstyled text-right">
+      <li class="pull-left">
+        <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
       </li>
-			<li>
-				<a href="#!" class="btn-modal-help">
-					<i class="zmdi zmdi-help-outline"></i>
-				</a>
-			</li>
-		</ul>
-	</nav>
-	<!-- Content page -->
-	<div class="container-fluid">
-		<div class="page-header">
-			<h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Inicio</h1>
-		</div>
-		<p class="lead">
-	</div>
+
+      <li>
+        <a href="#!" class="btn-Notifications-area">
+          <i class="zmdi zmdi-notifications-none"></i>
+          <span class="badge">7</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#!" class="btn-Notifications-area">
+          <i class="zmdi zmdi-notifications-none"></i>
+          <span class="badge">7</span>
+        </a>
+      </li>
+
+      <li>
+        <a href="#!" class="btn-modal-help">
+          <i class="zmdi zmdi-help-outline"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+  <!-- Content page -->
+  <div class="container-fluid">
+    <div class="page-header">
+      <h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Inicio</h1>
+    </div>
+    <p class="lead">
+  </div>
 
   <div class="full-box text-center" style="padding: 30px 10px;">
     <article class="full-box tile">
@@ -153,7 +149,7 @@
 @endsection
 
 @section('js')
-<script src="./js/chart/chart.js"></script>
+<script src="{{ asset('js/chart/chart.js') }}"></script>
 
 <script>
   document.addEventListener("DOMContentLoaded", function() {
