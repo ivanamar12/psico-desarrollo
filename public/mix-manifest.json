@@ -1,5 +1,6 @@
 {
     "/js/especialistas.js": "/js/especialistas.js",
+    "/js/dashboard/dashboard-chart.js": "/js/dashboard/dashboard-chart.js",
     "/js/registroespecialista.js": "/js/registroespecialista.js",
     "/js/telefonovalidacion.js": "/js/telefonovalidacion.js",
     "/js/app.js": "/js/app.js",
