@@ -27,7 +27,7 @@
 		<!-- Content page -->
 		<div class="container-fluid">
 			<div class="page-header">
-			  <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Secratarias</h1>
+			  <h1 class="text-titles"><i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Secretarias</h1>
 			</div>
 			<p class="lead">
 			</div>

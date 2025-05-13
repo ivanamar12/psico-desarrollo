@@ -36,8 +36,15 @@ npm run build
 
 3. Renombrar ".env.example" a ".env" y configurar conexión a la base de datos
 
+# Linux/macOS
+
 ```bash
 cp .env.example .env
+```
+
+# REM Windows (CMD)
+```bash
+copy .env.example .env
 ```
 
 ```.env
