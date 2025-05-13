@@ -23,13 +23,6 @@
         </li>
 
         <li>
-          <a href="#!" class="btn-Notifications-area">
-            <i class="zmdi zmdi-notifications-none"></i>
-            <span class="badge">7</span>
-          </a>
-        </li>
-
-        <li>
           <a href="#!" class="btn-modal-help">
             <i class="zmdi zmdi-help-outline"></i>
           </a>
@@ -37,12 +30,14 @@
       </ul>
     </nav>
     <!-- Content page -->
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="page-header">
+        <x-oclock />
+
         <h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Inicio</h1>
       </div>
       <p class="lead">
-    </div>
+    </section>
 
     <div class="full-box text-center" style="padding: 30px 10px;">
       <article class="full-box tile">

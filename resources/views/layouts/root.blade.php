@@ -1,9 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <title>@yield('title')</title>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta name="viewport"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <!-- CSS Base -->
@@ -12,6 +14,7 @@
   <!-- CSS Específico por vista -->
   @yield('css')
 </head>
+
 <body>
   <!-- SideBar Menu -->
   @include('layouts.sidebar')
@@ -53,8 +56,89 @@
   <script src="{{ asset('js/ripples.min.js') }}"></script>
   <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
+  <script>
+    /** this is the function for o'clock */
+    if (document.getElementById("fechaReloj")) {
+      let actualizarHora = function() {
+        let fecha = new Date(),
+          horas = fecha.getHours(),
+          ampm,
+          minutos = fecha.getMinutes(),
+          segundos = fecha.getSeconds(),
+          diaSemana = fecha.getDay(),
+          dia = fecha.getDate(),
+          mes = fecha.getMonth(),
+          year = fecha.getFullYear();
+
+        let pHoras = document.getElementById("horas"),
+          pAMPM = document.getElementById("ampm"),
+          pMinutos = document.getElementById("minutos"),
+          pSegundos = document.getElementById("segundos"),
+          pDiaSemana = document.getElementById("diaSemana"),
+          pDia = document.getElementById("dia"),
+          pMes = document.getElementById("mes"),
+          pYear = document.getElementById("year");
+
+        let semana = [
+          "Domingo",
+          "Lunes",
+          "Martes",
+          "Miercoles",
+          "Jueves",
+          "Viernes",
+          "Sabado",
+        ];
+        pDiaSemana.textContent = semana[diaSemana];
+        pDia.textContent = dia;
+
+        let meses = [
+          "Enero",
+          "Febrero",
+          "Marzo",
+          "Abril",
+          "Mayo",
+          "Junio",
+          "Julio",
+          "Agosto",
+          "Septiembre",
+          "Octubre",
+          "Noviembre",
+          "Diciembre",
+        ];
+        pMes.textContent = meses[mes];
+        pYear.textContent = year;
+
+        if (horas >= 12) {
+          horas = horas - 12;
+          ampm = "PM";
+        } else {
+          ampm = "AM";
+        }
+
+        if (horas == 0) {
+          horas = 12;
+        }
+        pHoras.textContent = horas;
+
+        if (minutos < 10) {
+          minutos = "0" + minutos;
+        }
+        pMinutos.textContent = minutos;
+
+        if (segundos < 10) {
+          segundos = "0" + segundos;
+        }
+        pSegundos.textContent = segundos;
+        pAMPM.textContent = ampm;
+      };
+      actualizarHora();
+
+      setInterval(actualizarHora, 1000);
+    }
+  </script>
 
   <!-- JS Específico por vista -->
   @yield('js')
 </body>
+
 </html>
