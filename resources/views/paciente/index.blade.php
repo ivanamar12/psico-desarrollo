@@ -23,7 +23,8 @@
 	</nav>
     <div class="container-fluid">
 		<div class="page-header">
-			  <h1 class="text-titles"><i class="zmdi zmdi-face zmdi-hc-fw"></i>Pacientes</h1>
+                <x-oclock />
+			    <h1 class="text-titles"><i class="zmdi zmdi-face zmdi-hc-fw"></i>Pacientes</h1>
 		</div>
 	</div>
 	<div class="container-fluid">

@@ -26,6 +26,7 @@
 	<!-- Content page -->
 	<div class="container-fluid">
 		<div class="page-header">
+            <x-oclock />
 			<h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Pruebas</h1>
 		</div>
 		<p class="lead">

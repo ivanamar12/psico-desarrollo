@@ -24,7 +24,8 @@
 	</nav>
 	<div class="container-fluid">
 		<div class="page-header">
-			  <h1 class="text-titles"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Historias</h1>
+            <x-oclock />
+		    <h1 class="text-titles"><i class="zmdi zmdi-file zmdi-hc-fw"></i>Historias</h1>
 		</div>
 		<p class="lead">
 	</div>

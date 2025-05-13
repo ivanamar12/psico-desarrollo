@@ -14,6 +14,7 @@
 
     <div class="container">
         <div class="page-header">
+            <x-oclock />
             <h1 class="text-titles"><i class="zmdi zmdi-account-circle"></i> Perfil de Usuario</h1>
         </div>
         <div class="container-fluid">

@@ -25,6 +25,7 @@
 		<!-- Content page -->
     <div class="container-fluid">
         <div class="page-header">
+            <x-oclock />
             <h1 class="text-titles"><i class="zmdi zmdi-calendar zmdi-hc-fw"></i>Citas</h1>
         </div>
     </div>
