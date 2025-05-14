@@ -7,10 +7,16 @@ use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\User; // Asegúrate de importar el modelo User
+use App\Services\LoginService;
+use Illuminate\Support\Facades\Cache;
 
 class AuthenticatedSessionController extends Controller
 {
+
+  protected $limit = 3; // Número máximo de intentos permitidos
+  protected $initCounter = 1; // Contador inicial
+  protected $duration = 5; // Duración en minutos del bloqueo en cache
+
   public function create()
   {
     return view('auth.login');
@@ -19,32 +25,46 @@ class AuthenticatedSessionController extends Controller
   public function store(LoginRequest $request)
   {
     $credentials = $request->only('email', 'password');
+    $user = LoginService::getUser($credentials);
 
-    // Verificar credenciales manualmente para contar intentos fallidos
-    if (!Auth::attempt($credentials)) {
-      // Incrementar intentos fallidos
-      $user = User::where('email', $request->email)->first();
-      if ($user) {
-        $user->increment('failed_attempts');
-      }
+    if (!$user) {
+      return back()->withErrors(['email' => 'Credenciales incorrectas.']);
+    }
 
+    // Verificar si el usuario está baneado
+    if ($user->isBanned()) {
       return back()->withErrors([
-        'email' => 'Credenciales incorrectas.',
+        'email' => 'Su cuenta ha sido bloqueada. Por favor contacte al administrador.',
       ]);
     }
 
-    // Restablecer intentos fallidos si el login es exitoso
-    $request->user()->update(['failed_attempts' => 0]);
+    if (!Auth::attempt($credentials)) {
+      $key = LoginService::createKey($user->id);
+      $remaining = Cache::get($key);
 
-    // Regenerar sesión (seguridad)
+      if ($remaining == null) {
+        Cache::put($key, $this->initCounter, $this->duration * 60);
+        $remaining = $this->initCounter;
+      } else {
+        Cache::increment($key);
+        $remaining++;
+      }
+
+      if ($remaining >= $this->limit) {
+        $user->ban();
+        return back()->withErrors([
+          'email' => 'Demasiados intentos fallidos. Su cuenta ha sido bloqueada temporalmente.',
+        ]);
+      }
+
+      return back()->withErrors(['email' => 'Credenciales incorrectas.']);
+    }
+
+    // Login exitoso - limpiar intentos y regenerar sesión
+    LoginService::clearLoginAttempts($user->id);
     $request->session()->regenerate();
 
-    $user = Auth::user();
-
-    // Redirigir si es la primera vez
-    if ($user->primera_vez) {
-      return redirect()->to('/perfil');
-    }
+    if ($user->primera_vez) return redirect()->to('/perfil');
 
     return redirect()->intended(RouteServiceProvider::HOME);
   }
