@@ -11,52 +11,52 @@ use App\Models\User; // Asegúrate de importar el modelo User
 
 class AuthenticatedSessionController extends Controller
 {
-    public function create()
-    {
-        return view('auth.login');
+  public function create()
+  {
+    return view('auth.login');
+  }
+
+  public function store(LoginRequest $request)
+  {
+    $credentials = $request->only('email', 'password');
+
+    // Verificar credenciales manualmente para contar intentos fallidos
+    if (!Auth::attempt($credentials)) {
+      // Incrementar intentos fallidos
+      $user = User::where('email', $request->email)->first();
+      if ($user) {
+        $user->increment('failed_attempts');
+      }
+
+      return back()->withErrors([
+        'email' => 'Credenciales incorrectas.',
+      ]);
     }
 
-    public function store(LoginRequest $request)
-    {
-        $credentials = $request->only('email', 'password');
+    // Restablecer intentos fallidos si el login es exitoso
+    $request->user()->update(['failed_attempts' => 0]);
 
-        // Verificar credenciales manualmente para contar intentos fallidos
-        if (!Auth::attempt($credentials)) {
-            // Incrementar intentos fallidos
-            $user = User::where('email', $request->email)->first();
-            if ($user) {
-                $user->increment('failed_attempts');
-            }
+    // Regenerar sesión (seguridad)
+    $request->session()->regenerate();
 
-            return back()->withErrors([
-                'email' => 'Credenciales incorrectas.',
-            ]);
-        }
+    $user = Auth::user();
 
-        // Restablecer intentos fallidos si el login es exitoso
-        $request->user()->update(['failed_attempts' => 0]);
-
-        // Regenerar sesión (seguridad)
-        $request->session()->regenerate();
-
-        $user = Auth::user();
-
-        // Redirigir si es la primera vez
-        if ($user->primera_vez) {
-            return redirect()->to('/perfil');
-        }
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+    // Redirigir si es la primera vez
+    if ($user->primera_vez) {
+      return redirect()->to('/perfil');
     }
 
-    public function destroy(Request $request)
-    {
-        Auth::guard('web')->logout();
+    return redirect()->intended(RouteServiceProvider::HOME);
+  }
 
-        $request->session()->invalidate();
+  public function destroy(Request $request)
+  {
+    Auth::guard('web')->logout();
 
-        $request->session()->regenerateToken();
+    $request->session()->invalidate();
 
-        return redirect('/');
-    }
+    $request->session()->regenerateToken();
+
+    return redirect('/');
+  }
 }

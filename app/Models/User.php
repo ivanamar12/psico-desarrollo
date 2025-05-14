@@ -9,10 +9,12 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
+use Cog\Contracts\Ban\Bannable as BannableInterface;
+use Cog\Laravel\Ban\Traits\Bannable;
 
-class User extends Authenticatable
+class User extends Authenticatable implements BannableInterface
 {
-  use HasRoles, HasApiTokens, HasFactory, Notifiable;
+  use HasRoles, HasApiTokens, HasFactory, Notifiable, Bannable;
 
   /**
    * The attributes that are mass assignable.
@@ -59,7 +61,7 @@ class User extends Authenticatable
   }
 
   public function aplicacionPruebas()
-    {
-    	return $this->hasMany(AplicacionPrueba::class);
-    }
+  {
+    return $this->hasMany(AplicacionPrueba::class);
+  }
 }
