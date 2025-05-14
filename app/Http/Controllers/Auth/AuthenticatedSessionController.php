@@ -50,6 +50,8 @@ class AuthenticatedSessionController extends Controller
         $remaining++;
       }
 
+      $attemptsLeft = $this->limit - $remaining;
+
       if ($remaining >= $this->limit) {
         $user->ban();
         return back()->withErrors([
@@ -57,7 +59,13 @@ class AuthenticatedSessionController extends Controller
         ]);
       }
 
-      return back()->withErrors(['email' => 'Credenciales incorrectas.']);
+      return back()->withErrors([
+        'email' => sprintf(
+          'Credenciales incorrectas. Intentos restantes: %d. Después de %d intentos fallidos, su cuenta será bloqueada temporalmente.',
+          $attemptsLeft,
+          $this->limit
+        )
+      ]);
     }
 
     // Login exitoso - limpiar intentos y regenerar sesión
