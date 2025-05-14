@@ -7,22 +7,23 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
 {
-    protected function schedule(Schedule $schedule)
-    {
-        $schedule->command('notificar:citas')->dailyAt('07:00'); 
-    }
-    
-    protected function commands()
-    {
-        $this->load(__DIR__.'/Commands');
+  protected function schedule(Schedule $schedule)
+  {
+    $schedule->command('notificar:citas')->dailyAt('07:00');
+    $schedule->command('ban:delete-expired')->everyMinute();
+  }
 
-        require base_path('routes/console.php');
-    }
+  protected function commands()
+  {
+    $this->load(__DIR__ . '/Commands');
 
-    protected $middlewareGroups = [
-        'web' => [
-            // Otros middlewares...
-            \App\Http\Middleware\BlockUserAfterAttempts::class,
-        ],
-    ];
+    require base_path('routes/console.php');
+  }
+
+  protected $middlewareGroups = [
+    'web' => [
+      // Otros middlewares...
+      \App\Http\Middleware\BlockUserAfterAttempts::class,
+    ],
+  ];
 }
