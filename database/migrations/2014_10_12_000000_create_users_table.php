@@ -23,7 +23,6 @@ class CreateUsersTable extends Migration
       $table->string('pregunta_seguridad')->nullable();
       $table->string('respuesta_seguridad')->nullable();
       $table->boolean('primera_vez')->default(true); // Por defecto en true
-      $table->integer('failed_attempts')->default(0);
       $table->rememberToken();
       $table->timestamps();
     });

@@ -8,11 +8,10 @@ use Spatie\Permission\Models\Role;
 
 class RoleSeeder extends Seeder
 {
-    public function run()
-    {
-        Role::create(['name' => EnumRole::ADMIN]);
-        Role::create(['name' => EnumRole::ESPECIALISTA]);
-        Role::create(['name' => EnumRole::SECRETARIA]);
-        Role::create(['name' => EnumRole::BLOQUEADO]); 
-    }
+  public function run()
+  {
+    Role::create(['name' => EnumRole::ADMIN]);
+    Role::create(['name' => EnumRole::ESPECIALISTA]);
+    Role::create(['name' => EnumRole::SECRETARIA]);
+  }
 }
