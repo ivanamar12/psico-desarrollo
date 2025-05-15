@@ -23,6 +23,12 @@
         </li>
 
         <li>
+          <a href="#!" class="btn-dropdown">
+            <i class="zmdi zmdi-account"></i>
+          </a>
+        </li>
+
+        <li>
           <a href="#!" class="btn-modal-help">
             <i class="zmdi zmdi-help-outline"></i>
           </a>
