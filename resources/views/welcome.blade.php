@@ -137,7 +137,7 @@
         <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
 
         <div style="width: 100%; display: flex; justify-content: end; margin-bottom: 20px">
-          <a href={{ route('user-unlock.request') }}>
+          <a href={{ route('password.request') }}>
             ¿Olvidaste tu contraseña?
           </a>
         </div>

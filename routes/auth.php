@@ -5,6 +5,9 @@ use App\Http\Controllers\Auth\ConfirmablePasswordController;
 use App\Http\Controllers\Auth\EmailVerificationNotificationController;
 use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\Password\ForgotPasswordController;
+use App\Http\Controllers\Auth\Password\ResetPasswordController;
+use App\Http\Controllers\Auth\Password\SecurityQuestionController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\UnlockUserController;
@@ -74,4 +77,19 @@ Route::middleware(['guest'])->group(function () {
 
   Route::post('/unlock-user', [UnlockUserController::class, 'store'])
     ->name('unlock-user.update');
+
+  // Reset password
+  Route::get('/forgot-password', [ForgotPasswordController::class, 'showForm'])
+    ->name('password.request');
+  Route::post('/forgot-password', [ForgotPasswordController::class, 'checkEmail'])
+    ->name('password.email');
+
+  Route::get('/security-question', [SecurityQuestionController::class, 'show'])
+    ->name('security.question');
+  Route::post('/security-question', [SecurityQuestionController::class, 'verify']);
+
+  Route::get('/reset-password/{user}', [ResetPasswordController::class, 'showForm'])
+    ->name('password.reset');
+  Route::post('/reset-password', [ResetPasswordController::class, 'update'])
+    ->name('password.update');
 });
