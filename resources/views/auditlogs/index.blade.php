@@ -70,6 +70,9 @@
 @section('js')
   <script>
     var tablaAuditLogs = $('#tab-auditLogs').DataTable({
+      language: {
+        url: './js/datatables/es-ES.json',
+      },
       processing: true,
       serverSide: true,
       ajax: {
