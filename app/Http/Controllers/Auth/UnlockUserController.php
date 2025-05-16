@@ -63,7 +63,7 @@ class UnlockUserController extends Controller
 
     if (!$valid) {
       return redirect()->route('user-unlock.request')
-        ->with('status', 'Lo sentimos, la clave que ha introducido es incorrecta o ha expirado. Por favor, solicite una nueva clave.');
+        ->withErrors(['status' => 'Lo sentimos, la clave que ha introducido es incorrecta o ha expirado. Por favor, solicite una nueva clave.']);
     }
 
     $user = AuthService::getUser($request->email);
