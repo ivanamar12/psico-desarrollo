@@ -36,14 +36,7 @@
       </ul>
     </nav>
     <!-- Content page -->
-    <section class="container-fluid">
-      <div class="page-header">
-        <x-oclock />
-
-        <h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Inicio</h1>
-      </div>
-      <p class="lead">
-    </section>
+    <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
     <div class="full-box text-center" style="padding: 30px 10px;">
       <article class="full-box tile">

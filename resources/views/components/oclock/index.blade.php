@@ -1,7 +1,4 @@
 <section>
-  <span>
-    <p>Bienvenido(a) {{ current_user()->name }}</p>
-  </span>
   <span id="fechaReloj">
     <span>
       <span id="diaSemana" class="diaSemana"></span>
