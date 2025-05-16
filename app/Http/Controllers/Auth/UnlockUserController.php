@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Notifications\EmailUserUnlock;
 use App\Services\AuthService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
@@ -12,9 +13,9 @@ use Tzsk\Otp\Facades\Otp;
 class UnlockUserController extends Controller
 {
   /**
-   * Show the form for creating a new resource.
+   * Show the form.
    */
-  public function create(): View
+  public function index(): View
   {
     return view('auth.user-unlock.user-unlock');
   }
@@ -28,12 +29,13 @@ class UnlockUserController extends Controller
     $user = AuthService::getUser($request->email);
 
     if (!$user) {
-      return redirect()->route('user-unlock.request')->withErrors(['status' => 'Email no encontrado']);
+      return redirect()->route('user-unlock.request')
+        ->withErrors(['status' => 'Usuario no encontrado.']);
     }
 
     $otp = Otp::generate($user->email);
 
-    // Notification::send($user, new EmailUserUnlock($user, $otp));
+    Notification::send($user, new EmailUserUnlock($user, $otp));
 
     return redirect()->route('unlock-user.reset', ['email' => $user->email])
       ->with(['status' => __('Link to reset user sent!')]);
@@ -44,7 +46,7 @@ class UnlockUserController extends Controller
    */
   public function update(Request $request): View
   {
-    return view('auth.enter-key');
+    return view('auth.user-unlock.enter-key');
   }
 
   /**

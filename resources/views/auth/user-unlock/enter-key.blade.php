@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Desbloqueo de Usuario - PsicoDesarrollo</title>
+  <title>Verificación de Clave - PsicoDesarrollo</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
@@ -34,32 +34,24 @@
   <main style="min-height: 91vh;">
     <section style="height: 85vh; display: flex; justify-content: center; align-items: center">
       <div class="modal-content">
-        <h2>Desbloqueo de Usuario</h2>
-        <p>
-          Para desbloquear tu usuario, ingresa el correo electrónico asociado a
-          tu cuenta a continuación:
+        <h2>Verificación de Clave</h2>
+        <p class="text-lg">
+          Para desbloquear tu usuario, ingresa la clave que te hemos enviado:
         </p>
 
-        <form method="POST" action="{{ route('user-unlock.email') }}">
+        <form method="POST" action="{{ route('unlock-user.update') }}" id="unlockForm">
           @csrf
+          <input type="hidden" name="email" value="{{ request()->query('email') }}">
 
           <div class="form-group">
-            <label for="email">Correo Electrónico:</label>
-            <input type="email" id="email" name="email" placeholder="ejemplo@correo.com" required
-              value="{{ old('email') }}">
-          </div>
-
-          <div style="margin-bottom: 15px; margin-right: 8px; display: flex; justify-content: end">
-            <a href="{{ route('login') }}">Otro método</a>
-          </div>
-
-          <div style="margin: 12px 0px">
-            Te enviaremos un enlace para que puedas restablecer tu cuenta y
-            acceder nuevamente a ella.
+            <label for="key">Clave Dinámica:</label>
+            <input type="text" id="key" name="key" required minlength="6" maxlength="6" pattern="[0-9]+"
+              title="La clave debe contener exactamente 6 dígitos numéricos"
+              placeholder="Ingresa la clave de 6 dígitos">
           </div>
 
           <button type="submit" class="btn btn-block">
-            Enviar enlace
+            Desbloquear Usuario
           </button>
         </form>
       </div>
@@ -72,6 +64,7 @@
   </footer>
 
   <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
   <script>
     $(document).ready(function() {
       $('.close-btn').click(function() {
@@ -81,6 +74,28 @@
       setTimeout(function() {
         $('.notification').fadeOut(300);
       }, 5000);
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#unlockForm').on('submit', function(e) {
+        e.preventDefault();
+
+        const keyInput = $('#key');
+        const keyValue = keyInput.val();
+
+        if (!/^\d{6}$/.test(keyValue)) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error de validación',
+            text: 'La clave debe contener exactamente 6 dígitos numéricos',
+            confirmButtonColor: '#3085d6',
+          });
+          return;
+        }
+
+        this.submit();
+      });
     });
   </script>
 </body>

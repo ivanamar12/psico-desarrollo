@@ -63,13 +63,13 @@ Route::middleware('auth')->group(function () {
 Route::middleware(['guest'])->group(function () {
 
   // User unlock
-  Route::get('/user-unlock', [UnlockUserController::class, 'create'])
+  Route::get('/user-unlock', [UnlockUserController::class, 'index'])
     ->name('user-unlock.request');
 
-  Route::post('/user-unlock', [UnlockUserController::class, 'store'])
+  Route::post('/user-unlock', [UnlockUserController::class, 'sendEmail'])
     ->name('user-unlock.email');
 
-  Route::get('/unlock-user', [UnlockUserController::class, 'create'])
+  Route::get('/unlock-user', [UnlockUserController::class, 'update'])
     ->name('unlock-user.reset');
 
   Route::post('/unlock-user', [UnlockUserController::class, 'store'])
