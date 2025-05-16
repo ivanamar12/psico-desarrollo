@@ -35,7 +35,10 @@
         </li>
       </ul>
     </nav>
+
     <!-- Content page -->
+
+    <!-- Page title -->
     <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
     <div class="full-box text-center" style="padding: 30px 10px;">

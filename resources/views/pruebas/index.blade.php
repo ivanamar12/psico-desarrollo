@@ -28,14 +28,10 @@
 			</li>
 		</ul>
 	</nav>
-	<!-- Content page -->
-	<div class="container-fluid">
-		<div class="page-header">
-            <x-oclock />
-			<h1 class="text-titles"><i class="zmdi zmdi-assignment zmdi-hc-fw"></i>Pruebas</h1>
-		</div>
-		<p class="lead">
-	</div>
+
+    <!-- Page title -->
+    <x-page-header title="Pruebas" icon="zmdi zmdi-assignment zmdi-hc-fw" />
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12">

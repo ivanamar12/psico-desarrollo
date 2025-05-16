@@ -26,12 +26,10 @@
 			</li>
 		</ul>
 	</nav>
-    <div class="container-fluid">
-		<div class="page-header">
-                <x-oclock />
-			    <h1 class="text-titles"><i class="zmdi zmdi-face zmdi-hc-fw"></i>Pacientes</h1>
-		</div>
-	</div>
+
+    <!-- Page title -->
+    <x-page-header title="Pacientes" icon="zmdi zmdi-male-female zmdi-hc-fw" />
+
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12">

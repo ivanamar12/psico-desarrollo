@@ -27,13 +27,9 @@
 			</ul>
 		</nav>
 		
-		<!-- Content page -->
-    <div class="container-fluid">
-        <div class="page-header">
-            <x-oclock />
-            <h1 class="text-titles"><i class="zmdi zmdi-calendar zmdi-hc-fw"></i>Citas</h1>
-        </div>
-    </div>
+    <!-- Page title -->
+    <x-page-header title="Citas" icon="zmdi zmdi-calendar zmdi-hc-fw" />
+
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12">
