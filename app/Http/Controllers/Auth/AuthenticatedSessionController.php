@@ -34,7 +34,7 @@ class AuthenticatedSessionController extends Controller
     // Verificar si el usuario está baneado
     if ($user->isBanned()) {
       return back()->withErrors([
-        'email' => 'Su cuenta ha sido bloqueada. Por favor contacte al administrador.',
+        'email' => 'Su cuenta ha sido bloqueada. Por favor, vaya a la opción de desbloqueo de usuario.',
       ]);
     }
 
