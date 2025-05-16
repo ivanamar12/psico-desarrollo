@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\EmailVerificationPromptController;
 use App\Http\Controllers\Auth\NewPasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\UnlockUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use Illuminate\Support\Facades\Route;
 
@@ -53,4 +54,24 @@ Route::middleware('auth')->group(function () {
 
   Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
+});
+
+
+/**
+ * User unlock
+ */
+Route::middleware(['guest'])->group(function () {
+
+  // User unlock
+  Route::get('/user-unlock', [UnlockUserController::class, 'create'])
+    ->name('user-unlock.request');
+
+  Route::post('/user-unlock', [UnlockUserController::class, 'store'])
+    ->name('user-unlock.email');
+
+  Route::get('/unlock-user', [UnlockUserController::class, 'create'])
+    ->name('unlock-user.reset');
+
+  Route::post('/unlock-user', [UnlockUserController::class, 'store'])
+    ->name('unlock-user.update');
 });

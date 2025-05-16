@@ -18,6 +18,7 @@
         "pavel-mironchik/laravel-backup-panel": "^2.2",
         "spatie/laravel-backup": "^7.0",
         "spatie/laravel-permission": "^6.10",
+        "tzsk/otp": "^9.0",
         "yajra/laravel-datatables": "^1.0"
     },
     "require-dev": {

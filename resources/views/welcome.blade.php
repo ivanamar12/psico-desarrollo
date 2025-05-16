@@ -13,15 +13,15 @@
 
   <!-- Notification -->
   @if ($errors->any())
-  <div class="notification">
-    <span class="icon">⚠️</span>
-    <div class="notification-content">
-      @foreach ($errors->all() as $error)
-      <span>{{ $error }}</span>
-      @endforeach
+    <div class="notification">
+      <span class="icon">⚠️</span>
+      <div class="notification-content">
+        @foreach ($errors->all() as $error)
+          <span>{{ $error }}</span>
+        @endforeach
+      </div>
+      <button class="close-btn">&times;</button>
     </div>
-    <button class="close-btn">&times;</button>
-  </div>
   @endif
 
   <!-- Header -->
@@ -37,20 +37,17 @@
 
       <!-- Botones para los modales -->
       @guest
-      <div class="auth-buttons">
-        <a href="#" class="btn" id="open-login-modal">Iniciar Sesión</a>
-        <!-- 
-          <a href="#" class="btn" id="open-register-modal">Regístrate</a>
-        -->
-      </div>
+        <div class="auth-buttons">
+          <a href="#" class="btn" id="open-login-modal">Iniciar Sesión</a>
+        </div>
       @else
-      <a href="{{ route('logout') }}" class="btn"
-        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-        Cerrar Sesión
-      </a>
-      <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-        @csrf
-      </form>
+        <a href="{{ route('logout') }}" class="btn"
+          onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+          Cerrar Sesión
+        </a>
+        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+          @csrf
+        </form>
       @endguest
     </nav>
   </header>
@@ -126,6 +123,11 @@
     <a href="#" class="btn">Contáctanos</a>
   </section>
 
+  <!-- Footer -->
+  <footer>
+    <p>© {{ now()->format('Y') }} PsicoDesarrollo. Todos los derechos reservados.</p>
+  </footer>
+
   <!-- Modal de Iniciar Sesión -->
   <div id="login-modal" class="modal">
     <div class="modal-content">
@@ -135,8 +137,22 @@
         @csrf
         <label for="email-login">Correo Electrónico:</label>
         <input type="email" id="email-login" name="email" placeholder="Ingrese su correo" required>
+
+        <div style="width: 100%; display: flex; justify-content: end; margin-bottom: 20px">
+          <a href={{ route('user-unlock.request') }}>
+            Desbloqueo de Usuario
+          </a>
+        </div>
+
         <label for="password-login">Contraseña:</label>
         <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
+
+        <div style="width: 100%; display: flex; justify-content: end; margin-bottom: 20px">
+          <a href={{ route('user-unlock.request') }}>
+            ¿Olvidaste tu contraseña?
+          </a>
+        </div>
+
         <button type="submit" class="btn">Entrar</button>
       </form>
     </div>
@@ -156,46 +172,46 @@
         <label for="password-register">Contraseña:</label>
         <input type="password" id="password-register" name="password" placeholder="Cree una contraseña" required>
         <label for="password-confirm">Confirmar Contraseña:</label>
-        <input type="password" id="password-confirm" name="password_confirmation" placeholder="Confirme su contraseña" required>
+        <input type="password" id="password-confirm" name="password_confirmation"
+          placeholder="Confirme su contraseña" required>
         <button type="submit" class="btn">Registrarse</button>
       </form>
     </div>
   </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>© 2024 PsicoDesarrollo. Todos los derechos reservados.</p>
-  </footer>
-
   <script>
-    const loginModal = document.getElementById('login-modal');
-    const registerModal = document.getElementById('register-modal');
-    const openLoginBtn = document.getElementById('open-login-modal');
-    const openRegisterBtn = document.getElementById('open-register-modal');
-    const closeLoginBtn = document.getElementById('close-login-modal');
-    const closeRegisterBtn = document.getElementById('close-register-modal');
+    document.addEventListener('DOMContentLoaded', function() {
+      const loginModal = document.getElementById('login-modal');
+      const openLoginBtn = document.getElementById('open-login-modal');
+      const closeLoginBtn = document.getElementById('close-login-modal');
 
-    openLoginBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      loginModal.style.display = 'flex';
-    });
+      function openLoginModal() {
+        loginModal.style.display = 'flex';
+        document.body.classList.add('body-no-scroll');
+        setTimeout(() => {
+          const firstInput = document.querySelector('#login-modal input');
+          if (firstInput) firstInput.focus();
+        }, 100);
+      }
 
-    openRegisterBtn.addEventListener('click', (e) => {
-      e.preventDefault();
-      registerModal.style.display = 'flex';
-    });
+      function closeLoginModal() {
+        loginModal.style.display = 'none';
+        document.body.classList.remove('body-no-scroll');
+      }
 
-    closeLoginBtn.addEventListener('click', () => {
-      loginModal.style.display = 'none';
-    });
+      openLoginBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+        openLoginModal();
+      });
 
-    closeRegisterBtn.addEventListener('click', () => {
-      registerModal.style.display = 'none';
-    });
+      closeLoginBtn.addEventListener('click', closeLoginModal);
 
-    window.addEventListener('click', (e) => {
-      if (e.target === loginModal) loginModal.style.display = 'none';
-      if (e.target === registerModal) registerModal.style.display = 'none';
+      // Cerrar al hacer clic fuera del modal
+      loginModal.addEventListener('click', function(e) {
+        if (e.target === loginModal) {
+          closeLoginModal();
+        }
+      });
     });
   </script>
 

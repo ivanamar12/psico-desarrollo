@@ -221,6 +221,10 @@ header {
   padding: 40px 20px;
   background: #3498db;
   color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
 }
 
 .contact a {
@@ -362,3 +366,45 @@ form button:hover {
   }
 }
 
+/* Mejoras específicas para el modal de login */
+#login-modal {
+  display: none; /* Asegura que empiece oculto */
+}
+
+.modal-content {
+  position: relative;
+  animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilo para el botón de cerrar específico del modal */
+#close-login-modal {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: color 0.3s;
+}
+
+#close-login-modal:hover {
+  color: #e74c3c;
+}
+
+/* Evitar scroll cuando el modal está abierto */
+.body-no-scroll {
+  overflow: hidden;
+  height: 100%;
+}
