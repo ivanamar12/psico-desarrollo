@@ -1,6 +1,6 @@
 <!-- Notification for Status -->
 @if (session('status'))
-  <div class="notification">
+  <div class="notification" style="background-color: #03bb2b;">
     <span class="icon">✅</span> <!-- Cambié el icono a un check -->
     <div class="notification-content">
       <span>{{ session('status') }}</span>

@@ -46,17 +46,17 @@ class EmailUserUnlock extends Notification
   public function toMail($notifiable)
   {
     return (new MailMessage)
-      ->subject(__('User Unlock - Dynamic Key'))
-      ->greeting(__('Hello :name!', ['name' => $this->user->name]))
-      ->line(__('This email contains a dynamic key to unlock your username.'))
-      ->line(new HtmlString('<h1>' . __('Dynamic Key: :key', ['key' => $this->key]) . '</h1>'))
-      ->line(new HtmlString('<h2>' . __('Important') . ' </h2>'))
+      ->subject(__('notifications.user_unlock.subject'))
+      ->greeting(__('notifications.user_unlock.greeting', ['name' => $this->user->name]))
+      ->line(__('notifications.user_unlock.message'))
+      ->line(new HtmlString('<h1>' . __('notifications.user_unlock.key_label', ['key' => $this->key]) . '</h1>'))
+      ->line(new HtmlString('<h2>' . __('notifications.user_unlock.important') . '</h2>'))
       ->line(new HtmlString('<ul>
-      <li><strong>' . __('The dynamic key is valid for :time minutes.', ['time' => config('otp.expiry')]) . '</strong></li>
-      <li><strong>' . __('If you do not use the dynamic key within the validity time, you must request a new one.') . '</strong></li>
-      <li><strong>' . __('Do not share the dynamic key with anyone.') . '</strong></li>
+        <li><strong>' . __('notifications.user_unlock.validity', ['time' => config('otp.expiry')]) . '</strong></li>
+        <li><strong>' . __('notifications.user_unlock.warning_time') . '</strong></li>
+        <li><strong>' . __('notifications.user_unlock.warning_share') . '</strong></li>
       </ul>'))
-      ->line(__('Thank you for using our application!'));
+      ->line(__('notifications.user_unlock.thanks'));
   }
 
   /**
