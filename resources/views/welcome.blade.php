@@ -11,18 +11,7 @@
 
 <body>
 
-  <!-- Notification -->
-  @if ($errors->any())
-    <div class="notification">
-      <span class="icon">⚠️</span>
-      <div class="notification-content">
-        @foreach ($errors->all() as $error)
-          <span>{{ $error }}</span>
-        @endforeach
-      </div>
-      <button class="close-btn">&times;</button>
-    </div>
-  @endif
+  <x-auth-messages />
 
   <!-- Header -->
   <header>

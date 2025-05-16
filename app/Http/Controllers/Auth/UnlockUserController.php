@@ -69,6 +69,6 @@ class UnlockUserController extends Controller
     $user = AuthService::getUser($request->email);
     $user->unban();
 
-    return redirect()->route('login')->with('status', 'Usuario Desbloqueado!');
+    return redirect()->route('index')->with('status', 'Usuario Desbloqueado!');
   }
 }

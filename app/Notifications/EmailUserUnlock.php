@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\HtmlString;
 
 class EmailUserUnlock extends Notification
 {
@@ -45,9 +46,17 @@ class EmailUserUnlock extends Notification
   public function toMail($notifiable)
   {
     return (new MailMessage)
-      ->line('The introduction to the notification.')
-      ->action('Notification Action', url('/'))
-      ->line('Thank you for using our application!');
+      ->subject(__('User Unlock - Dynamic Key'))
+      ->greeting(__('Hello :name!', ['name' => $this->user->name]))
+      ->line(__('This email contains a dynamic key to unlock your username.'))
+      ->line(new HtmlString('<h1>' . __('Dynamic Key: :key', ['key' => $this->key]) . '</h1>'))
+      ->line(new HtmlString('<h2>' . __('Important') . ' </h2>'))
+      ->line(new HtmlString('<ul>
+      <li><strong>' . __('The dynamic key is valid for :time minutes.', ['time' => config('otp.expiry')]) . '</strong></li>
+      <li><strong>' . __('If you do not use the dynamic key within the validity time, you must request a new one.') . '</strong></li>
+      <li><strong>' . __('Do not share the dynamic key with anyone.') . '</strong></li>
+      </ul>'))
+      ->line(__('Thank you for using our application!'));
   }
 
   /**
