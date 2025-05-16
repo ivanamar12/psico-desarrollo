@@ -3,7 +3,10 @@
   <section class="Dropdown-body">
     <div class="Dropdown-body-title">
       <i class="zmdi zmdi-close"></i>
-      Mi Perfil
+      <div style="display: flex; flex-direction: column">
+        <p style="margin: 0">{{ current_user()->name }}</p>
+        <p style="margin: 0; font-size: 13px">{{ current_user()->email }}</p>
+      </div>
     </div>
     <div class="Dropdown-body-content">
       <!-- Contenido del dropdown -->

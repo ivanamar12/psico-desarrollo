@@ -654,7 +654,7 @@ html {
 
 /* Estilos para el dropdown */
 .Dropdown-area {
-  height: 205px;
+  height: 225px;
   position: fixed;
   z-index: 100;
   top: 50px;
