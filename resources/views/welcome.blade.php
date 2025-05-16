@@ -221,6 +221,10 @@
       $('.close-btn').click(function() {
         $('.notification').fadeOut(300); // Desvanecimiento más suave
       });
+
+      setTimeout(function() {
+        $('.notification').fadeOut(300);
+      }, 5000);
     });
   </script>
 </body>

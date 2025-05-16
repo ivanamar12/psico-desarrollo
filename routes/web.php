@@ -59,12 +59,6 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   Route::post('/notificaciones/leer-todas', [NotificacionController::class, 'markAllAsRead'])->name('notificaciones.leer_todas');
   Route::delete('/notificaciones/eliminar/{id}', [NotificacionController::class, 'deleteNotification'])->name('notificaciones.eliminar');
 
-  Route::post('/verify-email', [RecoveryController::class, 'verifyEmail']);
-  Route::post('/validate-answer', [RecoveryController::class, 'validateAnswer']);
-  Route::get('/reset-password', [RecoveryController::class, 'showResetForm'])->name('password.reset');
-  Route::post('/reset-password', [RecoveryController::class, 'resetPassword']);
-
-
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
 

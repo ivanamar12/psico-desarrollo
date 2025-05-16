@@ -16,7 +16,7 @@ class UnlockUserController extends Controller
    */
   public function create(): View
   {
-    return view('auth.user-unlock');
+    return view('auth.user-unlock.user-unlock');
   }
 
   /**
