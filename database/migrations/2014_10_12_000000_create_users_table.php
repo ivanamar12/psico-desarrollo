@@ -19,10 +19,14 @@ class CreateUsersTable extends Migration
       $table->string('email')->unique();
       $table->timestamp('email_verified_at')->nullable();
       $table->string('password');
+
       $table->timestamp('last_activity')->nullable();
-      $table->string('pregunta_seguridad')->nullable();
-      $table->string('respuesta_seguridad')->nullable();
-      $table->boolean('primera_vez')->default(true); // Por defecto en true
+
+      $table->foreignId('security_question_id')->nullable()
+        ->constrained('security_questions');
+      $table->string('security_answer')->nullable();
+
+      $table->boolean('primera_vez')->default(true);
       $table->rememberToken();
       $table->timestamps();
     });
