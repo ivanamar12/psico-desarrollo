@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth\Password;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class ForgotPasswordController extends Controller
 {
@@ -29,6 +31,16 @@ class ForgotPasswordController extends Controller
         ->withErrors(['email' => 'Usuario no tiene pregunta de seguridad configurada.']);
     }
 
-    return redirect()->route('security.question', ['email' => $request->email]);
+    // Generar token
+    $token = Str::random(60);
+    DB::table('password_resets')->updateOrInsert(
+      ['email' => $user->email],
+      ['token' => $token, 'created_at' => now()]
+    );
+
+    return redirect()->route('security.question', [
+      'email' => $request->email,
+      'token' => $token
+    ]);
   }
 }

@@ -75,7 +75,7 @@ Route::middleware(['guest'])->group(function () {
   Route::post('/security-question', [SecurityQuestionController::class, 'verify'])
     ->name('security-question.verify');
 
-  Route::get('/reset-password/{user}', [ResetPasswordController::class, 'showForm'])
+  Route::get('/reset-password/{token}', [ResetPasswordController::class, 'showForm'])
     ->name('password.reset');
   Route::post('/reset-password', [ResetPasswordController::class, 'update'])
     ->name('password.update');

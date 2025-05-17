@@ -38,6 +38,7 @@
         <form method="POST" action="{{ route('security-question.verify') }}">
           @csrf
           <input type="hidden" name="email" value="{{ $user->email }}">
+          <input type="hidden" name="token" value="{{ $token }}">
 
           <div class="form-group">
             <label for="security_answer">Tu respuesta:</label>
