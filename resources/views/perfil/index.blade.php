@@ -109,29 +109,32 @@
             <div class="mb-3 password-container">
               <label for="password" class="form-label">Nueva Contraseña (Opcional)</label>
               <input type="password" class="form-control" id="password" name="password">
-              <span class="toggle-password" data-target="password">👁️</span>
+              <span class="toggle-password" style="cursor: pointer" data-target="password">👁️</span>
             </div>
 
             <div class="mb-3 password-container">
               <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
               <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-              <span class="toggle-password" data-target="password_confirmation">👁️</span>
+              <span class="toggle-password" style="cursor: pointer" data-target="password_confirmation">👁️</span>
             </div>
 
-            <div class="form-group label-floating col-md-6">
-              <select name="pregunta_seguridad" class="form-control">
-                <option value="" disabled selected>Pregunta de seguridad</option>
-                <option value="mi mascota" title="">Mi mascota</option>
-                <option value="deporte favorito" title="">Deporte favorito</option>
-                <option value="pelicula favorital" title="">Pelicula favorita</option>
-                <option value="comida favorita" title="">Comida favorita</option>
+            <div class="form-group">
+              <label for="security_question_id">Pregunta de seguridad</label>
+              <select name="security_question_id" id="security_question_id" class="form-control">
+                <option value="" disabled selected>Seleccione una pregunta</option>
+                @foreach ($preguntas as $pregunta)
+                  <option value="{{ $pregunta->id }}"
+                    {{ Auth::user()->security_question_id == $pregunta->id ? 'selected' : '' }}>
+                    {{ $pregunta->question }}
+                  </option>
+                @endforeach
               </select>
             </div>
 
             <div class="mb-3">
-              <label for="name" class="form-label">Rspuesta</label>
-              <input type="text" class="form-control" id="respuesta_seguridad" name="respuesta_seguridad"
-                value="">
+              <label for="security_answer" class="form-label">Respuesta</label>
+              <input type="text" class="form-control" id="security_answer" name="security_answer">
+              <small class="text-muted">Ingrese una nueva respuesta si desea cambiarla</small>
             </div>
 
             <div class="modal-footer">
@@ -144,6 +147,7 @@
       </div>
     </div>
   </div>
+
   <div class="modal fade" id="verUsuarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -202,19 +206,19 @@
           dataType: 'json',
           success: function(response) {
             if (response.success) {
-              alert("Perfil actualizado correctamente.");
-              location.reload();
+              toastr.success("Perfil actualizado correctamente.");
+              setTimeout(function() {
+                location.reload();
+              }, 1500);
             } else {
-              alert("Hubo un error al actualizar el perfil.");
+              toastr.error("Hubo un error al actualizar el perfil.");
             }
           },
           error: function(xhr) {
             let errors = xhr.responseJSON.errors;
-            let errorMessage = "Error al actualizar el perfil:\n";
             for (let key in errors) {
-              errorMessage += errors[key] + "\n";
+              toastr.error(errors[key][0]);
             }
-            alert(errorMessage);
           }
         });
       });
@@ -276,7 +280,6 @@
         });
       });
 
-
       // Evento para editar usuario
       let usuarioId; // Variable global para almacenar el ID del usuario a eliminar
 
@@ -314,7 +317,6 @@
           }
         });
       });
-
     });
   </script>
   <script>
@@ -326,13 +328,13 @@
 
       $("#password").on("blur", function() {
         var password = $(this).val();
-        if (!validarPassword(password)) {
+        if (password && !validarPassword(password)) {
           $(this).removeClass("is-valid").addClass("is-invalid");
           toastr.error(
-            "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial.");
-        } else {
+            "La contraseña debe tener al menos 8 caracteres, una mayúscula, un número y un carácter especial."
+          );
+        } else if (password) {
           $(this).removeClass("is-invalid").addClass("is-valid");
-          toastr.success("Contraseña válida.");
         }
       });
 
@@ -347,7 +349,6 @@
           toastr.error("Las contraseñas no coinciden.");
         } else {
           $(this).removeClass("is-invalid").addClass("is-valid");
-          toastr.success("Las contraseñas coinciden.");
         }
       });
 

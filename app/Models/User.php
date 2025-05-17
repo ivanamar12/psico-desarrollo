@@ -12,6 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Cog\Contracts\Ban\Bannable as BannableInterface;
 use Cog\Laravel\Ban\Traits\Bannable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements BannableInterface
 {
@@ -27,8 +28,8 @@ class User extends Authenticatable implements BannableInterface
     'email',
     'password',
     'last_activity',
-    'pregunta_seguridad',
-    'respuesta_seguridad',
+    'security_question_id',
+    'security_answer',
     'primera_vez',
   ];
 
@@ -59,6 +60,11 @@ class User extends Authenticatable implements BannableInterface
   public function securityQuestion(): BelongsTo
   {
     return $this->belongsTo(SecurityQuestion::class);
+  }
+
+  public function setSecurityAnswerAttribute($value)
+  {
+    $this->attributes['security_answer'] = Hash::make($value);
   }
 
   /**
