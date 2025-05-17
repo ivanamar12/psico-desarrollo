@@ -38,7 +38,6 @@ class ResetPasswordController extends Controller
       'password' => ['required', 'string', Password::default(), 'confirmed'],
     ]);
 
-    // Verifica el token nuevamente
     $resetData = DB::table('password_resets')
       ->where('token', $request->token)
       ->first();

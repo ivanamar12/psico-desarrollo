@@ -13,7 +13,28 @@ class SecurityQuestionController extends Controller
 {
   public function show(Request $request)
   {
+    if (!$request->has('email') || !$request->has('token')) {
+      return redirect()->route('password.request')
+        ->withErrors(['error' => 'Acceso no autorizado. Por favor inicie el proceso desde el principio.']);
+    }
+
     $user = User::where('email', $request->email)->first();
+
+    if (!$user) {
+      return redirect()->route('password.request')
+        ->withErrors(['email' => 'Usuario no encontrado.']);
+    }
+
+    $resetData = DB::table('password_resets')
+      ->where('email', $user->email)
+      ->where('token', $request->token)
+      ->first();
+
+    if (!$resetData || now()->subMinutes(60) > $resetData->created_at) {
+      return redirect()->route('password.request')
+        ->withErrors(['token' => 'Token inválido o expirado. Por favor inicie el proceso nuevamente.']);
+    }
+
     return view('auth.passwords.security-question', [
       'user' => $user,
       'token' => $request->token
@@ -30,7 +51,6 @@ class SecurityQuestionController extends Controller
 
     $user = User::where('email', $request->email)->first();
 
-    // Verifica el token
     $resetData = DB::table('password_resets')
       ->where('email', $user->email)
       ->where('token', $request->token)
@@ -42,11 +62,22 @@ class SecurityQuestionController extends Controller
     }
 
     if (!Hash::check($request->security_answer, $user->security_answer)) {
-      return back()
-        ->withErrors(['security_answer' => 'La respuesta es incorrecta.']);
+      if ($request->session()->get('security_attempts', 0) >= 3) {
+        DB::table('password_resets')->where('email', $user->email)->delete();
+        return redirect()->route('password.request')
+          ->withErrors(['security_answer' => 'Demasiados intentos fallidos. Por favor inicie el proceso nuevamente.']);
+      }
+
+      $request->session()->put(
+        'security_attempts',
+        $request->session()->get('security_attempts', 0) + 1
+      );
+
+      return back()->withErrors(['security_answer' => 'La respuesta es incorrecta.']);
     }
 
-    // Genera nuevo token para el último paso
+    $request->session()->forget('security_attempts');
+
     $finalToken = Str::random(60);
     DB::table('password_resets')->updateOrInsert(
       ['email' => $user->email],

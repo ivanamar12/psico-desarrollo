@@ -31,7 +31,6 @@ class ForgotPasswordController extends Controller
         ->withErrors(['email' => 'Usuario no tiene pregunta de seguridad configurada.']);
     }
 
-    // Generar token
     $token = Str::random(60);
     DB::table('password_resets')->updateOrInsert(
       ['email' => $user->email],
