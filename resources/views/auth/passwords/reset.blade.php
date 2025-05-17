@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Verificación de Seguridad - PsicoDesarrollo</title>
+  <title>Nueva Contraseña - PsicoDesarrollo</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
@@ -32,20 +32,29 @@
   <main style="min-height: 91vh;">
     <section style="height: 85vh; display: flex; justify-content: center; align-items: center">
       <div class="modal-content">
-        <h2>Verificación de Seguridad</h2>
-        <p>Por favor responde a tu pregunta de seguridad:</p>
+        <h2>Establecer Nueva Contraseña</h2>
+        <p>Crea una nueva contraseña segura para tu cuenta:</p>
 
-        <form method="POST" action="{{ route('security-question.verify') }}">
+        <form method="POST" action="{{ route('password.update') }}">
           @csrf
           <input type="hidden" name="email" value="{{ $user->email }}">
 
           <div class="form-group">
-            <label for="security_answer">Tu respuesta:</label>
-            <input type="text" id="security_answer" name="security_answer" required>
+            <label for="password">Nueva Contraseña:</label>
+            <input type="password" id="password" name="password" required>
+          </div>
+
+          <div class="form-group">
+            <label for="password_confirmation">Confirmar Contraseña:</label>
+            <input type="password" id="password_confirmation" name="password_confirmation" required>
+          </div>
+
+          <div style="margin: 12px 0px">
+            La contraseña debe tener al menos 8 caracteres.
           </div>
 
           <button type="submit" class="btn btn-block">
-            Verificar Respuesta
+            Actualizar Contraseña
           </button>
         </form>
       </div>

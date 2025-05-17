@@ -17,10 +17,12 @@ class SecurityQuestionController extends Controller
 
   public function verify(Request $request)
   {
+    $request->validate(['email' => ['required', 'email']]);
+
     $user = User::where('email', $request->email)->first();
 
-    if (!Hash::check($request->respuesta_seguridad, $user->respuesta_seguridad)) {
-      return back()->withErrors(['respuesta_seguridad' => 'La respuesta es incorrecta']);
+    if (!Hash::check($request->security_answer, $user->security_answer)) {
+      return back()->withErrors(['security_answer' => 'La respuesta es incorrecta.']);
     }
 
     return redirect()->route('password.reset', $user);

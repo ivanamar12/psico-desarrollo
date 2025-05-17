@@ -24,7 +24,7 @@ class ForgotPasswordController extends Controller
         ->withErrors(['email' => 'Usuario no encontrado.']);
     }
 
-    if (!$user->pregunta_seguridad) {
+    if (!$user->security_question_id) {
       return back()
         ->withErrors(['email' => 'Usuario no tiene pregunta de seguridad configurada.']);
     }

@@ -48,6 +48,7 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
 
   Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
   Route::post('/perfil/update', [PerfilController::class, 'update'])->name('perfil.update');
+
   Route::get('/perfil/list', [PerfilController::class, 'list'])->name('perfil.list');
   Route::get('/perfil/show/{id}', [PerfilController::class, 'show']);
   Route::get('/perfil/edit/{id}', [PerfilController::class, 'edit']);

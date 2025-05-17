@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class ResetPasswordController extends Controller
 {
@@ -17,7 +18,8 @@ class ResetPasswordController extends Controller
   public function update(Request $request)
   {
     $request->validate([
-      'password' => 'required|confirmed|min:8',
+      'email' => ['required', 'email'],
+      'password' => ['required', 'string', Password::default(), 'confirmed'],
     ]);
 
     $user = User::find($request->user_id);
@@ -26,6 +28,7 @@ class ResetPasswordController extends Controller
       'primera_vez' => false
     ]);
 
-    return redirect()->route('login')->with('status', 'Contraseña actualizada correctamente');
+    return redirect()->route('index')
+      ->with('status', 'Contraseña actualizada correctamente.');
   }
 }

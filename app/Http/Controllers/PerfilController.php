@@ -13,7 +13,6 @@ use DataTables;
 class PerfilController extends Controller
 {
   // Muestra la vista del perfil del usuario autenticado
-  // Muestra la vista del perfil del usuario autenticado
   public function index()
   {
     $user = Auth::user();

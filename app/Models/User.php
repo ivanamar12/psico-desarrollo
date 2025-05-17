@@ -62,11 +62,6 @@ class User extends Authenticatable implements BannableInterface
     return $this->belongsTo(SecurityQuestion::class);
   }
 
-  public function setSecurityAnswerAttribute($value)
-  {
-    $this->attributes['security_answer'] = Hash::make($value);
-  }
-
   /**
    * Get all of the auditLogs for the User
    *
