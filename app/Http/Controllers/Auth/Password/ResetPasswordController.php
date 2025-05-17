@@ -22,7 +22,8 @@ class ResetPasswordController extends Controller
       'password' => ['required', 'string', Password::default(), 'confirmed'],
     ]);
 
-    $user = User::find($request->user_id);
+    $user = User::where('email', $request->email)->first();
+
     $user->update([
       'password' => Hash::make($request->password),
       'primera_vez' => false
