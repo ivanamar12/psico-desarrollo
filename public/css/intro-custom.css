@@ -1,0 +1,73 @@
+/* intro-custom.css */
+
+/* Tooltip general */
+.introjs-tooltip {
+    background-color: #ffffff;
+    color: #212121;
+    border-radius: 12px;
+    padding: 20px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 15px;
+    border: 1px solid #e0e0e0;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+    max-width: 450px;
+  }
+  
+  /* Título */
+  .introjs-tooltip-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1976d2;
+  }
+  
+  /* Texto del paso */
+  .introjs-tooltiptext {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #424242;
+  }
+  
+  /* Botones de navegación */
+  .introjs-button {
+    background-color: #329b84;
+    color: #fff;
+    border-radius: 6px;
+    padding: 6px 14px;
+    font-weight: 500;
+    border: none;
+    transition: background-color 0.3s;
+  }
+  
+  .introjs-button:hover {
+    background-color: #329b84;
+  }
+  
+  /* Botón de omitir */
+  .introjs-skipbutton {
+    background-color: transparent;
+    color: #757575;
+    border: none;
+    font-size: 13px;
+    margin-left: 10px;
+    text-decoration: underline;
+  }
+  
+  .introjs-skipbutton:hover {
+    color: #000000;
+  }
+  
+  /* Bullets (indicadores de pasos) */
+  .introjs-bullets li a {
+    background: #cfd8dc;
+  }
+  
+  .introjs-bullets li a.active {
+    background: #FFC107;
+  }
+  
+  /* Flechita del tooltip */
+  .introjs-arrow {
+    border-color: #ffffff;
+  }
+  

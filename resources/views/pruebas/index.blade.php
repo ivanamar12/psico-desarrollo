@@ -22,7 +22,7 @@
           </a>
         </li>
         <li>
-          <a href="#!" class="btn-modal-help">
+          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
             <i class="zmdi zmdi-help-outline"></i>
           </a>
         </li>

@@ -20,7 +20,7 @@
           </a>
         </li>
         <li>
-          <a href="#!" class="btn-modal-help">
+          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
             <i class="zmdi zmdi-help-outline"></i>
           </a>
         </li>
@@ -46,7 +46,7 @@
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-especialista">
                   <thead>
-                    <button id="openModal" class="btn btn-custom" style="color: white;">Especialidades</button>
+                    <button id="openModal" class="btn-especialidad btn-custom" style="color: white;">Especialidades</button>
                     <tr>
                       <th class="text-center">#</th>
                       <th class="text-center">Nombre</th>
@@ -325,7 +325,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Especialista</h3>
+          <h3 class="modal-title w-100 text-center" style="color: white;">Especialidades</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
