@@ -30,7 +30,7 @@
   </header>
 
   <main style="min-height: 91vh;">
-    <section style="height: 85vh; display: flex; justify-content: center; align-items: center">
+    <section style="height: 91vh; display: flex; justify-content: center; align-items: center">
       <div class="modal-content">
         <h2>Establecer Nueva Contraseña</h2>
         <p>Crea una nueva contraseña segura para tu cuenta:</p>
