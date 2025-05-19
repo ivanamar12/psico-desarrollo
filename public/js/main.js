@@ -60,8 +60,8 @@ $(document).ready(function () {
       swal("You wrote", "" + $("#InputSearch").val() + "", "success");
     });
   });
-  $(".btn-modal-help").on("click", function () {
-    $("#Dialog-Help").modal("show");
+  $(".btn-modal-help-inicio").on("click", function () {
+    $("#Dialog-Help-inicio").modal("show");
   });
 });
 (function ($) {

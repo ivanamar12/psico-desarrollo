@@ -10,6 +10,8 @@
 
   <!-- CSS Base -->
   <link href="./css/main.css" rel="stylesheet">
+  <link href="./css/introjs.min.css" rel="stylesheet">
+  <link href="./css/intro-custom.css" rel="stylesheet">
 
   <!-- CSS Específico por vista -->
   @yield('css')
@@ -29,13 +31,13 @@
   <x-nav-dropdown />
 
   <!-- Dialog help -->
-  <div class="modal fade" tabindex="-1" role="dialog" id="Dialog-Help">
+  <div class="modal fade" tabindex="-1" role="dialog" id="Dialog-Help-inicio">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
           <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
               aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title">Help</h4>
+          <h4 class="modal-title w-100 text-center" style="color: white;">Ayuda</h4>
         </div>
         <div class="modal-body">
           <p>
@@ -46,7 +48,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-primary btn-raised" data-dismiss="modal"><i
-              class="zmdi zmdi-thumb-up"></i> Ok</button>
+              class="zmdi "></i> Aceptar</button>
         </div>
       </div>
     </div>
@@ -59,6 +61,8 @@
   <script src="{{ asset('js/ripples.min.js') }}"></script>
   <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
+  <script src="{{ asset('js/intro.min.js') }}"></script>
+  <script src="{{ asset('js/intro-tour.js') }}"></script>
   <script>
     /** this is the function for o'clock */
     if (document.getElementById("fechaReloj")) {

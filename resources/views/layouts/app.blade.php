@@ -13,6 +13,8 @@
   <link href="./css/datatables/datatables.min.css" rel="stylesheet">
   <link href="./css/toastr/toastr.min.css" rel="stylesheet" />
   <link href='./css/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
+  <link href="./css/introjs.min.css" rel="stylesheet">
+  <link href="./css/intro-custom.css" rel="stylesheet">
 </head>
 
 <body>
@@ -68,6 +70,8 @@
   <script src='./js/moment/moment.min.js'></script>
   <script src='./js/fullcalendar/fullcalendar.min.js'></script>
   <script src="./js/chart/chart.js"></script>
+  <script src="{{ asset('js/intro.min.js') }}"></script>
+  <script src="{{ asset('js/intro-tour.js') }}"></script>
   <script>
     /** this is the function for o'clock */
     if (document.getElementById("fechaReloj")) {

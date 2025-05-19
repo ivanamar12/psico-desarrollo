@@ -721,3 +721,46 @@ html {
 .show-Dropdown-area .Dropdown-body {
   transform: translateX(0) !important;
 }
+
+/* Tooltip principal */
+.introjs-tooltip {
+  background-color: #2c3e50; /* fondo más oscuro */
+  color: white;
+  border-radius: 10px;
+  padding: 15px;
+  font-size: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Título del tooltip */
+.introjs-tooltip-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #F1C40F; /* amarillo */
+}
+
+/* Texto */
+.introjs-tooltiptext {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+/* Botones */
+.introjs-button {
+  background-color: #3498db;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  padding: 6px 12px;
+}
+
+.introjs-button:hover {
+  background-color: #2980b9;
+}
+
+/* Botón de salir */
+.introjs-skipbutton {
+  background-color: transparent;
+  color: #bdc3c7;
+}

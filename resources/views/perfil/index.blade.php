@@ -9,6 +9,11 @@
         <li class="pull-left">
           <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
         </li>
+        <li>
+          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
+            <i class="zmdi zmdi-help-outline"></i>
+          </a>
+        </li>
       </ul>
     </nav>
 
