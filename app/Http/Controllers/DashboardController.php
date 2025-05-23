@@ -14,14 +14,13 @@ class DashboardController extends Controller
 {
   public function index()
   {
-    $totalUsuarios = User::count();
     $totalEspecialistas = Especialista::count();
     $totalSecretarias = Secretaria::count();
 
     $totalPacientes = Paciente::count();
     $totalRepresentantes = Representante::count();
 
-    return view('dashboard', compact('totalUsuarios', 'totalEspecialistas', 'totalSecretarias', 'totalPacientes', 'totalRepresentantes'));
+    return view('dashboard', compact('totalEspecialistas', 'totalSecretarias', 'totalPacientes', 'totalRepresentantes'));
   }
 
   public function estadisticasPacientes()

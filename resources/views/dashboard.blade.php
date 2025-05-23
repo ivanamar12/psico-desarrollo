@@ -40,20 +40,7 @@
     <!-- Page title -->
     <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
-    <div class="full-box text-center" style="padding: 30px 10px;">
-      <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-          Total Usuarios
-        </div>
-        <div class="full-box tile-icon text-center">
-          <i class="zmdi zmdi-account"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-          <p class="full-box">{{ $totalUsuarios }}</p>
-          <small>Registrados</small>
-        </div>
-      </article>
-
+    <section class="full-box text-center" style="padding: 30px 10px;">
       <article class="full-box tile">
         <div class="full-box tile-title text-center text-titles text-uppercase">
           Especialistas
@@ -105,7 +92,7 @@
           <small>Registrados</small>
         </div>
       </article>
-    </div>
+    </section>
 
     <!-- Sección de gráficos -->
     <div class="container-fluid">
@@ -254,13 +241,13 @@
     });
   </script>
   <script>
-  function iniciarAyuda() {
-    introJs().setOptions({
-      nextLabel: 'Siguiente',
-      prevLabel: 'Anterior',
-      skipLabel: 'Saltar',
-      doneLabel: 'Finalizar',
-    }).start();
-  }
-</script>
+    function iniciarAyuda() {
+      introJs().setOptions({
+        nextLabel: 'Siguiente',
+        prevLabel: 'Anterior',
+        skipLabel: 'Saltar',
+        doneLabel: 'Finalizar',
+      }).start();
+    }
+  </script>
 @endsection
