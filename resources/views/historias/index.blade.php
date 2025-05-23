@@ -6,7 +6,7 @@
   <section class="full-box dashboard-contentPage">
     <nav class="full-box dashboard-Navbar">
       <ul class="full-box list-unstyled text-right">
-        <li class="pull-left">
+        <li class="pull-left btn-menu-dashboard">
           <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
         </li>
         <li>
@@ -37,7 +37,7 @@
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
             <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('crear historia'))
-              <li><a href="#new" data-toggle="tab"> Nuevo</a></li>
+              <li><a href="#new-historia" data-toggle="tab"> Nuevo</a></li>
             @endif
           </ul>
           <div id="myTabContent" class="tab-content">
@@ -55,7 +55,7 @@
                 </table>
               </div>
             </div>
-            <div class="tab-pane fade in" id="new">
+            <div class="tab-pane fade in" id="new-historia">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">

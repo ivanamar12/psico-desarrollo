@@ -1,20 +1,20 @@
 <section class="full-box cover dashboard-sideBar">
-  <div class="full-box dashboard-sideBar-bg btn-menu-dashboard"></div>
-  <div class="full-box dashboard-sideBar-ct">
+  <div class="full-box dashboard-sideBar-bg "></div>
+    <div class="full-box dashboard-sideBar-ct">
     <!--SideBar Title -->
-    <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title" style="font-weight: 800">
-      PsicoDesarrollo <i class="zmdi zmdi-close btn-menu-dashboard visible-xs"></i>
-    </div>
+      <div class="full-box text-uppercase text-center text-titles dashboard-sideBar-title" style="font-weight: 800">
+       PsicoDesarrollo <i class="zmdi zmdi-close  visible-xs"></i>
+      </div>
     <!-- SideBar User info -->
-    <div class="full-box dashboard-sideBar-UserInfo">
-      <figure class="full-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px">
-        <img src="./assets/img/avatar.png" alt="UserIcon">
-        <div style="display: flex; flex-direction: column; align-items: center">
-          <p style="margin: 0; font-size: 22px">{{ current_user()->name }}</p>
-          <p style="margin: 0; font-size: 13px">{{ current_user()->email }}</p>
-        </div>
-      </figure>
-    </div>
+      <div class="full-box dashboard-sideBar-UserInfo">
+        <figure class="full-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px">
+          <img src="./assets/img/avatar.png" alt="UserIcon">
+          <div style="display: flex; flex-direction: column; align-items: center">
+            <p style="margin: 0; font-size: 22px">{{ current_user()->name }}</p>
+            <p style="margin: 0; font-size: 13px">{{ current_user()->email }}</p>
+          </div>
+        </figure>
+      </div>
     <!-- SideBar Menu -->
     <ul class="list-unstyled full-box dashboard-sideBar-Menu">
       <li>

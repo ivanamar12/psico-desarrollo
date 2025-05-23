@@ -46,7 +46,7 @@
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-especialista">
                   <thead>
-                    <button id="openModal" class="btn-especialidad btn-custom" style="color: white;">Especialidades</button>
+                    <button id="openModal" class="btn btn-especialidad btn-custom" style="color: white;">Especialidades</button>
                     <tr>
                       <th class="text-center">#</th>
                       <th class="text-center">Nombre</th>

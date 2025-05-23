@@ -62,6 +62,9 @@
   <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
   <script src="{{ asset('js/intro.min.js') }}"></script>
+  <script>
+    window.mostrarAyuda = @json(session('mostrar_ayuda', false));
+</script>
   <script src="{{ asset('js/intro-tour.js') }}"></script>
   <script>
     /** this is the function for o'clock */

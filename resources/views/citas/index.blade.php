@@ -35,14 +35,14 @@
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
             <li class="active"><a href="#calendario" data-toggle="tab">Calendario</a></li>
-            <li class=""><a href="#list-1" data-toggle="tab">Lista de citas del dia</a></li>
-            <li class=""><a href="#list-2" data-toggle="tab">Lista</a></li>
+            <li class=""><a href="#citas-dia" data-toggle="tab">Lista de citas del dia</a></li>
+            <li class=""><a href="#citas-todas" data-toggle="tab">Lista</a></li>
           </ul>
           <div id="myTabContent" class="tab-content">
             <div class="tab-pane fade active in" id="calendario">
               <div id='calendar'></div>
             </div>
-            <div class="tab-pane fade  in" id="list-1">
+            <div class="tab-pane fade  in" id="citas-dia">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-citas_hoy">
                   <thead>
@@ -66,7 +66,7 @@
               </div>
             </div>
 
-            <div class="tab-pane fade  in" id="list-2">
+            <div class="tab-pane fade  in" id="citas-todas">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-citas">
                   <thead>
