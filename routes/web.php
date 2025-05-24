@@ -142,7 +142,10 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   Route::post('historias', [HistoriaClinicaController::class, 'store'])
     ->name('historias.store');
 
-  // Ruta para almacenar una nueva especialidad
+  // Rutas para especialidad
+  Route::get('especialidad', [EspecialidadController::class, 'index'])
+    ->name('especialidad.index');
+
   Route::post('especialidad', [EspecialidadController::class, 'store'])
     ->name('especialidad.store');
 
