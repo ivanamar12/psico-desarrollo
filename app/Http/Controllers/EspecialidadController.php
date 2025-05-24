@@ -18,7 +18,7 @@ class EspecialidadController extends Controller
           $acciones = '';
 
           if (auth()->user()->can('editar especialidad')) {
-            $acciones .= '<a href="javascript:void(0)" onclick="editEspecialidad(' . $especialidad->id . ')" class="btn btn-warning btn-sm"><i class="zmdi zmdi-edit"></i></a>';
+            $acciones .= '<a href="javascript:void(0)" onclick="editEspecialidad(' . $especialidad->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
           }
 
           return $acciones;
@@ -51,12 +51,14 @@ class EspecialidadController extends Controller
 
   public function update(Request $request, $id)
   {
-    $request->validate([
+    $validatedData = $request->validate([
       'especialidad' => 'required|string|max:30|unique:especialidads,especialidad,' . $id
     ]);
 
     $especialidad = Especialidad::findOrFail($id);
-    $especialidad->update($request->all());
+    $especialidad->update([
+      'especialidad' => $validatedData['especialidad'],
+    ]);
 
     return response()->json([
       'success' => true,
