@@ -4,13 +4,32 @@ namespace App\Http\Controllers;
 
 use App\Models\Especialidad;
 use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 
 class EspecialidadController extends Controller
 {
-  public function index()
+  public function index(Request $request)
   {
-    $especialidades = Especialidad::all();
-    return view('especialidad.index', compact('especialidades'));
+    if ($request->ajax()) {
+      $especialidades = Especialidad::select('*');
+
+      return DataTables::of($especialidades)
+        ->addColumn('action', function ($especialidad) {
+          $acciones = '';
+
+          if (auth()->user()->can('editar especialidad')) {
+            $acciones .= '<a href="javascript:void(0)" onclick="editEspecialidad(' . $especialidad->id . ')" class="btn btn-warning btn-sm"><i class="zmdi zmdi-edit"></i></a>';
+          }
+
+          // Nota: No incluimos botón de eliminar según tu requerimiento
+
+          return $acciones;
+        })
+        ->rawColumns(['action'])
+        ->make(true);
+    }
+
+    return view('especialidad.index');
   }
 
   public function store(Request $request)
