@@ -143,11 +143,8 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
     ->name('historias.store');
 
   // Rutas para especialidad
-  Route::get('especialidad', [EspecialidadController::class, 'index'])
-    ->name('especialidad.index');
-
-  Route::post('especialidad', [EspecialidadController::class, 'store'])
-    ->name('especialidad.store');
+  Route::resource('especialidad', EspecialidadController::class)
+    ->except(['destroy', 'show']);
 
   // Ruta para eliminar una historia
   Route::delete('historias/{id}', [HistoriaClinicaController::class, 'destroy'])

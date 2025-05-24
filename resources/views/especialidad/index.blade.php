@@ -34,80 +34,76 @@
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-            @if (auth()->user()->can('registrar especialidad'))
-              <li><a href="#new" data-toggle="tab">Nuevo</a></li>
-            @endif
-          </ul>
-
-          <section id="myTabContent" class="tab-content">
-            <div class="tab-pane fade active in" id="list">
-              <div class="table-responsive">
-                <table class="table table-hover text-center" id="tab-especialidad">
-                  <thead>
-                    <tr>
-                      <th class="text-center">ID</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Acciones</th>
-                    </tr>
-                  </thead>
-                </table>
-              </div>
-            </div>
-
-            <div class="tab-pane fade" id="new">
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="registro-especialidad">
-                      @csrf
-                      <div class="form-group label-floating">
-                        <label class="control-label">Nombre de la especialidad</label>
-                        <input class="form-control" type="text" id="especialidad" name="especialidad" required
-                          maxlength="30">
-                      </div>
-                      <p class="text-center">
-                        <button type="submit" class="btn btn-custom" style="color: white;">
-                          <i class="zmdi zmdi-floppy"></i> Guardar
-                        </button>
-                      </p>
-                    </form>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <div class="table-responsive">
+            <table class="table table-hover text-center" id="tab-especialidad">
+              <thead>
+                <button id="btnNuevaEspecialidad" class="btn btn-custom" style="color: white;">
+                  <i class="zmdi zmdi-plus"></i> Nueva Especialidad
+                </button>
+                <tr>
+                  <th class="text-center">ID</th>
+                  <th class="text-center">Nombre</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+            </table>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Modal editar -->
-  <div class="modal fade" id="editEspecialidadModal" tabindex="-1" role="dialog">
+  <!-- Modal para nueva especialidad -->
+  <div class="modal fade" id="modalNuevaEspecialidad" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Editar Especialidad</h3>
+          <h3 class="modal-title w-100 text-center" style="color: white;">Nueva Especialidad</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
-          <form id="editar-especialidad">
+          <form id="formNuevaEspecialidad">
             @csrf
-            @method('PUT')
-            <input type="hidden" id="edit_id" name="id">
             <div class="form-group label-floating">
               <label class="control-label">Nombre de la especialidad</label>
-              <input class="form-control" type="text" id="edit_especialidad" name="especialidad" required
+              <input class="form-control" type="text" name="especialidad" required maxlength="30">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-custom" style="color: white;">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal editar -->
+  <div class="modal fade" id="modalEditarEspecialidad" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Editar Especialidad</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="formEditarEspecialidad">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="especialidad_id">
+            <div class="form-group label-floating">
+              <label class="control-label">Nombre de la especialidad</label>
+              <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
                 maxlength="30">
             </div>
-            <p class="text-center">
-              <button type="submit" class="btn btn-custom" style="color: white;">
-                <i class="zmdi zmdi-floppy"></i> Guardar cambios
-              </button>
-            </p>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              <button type="submit" class="btn btn-custom" style="color: white;">Guardar cambios</button>
+            </div>
           </form>
         </div>
       </div>
@@ -139,8 +135,14 @@
         ]
       });
 
+      // Mostrar modal para nueva especialidad
+      $('#btnNuevaEspecialidad').click(function() {
+        $('#formNuevaEspecialidad')[0].reset();
+        $('#modalNuevaEspecialidad').modal('show');
+      });
+
       // Registrar nueva especialidad
-      $('#registro-especialidad').submit(function(e) {
+      $('#formNuevaEspecialidad').submit(function(e) {
         e.preventDefault();
 
         $.ajax({
@@ -149,12 +151,11 @@
           data: $(this).serialize(),
           success: function(response) {
             if (response.success) {
-              $('#registro-especialidad')[0].reset();
+              $('#modalNuevaEspecialidad').modal('hide');
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
               tablaEspecialidad.ajax.reload();
-              $('.nav-tabs a[href="#list"]').tab('show');
             }
           },
           error: function(xhr) {
@@ -168,16 +169,16 @@
       // Función para editar especialidad
       window.editEspecialidad = function(id) {
         $.get('/especialidad/' + id + '/edit', function(data) {
-          $('#edit_id').val(data.id);
-          $('#edit_especialidad').val(data.especialidad);
-          $('#editEspecialidadModal').modal('show');
+          $('#especialidad_id').val(data.id);
+          $('#especialidad_nombre').val(data.especialidad);
+          $('#modalEditarEspecialidad').modal('show');
         });
       }
 
       // Actualizar especialidad
-      $('#editar-especialidad').submit(function(e) {
+      $('#formEditarEspecialidad').submit(function(e) {
         e.preventDefault();
-        var id = $('#edit_id').val();
+        var id = $('#especialidad_id').val();
 
         $.ajax({
           url: '/especialidad/' + id,
@@ -185,7 +186,7 @@
           data: $(this).serialize() + '&_method=PUT',
           success: function(response) {
             if (response.success) {
-              $('#editEspecialidadModal').modal('hide');
+              $('#modalEditarEspecialidad').modal('hide');
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });

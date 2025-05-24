@@ -21,8 +21,6 @@ class EspecialidadController extends Controller
             $acciones .= '<a href="javascript:void(0)" onclick="editEspecialidad(' . $especialidad->id . ')" class="btn btn-warning btn-sm"><i class="zmdi zmdi-edit"></i></a>';
           }
 
-          // Nota: No incluimos botón de eliminar según tu requerimiento
-
           return $acciones;
         })
         ->rawColumns(['action'])
@@ -48,7 +46,7 @@ class EspecialidadController extends Controller
   public function edit($id)
   {
     $especialidad = Especialidad::findOrFail($id);
-    return view('especialidad.edit', compact('especialidad'));
+    return response()->json($especialidad);
   }
 
   public function update(Request $request, $id)
@@ -60,7 +58,9 @@ class EspecialidadController extends Controller
     $especialidad = Especialidad::findOrFail($id);
     $especialidad->update($request->all());
 
-    return redirect()->route('especialidad.index')
-      ->with('success', 'Especialidad actualizada correctamente');
+    return response()->json([
+      'success' => true,
+      'message' => 'Especialidad actualizada correctamente'
+    ]);
   }
 }

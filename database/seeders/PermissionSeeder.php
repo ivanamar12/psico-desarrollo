@@ -14,6 +14,7 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'cambiar estado citas']);
     Permission::firstOrCreate(['name' => 'ver citas']);
     Permission::firstOrCreate(['name' => 'descargar citas']);
+    Permission::firstOrCreate(['name' => 'editar especialidad']);
     Permission::firstOrCreate(['name' => 'registrar especialista']);
     Permission::firstOrCreate(['name' => 'editar especialista']);
     Permission::firstOrCreate(['name' => 'eliminar especialista']);
@@ -45,7 +46,6 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'bitacora']);
     Permission::firstOrCreate(['name' => 'usuarios']);
 
-
     $admin = Role::where('name', 'ADMIN')->first();
     $secretaria = Role::where('name', 'SECRETARIA')->first();
     $especialista = Role::where('name', 'ESPECIALISTA')->first();
@@ -56,6 +56,7 @@ class PermissionSeeder extends Seeder
         'cambiar estado citas',
         'ver citas',
         'descargar citas',
+        'editar especialidad',
         'registrar especialista',
         'editar especialista',
         'eliminar especialista',
