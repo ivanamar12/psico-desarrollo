@@ -38,12 +38,12 @@
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
             @if (auth()->user()->can('usuarios'))
-              <li><a href="#list" data-toggle="tab">Lista</a></li>
+              <li><a href="#list-usuarios" data-toggle="tab">Lista</a></li>
             @endif
-            <li><a class="active" href="#new" data-toggle="tab"> Perfil</a></li>
+            <li><a class="active" href="#new-perfil" data-toggle="tab"> Perfil</a></li>
           </ul>
           <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade in" id="list">
+            <div class="tab-pane fade in" id="list-usuarios">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-historias">
                   <thead>
@@ -59,7 +59,7 @@
                 </table>
               </div>
             </div>
-            <div class="tab-pane fade active in" id="new">
+            <div class="tab-pane fade active in" id="new-perfil">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -86,7 +86,7 @@
                           value="{{ Auth::user()->roles->first()->name }}" readonly>
                       </div>
 
-                      <button type="button" id="btnEditarPerfil" class="btn btn-custom mt-3" style="color: white;">
+                      <button type="button" id="btnEditarPerfil" class="btn editar-perfil btn-custom mt-3" style="color: white;">
                         <i class="zmdi zmdi-edit "></i> Editar Perfil
                       </button>
                     </form>

@@ -40,12 +40,48 @@ document.addEventListener("DOMContentLoaded", function () {
       });
   }
 
+  const editarperfilBtn = document.querySelector('.editar-perfil');
+  if (editarperfilBtn) {
+      steps.push({
+          element: editarperfilBtn,
+          title: 'Editar Perfil',
+          intro: 'Haz clic aquí para cambiar contraseña e ingresar preguntas de seguridad.',
+      });
+  }
+
   const nuevoBtn = document.querySelector('a[href="#new"]');
   if (nuevoBtn) {
       steps.push({
           element: nuevoBtn,
-          title: 'Nuevo registro',
+          title: 'Nuevo registro de Especialista',
           intro: 'Haz clic aquí para registrar un nuevo especialista.',
+      });
+  }
+
+  const pacienteBtn = document.querySelector('a[href="#new-paciente"]');
+  if (pacienteBtn) {
+      steps.push({
+          element: pacienteBtn,
+          title: 'Nuevo registro',
+          intro: 'Haz clic aquí para registrar un nuevo paciente.',
+      });
+  }
+
+  const listusuariosBtn = document.querySelector('a[href="#list-usuarios"]');
+  if (listusuariosBtn) {
+      steps.push({
+          element: listusuariosBtn,
+          title: 'Lista de usuarios del sistema',
+          intro: 'Haz clic aquí para ver la lista de los usuarios del sistema y su estado.',
+      });
+  }
+
+  const perfilBtn = document.querySelector('a[href="#new-perfil"]');
+  if (perfilBtn) {
+      steps.push({
+          element: perfilBtn,
+          title: 'Perfil',
+          intro: 'Información del perfil',
       });
   }
 
@@ -55,6 +91,15 @@ document.addEventListener("DOMContentLoaded", function () {
           element: pruebaBtn,
           title: 'Registrar Pruebas',
           intro: 'Haz clic aquí para registrar una nueva prueba no estructurada.',
+      });
+  }
+
+  const secretariaBtn = document.querySelector('a[href="#new-secretaria"]');
+  if (secretariaBtn) {
+      steps.push({
+          element: secretariaBtn,
+          title: 'Registrar Secretaria',
+          intro: 'Haz clic aquí para registrar una nueva secretaria.',
       });
   }
 
