@@ -24,61 +24,75 @@
       </li>
       @if (auth()->user()->can('ver especialista'))
         <li>
-          <a href="{{ route('especialista.index') }}" class="btn-sideBar-SubMenu"
+          <a href="#!" class="btn-sideBar-SubMenu"
             data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="2">
-            <i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Especialistas <i class="zmdi zmdi-caret-"></i>
+            <i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Especialistas<i class="zmdi zmdi-caret-down"></i>
           </a>
+          <ul class="list-unstyled full-box">
+            <li>
+              <a href="{{ route('especialidad.index') }}"
+                data-intro="En esta sección puedes gestionar las especialidades del sistema.">
+                <i class="zmdi zmdi-assignment"></i>Registrar Especialidades
+              </a>
+            </li>
+            <li>
+              <a href="{{ route('especialista.index') }}"
+                data-intro="En esta sección puedes gestionar los especialistas del sistema.">
+                <i class="zmdi zmdi-accounts zmdi-hc-fw"></i>Registrar Especialistas
+              </a>
+            </li>
+          </ul>
         </li>
       @endif
       @if (auth()->user()->can('ver secretaria'))
         <li>
           <a href="{{ route('secretaria.index') }}" class="btn-sideBar-SubMenu"
             data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="3">
-            <i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Secretarias <i class="zmdi zmdi-caret-"></i>
+            <i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Secretarias<i class="zmdi zmdi-caret-"></i>
           </a>
         </li>
       @endif
       <li>
         <a href="{{ route('representantes.index') }}" class="btn-sideBar-SubMenu"
           data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="4">
-          <i class="zmdi zmdi-male-female zmdi-hc-fw"></i> Representantes <i class="zmdi zmdi-caret-"></i>
+          <i class="zmdi zmdi-male-female zmdi-hc-fw"></i>Representantes<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
       <li>
         <a href="{{ route('paciente.index') }}" class="btn-sideBar-SubMenu"
           data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="5">
-          <i class="zmdi zmdi-face zmdi-hc-fw"></i> Pacientes <i class="zmdi zmdi-caret-"></i>
+          <i class="zmdi zmdi-face zmdi-hc-fw"></i>Pacientes<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
       <li>
         <a href="{{ route('citas.index') }}" class="btn-sideBar-SubMenu"
           data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="6">
-          <i class="zmdi zmdi-calendar zmdi-hc-fw"></i> Citas <i class="zmdi zmdi-caret-"></i>
+          <i class="zmdi zmdi-calendar zmdi-hc-fw"></i>Citas<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
       <li>
         <a href="{{ route('historias.index') }}" class="btn-sideBar-SubMenu"
           data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="7">
-          <i class="zmdi zmdi-file zmdi-hc-fw"></i> Historias Clinicas <i class="zmdi zmdi-caret-"></i>
+          <i class="zmdi zmdi-file zmdi-hc-fw"></i>Historias Clinicas<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
       @if (auth()->user()->can('pruebas'))
         <li>
           <a href="#!" class="btn-sideBar-SubMenu"
             data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="8">
-            <i class="zmdi zmdi-book zmdi-hc-fw"></i> Pruebas <i class="zmdi zmdi-caret-"></i>
+            <i class="zmdi zmdi-book zmdi-hc-fw"></i>Pruebas<i class="zmdi zmdi-caret-down"></i>
           </a>
           <ul class="list-unstyled full-box">
             <li>
               <a href="{{ route('pruebas.index') }}"
-                data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="9"><i
-                  class="zmdi zmdi-assignment"></i> Registrar Pruebas</a>
+                data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="9">
+                <i class="zmdi zmdi-assignment"></i>Registrar Pruebas
+              </a>
             </li>
             <li>
               <a href="{{ route('aplicar_prueba.index') }}"
                 data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="10"><i
-                  class="zmdi zmdi-assignment zmdi-hc-fw"></i> Aplicar
-                Pruebas</a>
+                  class="zmdi zmdi-assignment zmdi-hc-fw"></i>Aplicar Pruebas</a>
             </li>
           </ul>
         </li>
