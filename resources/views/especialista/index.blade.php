@@ -41,15 +41,10 @@
             @endif
           </ul>
           <section id="myTabContent" class="tab-content">
-
             <div class="tab-pane fade active in" id="list">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-especialista">
                   <thead>
-                    <button class="btn btn-especialidad btn-custom" style="color: white;"
-                      onclick="window.location.href='{{ route('especialidad.index') }}'">
-                      Especialidades
-                    </button>
                     <tr>
                       <th class="text-center">#</th>
                       <th class="text-center">Nombre</th>
