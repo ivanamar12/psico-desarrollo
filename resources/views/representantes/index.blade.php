@@ -47,9 +47,9 @@
                   <thead>
                     <tr>
                       <th class="text-center">#</th>
+                      <th class="text-center">CI</th>
                       <th class="text-center">Nombre</th>
                       <th class="text-center">Apellido</th>
-                      <th class="text-center">CI</th>
                       <th class="text-center">Correo</th>
                       <th class="text-center">Telefono</th>
                       <th class="text-center">Acciones</th>
@@ -62,77 +62,100 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="registro-representante">@csrf
+                  <form id="registro-representante">@csrf
                       <div id="paso1">
                         <h3>Datos Personales</h3>
-                        <div class="fila-formulario">
+                        <div class="fila-formulario row">
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre</label>
-                            <input class="form-control" id="nombre" name="nombre" type="text">
+                            <label class="control-label">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
+                            <input class="form-control" id="ci" name="ci" type="text" required oninput="validateInput(this)" maxlength="8">
+                            <small class="leyenda-input">Ingrese el número de cédula del representante.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Apellido</label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required>
+                            <label class="control-label">Nombre <span class="text-danger">*</span></label>
+                            <input class="form-control" id="nombre" name="nombre" type="text" required maxlength="50" oninput="validarTexto(this)">
+                            <small class="leyenda-input">Nombre completo del representante.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">CI</label>
-                            <input class="form-control" id="ci" name="ci" type="number" required
-                              max="34000000" oninput="validateInput(this)">
+                            <label class="control-label">Apellido <span class="text-danger">*</span></label>
+                            <input class="form-control" id="apellido" name="apellido" type="text" required maxlength="50" oninput="validarTexto(this)">
+                            <small class="leyenda-input">Apellido completo del representante.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Teléfono</label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
+                            <small class="leyenda-input">Número telefónico de contacto.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Correo electrónico</label>
                             <input class="form-control" type="email" id="email" name="email" required>
+                            <small class="leyenda-input">Correo electrónico del representante.</small>
                           </div>
+
                           <div class="form-group col-md-6">
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
-                              name="genero_id">
+                            <label class="control-label">Género <span class="text-danger">*</span></label>
+                            <select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
                               <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
+                            <small class="leyenda-input">Seleccione el género del representante.</small>
                           </div>
+
                         </div>
                         <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </div>
+
                       <div id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
-                        <div class="fila-formulario">
+                        <div class="fila-formulario row">
+
                           <div class="form-group label-floating col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="estado_id" name="estado_id">
+                            <label class="control-label">Estado <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
+                            <small class="leyenda-input">Seleccione el estado donde reside.</small>
                           </div>
+
                           <div class="form-group col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="municipio_id" name="municipio_id">
+                            <label class="control-label">Municipio <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
+                            <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                           </div>
+
                           <div class="form-group col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="parroquia_id" name="parroquia_id">
+                            <label class="control-label">Parroquia <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
+                            <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Sector</label>
+                            <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required>
+                            <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
+
                         </div>
                         <p class="centro-texto">
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy"></i>Registrar</button>
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i> Registrar
+                          </button>
                         </p>
                       </div>
                     </form>
@@ -303,13 +326,13 @@
             data: 'id'
           },
           {
+            data: 'ci'
+          },
+          {
             data: 'nombre'
           },
           {
             data: 'apellido'
-          },
-          {
-            data: 'ci'
           },
           {
             data: 'email'
@@ -391,137 +414,9 @@
     });
   </script>
   <script>
-    document.getElementById('telefono').addEventListener('input', function() {
-      const telefonoInput = this.value;
-      const validPrefixes = ['0412', '0424', '0414', '0416', '0426'];
-      if (telefonoInput.length > 11) {
-        this.value = telefonoInput.slice(0, 11);
-      }
-      const isValidPrefix = validPrefixes.some(prefix => telefonoInput.startsWith(prefix));
-      if (telefonoInput.length === 11 && !isValidPrefix) {
-        toastr.warning('El número debe comenzar con 0412, 0424, 0414, 0416 o 0426.', 'Advertencia', {
-          timeOut: 5000
-        });
-        this.value = '';
-      }
-    });
-  </script>
-  <script>
-    function validateInput(input) {
-      const value = input.value.toString();
-      if (parseInt(value) > 34000000 || value.length > 8) {
-        toastr.warning(
-          'El número de cédula es incorrecto. Debe ser un número de hasta 8 dígitos y no mayor a 34,000,000.',
-          'Advertencia', {
-            timeOut: 5000
-          });
-        input.value = '';
-      }
-    }
-  </script>
-  <script>
-    $(document).ready(function() {
       const estados = @json($estados);
       const municipios = @json($municipios);
       const parroquias = @json($parroquias);
-
-      $('#estado_id').select2({
-        placeholder: "Seleccione su estado",
-        allowClear: true,
-        minimumInputLength: 1,
-        ajax: {
-          transport: function(params, success, failure) {
-            const searchTerm = params.data.term.toLowerCase().trim();
-            const filteredEstados = estados.filter(estado =>
-              estado.estado.toLowerCase().includes(searchTerm));
-            const results = filteredEstados.map(estado => ({
-              id: estado.id,
-              text: estado.estado
-            }));
-            success({
-              results: results
-            });
-          }
-        }
-      });
-      $('#municipio_id').select2({
-        placeholder: "Seleccione su municipio",
-        allowClear: true
-      });
-      $('#parroquia_id').select2({
-        placeholder: "Seleccione su parroquia",
-        allowClear: true
-      });
-      const showMunicipios = (filteredMunicipios) => {
-        $('#municipio_id').empty().append('<option selected disabled>Seleccione su municipio</option>');
-        filteredMunicipios.forEach(item => {
-          const option = new Option(item.municipio, item.id, false, false);
-          $('#municipio_id').append(option);
-        });
-        $('#municipio_id').trigger('change');
-      };
-      const filterMunicipios = (id) => {
-        const filteredMunicipios = municipios.filter(item => item.estado_id == id);
-        showMunicipios(filteredMunicipios);
-      };
-      const showParroquias = (filteredParroquias) => {
-        $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-        filteredParroquias.forEach(item => {
-          const option = new Option(item.parroquia, item.id, false, false);
-          $('#parroquia_id').append(option);
-        });
-        $('#parroquia_id').trigger('change');
-      };
-      const filterParroquias = (id) => {
-        const filteredParroquias = parroquias.filter(item => item.municipio_id == id);
-        showParroquias(filteredParroquias);
-      };
-      $('#estado_id').on('change', function(e) {
-        const estadoId = $(this).val();
-        filterMunicipios(estadoId);
-        $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-      });
-      $('#municipio_id').on('change', function(e) {
-        const municipioId = $(this).val();
-        filterParroquias(municipioId);
-      });
-    });
-  </script>
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    var id;
-    $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      $.ajax({
-        url: "/representantes/" + id,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-            timeOut: 5000
-          });
-          location.reload();
-        },
-        error: function(xhr, status, error) {
-          console.error('Error al eliminar el registro:', error);
-          toastr.error('No se pudo eliminar el registro', 'Error', {
-            timeOut: 5000
-          });
-        }
-      });
-    });
   </script>
   <script>
     function editRepresentante(id) {

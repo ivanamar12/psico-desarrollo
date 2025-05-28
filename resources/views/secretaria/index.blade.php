@@ -68,84 +68,121 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="registro-secretaria">@csrf
+                    <form id="registro-secretaria">
+                      @csrf
                       <div id="paso1">
                         <h3>Datos Personales</h3>
-                        <div class="fila-formulario">
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre</label>
-                            <input class="form-control" id="nombre" name="nombre" type="text">
-                          </div>
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Apellido</label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required>
-                          </div>
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">CI</label>
-                            <input class="form-control" id="ci" name="ci" type="number" required
-                              max="34000000" oninput="validateInput(this)">
-                          </div>
-                          <div class="form-group  col-md-6">
-                            <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
-                          </div>
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Grado</label>
-                            <input class="form-control" id="grado" name="grado" type="text" required>
-                          </div>
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Teléfono</label>
-                            <input class="form-control" type="tel" id="telefono" name="telefono" required>
-                          </div>
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Correo electrónico</label>
-                            <input class="form-control" type="email" id="email" name="email" required>
-                          </div>
+                        <div class="row">
+                          <!-- Cédula -->
                           <div class="form-group col-md-6">
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
-                              name="genero_id">
-                              <option selected disabled>Seleccione su género</option>
+                            <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="ci" name="ci" required maxlength="10" oninput="validateInput(this)">
+                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos.</small>
+                          </div>
+
+                          <!-- Nombre -->
+                          <div class="form-group col-md-6">
+                            <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="50" oninput="validarTexto(this)">
+                            <small class="form-text text-muted">Ej: María</small>
+                          </div>
+
+                          <!-- Apellido -->
+                          <div class="form-group col-md-6">
+                            <label for="apellido">Apellido <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required maxlength="50" oninput="validarTexto(this)">
+                            <small class="form-text text-muted">Ej: González</small>
+                          </div>
+
+                          <!-- Fecha Nacimiento -->
+                          <div class="form-group col-md-6">
+                            <label for="fecha_nac">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="fecha_nac" name="fecha_nac" required>
+                            <small class="form-text text-muted">Seleccione su fecha de nacimiento.</small>
+                          </div>
+
+                          <!-- Grado -->
+                          <div class="form-group col-md-6">
+                            <label for="grado">Grado <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="grado" name="grado" required>
+                            <small class="form-text text-muted">Ej: TSU, Licenciada, etc.</small>
+                          </div>
+
+                          <!-- Teléfono -->
+                          <div class="form-group col-md-6">
+                            <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                            <small class="form-text text-muted">Ej: 04141234567</small>
+                          </div>
+
+                          <!-- Correo -->
+                          <div class="form-group col-md-6">
+                            <label for="email">Correo electrónico <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
+                          </div>
+
+                          <!-- Género -->
+                          <div class="form-group col-md-6">
+                            <label for="genero_id">Género <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="genero_id" name="genero_id" required style="width: 100%;">
+                              <option disabled selected>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
+                            <small class="form-text text-muted">Seleccione una opción de la lista.</small>
                           </div>
                         </div>
-                        <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+
+                        <p class="centro-texto mt-3">
+                          <button type="button" id="siguiente1" class="btn btn-regresar text-white">Siguiente</button>
                         </p>
                       </div>
+
                       <div id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
-                        <div class="fila-formulario">
+                        <div class="fila-formulario row">
+
                           <div class="form-group label-floating col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="estado_id" name="estado_id">
+                            <label class="control-label">Estado <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
+                            <small class="leyenda-input">Seleccione el estado donde reside.</small>
                           </div>
+
                           <div class="form-group col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="municipio_id" name="municipio_id">
+                            <label class="control-label">Municipio <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
+                            <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                           </div>
+
                           <div class="form-group col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="parroquia_id" name="parroquia_id">
+                            <label class="control-label">Parroquia <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
+                            <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Sector</label>
+                            <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required>
+                            <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
+
                         </div>
+
                         <p class="centro-texto">
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy"></i>Registrar</button>
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i> Registrar
+                          </button>
                         </p>
                       </div>
                     </form>
@@ -418,126 +455,9 @@
       });
     </script>
     <script>
-      document.getElementById('telefono').addEventListener('input', function() {
-        const telefonoInput = this.value;
-        const validPrefixes = ['0412', '0424', '0414', '0416', '0426'];
-
-        if (telefonoInput.length > 11) {
-          this.value = telefonoInput.slice(0, 11);
-        }
-
-        const isValidPrefix = validPrefixes.some(prefix => telefonoInput.startsWith(prefix));
-
-        if (telefonoInput.length === 11 && !isValidPrefix) {
-          toastr.warning('El número debe comenzar con 0412, 0424, 0414, 0416 o 0426.', 'Advertencia', {
-            timeOut: 5000
-          });
-          this.value = '';
-        }
-      });
-    </script>
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const fechaNacInput = document.getElementById('fecha_nac');
-
-        const today = new Date();
-
-        const yearEighteen = today.getFullYear() - 18;
-
-        const minDate = `${yearEighteen}-01-01`;
-        fechaNacInput.setAttribute('min', '1900-01-01');
-        fechaNacInput.setAttribute('max', `${yearEighteen}-12-31`);
-      });
-    </script>
-    <script>
-      function validateInput(input) {
-        const value = input.value.toString();
-
-        if (parseInt(value) > 34000000 || value.length > 8) {
-          toastr.warning(
-            'El número de cédula es incorrecto. Debe ser un número de hasta 8 dígitos y no mayor a 34,000,000.',
-            'Advertencia', {
-              timeOut: 5000
-            });
-          input.value = '';
-        }
-      }
-    </script>
-    <script>
-      $(document).ready(function() {
         const estados = @json($estados);
         const municipios = @json($municipios);
         const parroquias = @json($parroquias);
-
-        $('#estado_id').select2({
-          placeholder: "Seleccione su estado",
-          allowClear: true,
-          minimumInputLength: 1,
-          ajax: {
-            transport: function(params, success, failure) {
-              const searchTerm = params.data.term.toLowerCase().trim();
-              const filteredEstados = estados.filter(estado =>
-                estado.estado.toLowerCase().includes(searchTerm));
-              const results = filteredEstados.map(estado => ({
-                id: estado.id,
-                text: estado.estado
-              }));
-              success({
-                results: results
-              });
-            }
-          }
-        });
-
-        $('#municipio_id').select2({
-          placeholder: "Seleccione su municipio",
-          allowClear: true
-        });
-
-        $('#parroquia_id').select2({
-          placeholder: "Seleccione su parroquia",
-          allowClear: true
-        });
-
-        const showMunicipios = (filteredMunicipios) => {
-          $('#municipio_id').empty().append('<option selected disabled>Seleccione su municipio</option>');
-          filteredMunicipios.forEach(item => {
-            const option = new Option(item.municipio, item.id, false, false);
-            $('#municipio_id').append(option);
-          });
-          $('#municipio_id').trigger('change');
-        };
-
-        const filterMunicipios = (id) => {
-          const filteredMunicipios = municipios.filter(item => item.estado_id == id);
-          showMunicipios(filteredMunicipios);
-        };
-
-        const showParroquias = (filteredParroquias) => {
-          $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-          filteredParroquias.forEach(item => {
-            const option = new Option(item.parroquia, item.id, false, false);
-            $('#parroquia_id').append(option);
-          });
-          $('#parroquia_id').trigger('change');
-        };
-
-        const filterParroquias = (id) => {
-          const filteredParroquias = parroquias.filter(item => item.municipio_id == id);
-          showParroquias(filteredParroquias);
-        };
-
-        $('#estado_id').on('change', function(e) {
-          const estadoId = $(this).val();
-          filterMunicipios(estadoId);
-          $('#parroquia_id').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-        });
-
-        $('#municipio_id').on('change', function(e) {
-          const municipioId = $(this).val();
-          filterParroquias(municipioId);
-        });
-      });
     </script>
     <script>
       function editsecretaria(id) {

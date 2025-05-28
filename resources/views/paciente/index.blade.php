@@ -59,198 +59,247 @@
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-paciente">@csrf
+                    <!-- paso 1 -->
                       <div id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario">
+
+                          <!-- Representante -->
                           <div class="form-group label-floating col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="representante_id" name="representante_id">
+                            <label class="control-label">Representante <span style="color: red;">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="representante_id" name="representante_id">
                               <option selected disabled>Seleccione el representante</option>
                             </select>
+                            <small class="form-text text-muted">Busque al representante por su cedula.</small>
                           </div>
+
+                          <!-- Nombre -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre</label>
-                            <input class="form-control" id="nombre" name="nombre" type="text">
+                            <label class="control-label">Nombre <span style="color: red;">*</span></label>
+                            <input class="form-control" id="nombre" name="nombre" type="text" required oninput="validarTexto(this)">
+                            <small class="form-text text-muted">Ingrese el nombre Ej: Carlos.</small>
                           </div>
+
+                          <!-- Apellido -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Apellido</label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required>
+                            <label class="control-label">Apellido <span style="color: red;">*</span></label>
+                            <input class="form-control" id="apellido" name="apellido" type="text" required oninput="validarTexto(this)">
+                            <small class="form-text text-muted">Ingrese el apellido Ej: Garcia.</small>
                           </div>
-                          <div class="form-group  col-md-6">
-                            <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
-                          </div>
+
+                          <!-- Fecha de nacimiento -->
                           <div class="form-group col-md-6">
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
-                              name="genero_id">
+                            <label class="control-label">Fecha de Nacimiento <span style="color: red;">*</span></label>
+                            <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
+                            <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio, mínimo 3 meses.</small>
+                          </div>
+
+                          <!-- Género -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Género <span style="color: red;">*</span></label>
+                            <select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
                               <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
+                            <small class="form-text text-muted">Seleccione su genero.</small>
                           </div>
+
                         </div>
+
                         <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </div>
-                      <div id="paso2">
+                    <!-- paso 2 -->
+                    <div id="paso2">
                         <h3>Datos Familiares</h3>
                         <div id="miembrosContainer">
                           <div class="fila-formulario" id="formulario-familiar-0">
+
                             <div class="form-group label-floating col-md-6">
-                              <label class="control-label">Nombre</label>
-                              <input class="form-control" name="familiares[0][nombre]" type="text" required>
+                              <label class="control-label">Nombre <span style="color: red;">*</span></label>
+                              <input class="form-control" name="familiares[0][nombre]" type="text" required maxlength="50" oninput="validarTexto(this)">
+                              <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <label class="control-label">Apellido</label>
-                              <input class="form-control" name="familiares[0][apellido]" type="text" required>
+                              <label class="control-label">Apellido <span style="color: red;">*</span></label>
+                              <input class="form-control" name="familiares[0][apellido]" type="text" required maxlength="50" oninput="validarTexto(this)">
+                              <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
                             </div>
+
                             <div class="form-group col-md-6">
+                              <label class="control-label">Fecha de Nacimiento <span style="color: red;">*</span></label>
                               <input class="form-control" type="date" name="familiares[0][fecha_nac]" required>
+                              <small class="form-text text-muted">Ingrese la fecha de nacimiento.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <label class="control-label">Parentesco</label>
-                              <input class="form-control" name="familiares[0][parentesco]" type="text" required>
+                              <label class="control-label">Parentesco <span style="color: red;">*</span></label>
+                              <input class="form-control" name="familiares[0][parentesco]" type="text" required maxlength="50" oninput="validarTexto(this)">
+                              <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <label class="control-label">Género</label>
-                              <select class="form-control select2" required style="width: 100%;"
-                                name="familiares[0][genero_id]">
+                              <label class="control-label">Género <span style="color: red;">*</span></label>
+                              <select class="form-control select2" required style="width: 100%;" name="familiares[0][genero_id]">
                                 <option selected disabled>Seleccione su género</option>
                                 @foreach ($generos as $genero)
                                   <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                                 @endforeach
                               </select>
+                              <small class="form-text text-muted">Seleccione el género del familiar.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <h5>¿Tiene alguna discapacidad?</h5>
+                              <h5>¿Tiene alguna discapacidad? <span style="color: red;">*</span></h5>
                               <div>
-                                <label><input type="radio" name="familiares[0][discapacidad]" value="si" required
-                                    onclick="toggleTipoDiscapacidad(0)"> Sí</label>
-                                <label><input type="radio" name="familiares[0][discapacidad]" value="no"
-                                    onclick="toggleTipoDiscapacidad(0)"> No</label>
+                                <label><input type="radio" name="familiares[0][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(0)"> Sí</label>
+                                <label><input type="radio" name="familiares[0][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(0)"> No</label>
                               </div>
+                              <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <input class="form-control" id="tipo-discapacidad-0"
-                                name="familiares[0][tipo_discapacidad]" type="text" style="display: none;"
-                                placeholder="Describa el tipo de discapacidad">
+                              <input class="form-control" id="tipo-discapacidad-0" name="familiares[0][tipo_discapacidad]" type="text" style="display: none;" placeholder="Describa el tipo de discapacidad">
+                              <small class="form-text text-muted" style="display: none;" id="ayuda-discapacidad-0">Describa la discapacidad si aplica.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <h5>¿Tiene alguna enfermedad crónica?</h5>
+                              <h5>¿Tiene alguna enfermedad crónica? <span style="color: red;">*</span></h5>
                               <div>
-                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="si"
-                                    required onclick="toggleTipoEnfermedad(0)"> Sí</label>
-                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="no"
-                                    onclick="toggleTipoEnfermedad(0)"> No</label>
+                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(0)"> Sí</label>
+                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(0)"> No</label>
                               </div>
+                              <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
                             </div>
+
                             <div class="form-group label-floating col-md-6">
-                              <input class="form-control" id="tipo-enfermedad-0" name="familiares[0][tipo_enfermedad]"
-                                type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
+                              <input class="form-control" id="tipo-enfermedad-0" name="familiares[0][tipo_enfermedad]" type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
+                              <small class="form-text text-muted" style="display: none;" id="ayuda-enfermedad-0">Describa la enfermedad si aplica.</small>
                             </div>
-                            <button type="button" class="eliminar btn btn-danger"
-                              onclick="eliminarMiembro(this)">Eliminar</button>
+
+                            <button type="button" class="eliminar btn btn-danger" onclick="eliminarMiembro(this)">Eliminar</button>
+
                           </div>
                         </div>
+
                         <p class="centro-texto">
-                          <button type="button" id="agregarFamiliar" class="btn btn-custom"
-                            style="color: white;">Agregar Familiar</button>
-                          <button type="button" id="siguiente2" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="agregarFamiliar" class="btn btn-custom" style="color: white;">Agregar Familiar</button>
+                          <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </div>
-                      <div id= "paso3">
+                    <!-- paso 3 -->
+                    <div id="paso3">
                         <h3>Datos Socioeconómicos</h3>
                         <div class="fila-formulario">
+
+                          <!-- Tipo de Vivienda -->
                           <div class="form-group label-floating col-md-6">
-                            <select name="tipo_vivienda" class="form-control">
-                              <option value="" disabled selected>Tipo de Vivienda</option>
-                              <option value="casa_unifamiliar" title="Vivienda independiente para una sola familia.">
-                                Casa Unifamiliar</option>
-                              <option value="apartamento"
-                                title="Unidad de vivienda en un edificio, puede variar en tamaño.">Apartamento</option>
-                              <option value="vivienda_social"
-                                title="Proyectos habitacionales para familias de bajos recursos.">Vivienda Social
-                              </option>
-                              <option value="vivienda_precaria"
-                                title="Construcciones informales, a menudo sin servicios básicos.">Vivienda Precaria
-                              </option>
+                            <label class="control-label">Tipo de Vivienda <span style="color:red">*</span></label>
+                            <select name="tipo_vivienda" class="form-control" required>
+                              <option value="" disabled selected>Seleccione un tipo</option>
+                              <option value="casa_unifamiliar">Casa Unifamiliar</option>
+                              <option value="apartamento">Apartamento</option>
+                              <option value="vivienda_social">Vivienda Social</option>
+                              <option value="vivienda_precaria">Vivienda Precaria</option>
                             </select>
+                            <small class="form-text text-muted">Seleccione el tipo de vivienda que habita la familia.</small>
                           </div>
+
+                          <!-- Cantidad de Habitaciones -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Cantidad de Habitaciones</label>
-                            <input class="form-control" type="number" id="cantidad_habitaciones"
-                              name="cantidad_habitaciones" required min="0" oninput="validarNumero(this)">
+                            <label class="control-label">Cantidad de Habitaciones <span style="color:red">*</span></label>
+                            <input class="form-control" type="number" id="cantidad_habitaciones" name="cantidad_habitaciones" required min="0" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                            <small class="form-text text-muted">Ingrese solo números. Número total de habitaciones en la vivienda.</small>
                           </div>
+
+                          <!-- Cantidad de Personas -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Cantidad de Personas</label>
-                            <input class="form-control" type="number" id="cantidad_personas" name="cantidad_personas"
-                              required min="0" oninput="actualizarMiembros()">
+                            <label class="control-label">Cantidad de Personas en la Vivienda <span style="color:red">*</span></label>
+                            <input class="form-control" type="number" id="cantidad_personas" name="cantidad_personas" required min="0" oninput="this.value = this.value.replace(/[^0-9]/g, ''); actualizarMiembros();">
+                            <small class="form-text text-muted">Ingrese solo números. Total de personas que viven en la vivienda.</small>
                           </div>
+
+                          <!-- Servicios -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Servicio de Agua Potable?</h5>
+                            <label class="control-label">¿Servicio de Agua Potable? <span style="color:red">*</span></label>
                             <div>
-                              <label><input type="radio" name="servecio_agua_potable" value="si" required>
-                                Sí</label>
+                              <label><input type="radio" name="servecio_agua_potable" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_agua_potable" value="no"> No</label>
                             </div>
+                            <small class="form-text text-muted">Indique si la vivienda cuenta con acceso a agua potable.</small>
                           </div>
-                          <div class="form-group col-md-6">
-                            <h5>¿Servicio de Gas?</h5>
+
+                          <div class="form-group label-floating col-md-6">
+                            <label class="control-label">¿Servicio de Gas? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_gas" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_gas" value="no"> No</label>
                             </div>
+                            <small class="form-text text-muted">Seleccione si dispone de servicio de gas en la vivienda.</small>
                           </div>
-                          <div class="form-group col-md-6">
-                            <h5>¿Servicio de Electricidad?</h5>
+
+                          <div class="form-group label-floating col-md-6">
+                            <label class="control-label">¿Servicio de Electricidad? <span style="color:red">*</span></label>
                             <div>
-                              <label><input type="radio" name="servecio_electricidad" value="si" required>
-                                Sí</label>
+                              <label><input type="radio" name="servecio_electricidad" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_electricidad" value="no"> No</label>
                             </div>
+                            <small class="form-text text-muted">Seleccione si cuenta con servicio eléctrico.</small>
                           </div>
-                          <div class="form-group col-md-6">
-                            <h5>¿Servicio de Drenaje?</h5>
+
+                          <div class="form-group label-floating col-md-6">
+                            <label class="control-label">¿Servicio de Drenaje? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_drenaje" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_drenaje" value="no"> No</label>
                             </div>
+                            <small class="form-text text-muted">Seleccione si tiene sistema de drenaje sanitario.</small>
                           </div>
-                          <div class="form-group col-md-6">
-                            <h5>¿Acceso a Servicios Públicos?</h5>
+
+                          <div class="form-group label-floating col-md-6">
+                            <label class="control-label">¿Acceso a Servicios Públicos? <span style="color:red">*</span></label>
                             <div>
-                              <label><input type="radio" name="acceso_servcios_publicos" value="si" required>
-                                Sí</label>
+                              <label><input type="radio" name="acceso_servcios_publicos" value="si" required> Sí</label>
                               <label><input type="radio" name="acceso_servcios_publicos" value="no"> No</label>
                             </div>
+                            <small class="form-text text-muted">Indique si la vivienda está conectada a servicios básicos.</small>
                           </div>
-                          <div class="form-group col-md-6">
-                            <h5>¿Servicio de Internet?</h5>
+
+                          <!-- Internet -->
+                          <div class="form-group label-floating col-md-6">
+                            <label class="control-label">¿Tiene servicio de Internet en casa? <span style="color:red">*</span></label>
                             <div>
-                              <label><input type="radio" name="disponibilidad_internet" value="si" required
-                                  onclick="toggleInterInput()"> Sí</label>
-                              <label><input type="radio" name="disponibilidad_internet" value="no"
-                                  onclick="toggleInterInput()"> No</label>
+                              <label><input type="radio" name="disponibilidad_internet" value="si" required onclick="toggleInterInput()"> Sí</label>
+                              <label><input type="radio" name="disponibilidad_internet" value="no" onclick="toggleInterInput()"> No</label>
                             </div>
+                            <small class="form-text text-muted">Seleccione si tiene acceso a Internet en el hogar.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <input class="form-control" id="tipo_conexion_internet" name="tipo_conexion_internet"
-                              type="text" placeholder="Especificar el tipo de conexion de internet">
+                            <label class="control-label">Tipo de conexión de Internet</label>
+                            <input class="form-control" id="tipo_conexion_internet" name="tipo_conexion_internet" type="text" placeholder="Especifique si aplica" style="display: none;">
+                            <small class="form-text text-muted">Ejemplo: Fibra óptica, datos móviles, ADSL, etc.</small>
                           </div>
+
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Fuente de Ingreso Familiar</label>
-                            <input class="form-control" id="fuente_ingreso_familiar" name="fuente_ingreso_familiar"
-                              type="text" required>
+                            <label class="control-label">Fuente de Ingreso Familiar <span style="color:red">*</span></label>
+                            <input class="form-control" id="fuente_ingreso_familiar" name="fuente_ingreso_familiar" type="text" required>
+                            <small class="form-text text-muted">Indique la principal fuente de ingreso económico del hogar.</small>
                           </div>
+
                         </div>
+
                         <p class="centro-texto">
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy" style="color: white;"></i>Registrar</button>
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy" style="color: white;"></i> Registrar
+                          </button>
                         </p>
                       </div>
                     </form>
@@ -348,13 +397,16 @@
       $("#paso3").hide();
 
       function establecerFechaMaximaFamiliares() {
-        const fechaNacFamiliarInputs = document.querySelectorAll('input[name="fecha_nac_familiar[]"]');
+        const fechaNacFamiliarInputs = document.querySelectorAll('input[type="date"][name*="[fecha_nac]"]');
         const fechaActual = new Date();
+        fechaActual.setDate(fechaActual.getDate() - 1); 
         const anio = fechaActual.getFullYear();
         const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
         const dia = String(fechaActual.getDate()).padStart(2, '0');
+        const maxFecha = `${anio}-${mes}-${dia}`;
+
         fechaNacFamiliarInputs.forEach(input => {
-          input.max = `${anio}-${mes}-${dia}`;
+          input.max = maxFecha;
         });
       }
 
@@ -369,52 +421,61 @@
 
       $("#agregarFamiliar").click(function() {
         const nuevoFormulario = `<div class="fila-formulario" id="formulario-familiar-${contador}">
-            <div class="form-group label-floating col-md-6">
-                <label class="control-label">Nombre</label>
-                <input class="form-control" name="familiares[${contador}][nombre]" type="text" required>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <label class="control-label">Apellido</label>
-                <input class="form-control" name="familiares[${contador}][apellido]" type="text" required>
-            </div>
-            <div class="form-group col-md-6">
-                <input class="form-control" type="date" name="familiares[${contador}][fecha_nac]" required>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <label class="control-label">Parentesco</label>
-                <input class="form-control" name="familiares[${contador}][parentesco]" type="text" required>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <label class="control-label">Género</label>
-                <select class="form-control select2" required style="width: 100%;" name="familiares[${contador}][genero_id]">
-                    <option selected disabled>Seleccione su género</option>
-                    @foreach ($generos as $genero)
-                        <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-                    @endforeach
-                </select>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <h5>¿Tiene alguna discapacidad?</h5>
-                <div>
-                    <label><input type="radio" name="familiares[${contador}][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(${contador})"> Sí</label>
-                    <label><input type="radio" name="familiares[${contador}][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(${contador})"> No</label>
-                </div>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <input class="form-control" id="tipo-discapacidad-${contador}" name="familiares[${contador}][tipo_discapacidad]" type="text" style="display: none;" placeholder="Describa el tipo de discapacidad">
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <h5>¿Tiene alguna enfermedad crónica?</h5>
-                <div>
-                    <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(${contador})"> Sí</label>
-                    <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(${contador})"> No</label>
-                </div>
-            </div>
-            <div class="form-group label-floating col-md-6">
-                <input class="form-control" id="tipo-enfermedad-${contador}" name="familiares[${contador}][tipo_enfermedad]" type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
-            </div>
-            <button type="button" class="eliminar btn btn-danger" onclick="eliminarMiembro(this)">Eliminar</button>
-        </div>`;
+        <div class="form-group label-floating col-md-6">
+          <label class="control-label">Nombre <span class="text-danger">*</span></label>
+          <input class="form-control" name="familiares[${contador}][nombre]" type="text" required maxlength="50" oninput="validarTexto(this)">
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <label class="control-label">Apellido <span class="text-danger">*</span></label>
+          <input class="form-control" name="familiares[${contador}][apellido]" type="text" required maxlength="50" oninput="validarTexto(this)">
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group col-md-6">
+          <label class="control-label">Fecha de nacimiento <span class="text-danger">*</span></label>
+          <input class="form-control" type="date" name="familiares[${contador}][fecha_nac]" required>
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <label class="control-label">Parentesco <span class="text-danger">*</span></label>
+          <input class="form-control" name="familiares[${contador}][parentesco]" type="text" required maxlength="50" oninput="validarTexto(this)">
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <label class="control-label">Género <span class="text-danger">*</span></label>
+          <select class="form-control select2" required style="width: 100%;" name="familiares[${contador}][genero_id]">
+            <option selected disabled>Seleccione su género</option>
+            @foreach ($generos as $genero)
+              <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+            @endforeach
+          </select>
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <h5>¿Tiene alguna discapacidad? <span class="text-danger">*</span></h5>
+          <div>
+            <label><input type="radio" name="familiares[${contador}][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(${contador})"> Sí</label>
+            <label><input type="radio" name="familiares[${contador}][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(${contador})"> No</label>
+          </div>
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <input class="form-control" id="tipo-discapacidad-${contador}" name="familiares[${contador}][tipo_discapacidad]" type="text" style="display: none;" placeholder="Describa el tipo de discapacidad">
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <h5>¿Tiene alguna enfermedad crónica? <span class="text-danger">*</span></h5>
+          <div>
+            <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(${contador})"> Sí</label>
+            <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(${contador})"> No</label>
+          </div>
+          <small class="text-danger">Campo obligatorio</small>
+        </div>
+        <div class="form-group label-floating col-md-6">
+          <input class="form-control" id="tipo-enfermedad-${contador}" name="familiares[${contador}][tipo_enfermedad]" type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
+        </div>
+        <button type="button" class="eliminar btn btn-danger" onclick="eliminarMiembro(this)">Eliminar</button>
+      </div>`;
+
         $("#miembrosContainer").append(nuevoFormulario);
         contador++;
       });
@@ -496,21 +557,30 @@
     }
   </script>
   <script>
-    function establecerFechaMaxima() {
-      const fechaNacInput = document.getElementById('fecha_nac');
+    function establecerRangoFechas() {
+      const fechaNacInputs = document.querySelectorAll('input[name="fecha_nac"]');
       const fechaActual = new Date();
-      const fechaLimite = new Date(fechaActual);
 
-      fechaLimite.setMonth(fechaActual.getMonth() - 3);
+      const fechaMinima = new Date(fechaActual);
+      fechaMinima.setMonth(fechaMinima.getMonth() - 78);
 
-      const anio = fechaLimite.getFullYear();
-      const mes = String(fechaLimite.getMonth() + 1).padStart(2, '0');
-      const dia = String(fechaLimite.getDate()).padStart(2, '0');
+      const fechaMaxima = new Date(fechaActual);
+      fechaMaxima.setMonth(fechaMaxima.getMonth() - 3);
 
-      fechaNacInput.max = `${anio}-${mes}-${dia}`;
+      const formatoFecha = (fecha) => {
+        const anio = fecha.getFullYear();
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        const dia = String(fecha.getDate()).padStart(2, '0');
+        return `${anio}-${mes}-${dia}`;
+      };
+
+      fechaNacInputs.forEach(input => {
+        input.min = formatoFecha(fechaMinima);
+        input.max = formatoFecha(fechaMaxima);
+      });
     }
 
-    document.addEventListener('DOMContentLoaded', establecerFechaMaxima);
+    document.addEventListener('DOMContentLoaded', establecerRangoFechas);
   </script>
   <script>
     $(document).ready(function() {
@@ -614,4 +684,12 @@
       });
     });
   </script>
+  <script>
+  document.getElementById('cantidad_habitaciones').addEventListener('keypress', function (e) {
+    if (e.key < '0' || e.key > '9') e.preventDefault();
+  });
+  document.getElementById('cantidad_personas').addEventListener('keypress', function (e) {
+    if (e.key < '0' || e.key > '9') e.preventDefault();
+  });
+</script>
 @endsection

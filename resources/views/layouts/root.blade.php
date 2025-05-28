@@ -62,6 +62,8 @@
   <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
   <script src="{{ asset('js/main.js') }}"></script>
   <script src="{{ asset('js/intro.min.js') }}"></script>
+  <script src="{{ asset('js/validaciones.js') }}"></script>
+  <script src="{{ asset('js/direccion.js') }}"></script>
   <script>
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
 </script>
