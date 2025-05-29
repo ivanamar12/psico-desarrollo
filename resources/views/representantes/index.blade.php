@@ -51,7 +51,7 @@
                       <th class="text-center">Nombre</th>
                       <th class="text-center">Apellido</th>
                       <th class="text-center">Correo</th>
-                      <th class="text-center">Telefono</th>
+                      <th class="text-center">Teléfono</th>
                       <th class="text-center">Acciones</th>
                     </tr>
                   </thead>
@@ -62,26 +62,30 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                  <form id="registro-representante">@csrf
+                    <form id="registro-representante">@csrf
                       <div id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario row">
 
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input class="form-control" id="ci" name="ci" type="text" required oninput="validateInput(this)" maxlength="8">
+                            <label class="control-label">Cédula de Identidad (CI) <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" id="ci" name="ci" type="text" required
+                              oninput="validateInput(this)" maxlength="8">
                             <small class="leyenda-input">Ingrese el número de cédula del representante.</small>
                           </div>
 
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Nombre <span class="text-danger">*</span></label>
-                            <input class="form-control" id="nombre" name="nombre" type="text" required maxlength="50" oninput="validarTexto(this)">
+                            <input class="form-control" id="nombre" name="nombre" type="text" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="leyenda-input">Nombre completo del representante.</small>
                           </div>
 
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Apellido <span class="text-danger">*</span></label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required maxlength="50" oninput="validarTexto(this)">
+                            <input class="form-control" id="apellido" name="apellido" type="text" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="leyenda-input">Apellido completo del representante.</small>
                           </div>
 
@@ -99,7 +103,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Género <span class="text-danger">*</span></label>
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
+                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
+                              name="genero_id">
                               <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
@@ -110,7 +115,8 @@
 
                         </div>
                         <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar"
+                            style="color: white;">Siguiente</button>
                         </p>
                       </div>
 
@@ -120,7 +126,8 @@
 
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
@@ -128,7 +135,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
@@ -136,7 +144,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
                             <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
@@ -414,9 +423,9 @@
     });
   </script>
   <script>
-      const estados = @json($estados);
-      const municipios = @json($municipios);
-      const parroquias = @json($parroquias);
+    const estados = @json($estados);
+    const municipios = @json($municipios);
+    const parroquias = @json($parroquias);
   </script>
   <script>
     function editRepresentante(id) {
