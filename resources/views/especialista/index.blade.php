@@ -73,28 +73,31 @@
                           <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ci" name="ci" required oninput="validateInput(this)" maxlength="10">
+                            <input type="text" class="form-control" id="ci" name="ci" required
+                              oninput="validateInput(this)" maxlength="10">
                             <small class="form-text text-muted">Ej: V-12345678</small>
                           </div>
 
                           <!-- FVP -->
                           <div class="form-group col-md-6">
                             <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="fvp" name="fvp" required >
+                            <input type="text" class="form-control" id="fvp" name="fvp" required>
                             <small class="form-text text-muted">Número de la federación venezolana de psicólogos</small>
                           </div>
 
                           <!-- Nombre -->
                           <div class="form-group col-md-6">
                             <label for="nombre">Nombre <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="50" oninput="validarTexto(this)">
+                            <input type="text" class="form-control" id="nombre" name="nombre" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="form-text text-muted">Solo letras. Máximo 50 caracteres.</small>
                           </div>
 
                           <!-- Apellido -->
                           <div class="form-group col-md-6">
                             <label for="apellido">Apellido <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required maxlength="50" oninput="validarTexto(this)">
+                            <input type="text" class="form-control" id="apellido" name="apellido" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="form-text text-muted">Solo letras. Máximo 50 caracteres.</small>
                           </div>
 
@@ -121,7 +124,8 @@
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control" id="telefono" name="telefono" required>
-                            <small class="form-text text-muted">Debe comenzar con 0412, 0424, etc. Máximo 11 dígitos.</small>
+                            <small class="form-text text-muted">Debe comenzar con 0412, 0424, etc. Máximo 11
+                              dígitos.</small>
                           </div>
 
                           <!-- Email -->
@@ -147,7 +151,8 @@
 
                         <!-- Botón -->
                         <p class="text-center mt-3">
-                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar"
+                            style="color: white;">Siguiente</button>
                         </p>
                       </div>
                       <!-- Paso 2 -->
@@ -157,7 +162,8 @@
 
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
@@ -165,7 +171,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
@@ -173,7 +180,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
                             <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>

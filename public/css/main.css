@@ -730,14 +730,14 @@ html {
   padding: 15px;
   font-size: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 /* Título del tooltip */
 .introjs-tooltip-title {
   font-size: 18px;
   font-weight: bold;
-  color: #F1C40F; /* amarillo */
+  color: #f1c40f; /* amarillo */
 }
 
 /* Texto */
@@ -763,4 +763,39 @@ html {
 .introjs-skipbutton {
   background-color: transparent;
   color: #bdc3c7;
+}
+
+/* ===== NAVBAR FIXED ===== */
+.dashboard-Navbar {
+  position: fixed;
+  top: 0;
+  left: 270px; /* Ajustamos según el ancho del sidebar */
+  right: 0;
+  z-index: 1000; /* Aseguramos que esté por encima del contenido */
+  width: auto; /* Ancho automático basado en left/right */
+}
+
+/* Ajuste de padding para el contenido principal */
+.dashboard-contentPage {
+  padding-top: 50px !important; /* Espacio para el navbar fijo */
+}
+
+/* Ajustes para cuando el sidebar está oculto */
+.hide-sidebar + .dashboard-contentPage .dashboard-Navbar {
+  left: 0;
+}
+
+/* Ajustes para dispositivos móviles */
+@media (max-width: 767px) {
+  .dashboard-Navbar {
+    left: 0 !important;
+  }
+
+  .dashboard-contentPage {
+    padding-top: 50px !important;
+  }
+
+  .show-sidebar .dashboard-Navbar {
+    left: 270px !important;
+  }
 }
