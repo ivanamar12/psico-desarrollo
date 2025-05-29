@@ -769,15 +769,14 @@ html {
 .dashboard-Navbar {
   position: fixed;
   top: 0;
-  left: 270px; /* Ajustamos según el ancho del sidebar */
+  left: 270px;
   right: 0;
-  z-index: 1000; /* Aseguramos que esté por encima del contenido */
-  width: auto; /* Ancho automático basado en left/right */
+  z-index: 1000;
+  width: auto;
 }
 
-/* Ajuste de padding para el contenido principal */
 .dashboard-contentPage {
-  padding-top: 50px !important; /* Espacio para el navbar fijo */
+  padding-top: 50px !important;
 }
 
 /* Ajustes para cuando el sidebar está oculto */
