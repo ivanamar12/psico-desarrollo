@@ -63,37 +63,19 @@
                     <form id="registro-especialidad">
                       @csrf
 
-                      <!-- Paso 1 - Datos básicos -->
-                      <div id="paso1" class="container">
+                      <!-- Paso único -->
+                      <div id="paso1">
                         <h3>Información de la Especialidad</h3>
                         <div class="form-group label-floating">
                           <label class="control-label">Nombre de la especialidad <span
                               class="text-danger">*</span></label>
-                          <input class="form-control" type="text" name="especialidad" required maxlength="30">
+                          <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
+                            maxlength="30">
                           <small class="form-text text-muted">Máximo 30 caracteres</small>
                         </div>
 
-                        <!-- Botón Siguiente -->
+                        <!-- Botón Registrar -->
                         <p class="text-center mt-3">
-                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
-                            Siguiente
-                          </button>
-                        </p>
-                      </div>
-
-                      <!-- Paso 2 - Confirmación -->
-                      <div id="paso2" style="display: none;">
-                        <h3>Confirmación</h3>
-                        <div class="panel panel-default">
-                          <div class="panel-body">
-                            <p><strong>Nombre de la especialidad:</strong> <span id="resumen-especialidad"></span></p>
-                          </div>
-                        </div>
-
-                        <p class="text-center mt-3">
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
-                            <i class="zmdi zmdi-arrow-back"></i> Regresar
-                          </button>
                           <button type="submit" class="btn btn-custom" style="color: white;">
                             <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
@@ -127,7 +109,7 @@
             <input type="hidden" name="id" id="especialidad_id">
             <div class="form-group label-floating">
               <label class="control-label">Nombre de la especialidad</label>
-              <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
+              <input class="form-control" type="text" name="especialidad" id="especialidad_nombre_edit" required
                 maxlength="30">
             </div>
             <div class="modal-footer">
@@ -144,30 +126,6 @@
 @section('js')
   <script>
     $(document).ready(function() {
-      // Mostrar/ocultar pasos
-      $("#paso1").show();
-      $("#paso2").hide();
-
-      $("#siguiente1").click(function() {
-        const especialidad = $('input[name="especialidad"]').val();
-        if (!especialidad.trim()) {
-          toastr.error('Debe ingresar un nombre para la especialidad', 'Error', {
-            timeOut: 5000
-          });
-          return;
-        }
-
-        $("#resumen-especialidad").text(especialidad);
-
-        $("#paso1").hide();
-        $("#paso2").show();
-      });
-
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
-      });
-
       var tablaEspecialidad = $('#tab-especialidad').DataTable({
         language: {
           url: './js/datatables/es-ES.json',
@@ -201,10 +159,6 @@
             if (response.success) {
               $('#registro-especialidad')[0].reset();
 
-              // Volver al paso 1
-              $("#paso2").hide();
-              $("#paso1").show();
-
               // Mostrar mensaje
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
@@ -212,6 +166,9 @@
 
               // Recargar tabla
               tablaEspecialidad.ajax.reload();
+
+              // Cambiar a la pestaña de lista
+              $('.nav-tabs a[href="#list"]').tab('show');
             }
           },
           error: function(xhr) {
@@ -226,7 +183,7 @@
       window.editEspecialidad = function(id) {
         $.get('/especialidad/' + id + '/edit', function(data) {
           $('#especialidad_id').val(data.id);
-          $('#especialidad_nombre').val(data.especialidad);
+          $('#especialidad_nombre_edit').val(data.especialidad);
           $('#modalEditarEspecialidad').modal('show');
         });
       }
