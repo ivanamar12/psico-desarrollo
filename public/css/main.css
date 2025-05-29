@@ -798,3 +798,36 @@ html {
     left: 270px !important;
   }
 }
+
+/* Modificaciones para transición suave del sidebar */
+.dashboard-sideBar {
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+}
+
+.dashboard-sideBar-ct {
+  transition: transform 0.3s ease-in-out;
+}
+
+.dashboard-sideBar-bg {
+  transition: opacity 0.3s ease-in-out;
+}
+
+@media (max-width: 767px) {
+  .show-sidebar {
+    transition: opacity 0.3s ease-in-out;
+  }
+
+  .show-sidebar > .dashboard-sideBar-bg {
+    transition: opacity 0.3s ease-in-out;
+  }
+}
+
+@media (min-width: 768px) {
+  .dashboard-contentPage {
+    transition: padding-left 0.3s ease-in-out;
+  }
+
+  .dashboard-Navbar {
+    transition: left 0.3s ease-in-out;
+  }
+}
