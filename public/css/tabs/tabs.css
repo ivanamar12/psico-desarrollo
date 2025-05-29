@@ -2,8 +2,8 @@
 .tabs-container {
   background: #fff;
   border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  margin: 16px;
 }
 
 .tabs-list {
@@ -11,11 +11,11 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .tab-trigger {
-  padding: 12px 24px;
+  padding: 8px 24px;
+  border: 0;
   cursor: pointer;
   font-family: "RobotoCondensed";
   position: relative;

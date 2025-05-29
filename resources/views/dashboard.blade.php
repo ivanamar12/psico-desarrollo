@@ -42,7 +42,7 @@
     <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
     <!-- Sistema de pestañas -->
-    <div class="tabs-container">
+    <section class="tabs-container">
       <ul class="tabs-list">
         <li>
           <button class="tab-trigger" data-tab="resumen" data-state="active">Resumen</button>
@@ -56,10 +56,9 @@
         </li>
       </ul>
 
-      <div class="tabs-content">
+      <section class="tabs-content">
         <!-- Pestaña Resumen -->
-        <div class="tab-pane" data-tab="resumen" data-state="active">
-
+        <section class="tab-pane" data-tab="resumen" data-state="active">
           <section class="full-box text-center" style="padding: 30px 10px;">
             <article class="full-box tile">
               <div class="full-box tile-title text-center text-titles text-uppercase">
@@ -113,10 +112,10 @@
               </div>
             </article>
           </section>
-        </div>
+        </section>
 
         <!-- Pestaña Gráficos -->
-        <div class="tab-pane" data-tab="graficos">
+        <section class="tab-pane" data-tab="graficos">
           <!-- Sección de gráficos -->
           <section class="container-fluid">
             <section class="row">
@@ -149,25 +148,24 @@
               </article>
             </section>
           </section>
-        </div>
+        </section>
 
         <!-- Otra pestaña -->
-        <div class="tab-pane" data-tab="otra">
+        <section class="tab-pane" data-tab="otra">
           <div class="container-fluid">
             <div class="row">
               <div class="col-md-12">
                 <div class="panel panel-default">
                   <div class="panel-body">
                     <h4>Contenido de otra pestaña</h4>
-                    <p>Aquí puedes agregar más contenido según sea necesario.</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </section>
+      </section>
+    </section>
 
   </main>
 
