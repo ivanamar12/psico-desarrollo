@@ -95,10 +95,10 @@
     </section>
 
     <!-- Sección de gráficos -->
-    <div class="container-fluid">
-      <div class="row">
+    <section class="container-fluid">
+      <section class="row">
         <!-- Gráfico de géneros -->
-        <div class="col-md-6">
+        <article class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-heading text-titles text-center">
               <i class="zmdi zmdi-male-female"></i> &nbsp; DISTRIBUCIÓN POR GÉNEROS
@@ -109,10 +109,10 @@
               </div>
             </div>
           </div>
-        </div>
+        </article>
 
         <!-- Gráfico de edades -->
-        <div class="col-md-6">
+        <article class="col-md-6">
           <div class="panel panel-default">
             <div class="panel-heading text-titles text-center">
               <i class="zmdi zmdi-time"></i> &nbsp; DISTRIBUCIÓN POR EDADES
@@ -123,9 +123,9 @@
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+        </article>
+      </section>
+    </section>
 
   </section>
 
