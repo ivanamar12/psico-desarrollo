@@ -86,6 +86,7 @@ class EspecialistaController extends Controller
           'especialidad_id' => 'required|string|max:255',
           'telefono' => 'required|string|max:255',
           'email' => 'required|string|email|max:255|unique:especialistas,email|unique:users,email',
+          'fvp' => 'required|string|max:255',
           'genero_id' => 'required|exists:generos,id',
           'estado_id' => 'required|exists:estados,id',
           'municipio_id' => 'required|exists:municipios,id',
@@ -109,6 +110,7 @@ class EspecialistaController extends Controller
               'especialidad_id' => $validatedData['especialidad_id'],
               'telefono' => $validatedData['telefono'],
               'email' => $validatedData['email'],
+              'fvp' => $validatedData['fvp'],
               'genero_id' => $validatedData['genero_id'],
               'direccion_id' => $direccion->id,
           ]);

@@ -9,7 +9,7 @@ class Especialista extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'especialidad', 'telefono', 'email','especialidad_id','genero_id', 'direccion_id'];
+    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'especialidad', 'telefono', 'email','fvp','especialidad_id','genero_id', 'direccion_id'];
 
     public function direccion(){
 

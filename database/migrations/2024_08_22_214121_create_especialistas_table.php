@@ -21,6 +21,7 @@ class CreateEspecialistasTable extends Migration
             $table->date('fecha_nac');
             $table->string('telefono',30);
             $table->string('email',120);
+            $table->string('fvp',120);
             $table->unsignedBigInteger('especialidad_id')->nullable();
             $table->foreign('especialidad_id')->references('id')->on('especialidads')->onDelete('cascade');
            $table->unsignedBigInteger('genero_id')->nullable();

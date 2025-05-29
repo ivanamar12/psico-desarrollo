@@ -51,9 +51,9 @@
                   <thead>
                     <tr>
                       <th class="text-center">#</th>
+                      <th class="text-center">CI</th>
                       <th class="text-center">Nombre</th>
                       <th class="text-center">Apellido</th>
-                      <th class="text-center">CI</th>
                       <th class="text-center">Correo</th>
                       <th class="text-center">Telefono</th>
                       <th class="text-center">Acciones</th>
@@ -363,13 +363,13 @@
               data: 'id'
             },
             {
+              data: 'ci'
+            },
+            {
               data: 'nombre'
             },
             {
               data: 'apellido'
-            },
-            {
-              data: 'ci'
             },
             {
               data: 'email'

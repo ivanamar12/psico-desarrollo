@@ -46,6 +46,7 @@
                     <tr>
                       <th class="text-center">#</th>
                       <th class="text-center">CI</th>
+                      <th class="text-center">FVP</th>
                       <th class="text-center">Nombre</th>
                       <th class="text-center">Apellido</th>
                       <th class="text-center">Correo</th>
@@ -74,6 +75,13 @@
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="ci" name="ci" required oninput="validateInput(this)" maxlength="10">
                             <small class="form-text text-muted">Ej: V-12345678</small>
+                          </div>
+
+                          <!-- FVP -->
+                          <div class="form-group col-md-6">
+                            <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="fvp" name="fvp" required >
+                            <small class="form-text text-muted">Número de la federación venezolana de psicólogos</small>
                           </div>
 
                           <!-- Nombre -->
@@ -380,8 +388,12 @@
         columns: [{
             data: 'id'
           },
+
           {
             data: 'ci'
+          },
+          {
+            data: 'fvp'
           },
           {
             data: 'nombre'
@@ -427,6 +439,7 @@
         var especialidad_id = $('#especialidad_id').val();
         var telefono = $('#telefono').val();
         var email = $('#email').val();
+        var fvp = $('#fvp').val();
         var genero_id = $('#genero_id').val();
         var estado_id = $('#estado_id').val();
         var municipio_id = $('#municipio_id').val();
@@ -445,6 +458,7 @@
             especialidad_id: especialidad_id,
             telefono: telefono,
             email: email,
+            fvp: fvp,
             genero_id: genero_id,
             estado_id: estado_id,
             municipio_id: municipio_id,
