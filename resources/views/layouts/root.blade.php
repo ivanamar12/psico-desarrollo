@@ -30,30 +30,6 @@
   {{-- Nav Dropdown --}}
   <x-nav-dropdown />
 
-  <!-- Dialog help -->
-  <div class="modal fade" tabindex="-1" role="dialog" id="Dialog-Help-inicio">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-          <h4 class="modal-title w-100 text-center" style="color: white;">Ayuda</h4>
-        </div>
-        <div class="modal-body">
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt beatae esse velit ipsa sunt
-            incidunt aut voluptas, nihil reiciendis maiores eaque hic vitae saepe voluptatibus. Ratione
-            veritatis a unde autem!
-          </p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary btn-raised" data-dismiss="modal"><i
-              class="zmdi "></i> Aceptar</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <!-- JS Base -->
   <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
   <script src="{{ asset('js/bootstrap.min.js') }}"></script>
@@ -66,7 +42,7 @@
   <script src="{{ asset('js/direccion.js') }}"></script>
   <script>
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
-</script>
+  </script>
   <script src="{{ asset('js/intro-tour.js') }}"></script>
   <script>
     /** this is the function for o'clock */

@@ -3,11 +3,12 @@
 @section('title', 'Inicio')
 
 @section('css')
+  <link href="./css/tabs/tabs.css" rel="stylesheet">
 @endsection
 
 @section('content')
 
-  <section class="full-box dashboard-contentPage">
+  <main class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <nav class="full-box dashboard-Navbar">
       <ul class="full-box list-unstyled text-right">
@@ -40,94 +41,135 @@
     <!-- Page title -->
     <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
-    <section class="full-box text-center" style="padding: 30px 10px;">
-      <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-          Especialistas
-        </div>
-        <div class="full-box tile-icon text-center">
-          <i class="zmdi zmdi-male-alt"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-          <p class="full-box">{{ $totalEspecialistas }}</p>
-          <small>Registrados</small>
-        </div>
-      </article>
+    <!-- Sistema de pestañas -->
+    <div class="tabs-container">
+      <ul class="tabs-list">
+        <li>
+          <button class="tab-trigger" data-tab="resumen" data-state="active">Resumen</button>
+        </li>
+        <li>
+          <button class="tab-trigger" data-tab="graficos">Gráficos</button>
+        </li>
+        <!-- Agregar más pestañas según necesites -->
+        <li>
+          <button class="tab-trigger" data-tab="otra">Otra Pestaña</button>
+        </li>
+      </ul>
 
-      <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-          Secretarias
-        </div>
-        <div class="full-box tile-icon text-center">
-          <i class="zmdi zmdi-male-female"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-          <p class="full-box">{{ $totalSecretarias }}</p>
-          <small>Registrados</small>
-        </div>
-      </article>
+      <div class="tabs-content">
+        <!-- Pestaña Resumen -->
+        <div class="tab-pane" data-tab="resumen" data-state="active">
 
-      <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-          Pacientes
-        </div>
-        <div class="full-box tile-icon text-center">
-          <i class="zmdi zmdi-face"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-          <p class="full-box">{{ $totalPacientes }}</p>
-          <small>Registrados</small>
-        </div>
-      </article>
+          <section class="full-box text-center" style="padding: 30px 10px;">
+            <article class="full-box tile">
+              <div class="full-box tile-title text-center text-titles text-uppercase">
+                Especialistas
+              </div>
+              <div class="full-box tile-icon text-center">
+                <i class="zmdi zmdi-male-alt"></i>
+              </div>
+              <div class="full-box tile-number text-titles">
+                <p class="full-box">{{ $totalEspecialistas }}</p>
+                <small>Registrados</small>
+              </div>
+            </article>
 
-      <article class="full-box tile">
-        <div class="full-box tile-title text-center text-titles text-uppercase">
-          Representantes
-        </div>
-        <div class="full-box tile-icon text-center">
-          <i class="zmdi zmdi-male-female"></i>
-        </div>
-        <div class="full-box tile-number text-titles">
-          <p class="full-box">{{ $totalRepresentantes }}</p>
-          <small>Registrados</small>
-        </div>
-      </article>
-    </section>
+            <article class="full-box tile">
+              <div class="full-box tile-title text-center text-titles text-uppercase">
+                Secretarias
+              </div>
+              <div class="full-box tile-icon text-center">
+                <i class="zmdi zmdi-male-female"></i>
+              </div>
+              <div class="full-box tile-number text-titles">
+                <p class="full-box">{{ $totalSecretarias }}</p>
+                <small>Registrados</small>
+              </div>
+            </article>
 
-    <!-- Sección de gráficos -->
-    <section class="container-fluid">
-      <section class="row">
-        <!-- Gráfico de géneros -->
-        <article class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading text-titles text-center">
-              <i class="zmdi zmdi-male-female"></i> &nbsp; DISTRIBUCIÓN POR GÉNEROS
-            </div>
-            <div class="panel-body">
-              <div class="chart-container" style="position: relative; height:300px; width:100%">
-                <canvas id="graficaGenero"></canvas>
+            <article class="full-box tile">
+              <div class="full-box tile-title text-center text-titles text-uppercase">
+                Pacientes
+              </div>
+              <div class="full-box tile-icon text-center">
+                <i class="zmdi zmdi-face"></i>
+              </div>
+              <div class="full-box tile-number text-titles">
+                <p class="full-box">{{ $totalPacientes }}</p>
+                <small>Registrados</small>
+              </div>
+            </article>
+
+            <article class="full-box tile">
+              <div class="full-box tile-title text-center text-titles text-uppercase">
+                Representantes
+              </div>
+              <div class="full-box tile-icon text-center">
+                <i class="zmdi zmdi-male-female"></i>
+              </div>
+              <div class="full-box tile-number text-titles">
+                <p class="full-box">{{ $totalRepresentantes }}</p>
+                <small>Registrados</small>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <!-- Pestaña Gráficos -->
+        <div class="tab-pane" data-tab="graficos">
+          <!-- Sección de gráficos -->
+          <section class="container-fluid">
+            <section class="row">
+              <!-- Gráfico de géneros -->
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-male-female"></i> &nbsp; DISTRIBUCIÓN POR GÉNEROS
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaGenero"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Gráfico de edades -->
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-time"></i> &nbsp; DISTRIBUCIÓN POR EDADES
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaEdades"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </section>
+          </section>
+        </div>
+
+        <!-- Otra pestaña -->
+        <div class="tab-pane" data-tab="otra">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="panel panel-default">
+                  <div class="panel-body">
+                    <h4>Contenido de otra pestaña</h4>
+                    <p>Aquí puedes agregar más contenido según sea necesario.</p>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </article>
+        </div>
+      </div>
+    </div>
 
-        <!-- Gráfico de edades -->
-        <article class="col-md-6">
-          <div class="panel panel-default">
-            <div class="panel-heading text-titles text-center">
-              <i class="zmdi zmdi-time"></i> &nbsp; DISTRIBUCIÓN POR EDADES
-            </div>
-            <div class="panel-body">
-              <div class="chart-container" style="position: relative; height:300px; width:100%">
-                <canvas id="graficaEdades"></canvas>
-              </div>
-            </div>
-          </div>
-        </article>
-      </section>
-    </section>
-
-  </section>
+  </main>
 
 @endsection
 
@@ -136,6 +178,28 @@
 
   <script>
     document.addEventListener("DOMContentLoaded", function() {
+      // Sistema de pestañas
+      const tabTriggers = document.querySelectorAll('.tab-trigger');
+      const tabPanes = document.querySelectorAll('.tab-pane');
+
+      tabTriggers.forEach(trigger => {
+        trigger.addEventListener('click', () => {
+          const tabId = trigger.getAttribute('data-tab');
+
+          // Actualizar estado de los triggers
+          tabTriggers.forEach(t => t.setAttribute('data-state', 'inactive'));
+          trigger.setAttribute('data-state', 'active');
+
+          // Actualizar estado de los paneles
+          tabPanes.forEach(pane => {
+            pane.setAttribute('data-state', 'inactive');
+            if (pane.getAttribute('data-tab') === tabId) {
+              pane.setAttribute('data-state', 'active');
+            }
+          });
+        });
+      });
+
       fetch("{{ route('estadisticas.pacientes') }}")
         .then((response) => {
           if (!response.ok) throw new Error("Error en la respuesta del servidor");
