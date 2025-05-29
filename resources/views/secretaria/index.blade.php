@@ -5,29 +5,7 @@
 @section('content')
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
-    <nav class="full-box dashboard-Navbar">
-      <ul class="full-box list-unstyled text-right">
-        <li class="pull-left">
-          <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-        </li>
-        <li>
-          <a href="#!" class="btn-Notifications-area">
-            <i class="zmdi zmdi-notifications-none"></i>
-            <span class="badge">7</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-dropdown">
-            <i class="zmdi zmdi-account"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
-            <i class="zmdi zmdi-help-outline"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <x-navbar />
 
     <!-- Content page -->
 
@@ -76,21 +54,24 @@
                           <!-- Cédula -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ci" name="ci" required maxlength="10" oninput="validateInput(this)">
+                            <input type="text" class="form-control" id="ci" name="ci" required
+                              maxlength="10" oninput="validateInput(this)">
                             <small class="form-text text-muted">Ingrese su número de cédula sin puntos.</small>
                           </div>
 
                           <!-- Nombre -->
                           <div class="form-group col-md-6">
                             <label for="nombre">Nombre <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" required maxlength="50" oninput="validarTexto(this)">
+                            <input type="text" class="form-control" id="nombre" name="nombre" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="form-text text-muted">Ej: María</small>
                           </div>
 
                           <!-- Apellido -->
                           <div class="form-group col-md-6">
                             <label for="apellido">Apellido <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="apellido" name="apellido" required maxlength="50" oninput="validarTexto(this)">
+                            <input type="text" class="form-control" id="apellido" name="apellido" required
+                              maxlength="50" oninput="validarTexto(this)">
                             <small class="form-text text-muted">Ej: González</small>
                           </div>
 
@@ -125,7 +106,8 @@
                           <!-- Género -->
                           <div class="form-group col-md-6">
                             <label for="genero_id">Género <span class="text-danger">*</span></label>
-                            <select class="form-control select2" id="genero_id" name="genero_id" required style="width: 100%;">
+                            <select class="form-control select2" id="genero_id" name="genero_id" required
+                              style="width: 100%;">
                               <option disabled selected>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
@@ -146,7 +128,8 @@
 
                           <div class="form-group label-floating col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
@@ -154,7 +137,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
@@ -162,7 +146,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
                             <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
@@ -455,9 +440,9 @@
       });
     </script>
     <script>
-        const estados = @json($estados);
-        const municipios = @json($municipios);
-        const parroquias = @json($parroquias);
+      const estados = @json($estados);
+      const municipios = @json($municipios);
+      const parroquias = @json($parroquias);
     </script>
     <script>
       function editsecretaria(id) {

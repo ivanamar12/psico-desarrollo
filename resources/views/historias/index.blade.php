@@ -4,6 +4,7 @@
 
 @section('content')
   <section class="full-box dashboard-contentPage">
+    <!-- NavBar -->
     <x-navbar />
 
     <!-- Page title -->

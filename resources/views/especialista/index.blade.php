@@ -3,29 +3,8 @@
 @section('content')
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
-    <nav class="full-box dashboard-Navbar">
-      <ul class="full-box list-unstyled text-right">
-        <li class="pull-left">
-          <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-        </li>
-        <li>
-          <a href="#!" class="btn-Notifications-area">
-            <i class="zmdi zmdi-notifications-none"></i>
-            <span class="badge">7</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-dropdown">
-            <i class="zmdi zmdi-account"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
-            <i class="zmdi zmdi-help-outline"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <x-navbar />
+
     <!-- Content page -->
     <!-- Page title -->
     <x-page-header title="Especialistas" icon="zmdi zmdi-male-female zmdi-hc-fw" />
@@ -66,7 +45,7 @@
                       @csrf
 
                       <!-- Paso 1 -->
-                      <div id="paso1" >
+                      <div id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="row">
 
@@ -81,7 +60,8 @@
                           <!-- FVP -->
                           <div class="form-group col-md-6">
                             <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="fvp" name="fvp" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
+                            <input type="text" class="form-control" id="fvp" name="fvp" required
+                              oninput="this.value = this.value.replace(/[^0-9]/g, '')">
                             <small class="form-text text-muted">Número de la federación venezolana de psicólogos</small>
                           </div>
 
@@ -237,112 +217,123 @@
     </div>
   </div>
   <!-- Modal editar -->
-  <div class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content rounded shadow-lg">
-      <div class="modal-header bg-primary text-white rounded-top">
-        <h3 class="modal-title w-100 text-center">Editar Especialista</h3>
-        <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="modal-body">
-        <form id="editar-especialista">@csrf
-          <input type="hidden" id="id" name="id">
-          
-          <!-- Paso 1 -->
-          <div id="paso1_edit">
-            <h4 class="text-center mb-3">Datos Personales</h4>
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label>CI</label>
-                <input class="form-control" id="ci2" name="ci2" type="text" required max="34000000" oninput="validateInput(this)">
-              </div>
-              <div class="form-group col-md-6">
-                <label>FVP</label>
-                <input class="form-control" id="fvp2" name="fvp2" type="number" required max="34000000" oninput="validateInput(this)">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Nombre</label>
-                <input class="form-control" id="nombre2" name="nombre2" type="text" required oninput="validarTexto(this)">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Apellido</label>
-                <input class="form-control" id="apellido2" name="apellido2" type="text" required oninput="validarTexto(this)">
-              </div>
-              <div class="form-group col-md-6">
-                <label>Fecha de Nacimiento</label>
-                <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Especialidad</label>
-                <select class="form-control select2" required id="especialidad_id2" name="especialidad_id2">
-                  <option selected disabled>Seleccione su especialidad</option>
-                  @foreach ($especialidades as $especialidad)
-                    <option value="{{ $especialidad->id }}">{{ $especialidad->especialidad }}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Teléfono</label>
-                <input class="form-control" type="tel" id="telefono2" name="telefono2" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Correo electrónico</label>
-                <input class="form-control" type="email" id="email2" name="email2" required>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Género</label>
-                <select class="form-control select2" required id="genero_id2" name="genero_id2">
-                  <option selected disabled>Seleccione su género</option>
-                  @foreach ($generos as $genero)
-                    <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-                  @endforeach
-                </select>
-              </div>
-            </div>
-            <div class="text-center mt-3">
-              <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4" style="color: white;">Siguiente</button>
-            </div>
-          </div>
+  <div class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded shadow-lg">
+        <div class="modal-header bg-primary text-white rounded-top">
+          <h3 class="modal-title w-100 text-center">Editar Especialista</h3>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form id="editar-especialista">@csrf
+            <input type="hidden" id="id" name="id">
 
-          <!-- Paso 2 -->
-          <div id="paso2_edit" style="display: none;">
-            <h4 class="text-center mb-3">Datos de Dirección</h4>
-            <div class="row">
-              <div class="form-group col-md-6">
-                <label>Estado</label>
-                <select class="form-control select2" required id="estado_id2" name="estado_id2" style="width: 100%;">
-                  <option></option>
-                </select>
+            <!-- Paso 1 -->
+            <div id="paso1_edit">
+              <h4 class="text-center mb-3">Datos Personales</h4>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>CI</label>
+                  <input class="form-control" id="ci2" name="ci2" type="text" required max="34000000"
+                    oninput="validateInput(this)">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>FVP</label>
+                  <input class="form-control" id="fvp2" name="fvp2" type="number" required max="34000000"
+                    oninput="validateInput(this)">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Nombre</label>
+                  <input class="form-control" id="nombre2" name="nombre2" type="text" required
+                    oninput="validarTexto(this)">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Apellido</label>
+                  <input class="form-control" id="apellido2" name="apellido2" type="text" required
+                    oninput="validarTexto(this)">
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Fecha de Nacimiento</label>
+                  <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Especialidad</label>
+                  <select class="form-control select2" required id="especialidad_id2" name="especialidad_id2">
+                    <option selected disabled>Seleccione su especialidad</option>
+                    @foreach ($especialidades as $especialidad)
+                      <option value="{{ $especialidad->id }}">{{ $especialidad->especialidad }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Teléfono</label>
+                  <input class="form-control" type="tel" id="telefono2" name="telefono2" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Correo electrónico</label>
+                  <input class="form-control" type="email" id="email2" name="email2" required>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Género</label>
+                  <select class="form-control select2" required id="genero_id2" name="genero_id2">
+                    <option selected disabled>Seleccione su género</option>
+                    @foreach ($generos as $genero)
+                      <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+                    @endforeach
+                  </select>
+                </div>
               </div>
-              <div class="form-group col-md-6">
-                <label>Municipio</label>
-                <select class="form-control select2" required id="municipio_id2" name="municipio_id2" style="width: 100%;">
-                  <option></option>
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Parroquia</label>
-                <select class="form-control select2" required id="parroquia_id2" name="parroquia_id2" style="width: 100%;">
-                  <option></option>
-                </select>
-              </div>
-              <div class="form-group col-md-6">
-                <label>Sector</label>
-                <input class="form-control" type="text" id="sector2" name="sector2" required>
+              <div class="text-center mt-3">
+                <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4"
+                  style="color: white;">Siguiente</button>
               </div>
             </div>
-            <div class="text-center mt-3">
-              <button type="button" id="regresar_edit" class="btn btn-regresar px-4 mr-2"><i class="zmdi zmdi-arrow-back" style="color: white;"></i> Regresar</button>
-              <button type="submit" name="registrar" class="btn btn-custom px-4" style="color: white;">Guardar Cambios</button>
+
+            <!-- Paso 2 -->
+            <div id="paso2_edit" style="display: none;">
+              <h4 class="text-center mb-3">Datos de Dirección</h4>
+              <div class="row">
+                <div class="form-group col-md-6">
+                  <label>Estado</label>
+                  <select class="form-control select2" required id="estado_id2" name="estado_id2"
+                    style="width: 100%;">
+                    <option></option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Municipio</label>
+                  <select class="form-control select2" required id="municipio_id2" name="municipio_id2"
+                    style="width: 100%;">
+                    <option></option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Parroquia</label>
+                  <select class="form-control select2" required id="parroquia_id2" name="parroquia_id2"
+                    style="width: 100%;">
+                    <option></option>
+                  </select>
+                </div>
+                <div class="form-group col-md-6">
+                  <label>Sector</label>
+                  <input class="form-control" type="text" id="sector2" name="sector2" required>
+                </div>
+              </div>
+              <div class="text-center mt-3">
+                <button type="button" id="regresar_edit" class="btn btn-regresar px-4 mr-2"><i
+                    class="zmdi zmdi-arrow-back" style="color: white;"></i> Regresar</button>
+                <button type="submit" name="registrar" class="btn btn-custom px-4" style="color: white;">Guardar
+                  Cambios</button>
+              </div>
             </div>
-          </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
   <!-- modal mostrar especialista -->
   <div id="especialistaModal" class="modal fade" tabindex="-1" role="dialog">
@@ -394,7 +385,6 @@
         columns: [{
             data: 'id'
           },
-
           {
             data: 'ci'
           },
@@ -418,46 +408,43 @@
             orderable: false
           }
         ],
-
       });
     });
   </script>
   <script>
-  $("#paso1").show();
-  $("#paso2").hide();
-
-  $("#siguiente1").click(function () {
-  let valid = true;
-
-  // Validar campos requeridos dentro de #paso1
-  $('#paso1 :input[required]').each(function () {
-    if ($(this).val() === '' || $(this).val() === null) {
-      $(this).addClass('is-invalid');
-      valid = false;
-    } else {
-      $(this).removeClass('is-invalid');
-    }
-  });
-
-  // Validación final
-  if (valid) {
-    $("#paso1").hide();
-    $("#paso2").show();
-  } else {
-    toastr.error("Debe completar todos los campos requeridos del paso 1.");
-  }
-});
-
-  $("#regresar").click(function() {
-    $("#paso2").hide();
     $("#paso1").show();
-  });
-</script>
+    $("#paso2").hide();
+
+    $("#siguiente1").click(function() {
+      let valid = true;
+
+      // Validar campos requeridos dentro de #paso1
+      $('#paso1 :input[required]').each(function() {
+        if ($(this).val() === '' || $(this).val() === null) {
+          $(this).addClass('is-invalid');
+          valid = false;
+        } else {
+          $(this).removeClass('is-invalid');
+        }
+      });
+
+      // Validación final
+      if (valid) {
+        $("#paso1").hide();
+        $("#paso2").show();
+      } else {
+        toastr.error("Debe completar todos los campos requeridos del paso 1.");
+      }
+    });
+
+    $("#regresar").click(function() {
+      $("#paso2").hide();
+      $("#paso1").show();
+    });
+  </script>
 
   <script>
     $(document).ready(function() {
-    
-
       $("#registro-especialista").submit(function(event) {
         event.preventDefault();
         var nombre = $('#nombre').val();
@@ -549,95 +536,95 @@
       });
     });
   </script>
-<script>
-  function editespecialista(id) {
-    $.get('/especialista/' + id + '/edit', function(especialista) {
-      $('#id').val(especialista.id);
-      $('#ci2').val(especialista.ci);
-      $('#fvp2').val(especialista.fvp);
-      $('#nombre2').val(especialista.nombre);
-      $('#apellido2').val(especialista.apellido);
-      $('#fecha_nac2').val(especialista.fecha_nac);
-      $('#especialidad_id2').val(especialista.especialidad_id).trigger('change');
-      $('#telefono2').val(especialista.telefono);
-      $('#email2').val(especialista.email);
-      $('#genero_id2').val(especialista.genero_id).trigger('change');
+  <script>
+    function editespecialista(id) {
+      $.get('/especialista/' + id + '/edit', function(especialista) {
+        $('#id').val(especialista.id);
+        $('#ci2').val(especialista.ci);
+        $('#fvp2').val(especialista.fvp);
+        $('#nombre2').val(especialista.nombre);
+        $('#apellido2').val(especialista.apellido);
+        $('#fecha_nac2').val(especialista.fecha_nac);
+        $('#especialidad_id2').val(especialista.especialidad_id).trigger('change');
+        $('#telefono2').val(especialista.telefono);
+        $('#email2').val(especialista.email);
+        $('#genero_id2').val(especialista.genero_id).trigger('change');
 
-      if (especialista.direccion) {
-        const estado = estados.find(e => e.id == especialista.direccion.estado_id);
-        const municipio = municipios.find(m => m.id == especialista.direccion.municipio_id);
-        const parroquia = parroquias.find(p => p.id == especialista.direccion.parroquia_id);
+        if (especialista.direccion) {
+          const estado = estados.find(e => e.id == especialista.direccion.estado_id);
+          const municipio = municipios.find(m => m.id == especialista.direccion.municipio_id);
+          const parroquia = parroquias.find(p => p.id == especialista.direccion.parroquia_id);
 
-        setSelect2Preselection('#estado_id2', estado.id, estado.estado);
-        filterMunicipios(estado.id, municipio.id);
-        filterParroquias(municipio.id, parroquia.id);
+          setSelect2Preselection('#estado_id2', estado.id, estado.estado);
+          filterMunicipios(estado.id, municipio.id);
+          filterParroquias(municipio.id, parroquia.id);
 
-        $('#sector2').val(especialista.direccion.sector);
-      }
+          $('#sector2').val(especialista.direccion.sector);
+        }
 
-      $('#editespecialista').modal('show');
-    });
-  }
-
-  $('#editespecialista').on('shown.bs.modal', function () {
-    initSelect2('#estado_id2', 'Seleccione su estado');
-    initSelect2('#municipio_id2', 'Seleccione su municipio');
-    initSelect2('#parroquia_id2', 'Seleccione su parroquia');
-
-    $('#estado_id2').off('change').on('change', function () {
-      const estadoId = $(this).val();
-      clearSelect('#municipio_id2', 'Seleccione su municipio');
-      clearSelect('#parroquia_id2', 'Seleccione su parroquia');
-      filterMunicipios(estadoId);
-    });
-
-    $('#municipio_id2').off('change').on('change', function () {
-      const municipioId = $(this).val();
-      clearSelect('#parroquia_id2', 'Seleccione su parroquia');
-      filterParroquias(municipioId);
-    });
-  });
-
-  function initSelect2(selector, placeholder) {
-    $(selector).select2({
-      placeholder: placeholder,
-      width: '100%',
-      dropdownParent: $('#editespecialista')
-    });
-  }
-
-  function setSelect2Preselection(selector, id, text) {
-    if ($(selector).find("option[value='" + id + "']").length === 0) {
-      $(selector).append(new Option(text, id, true, true)).trigger('change');
-    } else {
-      $(selector).val(id).trigger('change');
+        $('#editespecialista').modal('show');
+      });
     }
-  }
 
-  function clearSelect(selector, placeholder) {
-    $(selector).empty().append(`<option disabled selected>${placeholder}</option>`).val(null).trigger('change');
-  }
+    $('#editespecialista').on('shown.bs.modal', function() {
+      initSelect2('#estado_id2', 'Seleccione su estado');
+      initSelect2('#municipio_id2', 'Seleccione su municipio');
+      initSelect2('#parroquia_id2', 'Seleccione su parroquia');
 
-  function filterMunicipios(estadoId, preselectedId = null) {
-    const filtered = municipios.filter(m => m.estado_id == estadoId);
-    $('#municipio_id2').empty().append('<option disabled selected>Seleccione su municipio</option>');
-    filtered.forEach(m => {
-      const option = new Option(m.municipio, m.id, false, m.id == preselectedId);
-      $('#municipio_id2').append(option);
+      $('#estado_id2').off('change').on('change', function() {
+        const estadoId = $(this).val();
+        clearSelect('#municipio_id2', 'Seleccione su municipio');
+        clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+        filterMunicipios(estadoId);
+      });
+
+      $('#municipio_id2').off('change').on('change', function() {
+        const municipioId = $(this).val();
+        clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+        filterParroquias(municipioId);
+      });
     });
-    $('#municipio_id2').trigger('change');
-  }
 
-  function filterParroquias(municipioId, preselectedId = null) {
-    const filtered = parroquias.filter(p => p.municipio_id == municipioId);
-    $('#parroquia_id2').empty().append('<option disabled selected>Seleccione su parroquia</option>');
-    filtered.forEach(p => {
-      const option = new Option(p.parroquia, p.id, false, p.id == preselectedId);
-      $('#parroquia_id2').append(option);
-    });
-    $('#parroquia_id2').trigger('change');
-  }
-</script>
+    function initSelect2(selector, placeholder) {
+      $(selector).select2({
+        placeholder: placeholder,
+        width: '100%',
+        dropdownParent: $('#editespecialista')
+      });
+    }
+
+    function setSelect2Preselection(selector, id, text) {
+      if ($(selector).find("option[value='" + id + "']").length === 0) {
+        $(selector).append(new Option(text, id, true, true)).trigger('change');
+      } else {
+        $(selector).val(id).trigger('change');
+      }
+    }
+
+    function clearSelect(selector, placeholder) {
+      $(selector).empty().append(`<option disabled selected>${placeholder}</option>`).val(null).trigger('change');
+    }
+
+    function filterMunicipios(estadoId, preselectedId = null) {
+      const filtered = municipios.filter(m => m.estado_id == estadoId);
+      $('#municipio_id2').empty().append('<option disabled selected>Seleccione su municipio</option>');
+      filtered.forEach(m => {
+        const option = new Option(m.municipio, m.id, false, m.id == preselectedId);
+        $('#municipio_id2').append(option);
+      });
+      $('#municipio_id2').trigger('change');
+    }
+
+    function filterParroquias(municipioId, preselectedId = null) {
+      const filtered = parroquias.filter(p => p.municipio_id == municipioId);
+      $('#parroquia_id2').empty().append('<option disabled selected>Seleccione su parroquia</option>');
+      filtered.forEach(p => {
+        const option = new Option(p.parroquia, p.id, false, p.id == preselectedId);
+        $('#parroquia_id2').append(option);
+      });
+      $('#parroquia_id2').trigger('change');
+    }
+  </script>
   <script>
     $(document).ready(function() {
       $("#paso1_edit").show();
