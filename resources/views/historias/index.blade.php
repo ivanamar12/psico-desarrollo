@@ -4,29 +4,7 @@
 
 @section('content')
   <section class="full-box dashboard-contentPage">
-    <nav class="full-box dashboard-Navbar">
-      <ul class="full-box list-unstyled text-right">
-        <li class="pull-left btn-menu-dashboard">
-          <a href="#!" class="btn-menu-dashboard"><i class="zmdi zmdi-more-vert"></i></a>
-        </li>
-        <li>
-          <a href="#!" class="btn-Notifications-area">
-            <i class="zmdi zmdi-notifications-none"></i>
-            <span class="badge">7</span>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-dropdown">
-            <i class="zmdi zmdi-account"></i>
-          </a>
-        </li>
-        <li>
-          <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
-            <i class="zmdi zmdi-help-outline"></i>
-          </a>
-        </li>
-      </ul>
-    </nav>
+    <x-navbar />
 
     <!-- Page title -->
     <x-page-header title="Historias" icon="zmdi zmdi-file zmdi-hc-fw" />
@@ -110,8 +88,8 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="enfermedad_no_infecciosa"
-                                  value="si" required onclick="toggleEnefermedadNoInput()"> Sí</label>
+                              <label class="mr-2"><input type="radio" name="enfermedad_no_infecciosa" value="si"
+                                  required onclick="toggleEnefermedadNoInput()"> Sí</label>
                               <label><input type="radio" name="enfermedad_no_infecciosa" value="no"
                                   onclick="toggleEnefermedadNoInput()"> No</label>
                               <input class="form-control ml-3" name="tipo_enfermedad_no_infecciosa"
