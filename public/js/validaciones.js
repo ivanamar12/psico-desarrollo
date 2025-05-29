@@ -68,4 +68,7 @@ function validarTexto(input) {
       this.value = '';
     }
   });
-  ;
+
+  document.getElementById('fvp').addEventListener('keypress', function (e) {
+    if (e.key < '0' || e.key > '9') e.preventDefault();
+  });

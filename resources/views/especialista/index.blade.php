@@ -81,7 +81,7 @@
                           <!-- FVP -->
                           <div class="form-group col-md-6">
                             <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="fvp" name="fvp" required>
+                            <input type="text" class="form-control" id="fvp" name="fvp" required oninput="this.value = this.value.replace(/[^0-9]/g, '')" >
                             <small class="form-text text-muted">Número de la federación venezolana de psicólogos</small>
                           </div>
 

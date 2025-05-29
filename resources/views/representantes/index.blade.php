@@ -86,13 +86,13 @@
                           </div>
 
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Teléfono</label>
+                            <label class="control-label">Teléfono<span class="text-danger">*</span></label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
                             <small class="leyenda-input">Número telefónico de contacto.</small>
                           </div>
 
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Correo electrónico</label>
+                            <label class="control-label">Correo electrónico<span class="text-danger">*</span></label>
                             <input class="form-control" type="email" id="email" name="email" required>
                             <small class="leyenda-input">Correo electrónico del representante.</small>
                           </div>
