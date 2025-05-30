@@ -24,9 +24,10 @@
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-citas_hoy">
                   <thead>
+                    <!-- Citas del día -->
                     <div class="data-table-header">
                       <button onclick="window.open('{{ url('/pdf/citas_hoy') }}', '_blank');" class="btn btn-custom"
-                        style="color: white;">
+                        style="color: white;" @if ($citasHoyCount == 0) disabled @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas del dia
                       </button>
                     </div>
@@ -48,9 +49,10 @@
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-citas">
                   <thead>
+                    <!-- Todas las citas -->
                     <div class="data-table-header">
                       <button onclick="window.open('{{ url('/pdf/citas') }}', '_blank');" class="btn btn-custom"
-                        style="color: white;">
+                        style="color: white;" @if ($citasCount == 0) disabled @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas
                       </button>
                     </div>
