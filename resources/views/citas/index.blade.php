@@ -30,6 +30,9 @@
                         style="color: white;" @if ($citasHoyCount == 0) disabled @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas del dia
                       </button>
+                      @if ($citasHoyCount == 0)
+                        <p class="text-muted">No hay citas para hoy</p>
+                      @endif
                     </div>
                     <tr>
                       <th class="text-center">#</th>
@@ -55,6 +58,9 @@
                         style="color: white;" @if ($citasCount == 0) disabled @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas
                       </button>
+                      @if ($citasCount == 0)
+                        <p class="text-muted">No hay citas registradas</p>
+                      @endif
                     </div>
                     <tr>
                       <th class="text-center">#</th>

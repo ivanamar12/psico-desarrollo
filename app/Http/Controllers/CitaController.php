@@ -154,7 +154,7 @@ class CitaController extends Controller
     $citas = Cita::with(['paciente', 'especialista'])->get();
 
     if ($citas->isEmpty()) {
-      return response()->json(['error' => 'No hay citas disponibles'], 404);
+      return redirect()->back()->with('error', 'No hay citas disponibles para generar PDF');
     }
 
     $pdf = PDF::loadView('pdf.citas', compact('citas'));
@@ -170,7 +170,7 @@ class CitaController extends Controller
       ->get();
 
     if ($citas->isEmpty()) {
-      return response()->json(['error' => 'No hay citas disponibles para hoy'], 404);
+      return redirect()->back()->with('error', 'No hay citas disponibles para hoy');
     }
 
     $pdf = PDF::loadView('pdf.citas', compact('citas'));
