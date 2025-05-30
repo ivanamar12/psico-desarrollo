@@ -27,7 +27,7 @@
                     <!-- Citas del día -->
                     <div class="data-table-header">
                       <button onclick="window.open('{{ url('/pdf/citas_hoy') }}', '_blank');" class="btn btn-custom"
-                        style="color: white;" @if ($citasHoyCount == 0) disabled @endif>
+                        @if ($citasHoyCount == 0) disabled title="No hay citas para hoy" @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas del dia
                       </button>
                       @if ($citasHoyCount == 0)
@@ -55,7 +55,7 @@
                     <!-- Todas las citas -->
                     <div class="data-table-header">
                       <button onclick="window.open('{{ url('/pdf/citas') }}', '_blank');" class="btn btn-custom"
-                        style="color: white;" @if ($citasCount == 0) disabled @endif>
+                        @if ($citasCount == 0) disabled title="No hay citas registradas" @endif>
                         <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas
                       </button>
                       @if ($citasCount == 0)

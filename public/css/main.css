@@ -635,7 +635,21 @@ html {
 
 .btn-custom {
   background-color: #329b84;
-  color: #179198;
+  color: white !important;
+}
+
+.btn-custom:disabled {
+  opacity: 0.6 !important;
+  background-color: #329b84 !important;
+  cursor: not-allowed !important;
+}
+
+.btn-custom:disabled:hover {
+  background-color: #329b84 !important;
+}
+
+.btn-custom:disabled i {
+  opacity: 0.8 !important;
 }
 
 .close {
