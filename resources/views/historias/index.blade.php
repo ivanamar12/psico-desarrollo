@@ -130,7 +130,10 @@
                               <label class="mr-2"><input type="radio" name="discapacidad" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="discapacidad" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="discapacidad" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="tipo_discapacidad" id="tipo_discapacidad"
                                 type="text" placeholder="Especificar discapacidad">
                             </div>
@@ -155,11 +158,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Durante el embarazo ¿la madre recibió algún tipo de medicamento?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="medicamento_embarazo" value="si"
-                                  required> <span>Si</span>
+                              <label class="mr-2">
+                                <input type="radio" name="medicamento_embarazo" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="medicamento_embarazo"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="medicamento_embarazo" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" id="tipo_medicamento" name="tipo_medicamento"
                                 type="text" placeholder="Especificar medicamento">
                             </div>
@@ -167,10 +173,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Durante el embarazo ¿la madre fumó?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="fumo_embarazo" value="si"
-                                  required> <span>Si</span>
+                              <label class="mr-2">
+                                <input type="radio" name="fumo_embarazo" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="fumo_embarazo" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="fumo_embarazo" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="cantidad" id="cantidad" type="text"
                                 placeholder="Cantidad que fumaba al día">
                             </div>
@@ -178,11 +188,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Durante el embarazo ¿la madre tomó bebidas alcohólicas?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="alcohol_embarazo" value="si"
-                                  required> <span>Si</span>
+                              <label class="mr-2">
+                                <input type="radio" name="alcohol_embarazo" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="alcohol_embarazo"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="alcohol_embarazo" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="tipo_alcohol" id="tipo_alcohol" type="text"
                                 placeholder="Especificar el tipo de alcohol">
                               <input class="form-control ml-3" name="cantidad_consumia_alcohol"
@@ -193,10 +206,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Durante el embarazo ¿la madre utilizó drogas?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="droga_embarazo" value="si"
-                                  required> <span>Si</span>
+                              <label class="mr-2">
+                                <input type="radio" name="droga_embarazo" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="droga_embarazo" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="droga_embarazo" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="tipo_droga" id="tipo_droga" type="text"
                                 placeholder="Especificar la droga utilizada en el embarazo">
                             </div>
@@ -217,18 +234,27 @@
                           <div class="form-group label-floating col-md-6">
                             <h5> ¿Se realizaron fórceps durante el parto?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="forceps_parto" value="si" required>
+                              <label>
+                                <input type="radio" name="forceps_parto" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="forceps_parto" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="forceps_parto" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
-                            <h5> ¿Se realizo cesárea?</h5>
+                            <h5>¿Se realizo cesárea?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="cesarea" value="si" required> <span>Si</span>
+                              <label>
+                                <input type="radio" name="cesarea" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="cesarea" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="cesarea" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="razon_cesarea" id="razon_cesarea" type="text"
                                 placeholder="Razón de la cesárea">
                             </div>
@@ -236,10 +262,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño fue prematuro?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="niño_prematuro" value="si" required>
+                              <label>
+                                <input type="radio" name="niño_prematuro" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="niño_prematuro" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="niño_prematuro" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="meses_prematuro" id="meses_prematuro" type="text"
                                 placeholder="Especificar por cuantos meses">
                             </div>
@@ -247,11 +277,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Hubo complicaciones en el nacimiento?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="complicaciones_nacer" value="si" required>
+                              <label>
+                                <input type="radio" name="complicaciones_nacer" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="complicaciones_nacer"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="complicaciones_nacer" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="tipo_complicacion" id="tipo_complicacion"
                                 type="text" placeholder="Especificar el tipo de complicación">
                             </div>
@@ -277,11 +310,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Hubo algun tipo de problema de alimentación?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="problema_alimentacion" value="si" required>
+                              <label>
+                                <input type="radio" name="problema_alimentacion" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="problema_alimentacion"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="problema_alimentacion" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="tipo_problema_alimenticio"
                                 id="tipo_problema_alimenticio" type="text"
                                 placeholder="Especificar tipo de problema alimenticio">
@@ -290,11 +326,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño tenia problemas para dormir?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="problema_dormir" value="si" required>
+                              <label>
+                                <input type="radio" name="problema_dormir" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="problema_dormir"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="problema_dormir" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="tipo_problema_dormir" id="tipo_problema_dormir"
                                 type="text" placeholder="Especificar tipo de problema para dormir">
                             </div>
@@ -302,42 +341,55 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño era tranquilo?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="tranquilo_recien_nacido" value="si" required>
+                              <label>
+                                <input type="radio" name="tranquilo_recien_nacido" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="tranquilo_recien_nacido"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="tranquilo_recien_nacido" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño le gustaba que lo cargaran?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="gustaba_cargaran_recien_nacido" value="si"
-                                  required> <span>Si</span>
+                              <label>
+                                <input type="radio" name="gustaba_cargaran_recien_nacido" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="gustaba_cargaran_recien_nacido" value="no">
-                                <span>No</span></label>
+                              <label>
+                                <input type="radio" name="gustaba_cargaran_recien_nacido" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño estaba alerta?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="alerta_recien_nacido" value="si" required>
+                              <label>
+                                <input type="radio" name="alerta_recien_nacido" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="alerta_recien_nacido"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="alerta_recien_nacido" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Hubo algun problema o complicacion en el crecimiento y desarrollo del niño en los
                               primeros años de vida?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="problemas_desarrollo_primeros_años" value="si"
-                                  required> <span>Si</span>
+                              <label>
+                                <input type="radio" name="problemas_desarrollo_primeros_años" value="si"
+                                  required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="problemas_desarrollo_primeros_años" value="no">
-                                <span>No</span></label>
+                              <label>
+                                <input type="radio" name="problemas_desarrollo_primeros_años" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="cuales_problemas" id="cuales_problemas" type="text"
                                 placeholder="Especificar tipo de problema o complicacion en el desarrollo">
                             </div>
@@ -357,9 +409,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño esta escolarizado?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="escolarizado" value="si" required> <span>Si</span>
+                              <label>
+                                <input type="radio" name="escolarizado" value="si" required>
+                                <span>Si</span>
                               </label>
-                              <label><input type="radio" name="escolarizado" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="escolarizado" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="tipo_educaion" id="tipo_educaion" type="text"
                                 placeholder="Especificar el tipo de educacion que recibe el niño">
                             </div>
@@ -367,11 +424,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Recibe alguna terapia o tutoria?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="tutoria_terapias" value="si" required>
+                              <label>
+                                <input type="radio" name="tutoria_terapias" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="tutoria_terapias"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="tutoria_terapias" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control" name="tutoria_terapias_cuales" id="tutoria_terapias_cuales"
                                 type="text" placeholder="Especificar las terapias o tutorias que recibe el niño">
                             </div>
@@ -379,40 +439,53 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la lectura?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_lectura" value="si" required>
+                              <label>
+                                <input type="radio" name="dificultad_lectura" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="dificultad_lectura"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="dificultad_lectura" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la aritmetica?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_aritmetica" value="si" required>
+                              <label>
+                                <input type="radio" name="dificultad_aritmetica" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="dificultad_aritmetica"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="dificultad_aritmetica" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la escritura?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_escribir" value="si" required>
+                              <label>
+                                <input type="radio" name="dificultad_escribir" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="dificultad_escribir"
-                                  value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="dificultad_escribir" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿le agrada el ambiente escolar?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="agrada_escuela" value="si" required>
+                              <label>
+                                <input type="radio" name="agrada_escuela" value="si" required>
                                 <span>Si</span>
                               </label>
-                              <label><input type="radio" name="agrada_escuela" value="no"><span>No</span></label>
+                              <label>
+                                <input type="radio" name="agrada_escuela" value="no">
+                                <span>No</span>
+                              </label>
                             </div>
                           </div>
                         </div>
@@ -700,7 +773,6 @@
         document.getElementById('tipo_alcohol').style.display = 'none';
         document.getElementById('cantidad_consumia_alcohol').style.display = 'none';
       }
-
     });
   </script>
   <script>
