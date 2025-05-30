@@ -9,24 +9,26 @@ use Illuminate\Notifications\Messages\DatabaseMessage;
 
 class CitasEspecialistaNotification extends Notification
 {
-    use Queueable;
+  use Queueable;
 
-    public function __construct($citas)
-    {
-        $this->citas = $citas;
-    }
+  public $citas;
 
-    public function via($notifiable)
-    {
-        return ['database'];
-    }
+  public function __construct($citas)
+  {
+    $this->citas = $citas;
+  }
 
-    public function toDatabase($notifiable)
-    {
-        return [
-            'title' => 'Tus Citas del Día',
-            'message' => "Tienes " . count($this->citas) . " citas agendadas para hoy.",
-            'url' => url('/mis-citas'),
-        ];
-    }
+  public function via($notifiable)
+  {
+    return ['database'];
+  }
+
+  public function toDatabase($notifiable)
+  {
+    return [
+      'title' => 'Tus Citas del Día',
+      'message' => "Tienes " . count($this->citas) . " citas agendadas para hoy.",
+      'url' => url('/mis-citas'),
+    ];
+  }
 }
