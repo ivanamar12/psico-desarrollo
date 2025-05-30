@@ -20,9 +20,9 @@ class HistoriaClinicaController extends Controller
   {
     if ($request->ajax()) {
       $historias = DB::select('SELECT pacientes.nombre as nombre, 
-                pacientes.apellido as apellido, 
-                historia_clinicas.* FROM historia_clinicas 
-                JOIN pacientes ON historia_clinicas.paciente_id = pacientes.id');
+        pacientes.apellido as apellido, 
+        historia_clinicas.* FROM historia_clinicas 
+        JOIN pacientes ON historia_clinicas.paciente_id = pacientes.id');
 
       return DataTables::of($historias)
         ->addColumn('action', function ($historia) {

@@ -34,12 +34,13 @@
                 </table>
               </div>
             </div>
-            <div class="tab-pane fade in" id="new-historia">
+
+            <section class="tab-pane fade in" id="new-historia">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-hitoria">@csrf
-                      <div id= "paso1">
+                      <section id= "paso1">
                         <h3>Datos del paciente</h3>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
@@ -70,17 +71,22 @@
                         </div>
                         <p class="centro-texto"><button type="button" id="siguiente1" class="btn btn-regresar"
                             style="color: white;">Siguiente</button></p>
-                      </div>
-                      <div id="paso2">
+                      </section>
+
+                      <section id="paso2">
                         <h3>Antecedentes Médicos</h3>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño ha sufrido de alguna enfermedad infecciosa?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="enfermedad_infecciosa" value="si"
-                                  required onclick="toggleEnfermedadInput()"> Sí</label>
-                              <label><input type="radio" name="enfermedad_infecciosa" value="no"
-                                  onclick="toggleEnfermedadInput()"> No</label>
+                              <label class="mr-2">
+                                <input type="radio" name="enfermedad_infecciosa" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label>
+                                <input type="radio" name="enfermedad_infecciosa" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" id="tipo_enfermedad_infecciosa"
                                 name="tipo_enfermedad_infecciosa" type="text"
                                 placeholder="Especificar enfermedad infecciosa">
@@ -89,10 +95,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="enfermedad_no_infecciosa" value="si"
-                                  required onclick="toggleEnefermedadNoInput()"> Sí</label>
-                              <label><input type="radio" name="enfermedad_no_infecciosa" value="no"
-                                  onclick="toggleEnefermedadNoInput()"> No</label>
+                              <label class="mr-2">
+                                <input type="radio" name="enfermedad_no_infecciosa" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label>
+                                <input type="radio" name="enfermedad_no_infecciosa" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="tipo_enfermedad_no_infecciosa"
                                 id="tipo_enfermedad_no_infecciosa" type="text"
                                 placeholder="Especificar enfermedad no infecciosa">
@@ -101,10 +111,14 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño padece de alguna enfermedad crónica?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="enfermedad_cronica" value="si"
-                                  required onclick="toggleCronicaInput()"> Sí</label>
-                              <label><input type="radio" name="enfermedad_cronica" value="no"
-                                  onclick="toggleCronicaInput()"> No</label>
+                              <label class="mr-2">
+                                <input type="radio" name="enfermedad_cronica" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label>
+                                <input type="radio" name="enfermedad_cronica" value="no">
+                                <span>No</span>
+                              </label>
                               <input class="form-control ml-3" name="tipo_enfermedad_cronica"
                                 id="tipo_enfermedad_cronica" type="text"
                                 placeholder="Especificar enfermedad crónica">
@@ -113,10 +127,10 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño padece de alguna discapacidad?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="discapacidad" value="si" required
-                                  onclick="toggleDiscapacidadInput()"> Sí</label>
-                              <label><input type="radio" name="discapacidad" value="no"
-                                  onclick="toggleDiscapacidadInput()"> No</label>
+                              <label class="mr-2"><input type="radio" name="discapacidad" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="discapacidad" value="no"><span>No</span></label>
                               <input class="form-control ml-3" name="tipo_discapacidad" id="tipo_discapacidad"
                                 type="text" placeholder="Especificar discapacidad">
                             </div>
@@ -132,8 +146,9 @@
                           <button type="button" id="siguiente2" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
-                      <div id="paso3">
+                      </section>
+
+                      <section id="paso3">
                         <h3>Historia de desarrollo</h3>
                         <h4>Embarazo</h4>
                         <div class="form-row">
@@ -141,9 +156,10 @@
                             <h5>Durante el embarazo ¿la madre recibió algún tipo de medicamento?</h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2"><input type="radio" name="medicamento_embarazo" value="si"
-                                  required onclick="toggleMedicamentoInput()"> Sí</label>
-                              <label><input type="radio" name="medicamento_embarazo" value="no"
-                                  onclick="toggleMedicamentoInput()"> No</label>
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="medicamento_embarazo"
+                                  value="no"><span>No</span></label>
                               <input class="form-control ml-3" id="tipo_medicamento" name="tipo_medicamento"
                                 type="text" placeholder="Especificar medicamento">
                             </div>
@@ -151,10 +167,10 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Durante el embarazo ¿la madre fumó?</h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="fumo_embarazo" value="si" required
-                                  onclick="toggleFumoInput()"> Sí</label>
-                              <label><input type="radio" name="fumo_embarazo" value="no"
-                                  onclick="toggleFumoInput()"> No</label>
+                              <label class="mr-2"><input type="radio" name="fumo_embarazo" value="si"
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="fumo_embarazo" value="no"><span>No</span></label>
                               <input class="form-control ml-3" name="cantidad" id="cantidad" type="text"
                                 placeholder="Cantidad que fumaba al día">
                             </div>
@@ -163,9 +179,10 @@
                             <h5>Durante el embarazo ¿la madre tomó bebidas alcohólicas?</h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2"><input type="radio" name="alcohol_embarazo" value="si"
-                                  required onclick="toggleAlcoholInput()"> Sí</label>
-                              <label><input type="radio" name="alcohol_embarazo" value="no"
-                                  onclick="toggleAlcoholInput()"> No</label>
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="alcohol_embarazo"
+                                  value="no"><span>No</span></label>
                               <input class="form-control ml-3" name="tipo_alcohol" id="tipo_alcohol" type="text"
                                 placeholder="Especificar el tipo de alcohol">
                               <input class="form-control ml-3" name="cantidad_consumia_alcohol"
@@ -177,9 +194,9 @@
                             <h5>Durante el embarazo ¿la madre utilizó drogas?</h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2"><input type="radio" name="droga_embarazo" value="si"
-                                  required onclick="toggleDrogaInput()"> Sí</label>
-                              <label><input type="radio" name="droga_embarazo" value="no"
-                                  onclick="toggleDrogaInput()"> No</label>
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="droga_embarazo" value="no"><span>No</span></label>
                               <input class="form-control ml-3" name="tipo_droga" id="tipo_droga" type="text"
                                 placeholder="Especificar la droga utilizada en el embarazo">
                             </div>
@@ -191,27 +208,27 @@
                           <button type="button" id="siguiente3" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
-                      <div id ="paso4">
+                      </section>
+
+                      <section id ="paso4">
                         <h3>Historia de desarrollo</h3>
                         <h4>Parto</h4>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
                             <h5> ¿Se realizaron fórceps durante el parto?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="forceps_parto" value="si" required
-                                  onclick="toggleForcepsInput()"> Sí</label>
-                              <label><input type="radio" name="forceps_parto" value="no"
-                                  onclick="toggleForcepsInput()"> No</label>
+                              <label><input type="radio" name="forceps_parto" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="forceps_parto" value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5> ¿Se realizo cesárea?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="cesarea" value="si" required
-                                  onclick="toggleCesareaInput()"> Sí</label>
-                              <label><input type="radio" name="cesarea" value="no"
-                                  onclick="toggleCesareaInput()"> No</label>
+                              <label><input type="radio" name="cesarea" value="si" required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="cesarea" value="no"><span>No</span></label>
                               <input class="form-control" name="razon_cesarea" id="razon_cesarea" type="text"
                                 placeholder="Razón de la cesárea">
                             </div>
@@ -219,10 +236,10 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño fue prematuro?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="niño_prematuro" value="si" required
-                                  onclick="togglePrematuroInput()"> Sí</label>
-                              <label><input type="radio" name="niño_prematuro" value="no"
-                                  onclick="togglePrematuroInput()"> No</label>
+                              <label><input type="radio" name="niño_prematuro" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="niño_prematuro" value="no"><span>No</span></label>
                               <input class="form-control" name="meses_prematuro" id="meses_prematuro" type="text"
                                 placeholder="Especificar por cuantos meses">
                             </div>
@@ -230,10 +247,11 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Hubo complicaciones en el nacimiento?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="complicaciones_nacer" value="si" required
-                                  onclick="toggleComplicacionesInput()"> Sí</label>
-                              <label><input type="radio" name="complicaciones_nacer" value="no"
-                                  onclick="toggleComplicacionesInput()"> No</label>
+                              <label><input type="radio" name="complicaciones_nacer" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="complicaciones_nacer"
+                                  value="no"><span>No</span></label>
                               <input class="form-control" name="tipo_complicacion" id="tipo_complicacion"
                                 type="text" placeholder="Especificar el tipo de complicación">
                             </div>
@@ -250,18 +268,20 @@
                           <button type="button" id="siguiente4" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
-                      <div id="paso5">
+                      </section>
+
+                      <section id="paso5">
                         <h3>Historia de desarrollo</h3>
                         <h4>Primeros meses del niño</h4>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Hubo algun tipo de problema de alimentación?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="problema_alimentacion" value="si" required
-                                  onclick="toggleAlimentacionInput()"> Sí</label>
-                              <label><input type="radio" name="problema_alimentacion" value="no"
-                                  onclick="toggleAlimentacionInput()"> No</label>
+                              <label><input type="radio" name="problema_alimentacion" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="problema_alimentacion"
+                                  value="no"><span>No</span></label>
                               <input class="form-control" name="tipo_problema_alimenticio"
                                 id="tipo_problema_alimenticio" type="text"
                                 placeholder="Especificar tipo de problema alimenticio">
@@ -270,10 +290,11 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño tenia problemas para dormir?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="problema_dormir" value="si" required
-                                  onclick="toggleDormirInput()"> Sí</label>
-                              <label><input type="radio" name="problema_dormir" value="no"
-                                  onclick="toggleDormirInput()"> No</label>
+                              <label><input type="radio" name="problema_dormir" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="problema_dormir"
+                                  value="no"><span>No</span></label>
                               <input class="form-control" name="tipo_problema_dormir" id="tipo_problema_dormir"
                                 type="text" placeholder="Especificar tipo de problema para dormir">
                             </div>
@@ -281,28 +302,31 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño era tranquilo?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="tranquilo_recien_nacido" value="si" required
-                                  onclick="toggleTranquiloInput()"> Sí</label>
-                              <label><input type="radio" name="tranquilo_recien_nacido" value="no"
-                                  onclick="toggleTranquiloInput()"> No</label>
+                              <label><input type="radio" name="tranquilo_recien_nacido" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="tranquilo_recien_nacido"
+                                  value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño le gustaba que lo cargaran?</h5>
                             <div class="d-flex align-items-center">
                               <label><input type="radio" name="gustaba_cargaran_recien_nacido" value="si"
-                                  required onclick="toggleCargarInput()"> Sí</label>
-                              <label><input type="radio" name="gustaba_cargaran_recien_nacido" value="no"
-                                  onclick="toggleCargarInput()"> No</label>
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="gustaba_cargaran_recien_nacido" value="no">
+                                <span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>Cuando recien nacido ¿el niño estaba alerta?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="alerta_recien_nacido" value="si" required
-                                  onclick="toggleAlertaInput()"> Sí</label>
-                              <label><input type="radio" name="alerta_recien_nacido" value="no"
-                                  onclick="toggleAlertaInput()"> No</label>
+                              <label><input type="radio" name="alerta_recien_nacido" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="alerta_recien_nacido"
+                                  value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
@@ -310,9 +334,10 @@
                               primeros años de vida?</h5>
                             <div class="d-flex align-items-center">
                               <label><input type="radio" name="problemas_desarrollo_primeros_años" value="si"
-                                  required onclick="togglePrimerosInput()"> Sí</label>
-                              <label><input type="radio" name="problemas_desarrollo_primeros_años" value="no"
-                                  onclick="togglePrimerosInput()"> No</label>
+                                  required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="problemas_desarrollo_primeros_años" value="no">
+                                <span>No</span></label>
                               <input class="form-control" name="cuales_problemas" id="cuales_problemas" type="text"
                                 placeholder="Especificar tipo de problema o complicacion en el desarrollo">
                             </div>
@@ -324,17 +349,17 @@
                           <button type="button" id="siguiente5" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
-                      <div id="paso6">
+                      </section>
+
+                      <section id="paso6">
                         <h3>Historia Escolar</h3>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño esta escolarizado?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="escolarizado" value="si" required
-                                  onclick="toggleEscolarizadoInput()"> Sí</label>
-                              <label><input type="radio" name="escolarizado" value="no"
-                                  onclick="toggleEscolarizadoInput()"> No</label>
+                              <label><input type="radio" name="escolarizado" value="si" required> <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="escolarizado" value="no"><span>No</span></label>
                               <input class="form-control" name="tipo_educaion" id="tipo_educaion" type="text"
                                 placeholder="Especificar el tipo de educacion que recibe el niño">
                             </div>
@@ -342,10 +367,11 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿Recibe alguna terapia o tutoria?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="tutoria_terapias" value="si" required
-                                  onclick="toggleTerapiaTutoriaInput()"> Sí</label>
-                              <label><input type="radio" name="tutoria_terapias" value="no"
-                                  onclick="toggleTerapiaTutoriaInput()"> No</label>
+                              <label><input type="radio" name="tutoria_terapias" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="tutoria_terapias"
+                                  value="no"><span>No</span></label>
                               <input class="form-control" name="tutoria_terapias_cuales" id="tutoria_terapias_cuales"
                                 type="text" placeholder="Especificar las terapias o tutorias que recibe el niño">
                             </div>
@@ -353,37 +379,40 @@
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la lectura?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_lectura" value="si" required
-                                  onclick="toggleLecturaInput()"> Sí</label>
-                              <label><input type="radio" name="dificultad_lectura" value="no"
-                                  onclick="toggleLecturaInput()"> No</label>
+                              <label><input type="radio" name="dificultad_lectura" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="dificultad_lectura"
+                                  value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la aritmetica?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_aritmetica" value="si" required
-                                  onclick="toggleAritmeticaInput()"> Sí</label>
-                              <label><input type="radio" name="dificultad_aritmetica" value="no"
-                                  onclick="toggleAritmeticaInput()"> No</label>
+                              <label><input type="radio" name="dificultad_aritmetica" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="dificultad_aritmetica"
+                                  value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿El niño presenta alguna dificultad para la escritura?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="dificultad_escribir" value="si" required
-                                  onclick="toggleEscrituraInput()"> Sí</label>
-                              <label><input type="radio" name="dificultad_escribir" value="no"
-                                  onclick="toggleEscrituraInput()"> No</label>
+                              <label><input type="radio" name="dificultad_escribir" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="dificultad_escribir"
+                                  value="no"><span>No</span></label>
                             </div>
                           </div>
                           <div class="form-group label-floating col-md-6">
                             <h5>¿le agrada el ambiente escolar?</h5>
                             <div class="d-flex align-items-center">
-                              <label><input type="radio" name="agrada_escuela" value="si" required
-                                  onclick="toggleEscolarInput()"> Sí</label>
-                              <label><input type="radio" name="agrada_escuela" value="no"
-                                  onclick="toggleEscolarInput()"> No</label>
+                              <label><input type="radio" name="agrada_escuela" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label><input type="radio" name="agrada_escuela" value="no"><span>No</span></label>
                             </div>
                           </div>
                         </div>
@@ -393,19 +422,19 @@
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
                               class="zmdi zmdi-floppy"></i>Registrar</button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
           </div>
         </div>
       </div>
     </div>
   </section>
   <!-- Modal de Confirmación -->
-  <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -424,8 +453,8 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  </section>
+  <section class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -452,7 +481,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
 @endsection
 @section('js')
@@ -550,175 +579,129 @@
         $("#paso5").show();
       });
 
-    })
+      // Función genérica para manejar todos los toggles
+      function toggleInput(radioName, inputId, defaultValue = 'no aplica') {
+        const radioYes = document.querySelector(`input[name="${radioName}"][value="si"]`);
+        const inputElement = document.getElementById(inputId);
 
-    function toggleEnfermedadInput() {
-      const enfermedad_infecciosaYes = document.querySelector(`input[name="enfermedad_infecciosa"][value="si"]`);
-      const tipo_enfermedadinfecciosaInput = document.getElementById('tipo_enfermedad_infecciosa');
-      if (enfermedad_infecciosaYes.checked) {
-        tipo_enfermedadinfecciosaInput.style.display = 'block';
-      } else {
-        tipo_enfermedadinfecciosaInput.style.display = 'none';
-        tipo_enfermedadinfecciosaInput.value = 'no aplica';
+        if (radioYes.checked) {
+          inputElement.style.display = 'block';
+          inputElement.required = true;
+        } else {
+          inputElement.style.display = 'none';
+          inputElement.value = defaultValue;
+          inputElement.required = false;
+        }
       }
-    }
 
-    function toggleEnefermedadNoInput() {
-      const enfermedad_no_infecciosaYes = document.querySelector(`input[name="enfermedad_no_infecciosa"][value="si"]`);
-      const tipo_enfermedad_noinfecciosaInput = document.getElementById('tipo_enfermedad_no_infecciosa');
-      if (enfermedad_no_infecciosaYes.checked) {
-        tipo_enfermedad_noinfecciosaInput.style.display = 'block';
-      } else {
-        tipo_enfermedad_noinfecciosaInput.style.display = 'none';
-        tipo_enfermedad_noinfecciosaInput.value = 'no aplica';
+      // Configuración de todos los toggles
+      const toggleConfig = [{
+          name: 'enfermedad_infecciosa',
+          id: 'tipo_enfermedad_infecciosa'
+        },
+        {
+          name: 'enfermedad_no_infecciosa',
+          id: 'tipo_enfermedad_no_infecciosa'
+        },
+        {
+          name: 'enfermedad_cronica',
+          id: 'tipo_enfermedad_cronica'
+        },
+        {
+          name: 'discapacidad',
+          id: 'tipo_discapacidad'
+        },
+        {
+          name: 'medicamento_embarazo',
+          id: 'tipo_medicamento'
+        },
+        {
+          name: 'fumo_embarazo',
+          id: 'cantidad'
+        },
+        {
+          name: 'droga_embarazo',
+          id: 'tipo_droga'
+        },
+        {
+          name: 'cesarea',
+          id: 'razon_cesarea'
+        },
+        {
+          name: 'niño_prematuro',
+          id: 'meses_prematuro'
+        },
+        {
+          name: 'complicaciones_nacer',
+          id: 'tipo_complicacion'
+        },
+        {
+          name: 'problema_alimentacion',
+          id: 'tipo_problema_alimenticio',
+          defaultValue: 'no'
+        },
+        {
+          name: 'problema_dormir',
+          id: 'tipo_problema_dormir'
+        },
+        {
+          name: 'problemas_desarrollo_primeros_años',
+          id: 'cuales_problemas'
+        },
+        {
+          name: 'escolarizado',
+          id: 'tipo_educaion'
+        },
+        {
+          name: 'tutoria_terapias',
+          id: 'tutoria_terapias_cuales'
+        }
+      ];
+
+      // Configurar eventos para cada toggle
+      toggleConfig.forEach(config => {
+        const radios = document.querySelectorAll(`input[name="${config.name}"]`);
+        radios.forEach(radio => {
+          radio.addEventListener('click', () => {
+            toggleInput(config.name, config.id, config.defaultValue);
+          });
+        });
+
+        // Inicializar estado
+        toggleInput(config.name, config.id, config.defaultValue);
+      });
+
+      // Configuración especial para el alcohol (que tiene dos campos)
+      const alcoholRadios = document.querySelectorAll('input[name="alcohol_embarazo"]');
+      alcoholRadios.forEach(radio => {
+        radio.addEventListener('click', () => {
+          const tipoAlcohol = document.getElementById('tipo_alcohol');
+          const cantidadAlcohol = document.getElementById('cantidad_consumia_alcohol');
+
+          if (document.querySelector('input[name="alcohol_embarazo"][value="si"]').checked) {
+            tipoAlcohol.style.display = 'block';
+            cantidadAlcohol.style.display = 'block';
+            tipoAlcohol.required = true;
+            cantidadAlcohol.required = true;
+          } else {
+            tipoAlcohol.style.display = 'none';
+            cantidadAlcohol.style.display = 'none';
+            tipoAlcohol.value = 'no aplica';
+            cantidadAlcohol.value = 'no aplica';
+            tipoAlcohol.required = false;
+            cantidadAlcohol.required = false;
+          }
+        });
+      });
+
+      // Inicializar estado del alcohol
+      const alcoholYes = document.querySelector('input[name="alcohol_embarazo"][value="si"]');
+      if (!alcoholYes.checked) {
+        document.getElementById('tipo_alcohol').style.display = 'none';
+        document.getElementById('cantidad_consumia_alcohol').style.display = 'none';
       }
-    }
 
-    function toggleCronicaInput() {
-      const enfermedad_cronicaYes = document.querySelector(`input[name="enfermedad_cronica"][value="si"]`);
-      const tipo_enfermedad_cronicaInput = document.getElementById('tipo_enfermedad_cronica');
-      if (enfermedad_cronicaYes.checked) {
-        tipo_enfermedad_cronicaInput.style.display = 'block';
-      } else {
-        tipo_enfermedad_cronicaInput.style.display = 'none';
-        tipo_enfermedad_cronicaInput.value = 'no aplica';
-      }
-    }
-
-    function toggleDiscapacidadInput() {
-      const discapacidadYes = document.querySelector(`input[name="discapacidad"][value="si"]`);
-      const tipo_discapacidadInput = document.getElementById('tipo_discapacidad');
-      if (discapacidadYes.checked) {
-        tipo_discapacidadInput.style.display = 'block';
-      } else {
-        tipo_discapacidadInput.style.display = 'none';
-        tipo_discapacidadInput.value = 'no aplica';
-      }
-    }
-
-    function toggleMedicamentoInput() {
-      const medicamento_embarazoYes = document.querySelector(`input[name="medicamento_embarazo"][value="si"]`);
-      const tipo_medicamentoInput = document.getElementById('tipo_medicamento');
-
-      if (medicamento_embarazoYes.checked) {
-        tipo_medicamentoInput.style.display = 'block';
-      } else {
-        tipo_medicamentoInput.style.display = 'none';
-        tipo_medicamentoInput.value = 'no aplica';
-      }
-    }
-
-    function toggleFumoInput() {
-      const fumo_embarazoYes = document.querySelector(`input[name="fumo_embarazo"][value="si"]`);
-      const cantidadInput = document.getElementById('cantidad');
-      if (fumo_embarazoYes.checked) {
-        cantidadInput.style.display = 'block';
-      } else {
-        cantidadInput.style.display = 'none';
-        cantidadInput.value = 'no aplica';
-      }
-    }
-
-    function toggleDrogaInput() {
-      const droga_embarazoYes = document.querySelector(`input[name="droga_embarazo"][value="si"]`);
-      const tipo_drogaInput = document.getElementById('tipo_droga');
-      if (droga_embarazoYes.checked) {
-        tipo_drogaInput.style.display = 'block';
-      } else {
-        tipo_drogaInput.style.display = 'none';
-        tipo_drogaInput.value = 'no aplica';
-      }
-    }
-
-    function toggleCesareaInput() {
-      const cesareaYes = document.querySelector(`input[name="cesarea"][value="si"]`);
-      const razon_cesareaInput = document.getElementById('razon_cesarea');
-      if (cesareaYes.checked) {
-        razon_cesareaInput.style.display = 'block';
-      } else {
-        razon_cesareaInput.style.display = 'none';
-        razon_cesareaInput.value = 'no aplica';
-      }
-    }
-
-    function togglePrematuroInput() {
-      const niño_prematuroYes = document.querySelector(`input[name="niño_prematuro"][value="si"]`);
-      const meses_prematuroInput = document.getElementById('meses_prematuro');
-      if (niño_prematuroYes.checked) {
-        meses_prematuroInput.style.display = 'block';
-      } else {
-        meses_prematuroInput.style.display = 'none';
-        meses_prematuroInput.value = 'no aplica';
-      }
-    }
-
-    function toggleComplicacionesInput() {
-      const complicaciones_nacerYes = document.querySelector(`input[name="complicaciones_nacer"][value="si"]`);
-      const tipo_complicacionInput = document.getElementById('tipo_complicacion');
-      if (complicaciones_nacerYes.checked) {
-        tipo_complicacionInput.style.display = 'block';
-      } else {
-        tipo_complicacionInput.style.display = 'none';
-        tipo_complicacionInput.value = 'no aplica';
-      }
-    }
-
-    function toggleAlimentacionInput() {
-      const problema_alimentacionYes = document.querySelector(`input[name="problema_alimentacion"][value="si"]`);
-      const tipo_problema_alimenticioInput = document.getElementById('tipo_problema_alimenticio');
-      if (problema_alimentacionYes.checked) {
-        tipo_problema_alimenticioInput.style.display = 'block';
-      } else {
-        tipo_problema_alimenticioInput.style.display = 'none';
-        tipo_problema_alimenticioInput.value = 'no';
-      }
-    }
-
-    function toggleDormirInput() {
-      const problema_dormirYes = document.querySelector(`input[name="problema_dormir"][value="si"]`);
-      const tipo_problema_dormirInput = document.getElementById('tipo_problema_dormir');
-      if (problema_dormirYes.checked) {
-        tipo_problema_dormirInput.style.display = 'block';
-      } else {
-        tipo_problema_dormirInput.style.display = 'none';
-        tipo_problema_dormirInput.value = 'no aplica';
-      }
-    }
-
-    function togglePrimerosInput() {
-      const problemas_desarrollo_primeros_añosYes = document.querySelector(
-        `input[name="problemas_desarrollo_primeros_años"][value="si"]`);
-      const cuales_problemasInput = document.getElementById('cuales_problemas');
-      if (problemas_desarrollo_primeros_añosYes.checked) {
-        cuales_problemasInput.style.display = 'block';
-      } else {
-        cuales_problemasInput.style.display = 'none';
-        cuales_problemasInput.value = 'no aplica';
-      }
-    }
-
-    function toggleEscolarizadoInput() {
-      const escolarizadoYes = document.querySelector(`input[name="escolarizado"][value="si"]`);
-      const tipo_educaionInput = document.getElementById('tipo_educaion');
-
-      if (escolarizadoYes.checked) {
-        tipo_educaionInput.style.display = 'block';
-      } else {
-        tipo_educaionInput.style.display = 'none';
-        tipo_educaionInput.value = 'no aplica';
-      }
-    }
-
-    function toggleTerapiaTutoriaInput() {
-      const tutoria_terapiasYes = document.querySelector(`input[name="tutoria_terapias"][value="si"]`);
-      const tutoria_terapias_cualesInput = document.getElementById('tutoria_terapias_cuales');
-      if (tutoria_terapiasYes.checked) {
-        tutoria_terapias_cualesInput.style.display = 'block';
-      } else {
-        tutoria_terapias_cualesInput.style.display = 'none';
-        tutoria_terapias_cualesInput.value = 'no aplica';
-      }
-    }
+    });
   </script>
   <script>
     $('#registro-hitoria').on('submit', function(e) {
