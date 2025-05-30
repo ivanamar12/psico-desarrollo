@@ -12,6 +12,7 @@ use App\Http\Controllers\AplicarPruebaController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\NotificacionController;
+use App\Http\Controllers\ValidacionController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -193,6 +194,8 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
 
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+
+    Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'
