@@ -40,7 +40,6 @@ function validarTexto(input) {
     const minDate = '1900-01-01';
     const maxDate = `${yearEighteen}-12-31`;
   
-    // Lista de IDs a aplicar la validación
     const ids = ['fecha_nac', 'fecha_nac2'];
   
     ids.forEach(id => {
@@ -103,3 +102,47 @@ function validarTexto(input) {
       this.value = '';
     }
   });
+
+  $(document).ready(function() {
+    $('.email-verificar').on('blur', function() {
+      const input = $(this);
+      const email = input.val().trim();
+  
+      if (email === '') return;
+  
+      $.ajax({
+        url: '/verificar-email',
+        method: 'GET',
+        data: { email: email },
+        success: function(response) {
+          if (response.exists) {
+            toastr.error('Este correo ya está registrado en el sistema.');
+            input.val('').focus();
+            input.removeClass('is-valid').addClass('is-invalid');
+            input.data('valid', false);
+          } else {
+            input.removeClass('is-invalid').addClass('is-valid');
+            input.data('valid', true);
+          }
+        },
+        error: function() {
+          toastr.error('El correo ya esta en el sistema.');
+        }
+      });
+    });
+  
+    $('form').on('submit', function(e) {
+      let valid = true;
+      $('.email-verificar').each(function() {
+        const isValid = $(this).data('valid');
+        if (isValid === false || typeof isValid === 'undefined') {
+          toastr.error('Uno de los correos ingresados ya está en uso o no ha sido validado.');
+          valid = false;
+        }
+      });
+  
+      if (!valid) e.preventDefault();
+    });
+  });
+  
+

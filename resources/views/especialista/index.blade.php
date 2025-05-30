@@ -111,7 +111,7 @@
                           <!-- Email -->
                           <div class="form-group col-md-6">
                             <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control" id="email" name="email" required>
+                            <input type="email" class="form-control email-verificar" id="email" name="email" required>
                             <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
                           </div>
 
@@ -274,7 +274,7 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label>Correo electrónico</label>
-                  <input class="form-control" type="email" id="email2" name="email2" required>
+                  <input class="form-control email-verificar" type="email" id="email2" name="email2" required>
                 </div>
                 <div class="form-group col-md-6">
                   <label>Género</label>
