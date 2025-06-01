@@ -196,9 +196,10 @@
                                 <input type="radio" name="alcohol_embarazo" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_alcohol" id="tipo_alcohol" type="text"
-                                placeholder="Especificar el tipo de alcohol">
-                              <input class="form-control ml-3" name="cantidad_consumia_alcohol"
+                              <input class="form-control ml-3" style="display: none;" name="tipo_alcohol"
+                                id="tipo_alcohol" type="text" placeholder="Especificar el tipo de alcohol">
+
+                              <input class="form-control ml-3" style="display: none;" name="cantidad_consumia_alcohol"
                                 id="cantidad_consumia_alcohol" type="text"
                                 placeholder="Especificar cantidad consumida de alcohol">
                             </div>
@@ -652,18 +653,16 @@
         $("#paso5").show();
       });
 
-      // Función genérica para manejar todos los toggles
-      function toggleInput(radioName, inputId, defaultValue = 'no aplica') {
-        const radioYes = document.querySelector(`input[name="${radioName}"][value="si"]`);
-        const inputElement = document.getElementById(inputId);
+      // Función para manejar todos los toggles
+      function toggleInput(radioName, inputId, defaultValue = '') {
+        const show = document.querySelector(`input[name="${radioName}"][value="si"]`).checked;
+        const input = document.getElementById(inputId);
 
-        if (radioYes.checked) {
-          inputElement.style.display = 'block';
-          inputElement.required = true;
-        } else {
-          inputElement.style.display = 'none';
-          inputElement.value = defaultValue;
-          inputElement.required = false;
+        input.style.display = show ? 'block' : 'none';
+        input.required = show;
+
+        if (!show) {
+          input.value = defaultValue;
         }
       }
 
@@ -748,31 +747,18 @@
       const alcoholRadios = document.querySelectorAll('input[name="alcohol_embarazo"]');
       alcoholRadios.forEach(radio => {
         radio.addEventListener('click', () => {
-          const tipoAlcohol = document.getElementById('tipo_alcohol');
-          const cantidadAlcohol = document.getElementById('cantidad_consumia_alcohol');
+          const show = document.querySelector('input[name="alcohol_embarazo"][value="si"]').checked;
+          document.getElementById('tipo_alcohol').style.display = show ? 'block' : 'none';
+          document.getElementById('cantidad_consumia_alcohol').style.display = show ? 'block' : 'none';
+          document.getElementById('tipo_alcohol').required = show;
+          document.getElementById('cantidad_consumia_alcohol').required = show;
 
-          if (document.querySelector('input[name="alcohol_embarazo"][value="si"]').checked) {
-            tipoAlcohol.style.display = 'block';
-            cantidadAlcohol.style.display = 'block';
-            tipoAlcohol.required = true;
-            cantidadAlcohol.required = true;
-          } else {
-            tipoAlcohol.style.display = 'none';
-            cantidadAlcohol.style.display = 'none';
-            tipoAlcohol.value = 'no aplica';
-            cantidadAlcohol.value = 'no aplica';
-            tipoAlcohol.required = false;
-            cantidadAlcohol.required = false;
+          if (!show) {
+            document.getElementById('tipo_alcohol').value = '';
+            document.getElementById('cantidad_consumia_alcohol').value = '';
           }
         });
       });
-
-      // Inicializar estado del alcohol
-      const alcoholYes = document.querySelector('input[name="alcohol_embarazo"][value="si"]');
-      if (!alcoholYes.checked) {
-        document.getElementById('tipo_alcohol').style.display = 'none';
-        document.getElementById('cantidad_consumia_alcohol').style.display = 'none';
-      }
     });
   </script>
   <script>
