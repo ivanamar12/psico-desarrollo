@@ -50,7 +50,7 @@
                             <label class="control-label">Cédula de Identidad (CI) <span
                                 class="text-danger">*</span></label>
                             <input class="form-control" id="ci" name="ci" type="text" required
-                              oninput="validateInput(this)" maxlength="8">
+                              oninput="validateInput(this)" maxlength="10">
                             <small class="leyenda-input">Ingrese el número de cédula del representante.</small>
                           </div>
 
@@ -74,11 +74,11 @@
                             <small class="leyenda-input">Número telefónico de contacto.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Correo electrónico<span class="text-danger">*</span></label>
-                            <input class="form-control" type="email" id="email" name="email" required>
-                            <small class="leyenda-input">Correo electrónico del representante.</small>
-                          </div>
+                          <div class="form-group col-md-6">
+                            <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
+                            <input type="email" class="form-control email-verificar" id="email" name="email" required>
+                            <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
+                          </div> 
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Género <span class="text-danger">*</span></label>
@@ -171,76 +171,92 @@
             <div class="col-xs-12 col-md-10 col-md-offset-1">
               <form id="editar-representante">@csrf
                 <input type="hidden" id="id" name="id">
+              
                 <div id="paso1_edit">
                   <h3>Datos Personales</h3>
                   <div class="fila-formulario">
-                    <div class="form-group label-floating col-md-6">
-                      <label class="control-label">Nombre</label>
-                      <input class="form-control" id="nombre2" name="nombre2" type="text">
+                    
+                    <div class="form-group col-md-6">
+                      <label>CI</label>
+                      <input class="form-control" id="ci2" name="ci2" type="text" required max="34000000"
+                        oninput="validateInput(this)">
                     </div>
-                    <div class="form-group label-floating col-md-6">
+              
+                    <div class="form-group col-md-6">
+                      <label class="control-label">Nombre</label>
+                      <input class="form-control" id="nombre2" name="nombre2" type="text" required>
+                    </div>
+              
+                    <div class="form-group col-md-6">
                       <label class="control-label">Apellido</label>
                       <input class="form-control" id="apellido2" name="apellido2" type="text" required>
                     </div>
-                    <div class="form-group label-floating col-md-6">
-                      <label class="control-label">CI</label>
-                      <input class="form-control" id="ci2" name="ci2" type="number" required
-                        max="34000000" oninput="validateInput(this)">
-                    </div>
-                    <div class="form-group label-floating col-md-6">
+              
+                    <div class="form-group col-md-6">
                       <label class="control-label">Teléfono</label>
                       <input class="form-control" type="tel" id="telefono2" name="telefono2" required>
                     </div>
-                    <div class="form-group label-floating col-md-6">
-                      <label class="control-label">Correo electrónico</label>
-                      <input class="form-control" type="email" id="email2" name="email2" required>
-                    </div>
+              
                     <div class="form-group col-md-6">
-                      <select class="form-control select2" required style="width: 100%;" id="genero_id2"
-                        name="genero_id2">
+                      <label class="control-label">Correo electrónico</label>
+                      <input class="form-control email-verificar" type="email" id="email2" name="email2" required>
+                    </div>
+              
+                    <div class="form-group col-md-6">
+                      <label class="control-label">Género</label>
+                      <select class="form-control select2" required style="width: 100%;" id="genero_id2" name="genero_id2">
                         @foreach ($generos as $genero)
                           <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                         @endforeach
                       </select>
                     </div>
+              
                   </div>
-                  <p class="centro-texto"><button type="button" id="siguiente1_edit" class="btn btn-regresar"
-                      style="color: white;">Siguiente</button></p>
+              
+                  <p class="centro-texto">
+                    <button type="button" id="siguiente1_edit" class="btn btn-regresar" style="color: white;">Siguiente</button>
+                  </p>
                 </div>
+              
                 <div id="paso2_edit" style="display: none;">
                   <h3>Datos de Dirección</h3>
                   <div class="fila-formulario">
-                    <div class="form-group label-floating col-md-6">
+                    
+                    <div class="form-group col-md-6">
                       <label class="control-label">Estado</label>
-                      <select class="form-control form-control-solid select2" required style="width: 100%;"
-                        id="estado_id2" name="estado_id2">
+                      <select class="form-control select2" required style="width: 100%;" id="estado_id2" name="estado_id2">
                         <option></option>
                       </select>
                     </div>
+              
                     <div class="form-group col-md-6">
-                      <select class="form-control form-control-solid select2" required style="width: 100%;"
-                        id="municipio_id2" name="municipio_id2">
+                      <label class="control-label">Municipio</label>
+                      <select class="form-control select2" required style="width: 100%;" id="municipio_id2" name="municipio_id2">
                         <option></option>
                       </select>
                     </div>
+              
                     <div class="form-group col-md-6">
-                      <select class="form-control form-control-solid select2" required style="width: 100%;"
-                        id="parroquia_id2" name="parroquia_id2">
+                      <label class="control-label">Parroquia</label>
+                      <select class="form-control select2" required style="width: 100%;" id="parroquia_id2" name="parroquia_id2">
                         <option></option>
                       </select>
                     </div>
-                    <div class="form-group label-floating col-md-6">
+              
+                    <div class="form-group col-md-6">
+                      <label class="control-label">Sector</label>
                       <input class="form-control" type="text" id="sector2" name="sector2" required>
                     </div>
+              
                   </div>
+              
                   <p class="centro-texto">
-                    <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;"><i
-                        class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                    <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                        class="zmdi zmdi-floppy"></i>Guardar cambios</button>
+                    <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                    <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Guardar cambios</button>
                   </p>
                 </div>
               </form>
+              
             </div>
           </div>
         </div>
@@ -337,18 +353,38 @@
     });
   </script>
   <script>
-    $(document).ready(function() {
-      $("#paso1").show();
+    $("#paso1").show();
+    $("#paso2").hide();
 
-      $("#siguiente1").click(function() {
+    $("#siguiente1").click(function() {
+      let valid = true;
+
+      // Validar campos requeridos dentro de #paso1
+      $('#paso1 :input[required]').each(function() {
+        if ($(this).val() === '' || $(this).val() === null) {
+          $(this).addClass('is-invalid');
+          valid = false;
+        } else {
+          $(this).removeClass('is-invalid');
+        }
+      });
+
+      // Validación final
+      if (valid) {
         $("#paso1").hide();
         $("#paso2").show();
-      });
+      } else {
+        toastr.error("Debe completar todos los campos requeridos del paso 1.");
+      }
+    });
 
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
-      });
+    $("#regresar").click(function() {
+      $("#paso2").hide();
+      $("#paso1").show();
+    });
+</script>
+  <script>
+    $(document).ready(function() {
 
       $("#registro-representante").submit(function(event) {
         event.preventDefault();
@@ -401,177 +437,160 @@
       });
     });
   </script>
-  <script>
-    const estados = @json($estados);
-    const municipios = @json($municipios);
-    const parroquias = @json($parroquias);
-  </script>
-  <script>
-    function editRepresentante(id) {
-      $.get('/representantes/' + id + '/edit', function(representante) {
-        $('#id').val(representante.id);
-        $('#nombre2').val(representante.nombre);
-        $('#apellido2').val(representante.apellido);
-        $('#ci2').val(representante.ci);
-        $('#telefono2').val(representante.telefono);
-        $('#email2').val(representante.email);
+ <script>
+  function editRepresentante(id) {
+    $.get('/representantes/' + id + '/edit', function(representante) {
+      $('#id').val(representante.id);
+      $('#nombre2').val(representante.nombre);
+      $('#apellido2').val(representante.apellido);
+      $('#ci2').val(representante.ci);
+      $('#telefono2').val(representante.telefono);
+      $('#email2').val(representante.email);
 
-        if (representante.direccion) {
-          $('#estado_id2').val(representante.direccion.estado_id).trigger('change');
+      if (representante.direccion) {
+        const estado = estados.find(e => e.id == representante.direccion.estado_id);
+        const municipio = municipios.find(m => m.id == representante.direccion.municipio_id);
+        const parroquia = parroquias.find(p => p.id == representante.direccion.parroquia_id);
 
-          filterMunicipios(representante.direccion.estado_id);
-          $('#municipio_id2').val(representante.direccion.municipio_id).trigger('change');
+        setSelect2Preselection('#estado_id2', estado.id, estado.estado);
+        filterMunicipios(estado.id, municipio.id);
+        filterParroquias(municipio.id, parroquia.id);
 
-          filterParroquias(representante.direccion.municipio_id);
-          $('#parroquia_id2').val(representante.direccion.parroquia_id).trigger('change');
+        $('#sector2').val(representante.direccion.sector);
+      }
 
-          $('#sector2').val(representante.direccion.sector);
-        }
+      $('#editRepresentante').modal('show');
+    });
+  }
 
-        $('#editRepresentante').modal('show');
-      });
-    }
+  $('#editRepresentante').on('shown.bs.modal', function() {
+    initSelect2('#estado_id2', 'Seleccione su estado');
+    initSelect2('#municipio_id2', 'Seleccione su municipio');
+    initSelect2('#parroquia_id2', 'Seleccione su parroquia');
 
-    $('#editRepresentante').on('shown.bs.modal', function() {
-      initSelect2('#estado_id2', "Seleccione su estado", estados, 'estado');
-      initSelect2('#municipio_id2', "Seleccione su municipio", municipios, 'municipio');
-      initSelect2('#parroquia_id2', "Seleccione su parroquia", parroquias, 'parroquia');
-
-      $('#estado_id2').on('change', function() {
-        const estadoId = $(this).val();
-        filterMunicipios(estadoId);
-        $('#parroquia_id2').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-      });
-
-      $('#municipio_id2').on('change', function() {
-        const municipioId = $(this).val();
-        filterParroquias(municipioId);
-      });
+    $('#estado_id2').off('change').on('change', function() {
+      const estadoId = $(this).val();
+      clearSelect('#municipio_id2', 'Seleccione su municipio');
+      clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+      filterMunicipios(estadoId);
     });
 
-    const initSelect2 = (selector, placeholder, data, type) => {
-      $(selector).select2({
-        placeholder: placeholder,
-        allowClear: true,
-        minimumInputLength: 1,
-        ajax: {
-          delay: 250,
-          transport: function(params, success) {
-            const searchTerm = params.data.term.toLowerCase().trim();
-            const filteredResults = data.filter(item =>
-              type === 'estado' ? item.estado.toLowerCase().includes(searchTerm) :
-              type === 'municipio' ? item.municipio.toLowerCase().includes(searchTerm) :
-              item.parroquia.toLowerCase().includes(searchTerm)
-            );
-            const results = filteredResults.map(item => ({
-              id: item.id,
-              text: type === 'estado' ? item.estado : type === 'municipio' ? item.municipio : item.parroquia
-            }));
-            success({
-              results: results
-            });
-          }
-        },
-        dropdownParent: $('#editRepresentante .modal-body')
-      });
-    };
+    $('#municipio_id2').off('change').on('change', function() {
+      const municipioId = $(this).val();
+      clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+      filterParroquias(municipioId);
+    });
+  });
 
-    const showMunicipios = (filteredMunicipios) => {
-      $('#municipio_id2').empty().append('<option selected disabled>Seleccione su municipio</option>');
-      filteredMunicipios.forEach(item => {
-        const option = new Option(item.municipio, item.id, false, false);
-        $('#municipio_id2').append(option);
-      });
-      $('#municipio_id2').trigger('change');
-    };
+  function initSelect2(selector, placeholder) {
+    $(selector).select2({
+      placeholder: placeholder,
+      width: '100%',
+      dropdownParent: $('#editRepresentante')
+    });
+  }
 
-    const filterMunicipios = (estadoId) => {
-      const filteredMunicipios = municipios.filter(item => item.estado_id == estadoId);
-      showMunicipios(filteredMunicipios);
-    };
+  function setSelect2Preselection(selector, id, text) {
+    if ($(selector).find("option[value='" + id + "']").length === 0) {
+      $(selector).append(new Option(text, id, true, true)).trigger('change');
+    } else {
+      $(selector).val(id).trigger('change');
+    }
+  }
 
-    const showParroquias = (filteredParroquias) => {
-      $('#parroquia_id2').empty().append('<option selected disabled>Seleccione su parroquia</option>');
-      filteredParroquias.forEach(item => {
-        const option = new Option(item.parroquia, item.id, false, false);
-        $('#parroquia_id2').append(option);
-      });
-      $('#parroquia_id2').trigger('change');
-    };
+  function clearSelect(selector, placeholder) {
+    $(selector).empty().append(`<option disabled selected>${placeholder}</option>`).val(null).trigger('change');
+  }
 
-    const filterParroquias = (municipioId) => {
-      const filteredParroquias = parroquias.filter(item => item.municipio_id == municipioId);
-      showParroquias(filteredParroquias);
-    };
-  </script>
+  function filterMunicipios(estadoId, preselectedId = null) {
+    const filtered = municipios.filter(m => m.estado_id == estadoId);
+    $('#municipio_id2').empty().append('<option disabled selected>Seleccione su municipio</option>');
+    filtered.forEach(m => {
+      const option = new Option(m.municipio, m.id, false, m.id == preselectedId);
+      $('#municipio_id2').append(option);
+    });
+    $('#municipio_id2').trigger('change');
+  }
+
+  function filterParroquias(municipioId, preselectedId = null) {
+    const filtered = parroquias.filter(p => p.municipio_id == municipioId);
+    $('#parroquia_id2').empty().append('<option disabled selected>Seleccione su parroquia</option>');
+    filtered.forEach(p => {
+      const option = new Option(p.parroquia, p.id, false, p.id == preselectedId);
+      $('#parroquia_id2').append(option);
+    });
+    $('#parroquia_id2').trigger('change');
+  }
+</script>
+
   <script>
-    $(document).ready(function() {
-      $("#paso1_edit").show();
-      $("#paso2_edit").hide();
-
-      $("#siguiente1_edit").click(function() {
-        $("#paso1_edit").hide();
-        $("#paso2_edit").show();
-      });
-
-      $("#regresar_edit").click(function() {
-        $("#paso2_edit").hide();
+      $(document).ready(function() {
         $("#paso1_edit").show();
-      });
+        $("#paso2_edit").hide();
 
-      $("#editar-representante").submit(function(event) {
-        event.preventDefault();
+        $("#siguiente1_edit").click(function() {
+          $("#paso1_edit").hide();
+          $("#paso2_edit").show();
+        });
 
-        var id = $('#id').val();
-        var nombre = $('#nombre2').val();
-        var apellido = $('#apellido2').val();
-        var ci = $('#ci2').val();
-        var telefono = $('#telefono2').val();
-        var email = $('#email2').val();
-        var genero_id = $('#genero_id2').val();
-        var estado_id = $('#estado_id2').val();
-        var municipio_id = $('#municipio_id2').val();
-        var parroquia_id = $('#parroquia_id2').val();
-        var sector = $('#sector2').val();
-        var _token = $("input[name=_token]").val();
+        $("#regresar_edit").click(function() {
+          $("#paso2_edit").hide();
+          $("#paso1_edit").show();
+        });
 
-        $.ajax({
-          url: "/representantes/" + id,
-          type: "PUT",
-          data: {
-            id: id,
-            nombre: nombre,
-            apellido: apellido,
-            ci: ci,
-            telefono: telefono,
-            email: email,
-            genero_id: genero_id,
-            estado_id: estado_id,
-            municipio_id: municipio_id,
-            parroquia_id: parroquia_id,
-            sector: sector,
-            _token: _token
-          },
-          success: function(response) {
-            console.log("Respuesta del servidor:", response);
-            if (response.success) {
-              console.log("Cerrando el modal...");
-              $('#editRepresentante').modal('hide');
-              toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
-                timeOut: 5000
-              });
-              $('#tab-representante').DataTable().ajax.reload();
-            } else {
-              console.log("No se pudo actualizar el registro.");
+        $("#editar-representante").submit(function(event) {
+          event.preventDefault();
+
+          var id = $('#id').val();
+          var nombre = $('#nombre2').val();
+          var apellido = $('#apellido2').val();
+          var ci = $('#ci2').val();
+          var telefono = $('#telefono2').val();
+          var email = $('#email2').val();
+          var genero_id = $('#genero_id2').val();
+          var estado_id = $('#estado_id2').val();
+          var municipio_id = $('#municipio_id2').val();
+          var parroquia_id = $('#parroquia_id2').val();
+          var sector = $('#sector2').val();
+          var _token = $("input[name=_token]").val();
+
+          $.ajax({
+            url: "/representantes/" + id,
+            type: "PUT",
+            data: {
+              id: id,
+              nombre: nombre,
+              apellido: apellido,
+              ci: ci,
+              telefono: telefono,
+              email: email,
+              genero_id: genero_id,
+              estado_id: estado_id,
+              municipio_id: municipio_id,
+              parroquia_id: parroquia_id,
+              sector: sector,
+              _token: _token
+            },
+            success: function(response) {
+              console.log("Respuesta del servidor:", response);
+              if (response.success) {
+                console.log("Cerrando el modal...");
+                $('#editRepresentante').modal('hide');
+                toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
+                  timeOut: 5000
+                });
+                $('#tab-representante').DataTable().ajax.reload();
+              } else {
+                console.log("No se pudo actualizar el registro.");
+              }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error('Error en la actualización:', textStatus, errorThrown);
+              alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
             }
-          },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error en la actualización:', textStatus, errorThrown);
-            alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
-          }
+          });
         });
       });
-    });
   </script>
   <script>
     $(document).on('click', '.ver-representante', function() {
@@ -610,4 +629,51 @@
       });
     });
   </script>
+  <script>
+    $(document).ready(function() {
+    console.log("JS cargado");
+    $(".email-verificar").on("blur", function() {
+      const input = $(this);
+      const email = input.val().trim();
+
+      if (email === "") return;
+
+      $.ajax({
+        url: "/verificar-email",
+        method: "GET",
+        data: { email: email },
+        success: function(response) {
+          if (response.exists) {
+            toastr.error("Este correo ya está registrado en el sistema.");
+            input.val("").focus();
+            input.removeClass("is-valid").addClass("is-invalid");
+            input.data("valid", false);
+          } else {
+            input.removeClass("is-invalid").addClass("is-valid");
+            input.data("valid", true);
+          }
+        },
+        error: function() {
+          toastr.error("El correo ya esta en el sistema.");
+        }
+      });
+    });
+
+    $("form").on("submit", function(e) {
+      let valid = true;
+      $(".email-verificar").each(function() {
+        const isValid = $(this).data("valid");
+        if (isValid === false || typeof isValid === "undefined") {
+          toastr.error(
+            "Uno de los correos ingresados ya está en uso o no ha sido validado."
+          );
+          valid = false;
+        }
+      });
+
+      if (!valid) e.preventDefault();
+    });
+   });
+
+</script>
 @endsection

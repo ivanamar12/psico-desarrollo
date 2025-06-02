@@ -40,123 +40,140 @@
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-hitoria">@csrf
-                      <section id= "paso1">
+                      <section id="paso1">
                         <h3>Datos del paciente</h3>
                         <div class="form-row">
+                          
+                          <!-- Paciente -->
                           <div class="form-group label-floating col-md-6">
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="paciente_id" name="paciente_id" require>
+                            <label class="control-label">Paciente <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="paciente_id" name="paciente_id">
                               <option selected disabled>Seleccione el paciente</option>
                             </select>
+                            <small class="form-text text-muted">Seleccione al paciente registrado previamente en el sistema.</small>
                           </div>
+                      
+                          <!-- Código de Historia -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Código de Historia</label>
-                            <input type="text" class="form-control" readonly="readonly" id="codigo" name="codigo"
-                              title="Código de la historia" placeholder="codigo" required
+                            <label class="control-label">Código de Historia <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" readonly id="codigo" name="codigo" placeholder="Código" required
                               value="{{ 'HIS' . substr(str_shuffle('0123456789'), 0, 5) }}">
+                            <small class="form-text text-muted">Este código es generado automáticamente por el sistema.</small>
                           </div>
+                      
+                          <!-- Referencia -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Referencia</label>
+                            <label class="control-label">Referencia <span class="text-danger">*</span></label>
                             <input class="form-control" id="referencia" name="referencia" type="text" required>
+                            <small class="form-text text-muted">Indique quién refirió al paciente o si viene por iniciativa propia.</small>
                           </div>
+                      
+                          <!-- Especialidad que Refirió -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Especialidad que Refirió</label>
-                            <input class="form-control" id="especialista_refirio" name="especialista_refirio"
-                              type="text" required>
+                            <label class="control-label">Especialidad que Refirió <span class="text-danger">*</span></label>
+                            <input class="form-control" id="especialista_refirio" name="especialista_refirio" type="text" required>
+                            <small class="form-text text-muted">Ingrese la especialidad médica que remitió al paciente (ej. Pediatría, Neurología).</small>
                           </div>
+                      
+                          <!-- Motivo -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Motivo</label>
+                            <label class="control-label">Motivo <span class="text-danger">*</span></label>
                             <input class="form-control" id="motivo" name="motivo" type="text" required>
+                            <small class="form-text text-muted">Describa brevemente el motivo de la evaluación.</small>
                           </div>
+                      
                         </div>
-                        <p class="centro-texto"><button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button></p>
+                        <p class="centro-texto">
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
+                        </p>
                       </section>
-
+                      
                       <section id="paso2">
                         <h3>Antecedentes Médicos</h3>
                         <div class="form-row">
+                      
+                          <!-- Enfermedad Infecciosa -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño ha sufrido de alguna enfermedad infecciosa?</h5>
+                            <h5>¿El niño ha sufrido de alguna enfermedad infecciosa? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
-                                <input type="radio" name="enfermedad_infecciosa" value="si" required>
-                                <span>Si</span>
+                                <input type="radio" name="enfermedad_infecciosa" value="si" required> <span>Sí</span>
                               </label>
-                              <label>
-                                <input type="radio" name="enfermedad_infecciosa" value="no">
-                                <span>No</span>
+                              <label class="ml-3">
+                                <input type="radio" name="enfermedad_infecciosa" value="no"> <span>No</span>
                               </label>
-                              <input class="form-control ml-3" id="tipo_enfermedad_infecciosa"
-                                name="tipo_enfermedad_infecciosa" type="text"
-                                placeholder="Especificar enfermedad infecciosa">
+                              <input class="form-control ml-3" id="tipo_enfermedad_infecciosa" name="tipo_enfermedad_infecciosa" type="text" placeholder="Especificar enfermedad infecciosa">
                             </div>
+                            <small class="form-text text-muted">Indique si el niño ha tenido enfermedades como varicela, sarampión, etc. Especifique si responde "Sí".</small>
                           </div>
+                      
+                          <!-- Enfermedad No Infecciosa -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa?</h5>
+                            <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
-                                <input type="radio" name="enfermedad_no_infecciosa" value="si" required>
-                                <span>Si</span>
+                                <input type="radio" name="enfermedad_no_infecciosa" value="si" required> <span>Sí</span>
                               </label>
-                              <label>
-                                <input type="radio" name="enfermedad_no_infecciosa" value="no">
-                                <span>No</span>
+                              <label class="ml-3">
+                                <input type="radio" name="enfermedad_no_infecciosa" value="no"> <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_enfermedad_no_infecciosa"
-                                id="tipo_enfermedad_no_infecciosa" type="text"
-                                placeholder="Especificar enfermedad no infecciosa">
+                              <input class="form-control ml-3" name="tipo_enfermedad_no_infecciosa" id="tipo_enfermedad_no_infecciosa" type="text" placeholder="Especificar enfermedad no infecciosa">
                             </div>
+                            <small class="form-text text-muted">Ejemplos: alergias, epilepsia, asma. Especifique si responde "Sí".</small>
                           </div>
+                      
+                          <!-- Enfermedad Crónica -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño padece de alguna enfermedad crónica?</h5>
+                            <h5>¿El niño padece de alguna enfermedad crónica? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
-                                <input type="radio" name="enfermedad_cronica" value="si" required>
-                                <span>Si</span>
+                                <input type="radio" name="enfermedad_cronica" value="si" required> <span>Sí</span>
                               </label>
-                              <label>
-                                <input type="radio" name="enfermedad_cronica" value="no">
-                                <span>No</span>
+                              <label class="ml-3">
+                                <input type="radio" name="enfermedad_cronica" value="no"> <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_enfermedad_cronica"
-                                id="tipo_enfermedad_cronica" type="text"
-                                placeholder="Especificar enfermedad crónica">
+                              <input class="form-control ml-3" name="tipo_enfermedad_cronica" id="tipo_enfermedad_cronica" type="text" placeholder="Especificar enfermedad crónica">
                             </div>
+                            <small class="form-text text-muted">Ejemplos: diabetes, hipertensión, enfermedades metabólicas. Especifique si responde "Sí".</small>
                           </div>
+                      
+                          <!-- Discapacidad -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño padece de alguna discapacidad?</h5>
+                            <h5>¿El niño padece de alguna discapacidad? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
-                              <label class="mr-2"><input type="radio" name="discapacidad" value="si" required>
-                                <span>Si</span>
+                              <label class="mr-2">
+                                <input type="radio" name="discapacidad" value="si" required> <span>Sí</span>
                               </label>
-                              <label>
-                                <input type="radio" name="discapacidad" value="no">
-                                <span>No</span>
+                              <label class="ml-3">
+                                <input type="radio" name="discapacidad" value="no"> <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_discapacidad" id="tipo_discapacidad"
-                                type="text" placeholder="Especificar discapacidad">
+                              <input class="form-control ml-3" name="tipo_discapacidad" id="tipo_discapacidad" type="text" placeholder="Especificar discapacidad">
                             </div>
+                            <small class="form-text text-muted">Ejemplos: visual, auditiva, motora, intelectual. Especifique si responde "Sí".</small>
                           </div>
+                      
+                          <!-- Otros -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Otros</label>
+                            <label class="control-label">Otros <span class="text-danger">*</span></label>
                             <input class="form-control" id="otros" name="otros" type="text" required>
+                            <small class="form-text text-muted">Ingrese cualquier otro antecedente médico relevante que no haya sido mencionado anteriormente.</small>
                           </div>
+                      
                         </div>
                         <p class="centro-texto">
-                          <button type="button" id="regresar1" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="button" id="siguiente2" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="regresar1" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
-                      </section>
+                      </section>                      
 
                       <section id="paso3">
                         <h3>Historia de desarrollo</h3>
                         <h4>Embarazo</h4>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
-                            <h5>Durante el embarazo ¿la madre recibió algún tipo de medicamento?</h5>
+                            <h5>Durante el embarazo ¿la madre recibió algún tipo de medicamento? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
                                 <input type="radio" name="medicamento_embarazo" value="si" required>
@@ -166,12 +183,13 @@
                                 <input type="radio" name="medicamento_embarazo" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" id="tipo_medicamento" name="tipo_medicamento"
-                                type="text" placeholder="Especificar medicamento">
+                              <input class="form-control ml-3" id="tipo_medicamento" name="tipo_medicamento" type="text" placeholder="Especificar medicamento">
                             </div>
+                            <small class="text-danger">Este campo es requerido</small>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Durante el embarazo ¿la madre fumó?</h5>
+                            <h5>Durante el embarazo ¿la madre fumó? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
                                 <input type="radio" name="fumo_embarazo" value="si" required>
@@ -181,13 +199,14 @@
                                 <input type="radio" name="fumo_embarazo" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="cantidad" id="cantidad" type="text"
-                                placeholder="Cantidad que fumaba al día">
+                              <input class="form-control ml-3" name="cantidad" id="cantidad" type="text" placeholder="Cantidad que fumaba al día">
                             </div>
+                            <small class="text-danger">Este campo es requerido</small>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Durante el embarazo ¿la madre tomó bebidas alcohólicas?</h5>
-                            <div class="d-flex align-items-center">
+                            <h5>Durante el embarazo ¿la madre tomó bebidas alcohólicas? <span class="text-danger">*</span></h5>
+                            <div class="d-flex align-items-center flex-wrap">
                               <label class="mr-2">
                                 <input type="radio" name="alcohol_embarazo" value="si" required>
                                 <span>Si</span>
@@ -196,16 +215,14 @@
                                 <input type="radio" name="alcohol_embarazo" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" style="display: none;" name="tipo_alcohol"
-                                id="tipo_alcohol" type="text" placeholder="Especificar el tipo de alcohol">
-
-                              <input class="form-control ml-3" style="display: none;" name="cantidad_consumia_alcohol"
-                                id="cantidad_consumia_alcohol" type="text"
-                                placeholder="Especificar cantidad consumida de alcohol">
+                              <input class="form-control ml-3 mt-2" style="display: none;" name="tipo_alcohol" id="tipo_alcohol" type="text" placeholder="Especificar el tipo de alcohol">
+                              <input class="form-control ml-3 mt-2" style="display: none;" name="cantidad_consumia_alcohol" id="cantidad_consumia_alcohol" type="text" placeholder="Especificar cantidad consumida de alcohol">
                             </div>
+                            <small class="text-danger">Este campo es requerido</small>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Durante el embarazo ¿la madre utilizó drogas?</h5>
+                            <h5>Durante el embarazo ¿la madre utilizó drogas? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label class="mr-2">
                                 <input type="radio" name="droga_embarazo" value="si" required>
@@ -215,27 +232,28 @@
                                 <input type="radio" name="droga_embarazo" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_droga" id="tipo_droga" type="text"
-                                placeholder="Especificar la droga utilizada en el embarazo">
+                              <input class="form-control ml-3" name="tipo_droga" id="tipo_droga" type="text" placeholder="Especificar la droga utilizada en el embarazo">
                             </div>
+                            <small class="text-danger">Este campo es requerido</small>
                           </div>
                         </div>
+                      
                         <p class="centro-texto">
-                          <button type="button" id="regresar2" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="button" id="siguiente3" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="regresar2" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                          <button type="button" id="siguiente3" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </section>
-
-                      <section id ="paso4">
+                      
+                      <section id="paso4">
                         <h3>Historia de desarrollo</h3>
                         <h4>Parto</h4>
                         <div class="form-row">
+                      
+                          <!-- Fórceps -->
                           <div class="form-group label-floating col-md-6">
-                            <h5> ¿Se realizaron fórceps durante el parto?</h5>
+                            <h5>¿Se realizaron fórceps durante el parto? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
-                              <label>
+                              <label class="mr-2">
                                 <input type="radio" name="forceps_parto" value="si" required>
                                 <span>Si</span>
                               </label>
@@ -244,72 +262,85 @@
                                 <span>No</span>
                               </label>
                             </div>
+                            <small class="text-danger">Campo requerido</small>
                           </div>
+                      
+                          <!-- Cesárea -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Se realizo cesárea?</h5>
+                            <h5>¿Se realizó cesárea? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
-                              <label>
-                                <input type="radio" name="cesarea" value="si" required>
+                              <label class="mr-2">
+                                <input type="radio" name="cesarea" value="si" required onchange="toggleInput('cesarea', 'razon_cesarea')">
                                 <span>Si</span>
                               </label>
                               <label>
-                                <input type="radio" name="cesarea" value="no">
+                                <input type="radio" name="cesarea" value="no" onchange="toggleInput('cesarea', 'razon_cesarea')">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="razon_cesarea" id="razon_cesarea" type="text"
-                                placeholder="Razón de la cesárea">
+                              <input class="form-control ml-3" name="razon_cesarea" id="razon_cesarea" type="text"
+                                placeholder="Razón de la cesárea" style="display: none;">
                             </div>
+                            <small class="text-danger">Campo requerido</small>
                           </div>
+                      
+                          <!-- Prematuro -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño fue prematuro?</h5>
+                            <h5>¿El niño fue prematuro? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
-                              <label>
-                                <input type="radio" name="niño_prematuro" value="si" required>
+                              <label class="mr-2">
+                                <input type="radio" name="niño_prematuro" value="si" required onchange="toggleInput('niño_prematuro', 'meses_prematuro')">
                                 <span>Si</span>
                               </label>
                               <label>
-                                <input type="radio" name="niño_prematuro" value="no">
+                                <input type="radio" name="niño_prematuro" value="no" onchange="toggleInput('niño_prematuro', 'meses_prematuro')">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="meses_prematuro" id="meses_prematuro" type="text"
-                                placeholder="Especificar por cuantos meses">
+                              <input class="form-control ml-3" name="meses_prematuro" id="meses_prematuro" type="text"
+                                placeholder="¿Cuántos meses prematuro?" style="display: none;">
                             </div>
+                            <small class="text-danger">Campo requerido</small>
                           </div>
+                      
+                          <!-- Complicaciones -->
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Hubo complicaciones en el nacimiento?</h5>
+                            <h5>¿Hubo complicaciones en el nacimiento? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
-                              <label>
-                                <input type="radio" name="complicaciones_nacer" value="si" required>
+                              <label class="mr-2">
+                                <input type="radio" name="complicaciones_nacer" value="si" required onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')">
                                 <span>Si</span>
                               </label>
                               <label>
-                                <input type="radio" name="complicaciones_nacer" value="no">
+                                <input type="radio" name="complicaciones_nacer" value="no" onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="tipo_complicacion" id="tipo_complicacion"
-                                type="text" placeholder="Especificar el tipo de complicación">
+                              <input class="form-control ml-3" name="tipo_complicacion" id="tipo_complicacion" type="text"
+                                placeholder="Especificar la complicación" style="display: none;">
                             </div>
+                            <small class="text-danger">Campo requerido</small>
                           </div>
+                      
+                          <!-- Peso -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Peso al nacer</label>
-                            <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text"
-                              required>
+                            <label class="control-label">Peso al nacer <span class="text-danger">*</span></label>
+                            <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text" required>
+                            <small class="text-danger">Campo requerido</small>
                           </div>
                         </div>
+                      
                         <p class="centro-texto">
-                          <button type="button" id="regresar3" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="button" id="siguiente4" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="regresar3" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente4" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </section>
-
+                      
                       <section id="paso5">
                         <h3>Historia de desarrollo</h3>
                         <h4>Primeros meses del niño</h4>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Hubo algun tipo de problema de alimentación?</h5>
+                            <h5>¿Hubo algún tipo de problema de alimentación? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="problema_alimentacion" value="si" required>
@@ -319,13 +350,14 @@
                                 <input type="radio" name="problema_alimentacion" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="tipo_problema_alimenticio"
-                                id="tipo_problema_alimenticio" type="text"
+                              <input class="form-control mt-2" name="tipo_problema_alimenticio" id="tipo_problema_alimenticio" type="text"
                                 placeholder="Especificar tipo de problema alimenticio">
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño tenia problemas para dormir?</h5>
+                            <h5>¿El niño tenía problemas para dormir? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="problema_dormir" value="si" required>
@@ -335,12 +367,14 @@
                                 <input type="radio" name="problema_dormir" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="tipo_problema_dormir" id="tipo_problema_dormir"
-                                type="text" placeholder="Especificar tipo de problema para dormir">
+                              <input class="form-control mt-2" name="tipo_problema_dormir" id="tipo_problema_dormir" type="text"
+                                placeholder="Especificar tipo de problema para dormir">
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Cuando recien nacido ¿el niño era tranquilo?</h5>
+                            <h5>Cuando recién nacido, ¿el niño era tranquilo? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="tranquilo_recien_nacido" value="si" required>
@@ -351,9 +385,11 @@
                                 <span>No</span>
                               </label>
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Cuando recien nacido ¿el niño le gustaba que lo cargaran?</h5>
+                            <h5>Cuando recién nacido, ¿al niño le gustaba que lo cargaran? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="gustaba_cargaran_recien_nacido" value="si" required>
@@ -364,9 +400,11 @@
                                 <span>No</span>
                               </label>
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>Cuando recien nacido ¿el niño estaba alerta?</h5>
+                            <h5>Cuando recién nacido, ¿el niño estaba alerta? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="alerta_recien_nacido" value="si" required>
@@ -377,38 +415,43 @@
                                 <span>No</span>
                               </label>
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Hubo algun problema o complicacion en el crecimiento y desarrollo del niño en los
-                              primeros años de vida?</h5>
+                            <h5>¿Hubo algún problema o complicación en el crecimiento y desarrollo del niño en los primeros años de vida? <span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
-                                <input type="radio" name="problemas_desarrollo_primeros_años" value="si"
-                                  required>
+                                <input type="radio" name="problemas_desarrollo_primeros_años" value="si" required>
                                 <span>Si</span>
                               </label>
                               <label>
                                 <input type="radio" name="problemas_desarrollo_primeros_años" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="cuales_problemas" id="cuales_problemas" type="text"
-                                placeholder="Especificar tipo de problema o complicacion en el desarrollo">
+                              <input class="form-control mt-2" name="cuales_problemas" id="cuales_problemas" type="text"
+                                placeholder="Especificar tipo de problema o complicación en el desarrollo">
                             </div>
+                            <span class="invalid-feedback">Este campo es obligatorio.</span>
                           </div>
                         </div>
+                      
                         <p class="centro-texto">
-                          <button type="button" id="regresar4" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="button" id="siguiente5" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="regresar4" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente5" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
                       </section>
+                      
 
                       <section id="paso6">
                         <h3>Historia Escolar</h3>
                         <div class="form-row">
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño esta escolarizado?</h5>
+                            <h5>¿El niño está escolarizado?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="escolarizado" value="si" required>
@@ -419,11 +462,12 @@
                                 <span>No</span>
                               </label>
                               <input class="form-control" name="tipo_educaion" id="tipo_educaion" type="text"
-                                placeholder="Especificar el tipo de educacion que recibe el niño">
+                                placeholder="Especificar el tipo de educación que recibe el niño">
                             </div>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿Recibe alguna terapia o tutoria?</h5>
+                            <h5>¿Recibe alguna terapia o tutoría?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="tutoria_terapias" value="si" required>
@@ -433,12 +477,13 @@
                                 <input type="radio" name="tutoria_terapias" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control" name="tutoria_terapias_cuales" id="tutoria_terapias_cuales"
-                                type="text" placeholder="Especificar las terapias o tutorias que recibe el niño">
+                              <input class="form-control" name="tutoria_terapias_cuales" id="tutoria_terapias_cuales" type="text"
+                                placeholder="Especificar las terapias o tutorías que recibe el niño">
                             </div>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño presenta alguna dificultad para la lectura?</h5>
+                            <h5>¿El niño presenta alguna dificultad para la lectura?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="dificultad_lectura" value="si" required>
@@ -450,8 +495,9 @@
                               </label>
                             </div>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño presenta alguna dificultad para la aritmetica?</h5>
+                            <h5>¿El niño presenta alguna dificultad para la aritmética?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="dificultad_aritmetica" value="si" required>
@@ -463,8 +509,9 @@
                               </label>
                             </div>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿El niño presenta alguna dificultad para la escritura?</h5>
+                            <h5>¿El niño presenta alguna dificultad para la escritura?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="dificultad_escribir" value="si" required>
@@ -476,8 +523,9 @@
                               </label>
                             </div>
                           </div>
+                      
                           <div class="form-group label-floating col-md-6">
-                            <h5>¿le agrada el ambiente escolar?</h5>
+                            <h5>¿Le agrada el ambiente escolar?<span class="text-danger">*</span></h5>
                             <div class="d-flex align-items-center">
                               <label>
                                 <input type="radio" name="agrada_escuela" value="si" required>
@@ -490,13 +538,18 @@
                             </div>
                           </div>
                         </div>
+                      
                         <p class="centro-texto">
-                          <button type="button" id="regresar5" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy"></i>Registrar</button>
+                          <button type="button" id="regresar5" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i>Registrar
+                          </button>
                         </p>
                       </section>
+                      
+                      
                     </form>
                   </div>
                 </div>
@@ -591,67 +644,107 @@
     });
   </script>
   <script>
-    $(document).ready(function() {
-      $("#paso1").show();
-      $("#paso2").hide();
-      $("#paso3").hide();
-      $("#paso4").hide();
-      $("#paso5").hide();
-      $("#paso6").hide();
+    $(document).ready(function () {
+  // Mostrar solo el primer paso al inicio
+  $("#paso1").show();
+  $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();
 
-      $("#siguiente1").click(function() {
-        if ($("#paciente_id").val()) {
-          $("#paso1").hide();
-          $("#paso2").show();
+  function validarPaso(pasoId) {
+    let valid = true;
+    $(`${pasoId} :input[required]`).each(function () {
+      if ($(this).is(':radio')) {
+        const name = $(this).attr('name');
+        if (!$(`${pasoId} input[name="${name}"]:checked`).length) {
+          $(`${pasoId} input[name="${name}"]`).addClass("is-invalid");
+          valid = false;
         } else {
-          toastr.error("Por favor, complete todos los campos requeridos en este paso.");
+          $(`${pasoId} input[name="${name}"]`).removeClass("is-invalid");
         }
-      });
+      } else if ($(this).val() === '' || $(this).val() === null) {
+        $(this).addClass("is-invalid");
+        valid = false;
+      } else {
+        $(this).removeClass("is-invalid");
+      }
+    });
+    return valid;
+  }
 
-      $("#siguiente2").click(function() {
-        $("#paso2").hide();
-        $("#paso3").show();
-      });
+  $("#siguiente1").click(function () {
+    if (validarPaso("#paso1")) {
+      $("#paso1").hide();
+      $("#paso2").show();
+    } else {
+      toastr.error("Debe completar todos los campos requeridos del paso 1.");
+    }
+  });
 
-      $("#siguiente3").click(function() {
-        $("#paso3").hide();
-        $("#paso4").show();
-      });
+  $("#siguiente2").click(function () {
+    if (validarPaso("#paso2")) {
+      $("#paso2").hide();
+      $("#paso3").show();
+    } else {
+      toastr.error("Debe completar todos los campos requeridos del paso 2.");
+    }
+  });
 
-      $("#siguiente4").click(function() {
-        $("#paso4").hide();
-        $("#paso5").show();
-      });
+  $("#siguiente3").click(function () {
+    if (validarPaso("#paso3")) {
+      $("#paso3").hide();
+      $("#paso4").show();
+    } else {
+      toastr.error("Debe completar todos los campos requeridos del paso 3.");
+    }
+  });
 
-      $("#siguiente5").click(function() {
-        $("#paso5").hide();
-        $("#paso6").show();
-      });
+  $("#siguiente4").click(function () {
+    if (validarPaso("#paso4")) {
+      $("#paso4").hide();
+      $("#paso5").show();
+    } else {
+      toastr.error("Debe completar todos los campos requeridos del paso 4.");
+    }
+  });
 
-      $("#regresar1").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
-      });
+  $("#siguiente5").click(function () {
+    if (validarPaso("#paso5")) {
+      $("#paso5").hide();
+      $("#paso6").show();
+    } else {
+      toastr.error("Debe completar todos los campos requeridos del paso 5.");
+    }
+  });
 
-      $("#regresar2").click(function() {
-        $("#paso3").hide();
-        $("#paso2").show();
-      });
+  // Botones de regresar
+  $("#regresar1").click(function () {
+    $("#paso2").hide();
+    $("#paso1").show();
+  });
 
-      $("#regresar3").click(function() {
-        $("#paso4").hide();
-        $("#paso3").show();
-      });
+  $("#regresar2").click(function () {
+    $("#paso3").hide();
+    $("#paso2").show();
+  });
 
-      $("#regresar4").click(function() {
-        $("#paso5").hide();
-        $("#paso4").show();
-      });
+  $("#regresar3").click(function () {
+    $("#paso4").hide();
+    $("#paso3").show();
+  });
 
-      $("#regresar5").click(function() {
-        $("#paso6").hide();
-        $("#paso5").show();
-      });
+  $("#regresar4").click(function () {
+    $("#paso5").hide();
+    $("#paso4").show();
+  });
+
+  $("#regresar5").click(function () {
+    $("#paso6").hide();
+    $("#paso5").show();
+  });
+});
+
+  </script>
+  <script>
+    $(document).ready(function() {
 
       // Función para manejar todos los toggles
       function toggleInput(radioName, inputId, defaultValue = '') {
