@@ -15,6 +15,7 @@
   <link href='./css/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
   <link href="./css/introjs.min.css" rel="stylesheet">
   <link href="./css/intro-custom.css" rel="stylesheet">
+   <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
 <body>
@@ -55,7 +56,6 @@
     </div>
   </div>
   <!--====== Scripts -->
-  <script src="./js/jquery-3.1.1.min.js"></script>
   <script src="./js/sweetalert2.min.js"></script>
   <script src="./js/bootstrap.min.js"></script>
   <script src="./js/material.min.js"></script>
