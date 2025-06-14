@@ -101,6 +101,7 @@
                       <!-- paso 2 -->
                       <div id="paso2">
                         <h3>Datos Familiares</h3>
+                        <h4>Familiares que vivan en el hogar</h4>
                         <div id="miembrosContainer">
                           <div class="fila-formulario" id="formulario-familiar-0">
 
