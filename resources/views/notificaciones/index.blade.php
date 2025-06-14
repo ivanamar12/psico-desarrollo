@@ -7,30 +7,39 @@
     <!-- NavBar -->
     <x-navbar />
 
-    <!-- Content page -->
+    <!-- Page title -->
     <x-page-header title="Notificaciones" icon="zmdi zmdi-notifications-active zmdi-hc-fw" />
 
     <div class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
-          <div class="table-responsive">
-            <div class="text-right mb-3">
-              <button id="btn-marcar-todas" class="btn btn-custom" style="color: white;">
-                <i class="zmdi zmdi-check-all"></i> Marcar todas como leídas
-              </button>
+          <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+          </ul>
+
+          <section id="myTabContent" class="tab-content">
+            <!-- Pestaña Lista -->
+            <div class="tab-pane fade active in" id="list">
+              <div class="table-responsive">
+                <div class="text-right mb-3">
+                  <button id="btn-marcar-todas" class="btn btn-custom" style="color: white;">
+                    <i class="zmdi zmdi-check-all"></i> Marcar todas como leídas
+                  </button>
+                </div>
+                <table class="table table-hover text-center" id="tab-notificaciones">
+                  <thead>
+                    <tr>
+                      <th class="text-center">Título</th>
+                      <th class="text-center">Mensaje</th>
+                      <th class="text-center">Fecha</th>
+                      <th class="text-center">Estado</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
             </div>
-            <table class="table table-hover text-center" id="tab-notificaciones">
-              <thead>
-                <tr>
-                  <th class="text-center">Título</th>
-                  <th class="text-center">Mensaje</th>
-                  <th class="text-center">Fecha</th>
-                  <th class="text-center">Estado</th>
-                  <th class="text-center">Acciones</th>
-                </tr>
-              </thead>
-            </table>
-          </div>
+          </section>
         </div>
       </div>
     </div>
@@ -105,13 +114,13 @@
             searchable: false,
             render: function(data) {
               return `
-            <button onclick="marcarLeida('${data}')" class="btn btn-info btn-xs" title="Marcar como leída">
-              <i class="zmdi zmdi-check"></i>
-            </button>
-            <button onclick="mostrarModalEliminar('${data}')" class="btn btn-danger btn-xs" title="Eliminar">
-              <i class="zmdi zmdi-delete"></i>
-            </button>
-          `;
+                <button onclick="marcarLeida('${data}')" class="btn btn-success btn-raised btn-xs" title="Marcar como leída">
+                  <i class="zmdi zmdi-check"></i>
+                </button>
+                <button onclick="mostrarModalEliminar('${data}')" class="btn btn-danger btn-raised btn-xs" title="Eliminar">
+                  <i class="zmdi zmdi-delete"></i>
+                </button>
+              `;
             }
           }
         ],
