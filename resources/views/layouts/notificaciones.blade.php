@@ -5,6 +5,14 @@
       <span>Notificaciones</span>
       <i class="zmdi zmdi-close btn-Notifications-area"></i>
     </div>
+    <div onclick="verTodasNotificaciones()"
+      style="background: lightgray; border: none; cursor: pointer; font-size: 14px; text-align: center; padding: 3px; transition: background 0.3s ease;"
+      onmouseover="this.style.background='#bbb'" onmouseout="this.style.background='lightgray'">
+      <span>
+        Ver todas las notificaciones
+      </span>
+      <i class="zmdi zmdi-arrow-right-top" style="font-size: 16px;"></i>
+    </div>
     <section id="notifications-container">
       <!-- Las notificaciones se cargarán aquí dinámicamente -->
     </section>
@@ -44,12 +52,14 @@
     });
   }
 
-  // Marcar una notificación como leída
   function marcarLeida(id) {
     window.location.href = `/notificaciones/redirigir/${id}`;
   }
 
-  // Cargar notificaciones al cargar la página
+  function verTodasNotificaciones() {
+    window.location.href = '/notificaciones';
+  }
+
   $(document).ready(function() {
     cargarNotificaciones();
   });
