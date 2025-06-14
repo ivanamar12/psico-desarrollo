@@ -18,11 +18,14 @@ class NotificacionController extends Controller
     if (!auth()->check()) return response()->json(['message' => 'Unauthenticated.'], 401);
 
     return response()->json([
-      'notifications' => auth()->user()->notifications->map(fn($notification) => [
-        ...$notification->toArray(),
-        'created_at' => $notification->created_at->diffForHumans(),
-        'read_at' => $notification->read_at ? $notification->read_at->diffForHumans() : null,
-      ])
+      'notifications' => auth()->user()->notifications->map(function ($notification) {
+        return [
+          ...$notification->toArray(),
+          'created_at' => $notification->created_at->diffForHumans(),
+          'read_at' => $notification->read_at ? $notification->read_at->diffForHumans() : null,
+        ];
+      }),
+      'unread_count' => auth()->user()->unreadNotifications->count()
     ]);
   }
 

@@ -24,6 +24,8 @@
     $.get('/api/notificaciones', function(data) {
       let html = "";
 
+      updateNotificationCount(data.unread_count);
+
       if (data.notifications.length === 0) {
         html = `
           <section style="padding: 20px; text-align: center; color: #666;">
@@ -67,6 +69,20 @@
         </section>
       `);
     });
+  }
+
+  function updateNotificationCount(count) {
+    const badgeElement = $('.btn-Notifications-count .badge');
+
+    if (count > 0) {
+      if (badgeElement.length === 0) {
+        $('.btn-Notifications-count').append(`<span class="badge">${count}</span>`);
+      } else {
+        badgeElement.text(count);
+      }
+    } else {
+      badgeElement.remove();
+    }
   }
 
   function marcarLeida(id) {
