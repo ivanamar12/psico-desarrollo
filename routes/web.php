@@ -195,7 +195,7 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-    Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
+  Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

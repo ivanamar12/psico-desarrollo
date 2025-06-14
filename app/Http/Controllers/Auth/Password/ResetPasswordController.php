@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth\Password;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Notifications\PasswordChanged;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -54,6 +55,8 @@ class ResetPasswordController extends Controller
     ]);
 
     DB::table('password_resets')->where('email', $user->email)->delete();
+
+    $user->notify(new PasswordChanged($user));
 
     return redirect()->route('index')
       ->with('status', 'Contraseña actualizada correctamente.');
