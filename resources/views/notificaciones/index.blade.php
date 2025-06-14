@@ -22,7 +22,6 @@
             <table class="table table-hover text-center" id="tab-notificaciones">
               <thead>
                 <tr>
-                  <th class="text-center">ID</th>
                   <th class="text-center">Título</th>
                   <th class="text-center">Mensaje</th>
                   <th class="text-center">Fecha</th>
@@ -72,15 +71,12 @@
           url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
-        serverSide: false, // Desactivado para usar client-side processing
+        serverSide: false,
         ajax: {
           url: "{{ route('notificaciones.get') }}",
-          dataSrc: 'notifications' // Especificamos la propiedad donde están los datos
+          dataSrc: 'notifications'
         },
         columns: [{
-            data: 'id'
-          },
-          {
             data: 'data.title',
             render: function(data) {
               return data || 'Sin título';
@@ -171,6 +167,8 @@
               timeOut: 5000
             });
             $('#tab-notificaciones').DataTable().ajax.reload();
+            // Esta funcion la obtenemos de el componente de notificaciones
+            cargarNotificaciones();
           }
         },
         error: function(xhr) {
