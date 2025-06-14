@@ -17,30 +17,20 @@ class NotificacionController extends Controller
     ])]);
   }
 
-  // 2. Marcar una notificación como leída
-  public function markAsRead($id)
+  public function markAsReadAndRedirect($id)
   {
-    $notification = Auth::user()->notifications()->where('id', $id)->first();
-    if ($notification) {
-      $notification->markAsRead();
-    }
-    return response()->json(['success' => true]);
-  }
+    $notification = Auth::user()->notifications()->findOrFail($id);
+    $notification->markAsRead();
 
-  // 3. Marcar todas las notificaciones como leídas
-  public function markAllAsRead()
-  {
-    Auth::user()->unreadNotifications->markAsRead();
-    return response()->json(['success' => true]);
-  }
+    $data = $notification->data;
 
-  // 4. Eliminar una notificación
-  public function deleteNotification($id)
-  {
-    $notification = Auth::user()->notifications()->where('id', $id)->first();
-    if ($notification) {
-      $notification->delete();
+    if (isset($data['action']['route'])) {
+      return redirect()->route(
+        $data['action']['route'],
+        $data['action']['params'] ?? []
+      );
     }
-    return response()->json(['success' => true]);
+
+    return redirect()->back();
   }
 }

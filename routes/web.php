@@ -56,11 +56,18 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
 
   Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])->name('perfil.delete');
 
-  Route::get('/notificaciones', [NotificacionController::class, 'getNotifications'])->name('notificaciones.get');
-  Route::post('/notificaciones/leer/{id}', [NotificacionController::class, 'markAsRead'])->name('notificaciones.leer');
-  Route::post('/notificaciones/leer-todas', [NotificacionController::class, 'markAllAsRead'])->name('notificaciones.leer_todas');
-  Route::delete('/notificaciones/eliminar/{id}', [NotificacionController::class, 'deleteNotification'])->name('notificaciones.eliminar');
+  /**
+   * Notifications routes
+   */
+  Route::get('/notificaciones', [NotificacionController::class, 'getNotifications'])
+    ->name('notificaciones.get');
 
+  Route::get('/notificaciones/redirigir/{id}', [NotificacionController::class, 'markAsReadAndRedirect'])
+    ->name('notificaciones.redirigir');
+
+  /**
+   * Representantes routes
+   */
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
 
