@@ -1,11 +1,11 @@
 @extends('layouts.app')
+
 @section('title', 'Especialidades')
+
 @section('content')
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
-
-    <!-- Content page -->
 
     <!-- Page title -->
     <x-page-header title="Especialidades" icon="zmdi zmdi-assignment-o zmdi-hc-fw" />

@@ -21,7 +21,7 @@
 
 <script>
   function cargarNotificaciones() {
-    $.get('/notificaciones', function(data) {
+    $.get('/api/notificaciones', function(data) {
       let html = "";
 
       data.notifications.forEach(notification => {
@@ -57,7 +57,7 @@
   }
 
   function verTodasNotificaciones() {
-    window.location.href = '/notificaciones';
+    window.location.href = `{{ route('notificaciones.index') }}`;
   }
 
   $(document).ready(function() {

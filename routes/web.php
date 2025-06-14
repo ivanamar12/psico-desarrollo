@@ -59,11 +59,21 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   /**
    * Notifications routes
    */
-  Route::get('/notificaciones', [NotificacionController::class, 'getNotifications'])
+
+  Route::get('/api/notificaciones', [NotificacionController::class, 'getNotifications'])
     ->name('notificaciones.get');
+
+  Route::get('/notificaciones', [NotificacionController::class, 'index'])
+    ->name('notificaciones.index');
 
   Route::get('/notificaciones/redirigir/{id}', [NotificacionController::class, 'markAsReadAndRedirect'])
     ->name('notificaciones.redirigir');
+
+  Route::post('/notificaciones/marcar-todas', [NotificacionController::class, 'markAllAsRead'])
+    ->name('notificaciones.marcar-todas');
+
+  Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy'])
+    ->name('notificaciones.destroy');
 
   /**
    * Representantes routes
