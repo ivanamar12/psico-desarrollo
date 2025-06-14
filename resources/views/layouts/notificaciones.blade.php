@@ -2,72 +2,97 @@
   <div class="full-box Notifications-bg btn-Notifications-area"></div>
   <div class="full-box Notifications-body">
     <div class="Notifications-body-title text-titles text-center">
-      Notifications <i class="zmdi zmdi-close btn-Notifications-area"></i>
+      <span>Notificaciones</span>
+      <i class="zmdi zmdi-close btn-Notifications-area"></i>
     </div>
-    <div class="list-group">
-      @foreach (Auth::user()->unreadNotifications as $notification)
-        <div class="list-group-item">
-          <div class="row-action-primary">
-            <i class="zmdi zmdi-alert-triangle"></i>
-          </div>
-          <div class="row-content">
-            <div class="least-content">{{ $notification->created_at->diffForHumans() }}</div>
-            <h4 class="list-group-item-heading">{{ $notification->data['title'] }}</h4>
-            <p class="list-group-item-text">{{ $notification->data['message'] }}</p>
-            <button onclick="markAsRead('{{ $notification->id }}')" class="btn btn-sm btn-danger">Marcar como
-              leída</button>
-          </div>
-        </div>
-      @endforeach
+    <div onclick="verTodasNotificaciones()"
+      style="background: lightgray; border: none; cursor: pointer; font-size: 14px; text-align: center; padding: 3px; transition: background 0.3s ease;"
+      onmouseover="this.style.background='#bbb'" onmouseout="this.style.background='lightgray'">
+      <span>
+        Ver todas las notificaciones
+      </span>
+      <i class="zmdi zmdi-arrow-right-top" style="font-size: 16px;"></i>
     </div>
+    <section id="notifications-container">
+      <!-- Las notificaciones se cargarán aquí dinámicamente -->
+    </section>
   </div>
 </section>
 
 <script>
-  // Cargar notificaciones en la barra de notificaciones
   function cargarNotificaciones() {
-    $.get('/notificaciones', function(data) {
+    $.get('/api/notificaciones', function(data) {
       let html = "";
-      data.notifications.forEach(noti => {
-        html += `
-                <div class="list-group-item">
-                    <div class="row-content">
-                        <div class="least-content">${new Date(noti.created_at).toLocaleString()}</div>
-                        <h4 class="list-group-item-heading">${noti.data.titulo}</h4>
-                        <p class="list-group-item-text">${noti.data.mensaje}</p>
-                        <button onclick="marcarLeida('${noti.id}')" class="btn btn-sm btn-primary">Leída</button>
-                        <button onclick="eliminarNotificacion('${noti.id}')" class="btn btn-sm btn-danger">Eliminar</button>
-                    </div>
-                </div>`;
-      });
-      $(".list-group").html(html);
-    });
-  }
 
-  // Marcar una notificación como leída
-  function marcarLeida(id) {
-    $.post(`/notificaciones/leer/${id}`, {
-      _token: "{{ csrf_token() }}"
-    }, function() {
-      cargarNotificaciones(); // Recargar notificaciones
-    });
-  }
+      updateNotificationCount(data.unread_count);
 
-  // Eliminar una notificación
-  function eliminarNotificacion(id) {
-    $.ajax({
-      url: `/notificaciones/eliminar/${id}`,
-      type: 'DELETE',
-      data: {
-        _token: "{{ csrf_token() }}"
-      },
-      success: function() {
-        cargarNotificaciones(); // Recargar notificaciones
+      if (data.notifications.length === 0) {
+        html = `
+          <section style="padding: 20px; text-align: center; color: #666;">
+            <i class="zmdi zmdi-notifications-off" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>
+            <span style="font-size: 16px;">No tienes notificaciones</span>
+          </section>
+        `;
+      } else {
+        data.notifications.forEach(notification => {
+          const bgStyle = notification.read_at ? 'background: #fff;' : 'background: #e0e0e0;';
+
+          html += `
+            <section onclick="marcarLeida('${notification.id}')" style="${bgStyle} padding: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid lightgray; cursor: pointer">
+              <article style="width: 40px !important; height: 40px; display: flex; justify-content: center; align-items: center; border: 2px solid lightgray; border-radius: 50%; background-color: #f0f0f0; margin: 0">
+                <i class="zmdi zmdi-notifications-none" style="font-size: 20px; color: gray;"></i>
+              </article>
+              <article>
+                <div style="display: flex; flex-direction: column">
+                  <span style="font-size: 14px; font-weight: 600">
+                    ${notification.data.title}
+                  </span>
+                  <span style="font-size: 12px;">
+                    ${notification.data.message}
+                  </span>
+                  <span style="font-size: 12px; color: #1abc9c">
+                    ${notification.created_at}
+                  </span>
+                </div>
+              </article>
+            </section>
+          `;
+        });
       }
+
+      $("#notifications-container").html(html);
+    }).fail(function() {
+      $("#notifications-container").html(`
+        <section style="padding: 20px; text-align: center; color: #666;">
+          <i class="zmdi zmdi-alert-circle" style="font-size: 40px; display: block; margin-bottom: 10px;"></i>
+          <span style="font-size: 16px;">Error al cargar las notificaciones</span>
+        </section>
+      `);
     });
   }
 
-  // Cargar notificaciones al cargar la página
+  function updateNotificationCount(count) {
+    const badgeElement = $('.btn-Notifications-count .badge');
+
+    if (count > 0) {
+      if (badgeElement.length === 0) {
+        $('.btn-Notifications-count').append(`<span class="badge">${count}</span>`);
+      } else {
+        badgeElement.text(count);
+      }
+    } else {
+      badgeElement.remove();
+    }
+  }
+
+  function marcarLeida(id) {
+    window.location.href = `/notificaciones/redirigir/${id}`;
+  }
+
+  function verTodasNotificaciones() {
+    window.location.href = `{{ route('notificaciones.index') }}`;
+  }
+
   $(document).ready(function() {
     cargarNotificaciones();
   });

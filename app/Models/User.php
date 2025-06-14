@@ -12,7 +12,6 @@ use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 use Cog\Contracts\Ban\Bannable as BannableInterface;
 use Cog\Laravel\Ban\Traits\Bannable;
-use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable implements BannableInterface
 {

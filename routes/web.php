@@ -56,11 +56,28 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
 
   Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])->name('perfil.delete');
 
-  Route::get('/notificaciones', [NotificacionController::class, 'getNotifications'])->name('notificaciones.get');
-  Route::post('/notificaciones/leer/{id}', [NotificacionController::class, 'markAsRead'])->name('notificaciones.leer');
-  Route::post('/notificaciones/leer-todas', [NotificacionController::class, 'markAllAsRead'])->name('notificaciones.leer_todas');
-  Route::delete('/notificaciones/eliminar/{id}', [NotificacionController::class, 'deleteNotification'])->name('notificaciones.eliminar');
+  /**
+   * Notifications routes
+   */
 
+  Route::get('/api/notificaciones', [NotificacionController::class, 'getNotifications'])
+    ->name('notificaciones.get');
+
+  Route::get('/notificaciones', [NotificacionController::class, 'index'])
+    ->name('notificaciones.index');
+
+  Route::get('/notificaciones/redirigir/{id}', [NotificacionController::class, 'markAsReadAndRedirect'])
+    ->name('notificaciones.redirigir');
+
+  Route::post('/notificaciones/marcar-todas', [NotificacionController::class, 'markAllAsRead'])
+    ->name('notificaciones.marcar-todas');
+
+  Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy'])
+    ->name('notificaciones.destroy');
+
+  /**
+   * Representantes routes
+   */
   Route::get('representantes', [RepresentativeController::class, 'index'])
     ->name('representantes.index');
 
@@ -195,7 +212,7 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
-    Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
+  Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

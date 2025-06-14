@@ -12,8 +12,6 @@
     <!-- NavBar -->
     <x-navbar />
 
-    <!-- Content page -->
-
     <!-- Page title -->
     <x-page-header title="Inicio" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
