@@ -6,7 +6,11 @@
     <li>
       <a href="#!" class="btn-Notifications-area">
         <i class="zmdi zmdi-notifications-none"></i>
-        <span class="badge">7</span>
+        @if (Auth::user()->unreadnotifications->count())
+          <span class="badge">
+            {{ Auth::user()->unreadnotifications->count() }}
+          </span>
+        @endif
       </a>
     </li>
     <li>
