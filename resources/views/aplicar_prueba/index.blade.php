@@ -38,15 +38,14 @@
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="formAplicarPrueba">
-                      <div class="form-group">
-                        <label for="paciente_id">Paciente</label>
-                        <select id="paciente_id" class="form-control">
-                          <option value="">Seleccione un paciente</option>
-                          @foreach ($pacientes as $paciente)
-                            <option value="{{ $paciente->id }}">{{ $paciente->nombre }}</option>
-                          @endforeach
-                        </select>
-                      </div>
+                      <select id="paciente_id" name="paciente_id" class="form-control select2" required style="width: 100%;">
+    <option selected disabled>Seleccione un paciente</option>
+    @foreach ($pacientes as $paciente)
+        <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }}</option>
+    @endforeach
+</select>
+
+
                       <div class="form-group">
                         <label for="especialista">Especialista</label>
                         <input type="text" id="especialista" class="form-control" value="{{ auth()->user()->name }}"
@@ -115,6 +114,42 @@
 
 @endsection
 @section('js')
+<script>
+$(document).ready(function () {
+    $('#paciente_id').select2({
+        placeholder: 'Seleccione un paciente con historia clínica',
+        allowClear: true,
+        language: {
+            noResults: function () {
+                return "Paciente no encontrado";
+            }
+        },
+        ajax: {
+            url: '/pacientes/buscar', // Ruta para la búsqueda remota
+            dataType: 'json',
+            delay: 250, // Retardo en milisegundos antes de realizar la búsqueda
+            data: function (params) {
+                return {
+                    q: params.term // Término de búsqueda enviado al servidor
+                };
+            },
+            processResults: function (data) {
+                // Procesar los resultados devueltos por el servidor
+                return {
+                    results: data.map(function (item) {
+                        return {
+                            id: item.id,
+                            text: item.nombre + ' ' + item.apellido // Texto que se muestra en el select
+                        };
+                    })
+                };
+            },
+            cache: true // Habilitar caché para mejorar el rendimiento
+        },
+        minimumInputLength: 2 // Mínimo de caracteres para comenzar la búsqueda
+    });
+});
+</script>
   <script>
     $(document).ready(function() {
       let subescalas = [];

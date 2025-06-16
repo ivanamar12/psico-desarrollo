@@ -34,32 +34,44 @@ class AplicarPruebaController extends Controller
                     $btn = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '">
                                 <i class="zmdi zmdi-eye"></i> 
                             </button>';
-                
+                    
                     if ($aplicacion->prueba->nombre === 'CUMANIN') {
                         $btn .= ' <a href="' . route('resultados.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
-                                    <i class="zmdi zmdi-file"></i> 
-                                </a>';
+                                        <i class="zmdi zmdi-file"></i> 
+                                    </a>';
                     } elseif ($aplicacion->prueba->nombre === 'Koppitz') {
                         $btn .= ' <a href="' . route('resultados.koppitz.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
-                                    <i class="zmdi zmdi-file"></i> 
-                                </a>';
+                                        <i class="zmdi zmdi-file"></i> 
+                                    </a>';
                     } elseif ($aplicacion->prueba->tipo === 'NO-Estandarizada') {
                         $btn .= ' <a href="' . route('resultados.no_estandarizada.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
-                                    <i class="zmdi zmdi-file"></i> 
-                                </a>';
+                                        <i class="zmdi zmdi-file"></i> 
+                                    </a>';
                     }
-                
+                    
                     return $btn;
                 })
-                
                 ->rawColumns(['action'])
                 ->make(true);
         }
 
-        $pacientes = Paciente::all();
+        // Filtrar pacientes que tienen al menos una historia clínica
+        $pacientes = Paciente::where('historias_clinicas_count', '>', 0)->get();
         $pruebas = Prueba::all();
 
         return view('aplicar_prueba.index', compact('pacientes', 'pruebas'));
+    }
+    
+    public function buscarPacientes(Request $request)
+    {
+        $query = $request->get('q'); 
+        $pacientes = Paciente::where('historias_clinicas_count', '>', 0) 
+                             ->where(function ($query) use ($query) {
+                                 $query->where('nombre', 'like', "%$query%") 
+                                       ->orWhere('apellido', 'like', "%$query%"); 
+                             })
+                             ->get(['id', 'nombre', 'apellido']); 
+        return response()->json($pacientes); 
     }
 
     public function obtenerPrueba($id)
