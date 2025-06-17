@@ -28,6 +28,16 @@ class AuditLogMiddleware
   }
 
   protected $descriptions = [
+    // Especialistas
+    'especialista.store' => 'Crear nuevo especialista',
+    'especialista.update' => 'Actualizar especialista',
+    'especialista.destroy' => 'Eliminar especialista',
+
+    // Secretarias
+    'secretaria.store' => 'Crear nueva secretaria',
+    'secretaria.update' => 'Actualizar secretaria',
+    'secretaria.destroy' => 'Eliminar secretaria',
+
     // Representantes
     'representantes.store' => 'Crear nuevo representante',
     'representantes.update' => 'Actualizar representante',
