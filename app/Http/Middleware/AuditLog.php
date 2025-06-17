@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\AuditLog as ModelsAuditLog;
+use App\Models\AuditLog as AuditLogModel;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,22 +13,52 @@ class AuditLog
   public function handle(Request $request, Closure $next)
   {
     $response = $next($request);
+    $route = Route::currentRouteName();
 
-    if (!Auth::check()) {
-      return $response;
+    $description = $this->descriptions[$route] ?? null;
+
+    if ($description && Auth::user()) {
+      AuditLogModel::create([
+        'user_id' => Auth::user()->id,
+        'action' => $description,
+      ]);
     }
-
-    // Obtener el nombre de la ruta actual y el método HTTP
-    $routeName = Route::currentRouteName() ?? 'unknown';
-    $method = $request->method(); // GET, POST, PUT, DELETE
-
-    // Guardar en la bitácora
-    ModelsAuditLog::create([
-      'user_id' => Auth::id(),
-      'action' => "$method $routeName", // Ejemplo: "POST crear_paciente"
-    ]);
 
     return $response;
   }
-}
 
+  protected $descriptions = [
+    // Representantes
+    'representantes.store' => 'Crear nuevo representante',
+    'representantes.update' => 'Actualizar representante',
+    'representantes.destroy' => 'Eliminar representante',
+
+    // Pacientes
+    'paciente.store' => 'Crear nuevo paciente',
+    'paciente.update' => 'Actualizar paciente',
+    'paciente.destroy' => 'Eliminar paciente',
+
+    // Citas
+    'citas.store' => 'Agendar nueva cita',
+    'citas.update' => 'Actualizar cita',
+
+    // Historias Clínicas
+    'historias.store' => 'Crear nueva historia clínica',
+    'historias.destroy' => 'Eliminar historia clínica',
+
+    // Pruebas
+    'pruebas.storePrueba' => 'Crear nueva prueba',
+    'pruebas.destroy' => 'Eliminar prueba',
+
+    // Perfil
+    'perfil.update' => 'Actualizar perfil de usuario',
+    'perfil.delete' => 'Eliminar cuenta de usuario',
+
+    // Notificaciones
+    'notificaciones.marcar-todas' => 'Marcar todas las notificaciones como leídas',
+    'notificaciones.destroy' => 'Eliminar notificación',
+
+    // Auditoría (GET)
+    'bitacora.index' => 'Ver bitácora de auditoría',
+  ];
+}
