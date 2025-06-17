@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-class AuditLog
+class AuditLogMiddleware
 {
   public function handle(Request $request, Closure $next)
   {
