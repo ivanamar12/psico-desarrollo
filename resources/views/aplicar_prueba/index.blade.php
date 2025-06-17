@@ -41,7 +41,10 @@
                       <select id="paciente_id" name="paciente_id" class="form-control select2" required style="width: 100%;">
     <option selected disabled>Seleccione un paciente</option>
     @foreach ($pacientes as $paciente)
-        <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }}</option>
+        @php
+            $codigo = optional($paciente->historiaclinicas->first())->codigo ?? 'Sin código';
+        @endphp
+        <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }} - Código: {{ $codigo }}</option>
     @endforeach
 </select>
 
@@ -53,12 +56,12 @@
                       </div>
                       <div class="form-group">
                         <label for="prueba_id">Prueba</label>
-                        <select id="prueba_id" class="form-control">
-                          <option value="">Seleccione una prueba</option>
-                          @foreach ($pruebas as $prueba)
-                            <option value="{{ $prueba->id }}">{{ $prueba->nombre }}</option>
-                          @endforeach
-                        </select>
+                        <select id="prueba_id" class="form-control select2" required style="width: 100%;">
+    <option value="">Seleccione una prueba</option>
+    @foreach ($pruebas as $prueba)
+        <option value="{{ $prueba->id }}">{{ $prueba->nombre }}</option>
+    @endforeach
+</select>
                       </div>
                       <button type="button" id="btnIniciarPrueba" class="btn btn-custom" style="color: white;">Aplicar
                         Prueba</button>
@@ -116,6 +119,7 @@
 @section('js')
 <script>
 $(document).ready(function () {
+    // Inicializar Select2 para el select de pacientes
     $('#paciente_id').select2({
         placeholder: 'Seleccione un paciente con historia clínica',
         allowClear: true,
@@ -147,6 +151,17 @@ $(document).ready(function () {
             cache: true // Habilitar caché para mejorar el rendimiento
         },
         minimumInputLength: 2 // Mínimo de caracteres para comenzar la búsqueda
+    });
+
+    // Inicializar Select2 para el select de pruebas
+    $('#prueba_id').select2({
+        placeholder: 'Seleccione una prueba',
+        allowClear: true,
+        language: {
+            noResults: function () {
+                return "Prueba no encontrada";
+            }
+        }
     });
 });
 </script>
