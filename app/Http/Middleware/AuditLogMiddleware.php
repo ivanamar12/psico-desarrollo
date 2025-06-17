@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Models\AuditLog as AuditLogModel;
+use App\Models\AuditLog;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +18,7 @@ class AuditLogMiddleware
     $description = $this->descriptions[$route] ?? null;
 
     if ($description && Auth::user()) {
-      AuditLogModel::create([
+      AuditLog::create([
         'user_id' => Auth::user()->id,
         'action' => $description,
       ]);
