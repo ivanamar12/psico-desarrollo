@@ -213,6 +213,9 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
     ->name('dashboard');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
+
+  // web.php
+Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])->name('pacientes.buscar');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

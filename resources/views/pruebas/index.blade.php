@@ -43,17 +43,27 @@
                       <div id="paso1">
                         <h3>Datos de la Prueba</h3>
                         <div class="fila-formulario">
+                          <!-- Campo Nombre -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre</label>
-                            <input class="form-control" id="nombre" name="nombre" type="text">
+                            <label class="control-label">Nombre<span
+                                                            class="text-danger">*</span></label>
+                            <input class="form-control" id="nombre" name="nombre" type="text" maxlength="60" required>
+                            <small class="form-text text-muted">Máximo 60 caracteres. Solo letras, números y espacios.</small>
                           </div>
+
+                          <!-- Campo Descripción -->
                           <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Descripción</label>
-                            <input class="form-control" id="descripcion" name="descripcion" type="text" required>
+                            <label class="control-label">Descripción<span
+                                                            class="text-danger">*</span></label>
+                            <textarea class="form-control" id="descripcion" name="descripcion" maxlength="300" rows="3" required></textarea>
+                            <small class="form-text text-muted">Máximo 300 caracteres. Describe brevemente la prueba.</small>
                           </div>
-                          <div class="form-grup col-md-6">
-                            <select class="form-control select2" required style="width: 100%;" id="rango_edad"
-                              name="rango_edad">
+
+                          <!-- Campo Rango de Edad -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Rango de Edad<span
+                                                            class="text-danger">*</span></label>
+                            <select class="form-control select2" required id="rango_edad" name="rango_edad">
                               <option selected disabled>Seleccione el rango de edad</option>
                               <option value="0-3 meses">0-3 Meses</option>
                               <option value="4-6 meses">4-6 Meses</option>
@@ -65,43 +75,49 @@
                               <option value="36-78 meses">36-78 Meses</option>
                               <option value="60-78 meses">60-78 Meses</option>
                             </select>
+                            <small class="form-text text-muted">Seleccione el grupo etario para el que fue diseñada la prueba.</small>
                           </div>
-                          <div class="form-grup col-md-6">
-                            <select class="form-control select2" required style="width: 100%;" id="area_desarrollo"
-                              name="area_desarrollo">
-                              <option selected disabled>Seleccione el area de Desarrollo</option>
+
+                          <!-- Campo Área de Desarrollo -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Área de Desarrollo<span
+                                                            class="text-danger">*</span></label>
+                            <select class="form-control select2" required id="area_desarrollo" name="area_desarrollo">
+                              <option selected disabled>Seleccione el área de Desarrollo</option>
                               <option value="Cognitiva">Cognitiva</option>
                               <option value="Motora">Motora</option>
                               <option value="Lenguaje">Lenguaje</option>
                               <option value="Socio-Afectiva">Socio-Afectiva</option>
                               <option value="Sensorial">Sensorial</option>
                             </select>
+                            <small class="form-text text-muted">Seleccione el área de desarrollo que evalúa la prueba.</small>
                           </div>
                         </div>
                         <p class="centro-texto">
-                          <button type="button" id="siguiente" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
                         </p>
                       </div>
+
+                      <!-- Paso 2 -->
                       <div id="paso2" style="display: none;">
                         <h3>Items de la Prueba</h3>
+                        <p><strong>Indicación:</strong> Agregue uno o varios ítems que componen la prueba. Cada ítem representa una tarea o pregunta específica para evaluar al niño.</p>
+
                         <div id="itemsContainer">
                           <div class="fila-formulario" id="formulario-item-0">
                             <div class="form-group label-floating">
-                              <label class="control-label">Item</label>
+                              <label class="control-label">Item<span
+                                                            class="text-danger">*</span></label>
                               <input class="form-control" name="items[0][nombre]" type="text" required>
                             </div>
-                            <button type="button" class="eliminar btn btn-eliminar" style="color: white;"
-                              onclick="eliminarItem(this)">Eliminar</button>
+                            <button type="button" class="eliminar btn btn-eliminar" style="color: white;" onclick="eliminarItem(this)">Eliminar</button>
                           </div>
                         </div>
+
                         <p class="centro-texto">
-                          <button type="button" id="addItem" class="btn btn-regresar" style="color: white;">Agregar
-                            Item</button>
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy"></i>Registrar</button>
+                          <button type="button" id="addItem" class="btn btn-regresar" style="color: white;">Agregar Item</button>
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i class="zmdi zmdi-arrow-back"></i> Regresar</button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i class="zmdi zmdi-floppy"></i>Registrar</button>
                         </p>
                       </div>
                     </form>
@@ -162,20 +178,50 @@
   </div>
 @endsection
 @section('js')
-  <script>
-    $(document).ready(function() {
-      $("#paso1").show();
-      $("#paso2").hide();
+<script>
+    $("#paso1").show();
+    $("#paso2").hide();
 
-      $("#siguiente").click(function() {
+    $("#siguiente1").click(function() {
+      let valid = true;
+
+      // Validar campos requeridos dentro de #paso1
+      $('#paso1 :input[required]').each(function() {
+        if ($(this).val() === '' || $(this).val() === null) {
+          $(this).addClass('is-invalid');
+          valid = false;
+        } else {
+          $(this).removeClass('is-invalid');
+        }
+      });
+
+      // Validación final
+      if (valid) {
         $("#paso1").hide();
         $("#paso2").show();
-      });
+      } else {
+        toastr.error("Debe completar todos los campos requeridos del paso 1.");
+      }
+    });
 
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
-      });
+    $("#regresar").click(function() {
+      $("#paso2").hide();
+      $("#paso1").show();
+    });
+    $("#nombre").on('input', function () {
+  const valor = $(this).val();
+  const regex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]{0,60}$/;
+
+  if (!regex.test(valor)) {
+    $(this).addClass("is-invalid");
+  } else {
+    $(this).removeClass("is-invalid");
+  }
+});
+
+  </script>
+  <script>
+    $(document).ready(function() {
       let contadorItems = 1;
       $("#addItem").click(function() {
         const nuevoItemFormulario = `

@@ -22,45 +22,57 @@ use PDF;
 class AplicarPruebaController extends Controller
 {
     public function index(Request $request)
-    {
-        if ($request->ajax()) {
-            $aplicaciones = AplicacionPrueba::with('paciente', 'prueba')->get();
+{
+    if ($request->ajax()) {
+        $aplicaciones = AplicacionPrueba::with('paciente', 'prueba')->get();
 
-            return DataTables::of($aplicaciones)
-                ->addColumn('fecha', function ($aplicacion) {
-                    return $aplicacion->created_at->format('d/m/Y');
-                })
-                ->addColumn('action', function ($aplicacion) {
-                    $btn = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '">
-                                <i class="zmdi zmdi-eye"></i> 
-                            </button>';
+        return DataTables::of($aplicaciones)
+            ->addColumn('fecha', function ($aplicacion) {
+                return $aplicacion->created_at->format('d/m/Y');
+            })
+            ->addColumn('action', function ($aplicacion) {
+                $btn = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '">
+                            <i class="zmdi zmdi-eye"></i> 
+                        </button>';
                 
-                    if ($aplicacion->prueba->nombre === 'CUMANIN') {
-                        $btn .= ' <a href="' . route('resultados.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
+                if ($aplicacion->prueba->nombre === 'CUMANIN') {
+                    $btn .= ' <a href="' . route('resultados.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
                                     <i class="zmdi zmdi-file"></i> 
                                 </a>';
-                    } elseif ($aplicacion->prueba->nombre === 'Koppitz') {
-                        $btn .= ' <a href="' . route('resultados.koppitz.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
+                } elseif ($aplicacion->prueba->nombre === 'Koppitz') {
+                    $btn .= ' <a href="' . route('resultados.koppitz.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
                                     <i class="zmdi zmdi-file"></i> 
                                 </a>';
-                    } elseif ($aplicacion->prueba->tipo === 'NO-Estandarizada') {
-                        $btn .= ' <a href="' . route('resultados.no_estandarizada.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
+                } elseif ($aplicacion->prueba->tipo === 'NO-Estandarizada') {
+                    $btn .= ' <a href="' . route('resultados.no_estandarizada.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank">
                                     <i class="zmdi zmdi-file"></i> 
                                 </a>';
-                    }
+                }
                 
-                    return $btn;
-                })
-                
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-        $pacientes = Paciente::all();
-        $pruebas = Prueba::all();
-
-        return view('aplicar_prueba.index', compact('pacientes', 'pruebas'));
+                return $btn;
+            })
+            ->rawColumns(['action'])
+            ->make(true);
     }
+
+    // Filtrar pacientes que tienen al menos una historia clínica
+    $pacientes = Paciente::has('historiaclinicas')->get(); // Utiliza la relación 'historiaclinicas'
+    $pruebas = Prueba::all();
+
+    return view('aplicar_prueba.index', compact('pacientes', 'pruebas'));
+}
+    
+    public function buscarPacientes(Request $request)
+{
+    $searchTerm = $request->get('q'); 
+    $pacientes = Paciente::whereHas('historiaclinicas') // Filtra pacientes que tienen al menos una historia clínica
+                         ->where(function ($query) use ($searchTerm) {
+                             $query->where('nombre', 'like', "%$searchTerm%")
+                                   ->orWhere('apellido', 'like', "%$searchTerm%");
+                         })
+                         ->get(['id', 'nombre', 'apellido']); 
+    return response()->json($pacientes); 
+}
 
     public function obtenerPrueba($id)
     {
