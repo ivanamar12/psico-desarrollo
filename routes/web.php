@@ -20,10 +20,6 @@ Route::middleware('guest')->group(function () {
   })->name('index');
 });
 
-Route::get('/dashboard', function () {
-  return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
-
 /**
  * Auth Routes 
  */
@@ -45,7 +41,11 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
     ->name('bitacora.index');
 });
 
-Route::middleware('auth', 'update_last_activity')->group(function () {
+Route::middleware('auth')->group(function () {
+  // Dashboard
+  Route::get('/dashboard', function () {
+    return view('dashboard');
+  })->name('dashboard');
 
   Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
   Route::post('/perfil/update', [PerfilController::class, 'update'])->name('perfil.update');
@@ -215,7 +215,7 @@ Route::middleware('auth', 'update_last_activity')->group(function () {
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
 
   // web.php
-Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])->name('pacientes.buscar');
+  Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])->name('pacientes.buscar');
 });
 
 // Grupo de rutas que utiliza el middleware 'web'

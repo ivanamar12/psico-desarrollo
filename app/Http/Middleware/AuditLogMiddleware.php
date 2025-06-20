@@ -15,6 +15,8 @@ class AuditLogMiddleware
     $response = $next($request);
     $route = Route::currentRouteName();
 
+    if (!$route) return $response;
+
     $description = $this->descriptions[$route] ?? null;
 
     if ($description && Auth::user()) {
