@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Paciente extends Model
 {
   use HasFactory;
+
   protected $fillable = [
     'nombre',
     'apellido',
@@ -18,39 +22,37 @@ class Paciente extends Model
     'genero_id'
   ];
 
-  public function datosEconomico()
+  public function datosEconomico(): HasOne
   {
     return $this->hasOne(DatosEconomico::class, 'id', 'datoseconomico_id');
   }
 
-  public function representante()
+  public function representante(): BelongsTo
   {
-
     return $this->belongsTo(Representante::class);
   }
-  public function parentescos()
-  {
 
+  public function parentescos(): HasMany
+  {
     return $this->hasMany(Parentesco::class);
   }
-  public function genero()
-  {
 
+  public function genero(): BelongsTo
+  {
     return $this->belongsTo(Genero::class);
   }
-  public function citas()
-  {
 
+  public function citas(): HasMany
+  {
     return $this->hasMany(Cita::class);
   }
 
-  public function historiaclinicas()
+  public function historiaclinicas(): HasMany
   {
-
     return $this->hasMany(HistoriaClinica::class);
   }
 
-  public function aplicacionPruebas()
+  public function aplicacionPruebas(): HasMany
   {
     return $this->hasMany(AplicacionPrueba::class);
   }
