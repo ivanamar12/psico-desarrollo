@@ -3,7 +3,7 @@
 @section('title', 'Historias')
 
 @section('content')
-<section class="full-box dashboard-contentPage">
+  <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
 
@@ -11,917 +11,1023 @@
     <x-page-header title="Historias" icon="zmdi zmdi-file zmdi-hc-fw" />
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12">
-                <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-                    <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-                    @if (auth()->user()->can('crear historia'))
-                    <li><a href="#new-historia" data-toggle="tab"> Nuevo</a></li>
-                    @endif
-                </ul>
-                <div id="myTabContent" class="tab-content">
-                    <div class="tab-pane fade active in" id="list">
-                        <div class="table-responsive">
-                            <table class="table table-hover text-center" id="tab-historias">
-                                <thead>
-                                    <tr>
-                                        <th class="text-center">#</th>
-                                        <th class="text-center">Nombre</th>
-                                        <th class="text-center">Apellido</th>
-                                        <th class="text-center">Acciones</th>
-                                    </tr>
-                                </thead>
-                            </table>
+      <div class="row">
+        <div class="col-xs-12">
+          <ul class="nav nav-tabs" style="margin-bottom: 15px;">
+            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+            @if (auth()->user()->can('crear historia'))
+              <li><a href="#new-historia" data-toggle="tab"> Nuevo</a></li>
+            @endif
+          </ul>
+          <div id="myTabContent" class="tab-content">
+            <div class="tab-pane fade active in" id="list">
+              <div class="table-responsive">
+                <table class="table table-hover text-center" id="tab-historias">
+                  <thead>
+                    <tr>
+                      <th class="text-center">#</th>
+                      <th class="text-center">Nombre</th>
+                      <th class="text-center">Apellido</th>
+                      <th class="text-center">Acciones</th>
+                    </tr>
+                  </thead>
+                </table>
+              </div>
+            </div>
+
+            <section class="tab-pane fade in" id="new-historia">
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-xs-12 col-md-10 col-md-offset-1">
+                    <form id="registro-historia">
+                      @csrf
+                      <section id="paso1">
+                        <h3>Datos del paciente</h3>
+                        <div class="form-row">
+
+                          <!-- Paciente -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Paciente <span class="text-danger">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="paciente_id" name="paciente_id">
+                              <option selected disabled>Seleccione el paciente</option>
+                            </select>
+                            <small class="form-text text-muted">Seleccione al paciente
+                              registrado previamente en el sistema.</small>
+                          </div>
+
+                          <!-- Código de Historia -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Código de Historia <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" readonly id="codigo" name="codigo"
+                              placeholder="Código" required value="{{ 'HIS' . substr(str_shuffle('0123456789'), 0, 5) }}">
+                            <small class="form-text text-muted">Este código es generado
+                              automáticamente por el sistema.</small>
+                          </div>
+
+                          <!-- Referencia -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Referencia <span class="text-danger">*</span></label>
+                            <input class="form-control" id="referencia" name="referencia" type="text" required>
+                            <small class="form-text text-muted">Indique quién refirió al
+                              paciente o si viene por iniciativa propia.</small>
+                          </div>
+
+                          <!-- Especialidad que Refirió -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Especialidad que Refirió <span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" id="especialista_refirio" name="especialista_refirio"
+                              type="text" required>
+                            <small class="form-text text-muted">Ingrese la especialidad médica
+                              que remitió al paciente (ej. Pediatría, Neurología).</small>
+                          </div>
+
+                          <!-- Motivo -->
+                          <div class="form-group col-md-6">
+                            <label class="control-label">Motivo <span class="text-danger">*</span></label>
+                            <input class="form-control" id="motivo" name="motivo" type="text" required>
+                            <small class="form-text text-muted">Describa brevemente el motivo de
+                              la evaluación.</small>
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label class="control-label">Observaciones generales (Opcional)</label>
+                            <textarea class="form-control" name="observacion_historia" rows="2"></textarea>
+                            <small class="form-text text-muted">
+                              Notas adicionales sobre la historia clínica.
+                            </small>
+                          </div>
                         </div>
-                    </div>
 
-                    <section class="tab-pane fade in" id="new-historia">
-                        <div class="container-fluid">
-                            <div class="row">
-                                <div class="col-xs-12 col-md-10 col-md-offset-1">
-                                    <form id="registro-historia">@csrf
-                                        <section id="paso1">
-                                            <h3>Datos del paciente</h3>
-                                            <div class="form-row">
+                        <p class="centro-texto">
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </p>
+                      </section>
 
-                                                <!-- Paciente -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <label class="control-label">Paciente <span
-                                                            class="text-danger">*</span></label>
-                                                    <select class="form-control form-control-solid select2" required
-                                                        style="width: 100%;" id="paciente_id" name="paciente_id">
-                                                        <option selected disabled>Seleccione el paciente</option>
-                                                    </select>
-                                                    <small class="form-text text-muted">Seleccione al paciente
-                                                        registrado previamente en el sistema.</small>
-                                                </div>
+                      <section id="paso2">
+                        <h3>Antecedentes Médicos</h3>
+                        <p class="text-muted mb-4">Aquí se recopila información sobre enfermedades infecciosas, crónicas,
+                          discapacidades u otras condiciones relevantes que el niño haya padecido.</p>
 
-                                                <!-- Código de Historia -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <label class="control-label">Código de Historia <span
-                                                            class="text-danger">*</span></label>
-                                                    <input type="text" class="form-control" readonly id="codigo"
-                                                        name="codigo" placeholder="Código" required
-                                                        value="{{ 'HIS' . substr(str_shuffle('0123456789'), 0, 5) }}">
-                                                    <small class="form-text text-muted">Este código es generado
-                                                        automáticamente por el sistema.</small>
-                                                </div>
+                        <div class="row">
 
-                                                <!-- Referencia -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <label class="control-label">Referencia <span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control" id="referencia" name="referencia"
-                                                        type="text" required>
-                                                    <small class="form-text text-muted">Indique quién refirió al
-                                                        paciente o si viene por iniciativa propia.</small>
-                                                </div>
-
-                                                <!-- Especialidad que Refirió -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <label class="control-label">Especialidad que Refirió <span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control" id="especialista_refirio"
-                                                        name="especialista_refirio" type="text" required>
-                                                    <small class="form-text text-muted">Ingrese la especialidad médica
-                                                        que remitió al paciente (ej. Pediatría, Neurología).</small>
-                                                </div>
-
-                                                <!-- Motivo -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <label class="control-label">Motivo <span
-                                                            class="text-danger">*</span></label>
-                                                    <input class="form-control" id="motivo" name="motivo" type="text"
-                                                        required>
-                                                    <small class="form-text text-muted">Describa brevemente el motivo de
-                                                        la evaluación.</small>
-                                                </div>
-
-                                            </div>
-                                            <p class="centro-texto">
-                                                <button type="button" id="siguiente1" class="btn btn-regresar"
-                                                    style="color: white;">Siguiente</button>
-                                            </p>
-                                        </section>
-
-                                        <section id="paso2">
-                                            <h3>Antecedentes Médicos</h3>
-                                            <p class="text-muted mb-4">Aquí se recopila información sobre enfermedades infecciosas, crónicas, discapacidades u otras condiciones relevantes que el niño haya padecido.</p>
-
-                                            <div class="row">
-
-                                                <!-- Enfermedad Infecciosa -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño ha sufrido de alguna enfermedad infecciosa? <span class="text-danger">*</span></h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_infecciosa" value="si" required> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_infecciosa" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" id="tipo_enfermedad_infecciosa" name="tipo_enfermedad_infecciosa" type="text" placeholder="Especificar enfermedad infecciosa">
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique si el niño ha tenido enfermedades como varicela, sarampión, etc.</small>
-                                                </div>
-
-                                                <!-- Enfermedad No Infecciosa -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa? <span class="text-danger">*</span></h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_no_infecciosa" value="si" required> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_no_infecciosa" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" id="tipo_enfermedad_no_infecciosa" name="tipo_enfermedad_no_infecciosa" type="text" placeholder="Especificar enfermedad no infecciosa">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ejemplos: alergias, epilepsia, asma. Especifique si responde "Sí".</small>
-                                                </div>
-
-                                                <!-- Enfermedad Crónica -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño padece de alguna enfermedad crónica? <span class="text-danger">*</span></h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_cronica" value="si" required> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="enfermedad_cronica" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" id="tipo_enfermedad_cronica" name="tipo_enfermedad_cronica" type="text" placeholder="Especificar enfermedad crónica">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ejemplos: diabetes, hipertensión, enfermedades metabólicas.</small>
-                                                </div>
-
-                                                <!-- Discapacidad -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño padece de alguna discapacidad? <span class="text-danger">*</span></h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="discapacidad" value="si" required> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="discapacidad" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" id="tipo_discapacidad" name="tipo_discapacidad" type="text" placeholder="Especificar discapacidad">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ejemplos: visual, auditiva, motora, intelectual.</small>
-                                                </div>
-
-                                                <!-- Otros (centrado abajo) -->
-                                                <div class="form-group col-md-12 mt-3 text-center">
-                                                    <label for="otros"><strong>Otros</strong></label>
-                                                    <textarea class="form-control" id="otros" name="otros" rows="3" placeholder="Ingrese cualquier otro antecedente médico relevante..."></textarea>
-                                                    <small class="form-text text-muted">Ingrese cualquier otro antecedente médico relevante que no haya sido mencionado anteriormente.</small>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Botones centrados -->
-                                            <div class="text-center mt-4">
-                                                <button type="button" id="regresar1" class="btn btn-regresar mr-3" style="color: white;">
-                                                    <i class="zmdi zmdi-arrow-back"></i> Regresar
-                                                </button>
-                                                <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">
-                                                    Siguiente
-                                                </button>
-                                            </div>
-                                        </section>
-
-                                        <section id="paso3">
-                                            <h3>Historia de desarrollo</h3>
-                                            <h4>Embarazo</h4>
-                                            <p class="text-muted mb-4">Se refiere a las condiciones que rodearon el embarazo de la madre. Esta información es clave para comprender el desarrollo del niño.</p>
-
-                                            <div class="row">
-
-                                                <!-- Medicamentos en el embarazo -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿La madre recibió algún tipo de medicamento?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="medicamento_embarazo" value="si"> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="medicamento_embarazo" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" id="tipo_medicamento" name="tipo_medicamento" type="text" placeholder="Especificar medicamento">
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique si la madre consumió medicamentos recetados o no durante el embarazo.</small>
-                                                </div>
-
-                                                <!-- Fumó durante el embarazo -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿La madre fumó durante el embarazo?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="fumo_embarazo" value="si"> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="fumo_embarazo" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="cantidad" id="cantidad" type="text" placeholder="Cantidad que fumaba al día">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ingrese la cantidad estimada que fumaba diariamente si aplica.</small>
-                                                </div>
-
-                                                <!-- Bebidas alcohólicas durante el embarazo -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿La madre tomó bebidas alcohólicas durante el embarazo?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="alcohol_embarazo" value="si"> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="alcohol_embarazo" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="tipo_alcohol" id="tipo_alcohol" type="text" placeholder="Especificar el tipo de alcohol">
-                                                        <input class="form-control mt-2" name="cantidad_consumia_alcohol" id="cantidad_consumia_alcohol" type="text" placeholder="Especificar cantidad consumida">
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique tipo y frecuencia si la madre consumió alcohol durante el embarazo.</small>
-                                                </div>
-
-                                                <!-- Drogas durante el embarazo -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿La madre utilizó drogas durante el embarazo?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="droga_embarazo" value="si"> Sí
-                                                        </label>
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="droga_embarazo" value="no"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="tipo_droga" id="tipo_droga" type="text" placeholder="Especificar la droga utilizada">
-                                                    </div>
-                                                    <small class="form-text text-muted">Mencione el tipo de sustancia y si fue ocasional o continua.</small>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Botones centrados -->
-                                            <div class="text-center mt-4">
-                                                <button type="button" id="regresar2" class="btn btn-regresar mr-3" style="color: white;">
-                                                    <i class="zmdi zmdi-arrow-back"></i> Regresar
-                                                </button>
-                                                <button type="button" id="siguiente3" class="btn btn-regresar" style="color: white;">
-                                                    Siguiente
-                                                </button>
-                                            </div>
-                                        </section>
-
-                                        <section id="paso4">
-                                            <h3>Historia de desarrollo</h3>
-                                            <h4>Parto</h4>
-                                            <p class="text-muted mb-4">Esta sección recopila información sobre el nacimiento del niño, incluyendo condiciones médicas y tipo de parto.</p>
-
-                                            <div class="row">
-
-                                                <!-- Fórceps -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿Se utilizaron fórceps durante el parto?<span class="text-danger">*</h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="forceps_parto" value="si"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="forceps_parto" value="no"> No
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique si fue necesario el uso de fórceps para facilitar el parto.</small>
-                                                </div>
-
-                                                <!-- Cesárea -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El parto fue por cesárea?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="cesarea" value="si" onchange="toggleInput('cesarea', 'razon_cesarea')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="cesarea" value="no" onchange="toggleInput('cesarea', 'razon_cesarea')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="razon_cesarea" id="razon_cesarea" type="text" placeholder="Razón de la cesárea" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">Si el parto fue por cesárea, explique el motivo médico o de urgencia.</small>
-                                                </div>
-
-                                                <!-- Prematuro -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño nació prematuro?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="niño_prematuro" value="si" onchange="toggleInput('niño_prematuro', 'meses_prematuro')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="niño_prematuro" value="no" onchange="toggleInput('niño_prematuro', 'meses_prematuro')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="meses_prematuro" id="meses_prematuro" type="text" placeholder="¿Cuántos meses prematuro?" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">En caso afirmativo, indique la cantidad de semanas o meses de prematuridad.</small>
-                                                </div>
-
-                                                <!-- Complicaciones -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿Hubo complicaciones en el nacimiento?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="complicaciones_nacer" value="si" onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="complicaciones_nacer" value="no" onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2" name="tipo_complicacion" id="tipo_complicacion" type="text" placeholder="Especificar la complicación" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">Describa cualquier complicación que haya ocurrido durante el nacimiento.</small>
-                                                </div>
-
-                                                <!-- Peso al nacer -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <label class="control-label">Peso al nacer<span class="text-danger">*</label>
-                                                    <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text" placeholder="Ejemplo: 3.2">
-                                                    <small class="form-text text-muted">Ingrese el peso del niño al nacer, expresado en kilogramos.</small>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Botones de navegación -->
-                                            <div class="text-center mt-4">
-                                                <button type="button" id="regresar3" class="btn btn-regresar mr-3" style="color: white;">
-                                                    <i class="zmdi zmdi-arrow-back"></i> Regresar
-                                                </button>
-                                                <button type="button" id="siguiente4" class="btn btn-regresar" style="color: white;">Siguiente</button>
-                                            </div>
-                                        </section>
-
-                                        <section id="paso5">
-                                            <h3>Historia de desarrollo</h3>
-                                            <h4>Primeros meses del niño</h4>
-                                            <p class="text-muted mb-4">A continuación, se recopila información sobre las primeras experiencias del niño en cuanto a alimentación, sueño, comportamiento y desarrollo general.</p>
-
-                                            <div class="row">
-
-                                                <!-- Problema de alimentación -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿Hubo algún tipo de problema de alimentación?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="problema_alimentacion" value="si" onchange="toggleInput('problema_alimentacion', 'tipo_problema_alimenticio')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="problema_alimentacion" value="no" onchange="toggleInput('problema_alimentacion', 'tipo_problema_alimenticio')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2 flex-grow-1 ml-md-3" name="tipo_problema_alimenticio" id="tipo_problema_alimenticio" type="text" placeholder="Especificar tipo de problema alimenticio" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ejemplo: dificultad para succionar, rechazo al alimento, vómitos frecuentes, etc.</small>
-                                                </div>
-
-                                                <!-- Problemas para dormir -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿El niño tenía problemas para dormir?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="problema_dormir" value="si" onchange="toggleInput('problema_dormir', 'tipo_problema_dormir')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="problema_dormir" value="no" onchange="toggleInput('problema_dormir', 'tipo_problema_dormir')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2 flex-grow-1 ml-md-3" name="tipo_problema_dormir" id="tipo_problema_dormir" type="text" placeholder="Especificar tipo de problema para dormir" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">Ejemplo: insomnio, dificultad para conciliar el sueño, despertares frecuentes, etc.</small>
-                                                </div>
-
-                                                <!-- Tranquilo al nacer -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>Cuando recién nacido, ¿el niño era tranquilo?<span class="text-danger">*</h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="tranquilo_recien_nacido" value="si"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="tranquilo_recien_nacido" value="no"> No
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Responda según su comportamiento general durante los primeros días.</small>
-                                                </div>
-
-                                                <!-- Gustaba que lo cargaran -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>Cuando recién nacido, ¿al niño le gustaba que lo cargaran?<span class="text-danger">*</h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="gustaba_cargaran_recien_nacido" value="si"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="gustaba_cargaran_recien_nacido" value="no"> No
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique si mostraba comodidad o rechazo al contacto físico.</small>
-                                                </div>
-
-                                                <!-- Estaba alerta -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>Cuando recién nacido, ¿el niño estaba alerta?<span class="text-danger">*</h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="alerta_recien_nacido" value="si"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="alerta_recien_nacido" value="no"> No
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Observe si el niño reaccionaba a estímulos visuales o auditivos desde los primeros días.</small>
-                                                </div>
-
-                                                <!-- Problemas en el desarrollo -->
-                                                <div class="form-group col-md-6 mb-4">
-                                                    <h5>¿Hubo algún problema o complicación en el crecimiento y desarrollo del niño en los primeros años de vida?<span class="text-danger">*</h5>
-                                                    <div class="d-flex flex-wrap align-items-center">
-                                                        <label class="mr-3">
-                                                            <input type="radio" name="problemas_desarrollo_primeros_años" value="si" onchange="toggleInput('problemas_desarrollo_primeros_años', 'cuales_problemas')"> Sí
-                                                        </label>
-                                                        <label>
-                                                            <input type="radio" name="problemas_desarrollo_primeros_años" value="no" onchange="toggleInput('problemas_desarrollo_primeros_años', 'cuales_problemas')"> No
-                                                        </label>
-                                                        <input class="form-control mt-2 flex-grow-1 ml-md-3" name="cuales_problemas" id="cuales_problemas" type="text" placeholder="Especificar el problema o complicación" style="display: none;">
-                                                    </div>
-                                                    <small class="form-text text-muted">Por ejemplo: retraso en el habla, problemas motores, dificultades sensoriales, etc.</small>
-                                                </div>
-
-                                            </div>
-
-                                            <!-- Botones de navegación -->
-                                            <div class="text-center mt-4">
-                                                <button type="button" id="regresar4" class="btn btn-regresar mr-3" style="color: white;">
-                                                    <i class="zmdi zmdi-arrow-back"></i> Regresar
-                                                </button>
-                                                <button type="button" id="siguiente5" class="btn btn-regresar" style="color: white;">
-                                                    Siguiente
-                                                </button>
-                                            </div>
-                                        </section>
-
-                                        <section id="paso6">
-                                            <h3>Historia Escolar</h3>
-                                            <div class="form-row">
-                                                
-                                                <!-- ¿Está escolarizado? -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿El niño está escolarizado?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="escolarizado" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="escolarizado" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                        <input class="form-control ml-3" name="tipo_educaion" id="tipo_educaion" type="text"
-                                                            placeholder="Especificar el tipo de educación que recibe el niño">
-                                                    </div>
-                                                    <small class="form-text text-muted">Indique si el niño asiste a preescolar, primaria u otra modalidad educativa.</small>
-                                                </div>
-
-                                                <!-- ¿Recibe terapias o tutoría? -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿Recibe alguna terapia o tutoría?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="tutoria_terapias" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="tutoria_terapias" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                        <input class="form-control ml-3" name="tutoria_terapias_cuales" id="tutoria_terapias_cuales" type="text"
-                                                            placeholder="Especificar las terapias o tutorías que recibe el niño">
-                                                    </div>
-                                                    <small class="form-text text-muted">Por ejemplo: terapia del lenguaje, psicopedagogía, apoyo escolar, etc.</small>
-                                                </div>
-
-                                                <!-- Dificultad lectura -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿El niño presenta alguna dificultad para la lectura?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="dificultad_lectura" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="dificultad_lectura" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Considere si el niño tiene problemas para reconocer letras o palabras.</small>
-                                                </div>
-
-                                                <!-- Dificultad aritmética -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿El niño presenta alguna dificultad para la aritmética?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="dificultad_aritmetica" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="dificultad_aritmetica" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Incluye dificultad para contar, sumar o comprender conceptos numéricos básicos.</small>
-                                                </div>
-
-                                                <!-- Dificultad escritura -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿El niño presenta alguna dificultad para la escritura?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="dificultad_escribir" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="dificultad_escribir" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Puede tratarse de letra ilegible, errores ortográficos o dificultad para copiar.</small>
-                                                </div>
-
-                                                <!-- ¿Le agrada el ambiente escolar? -->
-                                                <div class="form-group label-floating col-md-6">
-                                                    <h5>¿Le agrada el ambiente escolar?<span class="text-danger">*</span></h5>
-                                                    <div class="d-flex align-items-center">
-                                                        <label>
-                                                            <input type="radio" name="agrada_escuela" value="si" required>
-                                                            <span>Si</span>
-                                                        </label>
-                                                        <label class="ml-3">
-                                                            <input type="radio" name="agrada_escuela" value="no">
-                                                            <span>No</span>
-                                                        </label>
-                                                    </div>
-                                                    <small class="form-text text-muted">Responda si el niño asiste con entusiasmo, se siente cómodo o expresa agrado por su escuela.</small>
-                                                </div>
-                                            </div>
-
-                                            <p class="centro-texto">
-                                                <button type="button" id="regresar5" class="btn btn-regresar" style="color: white;">
-                                                    <i class="zmdi zmdi-arrow-back"></i> Regresar
-                                                </button>
-                                                <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
-                                                    <i class="zmdi zmdi-floppy"></i>Registrar
-                                                </button>
-                                            </p>
-                                        </section>
-
-                                    </form>
-                                </div>
+                          <!-- Enfermedad Infecciosa -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño ha sufrido de alguna enfermedad infecciosa? <span class="text-danger">*</span>
+                            </h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_infecciosa" value="si" required> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_infecciosa" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" id="tipo_enfermedad_infecciosa"
+                                name="tipo_enfermedad_infecciosa" type="text"
+                                placeholder="Especificar enfermedad infecciosa">
                             </div>
+                            <small class="form-text text-muted">Indique si el niño ha tenido enfermedades como varicela,
+                              sarampión, etc.</small>
+                          </div>
+
+                          <!-- Enfermedad No Infecciosa -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño ha sufrido de alguna enfermedad no infecciosa? <span
+                                class="text-danger">*</span></h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_no_infecciosa" value="si" required> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_no_infecciosa" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" id="tipo_enfermedad_no_infecciosa"
+                                name="tipo_enfermedad_no_infecciosa" type="text"
+                                placeholder="Especificar enfermedad no infecciosa">
+                            </div>
+                            <small class="form-text text-muted">Ejemplos: alergias, epilepsia, asma. Especifique si
+                              responde "Sí".</small>
+                          </div>
+
+                          <!-- Enfermedad Crónica -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño padece de alguna enfermedad crónica? <span class="text-danger">*</span></h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_cronica" value="si" required> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="enfermedad_cronica" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" id="tipo_enfermedad_cronica"
+                                name="tipo_enfermedad_cronica" type="text"
+                                placeholder="Especificar enfermedad crónica">
+                            </div>
+                            <small class="form-text text-muted">Ejemplos: diabetes, hipertensión, enfermedades
+                              metabólicas.</small>
+                          </div>
+
+                          <!-- Discapacidad -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño padece de alguna discapacidad? <span class="text-danger">*</span></h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="discapacidad" value="si" required> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="discapacidad" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" id="tipo_discapacidad" name="tipo_discapacidad"
+                                type="text" placeholder="Especificar discapacidad">
+                            </div>
+                            <small class="form-text text-muted">Ejemplos: visual, auditiva, motora, intelectual.</small>
+                          </div>
+
+                          <!-- Otros (centrado abajo) -->
+                          <div class="form-group col-md-12 mt-3 text-center">
+                            <label for="otros"><strong>Otros</strong></label>
+                            <textarea class="form-control" id="otros" name="otros" rows="3"
+                              placeholder="Ingrese cualquier otro antecedente médico relevante..."></textarea>
+                            <small class="form-text text-muted">Ingrese cualquier otro antecedente médico relevante que
+                              no haya sido mencionado anteriormente.</small>
+                          </div>
+
+                          <div class="form-group col-md-12 mt-3 text-center">
+                            <label for="observacion"><strong>Observaciones médicas</strong></label>
+                            <textarea class="form-control" id="observacion" name="observacion" rows="3"
+                              placeholder="Observaciones adicionales sobre antecedentes médicos..."></textarea>
+                            <small class="form-text text-muted">
+                              Ejemplo: alergias no mencionadas, historial familiar relevante, etc.
+                            </small>
+                          </div>
+
                         </div>
-                    </section>
+
+                        <!-- Botones centrados -->
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar1" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </div>
+                      </section>
+
+                      <section id="paso3">
+                        <h3>Historia de desarrollo</h3>
+                        <h4>Embarazo</h4>
+                        <p class="text-muted mb-4">Se refiere a las condiciones que rodearon el embarazo de la madre.
+                          Esta información es clave para comprender el desarrollo del niño.</p>
+
+                        <div class="row">
+
+                          <!-- Medicamentos en el embarazo -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿La madre recibió algún tipo de medicamento?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="medicamento_embarazo" value="si"> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="medicamento_embarazo" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" id="tipo_medicamento" name="tipo_medicamento"
+                                type="text" placeholder="Especificar medicamento">
+                            </div>
+                            <small class="form-text text-muted">Indique si la madre consumió medicamentos recetados o no
+                              durante el embarazo.</small>
+                          </div>
+
+                          <!-- Fumó durante el embarazo -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿La madre fumó durante el embarazo?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="fumo_embarazo" value="si"> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="fumo_embarazo" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" name="cantidad" id="cantidad" type="text"
+                                placeholder="Cantidad que fumaba al día">
+                            </div>
+                            <small class="form-text text-muted">Ingrese la cantidad estimada que fumaba diariamente si
+                              aplica.</small>
+                          </div>
+
+                          <!-- Bebidas alcohólicas durante el embarazo -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿La madre tomó bebidas alcohólicas durante el embarazo?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="alcohol_embarazo" value="si"> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="alcohol_embarazo" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" name="tipo_alcohol" id="tipo_alcohol" type="text"
+                                placeholder="Especificar el tipo de alcohol">
+                              <input class="form-control mt-2" name="cantidad_consumia_alcohol"
+                                id="cantidad_consumia_alcohol" type="text"
+                                placeholder="Especificar cantidad consumida">
+                            </div>
+                            <small class="form-text text-muted">Indique tipo y frecuencia si la madre consumió alcohol
+                              durante el embarazo.</small>
+                          </div>
+
+                          <!-- Drogas durante el embarazo -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿La madre utilizó drogas durante el embarazo?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="droga_embarazo" value="si"> Sí
+                              </label>
+                              <label class="mr-3">
+                                <input type="radio" name="droga_embarazo" value="no"> No
+                              </label>
+                              <input class="form-control mt-2" name="tipo_droga" id="tipo_droga" type="text"
+                                placeholder="Especificar la droga utilizada">
+                            </div>
+                            <small class="form-text text-muted">Mencione el tipo de sustancia y si fue ocasional o
+                              continua.</small>
+                          </div>
+
+                        </div>
+
+                        <!-- Botones centrados -->
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar2" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente3" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </div>
+                      </section>
+
+                      <section id="paso4">
+                        <h3>Historia de desarrollo</h3>
+                        <h4>Parto</h4>
+                        <p class="text-muted mb-4">Esta sección recopila información sobre el nacimiento del niño,
+                          incluyendo condiciones médicas y tipo de parto.</p>
+
+                        <div class="row">
+
+                          <!-- Fórceps -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿Se utilizaron fórceps durante el parto?<span class="text-danger">*</h5>
+                            <div class="d-flex align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="forceps_parto" value="si"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="forceps_parto" value="no"> No
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Indique si fue necesario el uso de fórceps para facilitar
+                              el parto.</small>
+                          </div>
+
+                          <!-- Cesárea -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El parto fue por cesárea?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="cesarea" value="si"
+                                  onchange="toggleInput('cesarea', 'razon_cesarea')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="cesarea" value="no"
+                                  onchange="toggleInput('cesarea', 'razon_cesarea')"> No
+                              </label>
+                              <input class="form-control mt-2" name="razon_cesarea" id="razon_cesarea" type="text"
+                                placeholder="Razón de la cesárea" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">Si el parto fue por cesárea, explique el motivo médico o
+                              de urgencia.</small>
+                          </div>
+
+                          <!-- Prematuro -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño nació prematuro?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="niño_prematuro" value="si"
+                                  onchange="toggleInput('niño_prematuro', 'meses_prematuro')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="niño_prematuro" value="no"
+                                  onchange="toggleInput('niño_prematuro', 'meses_prematuro')"> No
+                              </label>
+                              <input class="form-control mt-2" name="meses_prematuro" id="meses_prematuro"
+                                type="text" placeholder="¿Cuántos meses prematuro?" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">En caso afirmativo, indique la cantidad de semanas o
+                              meses de prematuridad.</small>
+                          </div>
+
+                          <!-- Complicaciones -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿Hubo complicaciones en el nacimiento?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="complicaciones_nacer" value="si"
+                                  onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="complicaciones_nacer" value="no"
+                                  onchange="toggleInput('complicaciones_nacer', 'tipo_complicacion')"> No
+                              </label>
+                              <input class="form-control mt-2" name="tipo_complicacion" id="tipo_complicacion"
+                                type="text" placeholder="Especificar la complicación" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">Describa cualquier complicación que haya ocurrido durante
+                              el nacimiento.</small>
+                          </div>
+
+                          <!-- Peso al nacer -->
+                          <div class="form-group col-md-6 mb-4">
+                            <label class="control-label">Peso al nacer<span class="text-danger">*</label>
+                            <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text"
+                              placeholder="Ejemplo: 3.2">
+                            <small class="form-text text-muted">Ingrese el peso del niño al nacer, expresado en
+                              kilogramos.</small>
+                          </div>
+
+                        </div>
+
+                        <!-- Botones de navegación -->
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar3" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente4" class="btn btn-regresar"
+                            style="color: white;">Siguiente</button>
+                        </div>
+                      </section>
+
+                      <section id="paso5">
+                        <h3>Historia de desarrollo</h3>
+                        <h4>Primeros meses del niño</h4>
+                        <p class="text-muted mb-4">A continuación, se recopila información sobre las primeras
+                          experiencias del niño en cuanto a alimentación, sueño, comportamiento y desarrollo general.</p>
+
+                        <div class="row">
+
+                          <!-- Problema de alimentación -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿Hubo algún tipo de problema de alimentación?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="problema_alimentacion" value="si"
+                                  onchange="toggleInput('problema_alimentacion', 'tipo_problema_alimenticio')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="problema_alimentacion" value="no"
+                                  onchange="toggleInput('problema_alimentacion', 'tipo_problema_alimenticio')"> No
+                              </label>
+                              <input class="form-control mt-2 flex-grow-1 ml-md-3" name="tipo_problema_alimenticio"
+                                id="tipo_problema_alimenticio" type="text"
+                                placeholder="Especificar tipo de problema alimenticio" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">Ejemplo: dificultad para succionar, rechazo al alimento,
+                              vómitos frecuentes, etc.</small>
+                          </div>
+
+                          <!-- Problemas para dormir -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿El niño tenía problemas para dormir?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="problema_dormir" value="si"
+                                  onchange="toggleInput('problema_dormir', 'tipo_problema_dormir')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="problema_dormir" value="no"
+                                  onchange="toggleInput('problema_dormir', 'tipo_problema_dormir')"> No
+                              </label>
+                              <input class="form-control mt-2 flex-grow-1 ml-md-3" name="tipo_problema_dormir"
+                                id="tipo_problema_dormir" type="text"
+                                placeholder="Especificar tipo de problema para dormir" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">Ejemplo: insomnio, dificultad para conciliar el sueño,
+                              despertares frecuentes, etc.</small>
+                          </div>
+
+                          <!-- Tranquilo al nacer -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>Cuando recién nacido, ¿el niño era tranquilo?<span class="text-danger">*</h5>
+                            <div class="d-flex align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="tranquilo_recien_nacido" value="si"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="tranquilo_recien_nacido" value="no"> No
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Responda según su comportamiento general durante los
+                              primeros días.</small>
+                          </div>
+
+                          <!-- Gustaba que lo cargaran -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>Cuando recién nacido, ¿al niño le gustaba que lo cargaran?<span class="text-danger">*
+                            </h5>
+                            <div class="d-flex align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="gustaba_cargaran_recien_nacido" value="si"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="gustaba_cargaran_recien_nacido" value="no"> No
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Indique si mostraba comodidad o rechazo al contacto
+                              físico.</small>
+                          </div>
+
+                          <!-- Estaba alerta -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>Cuando recién nacido, ¿el niño estaba alerta?<span class="text-danger">*</h5>
+                            <div class="d-flex align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="alerta_recien_nacido" value="si"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="alerta_recien_nacido" value="no"> No
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Observe si el niño reaccionaba a estímulos visuales o
+                              auditivos desde los primeros días.</small>
+                          </div>
+
+                          <!-- Problemas en el desarrollo -->
+                          <div class="form-group col-md-6 mb-4">
+                            <h5>¿Hubo algún problema o complicación en el crecimiento y desarrollo del niño en los
+                              primeros años de vida?<span class="text-danger">*</h5>
+                            <div class="d-flex flex-wrap align-items-center">
+                              <label class="mr-3">
+                                <input type="radio" name="problemas_desarrollo_primeros_años" value="si"
+                                  onchange="toggleInput('problemas_desarrollo_primeros_años', 'cuales_problemas')"> Sí
+                              </label>
+                              <label>
+                                <input type="radio" name="problemas_desarrollo_primeros_años" value="no"
+                                  onchange="toggleInput('problemas_desarrollo_primeros_años', 'cuales_problemas')"> No
+                              </label>
+                              <input class="form-control mt-2 flex-grow-1 ml-md-3" name="cuales_problemas"
+                                id="cuales_problemas" type="text"
+                                placeholder="Especificar el problema o complicación" style="display: none;">
+                            </div>
+                            <small class="form-text text-muted">Por ejemplo: retraso en el habla, problemas motores,
+                              dificultades sensoriales, etc.</small>
+                          </div>
+
+                          <div class="form-group col-md-12 mt-3">
+                            <label for="observacion"><strong>Observaciones del desarrollo</strong></label>
+                            <textarea class="form-control" id="observacion" name="observacion" rows="3"
+                              placeholder="Detalles adicionales sobre el desarrollo del niño..."></textarea>
+                            <small class="form-text text-muted">
+                              Ejemplo: hitos del desarrollo alcanzados, comportamientos atípicos, etc.
+                            </small>
+                          </div>
+
+                        </div>
+
+                        <!-- Botones de navegación -->
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar4" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente5" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </div>
+                      </section>
+
+                      <section id="paso6">
+                        <h3>Historia Escolar</h3>
+                        <div class="form-row">
+
+                          <!-- ¿Está escolarizado? -->
+                          <div class="form-group col-md-6">
+                            <h5>¿El niño está escolarizado?<span class="text-danger">*</span></h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="escolarizado" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="escolarizado" value="no">
+                                <span>No</span>
+                              </label>
+                              <input class="form-control ml-3" name="tipo_educaion" id="tipo_educaion" type="text"
+                                placeholder="Especificar el tipo de educación que recibe el niño">
+                            </div>
+                            <small class="form-text text-muted">Indique si el niño asiste a preescolar, primaria u otra
+                              modalidad educativa.</small>
+                          </div>
+
+                          <!-- ¿Recibe terapias o tutoría? -->
+                          <div class="form-group col-md-6">
+                            <h5>¿Recibe alguna terapia o tutoría?<span class="text-danger">*</span></h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="tutoria_terapias" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="tutoria_terapias" value="no">
+                                <span>No</span>
+                              </label>
+                              <input class="form-control ml-3" name="tutoria_terapias_cuales"
+                                id="tutoria_terapias_cuales" type="text"
+                                placeholder="Especificar las terapias o tutorías que recibe el niño">
+                            </div>
+                            <small class="form-text text-muted">Por ejemplo: terapia del lenguaje, psicopedagogía, apoyo
+                              escolar, etc.</small>
+                          </div>
+
+                          <!-- Dificultad lectura -->
+                          <div class="form-group col-md-6">
+                            <h5>¿El niño presenta alguna dificultad para la lectura?<span class="text-danger">*</span>
+                            </h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="dificultad_lectura" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="dificultad_lectura" value="no">
+                                <span>No</span>
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Considere si el niño tiene problemas para reconocer
+                              letras o palabras.</small>
+                          </div>
+
+                          <!-- Dificultad aritmética -->
+                          <div class="form-group col-md-6">
+                            <h5>¿El niño presenta alguna dificultad para la aritmética?<span class="text-danger">*</span>
+                            </h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="dificultad_aritmetica" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="dificultad_aritmetica" value="no">
+                                <span>No</span>
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Incluye dificultad para contar, sumar o comprender
+                              conceptos numéricos básicos.</small>
+                          </div>
+
+                          <!-- Dificultad escritura -->
+                          <div class="form-group col-md-6">
+                            <h5>¿El niño presenta alguna dificultad para la escritura?<span class="text-danger">*</span>
+                            </h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="dificultad_escribir" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="dificultad_escribir" value="no">
+                                <span>No</span>
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Puede tratarse de letra ilegible, errores ortográficos o
+                              dificultad para copiar.</small>
+                          </div>
+
+                          <!-- ¿Le agrada el ambiente escolar? -->
+                          <div class="form-group col-md-6">
+                            <h5>¿Le agrada el ambiente escolar?<span class="text-danger">*</span></h5>
+                            <div class="d-flex align-items-center">
+                              <label>
+                                <input type="radio" name="agrada_escuela" value="si" required>
+                                <span>Si</span>
+                              </label>
+                              <label class="ml-3">
+                                <input type="radio" name="agrada_escuela" value="no">
+                                <span>No</span>
+                              </label>
+                            </div>
+                            <small class="form-text text-muted">Responda si el niño asiste con entusiasmo, se siente
+                              cómodo o expresa agrado por su escuela.</small>
+                          </div>
+
+                          <div class="form-group col-md-12">
+                            <label class="control-label">Observaciones escolares</label>
+                            <textarea class="form-control" name="observacion" rows="3"
+                              placeholder="Notas sobre rendimiento, adaptación, u otros aspectos escolares..."></textarea>
+                            <small class="form-text text-muted">
+                              Ejemplo: relación con compañeros, necesidades educativas especiales, etc.
+                            </small>
+                          </div>
+                        </div>
+
+                        <p class="centro-texto">
+                          <button type="button" id="regresar5" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i>Registrar
+                          </button>
+                        </p>
+                      </section>
+
+                    </form>
+                  </div>
                 </div>
-            </div>
+              </div>
+            </section>
+          </div>
         </div>
+      </div>
     </div>
-</section>
-<!-- Modal de Confirmación -->
-<section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  </section>
+  <!-- Modal de Confirmación -->
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ¿Desea eliminar el registro seleccionado?
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-custom" data-dismiss="modal"
-                    style="color: white;">Cancelar</button>
-                <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-                    style="color: white;">Eliminar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          ¿Desea eliminar el registro seleccionado?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
+          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
+            style="color: white;">Eliminar</button>
+        </div>
+      </div>
     </div>
-</section>
-<section class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  </section>
+  <section class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title w-100 text-center" style="color: white;">Detalles de la Historia</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <p><strong>Código:</strong> <span id="codigoV"></span></p>
-                <p><strong>Referencia:</strong> <span id="referenciaV"></span></p>
-                <p><strong>Motivo:</strong> <span id="motivoV"></span></p>
-                <p><strong>Paciente:</strong> <span id="pacienteV"></span></p>
-                <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
-                <p><strong>Representante:</strong> <span id="representanteV"></span></p>
-                <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-                <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span>Pts.</p>
-                <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span>Pts.</p>
-                <p><strong>Riesgo Global:</strong> <span id="riesgoGlobal"></span></p>
-                <p><strong>Peso al Nacer:</strong> <span id="peso"></span>.Kg</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Detalles de la Historia</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
+        <div class="modal-body">
+          <p><strong>Código:</strong> <span id="codigoV"></span></p>
+          <p><strong>Referencia:</strong> <span id="referenciaV"></span></p>
+          <p><strong>Motivo:</strong> <span id="motivoV"></span></p>
+          <p><strong>Paciente:</strong> <span id="pacienteV"></span></p>
+          <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
+          <p><strong>Representante:</strong> <span id="representanteV"></span></p>
+          <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+          <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span>Pts.</p>
+          <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span>Pts.</p>
+          <p><strong>Riesgo Global:</strong> <span id="riesgoGlobal"></span></p>
+          <p><strong>Peso al Nacer:</strong> <span id="peso"></span>.Kg</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
+        </div>
+      </div>
     </div>
-</section>
+  </section>
 
 @endsection
 @section('js')
-<script>
-$(function () {
+  <script>
+    $(function() {
 
-    const pacientes = @json($pacientes);
+      const pacientes = @json($pacientes);
 
-    $('#paciente_id').select2({
+      $('#paciente_id').select2({
         placeholder: 'Seleccione el paciente sin historia',
         allowClear: true,
         minimumInputLength: 1,
         ajax: {
-            transport: function (params, success) {
-                const term = (params.data.term || '').toLowerCase().trim();
+          transport: function(params, success) {
+            const term = (params.data.term || '').toLowerCase().trim();
 
-                const filtrados = pacientes.filter(function (p) {
-                    if (p.historias_clinicas_count > 0) return false;      // solo sin historia
-                    return p.nombre.toLowerCase().includes(term) ||
-                           p.apellido.toLowerCase().includes(term);
-                });
+            const filtrados = pacientes.filter(function(p) {
+              if (p.historias_clinicas_count > 0) return false; // solo sin historia
+              return p.nombre.toLowerCase().includes(term) ||
+                p.apellido.toLowerCase().includes(term);
+            });
 
-                const results = filtrados.map(function (p) {
-                    return { id: p.id, text: `${p.nombre} ${p.apellido} (${p.id})` };
-                });
+            const results = filtrados.map(function(p) {
+              return {
+                id: p.id,
+                text: `${p.nombre} ${p.apellido} (${p.id})`
+              };
+            });
 
-                success({ results: results });
-            }
+            success({
+              results: results
+            });
+          }
         }
+      });
+
     });
+  </script>
 
-});
-</script>
+  <script>
+    $(document).ready(function() {
+      $("#paso1").show();
+      $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();
 
-<script>
-$(document).ready(function() {
-    $("#paso1").show();
-    $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();
-
-    function setupRealTimeValidation(pasoId) {
+      function setupRealTimeValidation(pasoId) {
         $(`${pasoId} :input[type="text"], ${pasoId} :input[type="textarea"]`).on('input', function() {
-            const maxLength = 50;
-            const currentValue = $(this).val();
-            if (currentValue.length > maxLength) {
-                $(this).val(currentValue.substring(0, maxLength));
-                toastr.error(
-                    `El campo ${$(this).attr("name")} no debe superar los ${maxLength} caracteres.`);
-            }
+          const maxLength = 50;
+          const currentValue = $(this).val();
+          if (currentValue.length > maxLength) {
+            $(this).val(currentValue.substring(0, maxLength));
+            toastr.error(
+              `El campo ${$(this).attr("name")} no debe superar los ${maxLength} caracteres.`);
+          }
         });
-    }
-    setupRealTimeValidation("#paso1");
-    setupRealTimeValidation("#paso2");
-    setupRealTimeValidation("#paso3");
-    setupRealTimeValidation("#paso4");
-    setupRealTimeValidation("#paso5");
-    setupRealTimeValidation("#paso6");
+      }
+      setupRealTimeValidation("#paso1");
+      setupRealTimeValidation("#paso2");
+      setupRealTimeValidation("#paso3");
+      setupRealTimeValidation("#paso4");
+      setupRealTimeValidation("#paso5");
+      setupRealTimeValidation("#paso6");
 
-    function validarPaso(pasoId) {
+      function validarPaso(pasoId) {
         let valid = true;
         $(`${pasoId} :input[required]`).each(function() {
-            if ($(this).is(':radio')) {
-                const name = $(this).attr('name');
-                if (!$(`${pasoId} input[name="${name}"]:checked`).length) {
-                    $(`${pasoId} input[name="${name}"]`).addClass("is-invalid");
-                    valid = false;
-                } else {
-                    $(`${pasoId} input[name="${name}"]`).removeClass("is-invalid");
-                }
-            } else if ($(this).val() === '' || $(this).val() === null) {
-                $(this).addClass("is-invalid");
-                valid = false;
+          if ($(this).is(':radio')) {
+            const name = $(this).attr('name');
+            if (!$(`${pasoId} input[name="${name}"]:checked`).length) {
+              $(`${pasoId} input[name="${name}"]`).addClass("is-invalid");
+              valid = false;
             } else {
-                $(this).removeClass("is-invalid");
+              $(`${pasoId} input[name="${name}"]`).removeClass("is-invalid");
             }
+          } else if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass("is-invalid");
+            valid = false;
+          } else {
+            $(this).removeClass("is-invalid");
+          }
         });
 
         // Validación de longitud para campos de descripción
         $(`${pasoId} :input[type="text"], ${pasoId} :input[type="textarea"]`).each(function() {
-            if ($(this).val().length > 50) {
-                $(this).addClass("is-invalid");
-                toastr.error(`El campo ${$(this).attr("name")} no debe superar los 50 caracteres.`);
-                valid = false;
-            } else {
-                $(this).removeClass("is-invalid");
-            }
+          if ($(this).val().length > 50) {
+            $(this).addClass("is-invalid");
+            toastr.error(`El campo ${$(this).attr("name")} no debe superar los 50 caracteres.`);
+            valid = false;
+          } else {
+            $(this).removeClass("is-invalid");
+          }
         });
 
         return valid;
-    }
+      }
 
-    $("#siguiente1").click(function() {
+      $("#siguiente1").click(function() {
         if (validarPaso("#paso1")) {
-            $("#paso1").hide();
-            $("#paso2").show();
+          $("#paso1").hide();
+          $("#paso2").show();
         } else {
-            toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          toastr.error("Debe completar todos los campos requeridos del paso 1.");
         }
-    });
+      });
 
-    $("#siguiente2").click(function() {
+      $("#siguiente2").click(function() {
         if (validarPaso("#paso2")) {
-            $("#paso2").hide();
-            $("#paso3").show();
+          $("#paso2").hide();
+          $("#paso3").show();
         } else {
-            toastr.error("Debe completar todos los campos requeridos del paso 2.");
+          toastr.error("Debe completar todos los campos requeridos del paso 2.");
         }
-    });
+      });
 
-    $("#siguiente3").click(function() {
+      $("#siguiente3").click(function() {
         if (validarPaso("#paso3")) {
-            $("#paso3").hide();
-            $("#paso4").show();
+          $("#paso3").hide();
+          $("#paso4").show();
         } else {
-            toastr.error("Debe completar todos los campos requeridos del paso 3.");
+          toastr.error("Debe completar todos los campos requeridos del paso 3.");
         }
-    });
+      });
 
-    $("#siguiente4").click(function() {
+      $("#siguiente4").click(function() {
         if (validarPaso("#paso4")) {
-            $("#paso4").hide();
-            $("#paso5").show();
+          $("#paso4").hide();
+          $("#paso5").show();
         } else {
-            toastr.error("Debe completar todos los campos requeridos del paso 4.");
+          toastr.error("Debe completar todos los campos requeridos del paso 4.");
         }
-    });
+      });
 
-    $("#siguiente5").click(function() {
+      $("#siguiente5").click(function() {
         if (validarPaso("#paso5")) {
-            $("#paso5").hide();
-            $("#paso6").show();
+          $("#paso5").hide();
+          $("#paso6").show();
         } else {
-            toastr.error("Debe completar todos los campos requeridos del paso 5.");
+          toastr.error("Debe completar todos los campos requeridos del paso 5.");
         }
-    });
+      });
 
-    // Botones de regresar
-    $("#regresar1").click(function() {
+      // Botones de regresar
+      $("#regresar1").click(function() {
         $("#paso2").hide();
         $("#paso1").show();
-    });
+      });
 
-    $("#regresar2").click(function() {
+      $("#regresar2").click(function() {
         $("#paso3").hide();
         $("#paso2").show();
-    });
+      });
 
-    $("#regresar3").click(function() {
+      $("#regresar3").click(function() {
         $("#paso4").hide();
         $("#paso3").show();
-    });
+      });
 
-    $("#regresar4").click(function() {
+      $("#regresar4").click(function() {
         $("#paso5").hide();
         $("#paso4").show();
-    });
+      });
 
-    $("#regresar5").click(function() {
+      $("#regresar5").click(function() {
         $("#paso6").hide();
         $("#paso5").show();
+      });
     });
-});
-</script>
-<script>
-// Definir la función toggleInput en el contexto global
-function toggleInput(radioName, inputId, defaultValue) {
-    if (defaultValue === undefined) defaultValue = 'no aplica';
+  </script>
+  <script>
+    // Definir la función toggleInput en el contexto global
+    function toggleInput(radioName, inputId, defaultValue) {
+      if (defaultValue === undefined) defaultValue = 'no aplica';
 
-    var $radioYes = $("input[name='" + radioName + "'][value='si']");
-    var $input = $("#" + inputId);
+      var $radioYes = $("input[name='" + radioName + "'][value='si']");
+      var $input = $("#" + inputId);
 
-    // Si alguno no existe, salimos para evitar errores.
-    if (!$radioYes.length || !$input.length) return;
+      // Si alguno no existe, salimos para evitar errores.
+      if (!$radioYes.length || !$input.length) return;
 
-    var show = $radioYes.prop('checked');
-    $input.toggle(show) // mostrar / ocultar
+      var show = $radioYes.prop('checked');
+      $input.toggle(show) // mostrar / ocultar
         .prop('required', show) // requerido si está visible
         .val(show ? '' : defaultValue);
-}
+    }
 
-$(function() { // DOM ready (jQuery 3.1.1)
-    var toggleConfig = [{
-            name: 'enfermedad_infecciosa',
-            id: 'tipo_enfermedad_infecciosa'
+    $(function() { // DOM ready (jQuery 3.1.1)
+      var toggleConfig = [{
+          name: 'enfermedad_infecciosa',
+          id: 'tipo_enfermedad_infecciosa'
         },
         {
-            name: 'enfermedad_no_infecciosa',
-            id: 'tipo_enfermedad_no_infecciosa'
+          name: 'enfermedad_no_infecciosa',
+          id: 'tipo_enfermedad_no_infecciosa'
         },
         {
-            name: 'enfermedad_cronica',
-            id: 'tipo_enfermedad_cronica'
+          name: 'enfermedad_cronica',
+          id: 'tipo_enfermedad_cronica'
         },
         {
-            name: 'discapacidad',
-            id: 'tipo_discapacidad'
+          name: 'discapacidad',
+          id: 'tipo_discapacidad'
         },
         {
-            name: 'medicamento_embarazo',
-            id: 'tipo_medicamento'
+          name: 'medicamento_embarazo',
+          id: 'tipo_medicamento'
         },
         {
-            name: 'fumo_embarazo',
-            id: 'cantidad'
+          name: 'fumo_embarazo',
+          id: 'cantidad'
         },
         {
-            name: 'droga_embarazo',
-            id: 'tipo_droga'
+          name: 'droga_embarazo',
+          id: 'tipo_droga'
         },
         {
-            name: 'cesarea',
-            id: 'razon_cesarea'
+          name: 'cesarea',
+          id: 'razon_cesarea'
         },
         {
-            name: 'niño_prematuro',
-            id: 'meses_prematuro'
+          name: 'niño_prematuro',
+          id: 'meses_prematuro'
         },
         {
-            name: 'complicaciones_nacer',
-            id: 'tipo_complicacion'
+          name: 'complicaciones_nacer',
+          id: 'tipo_complicacion'
         },
         {
-            name: 'problema_alimentacion',
-            id: 'tipo_problema_alimenticio'
+          name: 'problema_alimentacion',
+          id: 'tipo_problema_alimenticio'
         },
         {
-            name: 'problema_dormir',
-            id: 'tipo_problema_dormir'
+          name: 'problema_dormir',
+          id: 'tipo_problema_dormir'
         },
         {
-            name: 'problemas_desarrollo_primeros_años',
-            id: 'cuales_problemas'
+          name: 'problemas_desarrollo_primeros_años',
+          id: 'cuales_problemas'
         },
         {
-            name: 'escolarizado',
-            id: 'tipo_educaion'
+          name: 'escolarizado',
+          id: 'tipo_educaion'
         },
         {
-            name: 'tutoria_terapias',
-            id: 'tutoria_terapias_cuales'
+          name: 'tutoria_terapias',
+          id: 'tutoria_terapias_cuales'
         }
-    ];
+      ];
 
-    /* --------- Radios “sí / no” estándar --------- */
-    $.each(toggleConfig, function(i, cfg) {
+      /* --------- Radios “sí / no” estándar --------- */
+      $.each(toggleConfig, function(i, cfg) {
         var $radios = $("input[name='" + cfg.name + "']");
         if (!$radios.length) return; // si no existe, pasamos al siguiente
 
         $radios.on('change', function() {
-            toggleInput(cfg.name, cfg.id);
+          toggleInput(cfg.name, cfg.id);
         });
 
         // Estado inicial
         toggleInput(cfg.name, cfg.id);
-    });
+      });
 
-    /* --------- Caso especial: alcohol (dos campos) --------- */
-    var $alcoholRadios = $("input[name='alcohol_embarazo']");
-    if ($alcoholRadios.length) {
+      /* --------- Caso especial: alcohol (dos campos) --------- */
+      var $alcoholRadios = $("input[name='alcohol_embarazo']");
+      if ($alcoholRadios.length) {
         var toggleAlcohol = function() {
-            var show = $("input[name='alcohol_embarazo'][value='si']").prop('checked');
-            var $tipoAlcohol = $('#tipo_alcohol');
-            var $cantidadAlcohol = $('#cantidad_consumia_alcohol');
+          var show = $("input[name='alcohol_embarazo'][value='si']").prop('checked');
+          var $tipoAlcohol = $('#tipo_alcohol');
+          var $cantidadAlcohol = $('#cantidad_consumia_alcohol');
 
-            $tipoAlcohol.toggle(show)
-                .prop('required', show)
-                .val(show ? '' : 'no aplica');
+          $tipoAlcohol.toggle(show)
+            .prop('required', show)
+            .val(show ? '' : 'no aplica');
 
-            $cantidadAlcohol.toggle(show)
-                .prop('required', show)
-                .val(show ? '' : 'no aplica');
+          $cantidadAlcohol.toggle(show)
+            .prop('required', show)
+            .val(show ? '' : 'no aplica');
         };
         $alcoholRadios.on('change', toggleAlcohol);
         toggleAlcohol(); // estado inicial
-    }
-});
-</script>
+      }
+    });
+  </script>
 
-<script>
-$(function () {
+  <script>
+    $(function() {
+      var $peso = $('#peso_nacer_niño');
+      $peso.attr('inputmode', 'numeric');
 
-    var $peso = $('#peso_nacer_niño');
-
-    $peso.attr('inputmode', 'numeric');     
-
-    $peso.on('input', function () {
+      $peso.on('input', function() {
         var el = this;
 
         var valorOriginal = el.value;
@@ -929,48 +1035,53 @@ $(function () {
 
         var digitosAntes = 0;
         for (var i = 0; i < cursorOriginal; i++) {
-            if (/\d/.test(valorOriginal.charAt(i))) digitosAntes++;
+          if (/\d/.test(valorOriginal.charAt(i))) digitosAntes++;
         }
 
         var raw = valorOriginal.replace(/[^\d]/g, '');
         if (raw.length) {
-            var kilos  = raw.slice(0, 1);
-            var gramos = raw.slice(1, 4).padEnd(3, '0');
-            var nuevoValor = kilos + ',' + gramos + ' Kg';
-            el.value = nuevoValor;
+          var kilos = raw.slice(0, 1);
+          var gramos = raw.slice(1, 4).padEnd(3, '0');
+          var nuevoValor = kilos + ',' + gramos + ' Kg';
+          el.value = nuevoValor;
         } else {
-            el.value = '';
+          el.value = '';
         }
-        var nuevoCursor = 0, vistos = 0;
+        var nuevoCursor = 0,
+          vistos = 0;
         while (nuevoCursor < el.value.length && vistos < digitosAntes) {
-            if (/\d/.test(el.value.charAt(nuevoCursor))) vistos++;
-            nuevoCursor++;
+          if (/\d/.test(el.value.charAt(nuevoCursor))) vistos++;
+          nuevoCursor++;
         }
         nuevoCursor = Math.min(nuevoCursor, el.value.length - 3);
         el.setSelectionRange(nuevoCursor, nuevoCursor);
-    });
+      });
 
-    $peso.on('paste', function (e) { e.preventDefault(); });
+      $peso.on('paste', function(e) {
+        e.preventDefault();
+      });
 
-    $.ajaxSetup({
-        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') }
-    });
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
 
-    $(document).on('submit', '#registro-historia', function (e) {
+      $(document).on('submit', '#registro-historia', function(e) {
         e.preventDefault();
 
         var $campoOtros = $('#otros');
         if ($campoOtros.val().trim() === '') {
-            $campoOtros.val('no aplica');
+          $campoOtros.val('no aplica');
         }
 
         if ($peso.val().trim() !== '') {
-            var limpio = $peso.val().replace(/\s*Kg$/, '').replace(',', '.');
-            $peso.val(limpio);
+          var limpio = $peso.val().replace(/\s*Kg$/, '').replace(',', '.');
+          $peso.val(limpio);
         }
 
-        var formStr   = $(this).serialize();
-        var formArr   = $(this).serializeArray();
+        var formStr = $(this).serialize();
+        var formArr = $(this).serializeArray();
 
         console.groupCollapsed('📤 Enviando a historias.store');
         console.log('Serializado:', formStr);
@@ -978,149 +1089,149 @@ $(function () {
         console.groupEnd();
 
         $.ajax({
-            url: "{{ route('historias.store') }}",
-            type: 'POST',
-            data: formStr,
-            success: function (resp) {
-                console.log('✅ Éxito:', resp);
-                toastr.success(resp.message || 'Registro creado con éxito');
-                $('#registro-historia')[0].reset();
-            },
-            error: function (xhr) {
-                console.error('❌ Error', xhr.status, xhr.responseText);
+          url: "{{ route('historias.store') }}",
+          type: 'POST',
+          data: formStr,
+          success: function(resp) {
+            console.log('✅ Éxito:', resp);
+            toastr.success(resp.message || 'Registro creado con éxito');
+            $('#registro-historia')[0].reset();
+          },
+          error: function(xhr) {
+            console.error('❌ Error', xhr.status, xhr.responseText);
 
-                if (xhr.responseJSON && xhr.responseJSON.errors) {
-                    $.each(xhr.responseJSON.errors, function (k, msgs) {
-                        toastr.error(msgs[0]);
-                    });
-                } else if (xhr.responseJSON && xhr.responseJSON.message) {
-                    toastr.error(xhr.responseJSON.message);
-                } else {
-                    toastr.error('Ocurrió un error inesperado.');
-                }
+            if (xhr.responseJSON && xhr.responseJSON.errors) {
+              $.each(xhr.responseJSON.errors, function(k, msgs) {
+                toastr.error(msgs[0]);
+              });
+            } else if (xhr.responseJSON && xhr.responseJSON.message) {
+              toastr.error(xhr.responseJSON.message);
+            } else {
+              toastr.error('Ocurrió un error inesperado.');
             }
+          }
         });
-    });
+      });
 
-});
-</script>
-<script>
-$(document).ready(function() {
-    var tablaSecretaria = $('#tab-historias').DataTable({
+    });
+  </script>
+  <script>
+    $(document).ready(function() {
+      var tablaSecretaria = $('#tab-historias').DataTable({
         language: {
-            url: './js/datatables/es-ES.json',
+          url: './js/datatables/es-ES.json',
         },
         processing: true,
         serverSide: true,
         ajax: {
-            url: "{{ route('historias.index') }}",
-            type: 'GET',
+          url: "{{ route('historias.index') }}",
+          type: 'GET',
         },
         columns: [{
-                data: 'codigo'
-            },
-            {
-                data: 'nombre'
-            },
-            {
-                data: 'apellido'
-            },
-            {
-                data: 'action',
-                orderable: false,
-                searchable: false
-            } // Desactivar orden y búsqueda en la columna de acciones
+            data: 'codigo'
+          },
+          {
+            data: 'nombre'
+          },
+          {
+            data: 'apellido'
+          },
+          {
+            data: 'action',
+            orderable: false,
+            searchable: false
+          } // Desactivar orden y búsqueda en la columna de acciones
         ]
+      });
     });
-});
-</script>
-<script>
-$.ajaxSetup({
-    headers: {
+  </script>
+  <script>
+    $.ajaxSetup({
+      headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
+      }
+    });
 
-var id;
-$(document).on('click', '.delete', function() {
-    id = $(this).attr('id');
-    $('#confirModal').modal('show');
-});
+    var id;
+    $(document).on('click', '.delete', function() {
+      id = $(this).attr('id');
+      $('#confirModal').modal('show');
+    });
 
-$('#btnEliminar').click(function() {
-    $.ajax({
+    $('#btnEliminar').click(function() {
+      $.ajax({
         url: "/historias/" + id,
         type: 'DELETE',
         beforeSend: function() {
-            $('#btnEliminar').text('Eliminando...');
+          $('#btnEliminar').text('Eliminando...');
         },
         success: function(data) {
-            $('#confirModal').modal('hide');
-            toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-                timeOut: 5000
-            });
-            $('#tab-historias').DataTable().ajax.reload();
+          $('#confirModal').modal('hide');
+          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
+            timeOut: 5000
+          });
+          $('#tab-historias').DataTable().ajax.reload();
         },
         error: function(xhr, status, error) {
-            console.error('Error al eliminar el registro:', error);
-            toastr.error('No se pudo eliminar el registro', 'Error', {
-                timeOut: 5000
-            });
+          console.error('Error al eliminar el registro:', error);
+          toastr.error('No se pudo eliminar el registro', 'Error', {
+            timeOut: 5000
+          });
         }
+      });
     });
-});
-</script>
-<script>
-$(document).on('click', '.verHistoria', function() {
-    const id = $(this).data('id');
-    if (!id) {
+  </script>
+  <script>
+    $(document).on('click', '.verHistoria', function() {
+      const id = $(this).data('id');
+      if (!id) {
         alert('No se encontró el ID de la historia.');
         return;
-    }
+      }
 
-    $('#modalVerHistoria').modal('show');
+      $('#modalVerHistoria').modal('show');
 
-    $.ajax({
+      $.ajax({
         url: `/api/historia/${id}`,
         type: 'GET',
         success: function(data) {
-            console.log(data);
+          console.log(data);
 
-            if (!data.historia) {
-                $('#modalVerHistoria .modal-body').html(
-                    '<p>No se encontraron datos para esta historia.</p>');
-                return;
-            }
+          if (!data.historia) {
+            $('#modalVerHistoria .modal-body').html(
+              '<p>No se encontraron datos para esta historia.</p>');
+            return;
+          }
 
-            const historia = data.historia;
-            const paciente = historia.paciente || {};
-            const representante = paciente.representante || {};
-            const direccion = representante.direccion || {};
-            const historiaDesarrollo = historia.historia_desarrollo || {};
+          const historia = data.historia;
+          const paciente = historia.paciente || {};
+          const representante = paciente.representante || {};
+          const direccion = representante.direccion || {};
+          const historiaDesarrollo = historia.historia_desarrollo || {};
 
-            $('#codigoV').text(historia.codigo || 'N/A');
-            $('#referenciaV').text(historia.referencia || 'N/A');
-            $('#motivoV').text(historia.motivo || 'N/A');
-            $('#pacienteV').text(`${paciente.nombre || 'N/A'} ${paciente.apellido || 'N/A'}`);
-            $('#fechaNacimiento').text(paciente.fecha_nac || 'N/A');
-            $('#representanteV').text(
-                `${representante.nombre || 'N/A'} ${representante.apellido || 'N/A'}`);
-            $('#direccion').text(
-                `${direccion.estado?.estado || 'N/A'}, ${direccion.municipio?.municipio || 'N/A'}, ${direccion.parroquia?.parroquia || 'N/A'}, ${direccion.sector || 'N/A'}`
-            );
-            $('#riesgoSocial').text(data.riesgoSocial ?? 'N/A');
-            $('#riesgoBiologico').text(data.riesgoBiologico ?? 'N/A');
-            $('#riesgoGlobal').text(data.riesgoGlobal ?? 'N/A');
-            $('#peso').text(historiaDesarrollo.peso_nacer_niño ?? 'N/A');
+          $('#codigoV').text(historia.codigo || 'N/A');
+          $('#referenciaV').text(historia.referencia || 'N/A');
+          $('#motivoV').text(historia.motivo || 'N/A');
+          $('#pacienteV').text(`${paciente.nombre || 'N/A'} ${paciente.apellido || 'N/A'}`);
+          $('#fechaNacimiento').text(paciente.fecha_nac || 'N/A');
+          $('#representanteV').text(
+            `${representante.nombre || 'N/A'} ${representante.apellido || 'N/A'}`);
+          $('#direccion').text(
+            `${direccion.estado?.estado || 'N/A'}, ${direccion.municipio?.municipio || 'N/A'}, ${direccion.parroquia?.parroquia || 'N/A'}, ${direccion.sector || 'N/A'}`
+          );
+          $('#riesgoSocial').text(data.riesgoSocial ?? 'N/A');
+          $('#riesgoBiologico').text(data.riesgoBiologico ?? 'N/A');
+          $('#riesgoGlobal').text(data.riesgoGlobal ?? 'N/A');
+          $('#peso').text(historiaDesarrollo.peso_nacer_niño ?? 'N/A');
         },
         error: function(xhr) {
-            const errorMessage = xhr.status === 404 ? 'Historia no encontrada.' :
-                'Error al cargar los datos.';
-            $('#modalVerHistoria .modal-body').html(`<p>${errorMessage}</p>`);
-            console.error('Error en la solicitud:', xhr);
+          const errorMessage = xhr.status === 404 ? 'Historia no encontrada.' :
+            'Error al cargar los datos.';
+          $('#modalVerHistoria .modal-body').html(`<p>${errorMessage}</p>`);
+          console.error('Error en la solicitud:', xhr);
         }
+      });
     });
-});
-</script>
+  </script>
 
 @endsection

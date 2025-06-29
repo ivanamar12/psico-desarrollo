@@ -24,6 +24,7 @@ class CreateAntecedenteMedicosTable extends Migration
       $table->string('discapacidad',);
       $table->string('tipo_discapacidad',);
       $table->string('otros', 600);
+      $table->text('observacion')->nullable();
       $table->timestamps();
     });
   }

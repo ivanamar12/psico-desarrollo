@@ -23,10 +23,11 @@ class CreateHistoriaClinicasTable extends Migration
       $table->foreign('antecedente_medico_id')->references('id')->on('antecedente_medicos')->onDelete('cascade');
       $table->unsignedBigInteger('historia_escolar_id')->nullable();
       $table->foreign('historia_escolar_id')->references('id')->on('historia_escolars')->onDelete('cascade');
-      $table->string('codigo',);
-      $table->string('referencia',);
-      $table->string('especialista_refirio',);
-      $table->string('motivo',);
+      $table->string('codigo');
+      $table->string('referencia');
+      $table->string('especialista_refirio');
+      $table->string('motivo');
+      $table->text('observacion')->nullable();
       $table->timestamps();
     });
   }

@@ -41,6 +41,7 @@ class CreateHistoriaDesarrollosTable extends Migration
       $table->string('alerta_recien_nacido',);
       $table->string('problemas_desarrollo_primeros_años',);
       $table->string('cuales_problemas', 1000);
+      $table->text('observacion')->nullable();
       $table->timestamps();
     });
   }

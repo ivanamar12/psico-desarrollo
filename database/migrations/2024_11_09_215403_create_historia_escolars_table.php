@@ -23,6 +23,7 @@ class CreateHistoriaEscolarsTable extends Migration
       $table->string('dificultad_aritmetica',);
       $table->string('dificultad_escribir',);
       $table->string('agrada_escuela',);
+      $table->text('observacion')->nullable();
       $table->timestamps();
     });
   }
