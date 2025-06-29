@@ -47,7 +47,7 @@
 
                           <!-- Paciente -->
                           <div class="form-group col-md-6">
-                            <label class="control-label">Paciente <span class="text-danger">*</span></label>
+                            <label>Paciente <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="paciente_id" name="paciente_id">
                               <option selected disabled>Seleccione el paciente</option>
@@ -58,7 +58,7 @@
 
                           <!-- Código de Historia -->
                           <div class="form-group col-md-6">
-                            <label class="control-label">Código de Historia <span class="text-danger">*</span></label>
+                            <label>Código de Historia <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" readonly id="codigo" name="codigo"
                               placeholder="Código" required value="{{ 'HIS' . substr(str_shuffle('0123456789'), 0, 5) }}">
                             <small class="form-text text-muted">Este código es generado
@@ -67,7 +67,7 @@
 
                           <!-- Referencia -->
                           <div class="form-group col-md-6">
-                            <label class="control-label">Referencia <span class="text-danger">*</span></label>
+                            <label>Referencia <span class="text-danger">*</span></label>
                             <input class="form-control" id="referencia" name="referencia" type="text" required>
                             <small class="form-text text-muted">Indique quién refirió al
                               paciente o si viene por iniciativa propia.</small>
@@ -75,8 +75,7 @@
 
                           <!-- Especialidad que Refirió -->
                           <div class="form-group col-md-6">
-                            <label class="control-label">Especialidad que Refirió <span
-                                class="text-danger">*</span></label>
+                            <label>Especialidad que Refirió <span class="text-danger">*</span></label>
                             <input class="form-control" id="especialista_refirio" name="especialista_refirio"
                               type="text" required>
                             <small class="form-text text-muted">Ingrese la especialidad médica
@@ -85,15 +84,15 @@
 
                           <!-- Motivo -->
                           <div class="form-group col-md-6">
-                            <label class="control-label">Motivo <span class="text-danger">*</span></label>
+                            <label>Motivo <span class="text-danger">*</span></label>
                             <input class="form-control" id="motivo" name="motivo" type="text" required>
                             <small class="form-text text-muted">Describa brevemente el motivo de
                               la evaluación.</small>
                           </div>
 
-                          <div class="form-group col-md-12">
-                            <label class="control-label">Observaciones generales (Opcional)</label>
-                            <textarea class="form-control" name="observacion_historia" rows="2"></textarea>
+                          <div class="form-group col-md-6">
+                            <label>Observaciones generales (Opcional)</label>
+                            <textarea class="form-control" name="observacion_historia" rows="3"></textarea>
                             <small class="form-text text-muted">
                               Notas adicionales sobre la historia clínica.
                             </small>
@@ -195,15 +194,13 @@
                               no haya sido mencionado anteriormente.</small>
                           </div>
 
-                          <div class="form-group col-md-12 mt-3 text-center">
-                            <label for="observacion"><strong>Observaciones médicas</strong></label>
-                            <textarea class="form-control" id="observacion" name="observacion" rows="3"
-                              placeholder="Observaciones adicionales sobre antecedentes médicos..."></textarea>
+                          <div class="form-group col-md-6">
+                            <label>Observaciones médicas (Opcional)</label>
+                            <textarea class="form-control" name="observacion_antecedentes" rows="3"></textarea>
                             <small class="form-text text-muted">
                               Ejemplo: alergias no mencionadas, historial familiar relevante, etc.
                             </small>
                           </div>
-
                         </div>
 
                         <!-- Botones centrados -->
@@ -391,7 +388,7 @@
 
                           <!-- Peso al nacer -->
                           <div class="form-group col-md-6 mb-4">
-                            <label class="control-label">Peso al nacer<span class="text-danger">*</label>
+                            <label>Peso al nacer<span class="text-danger">*</label>
                             <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text"
                               placeholder="Ejemplo: 3.2">
                             <small class="form-text text-muted">Ingrese el peso del niño al nacer, expresado en
@@ -525,15 +522,13 @@
                               dificultades sensoriales, etc.</small>
                           </div>
 
-                          <div class="form-group col-md-12 mt-3">
-                            <label for="observacion"><strong>Observaciones del desarrollo</strong></label>
-                            <textarea class="form-control" id="observacion" name="observacion" rows="3"
-                              placeholder="Detalles adicionales sobre el desarrollo del niño..."></textarea>
+                          <div class="form-group col-md-6">
+                            <label>Observaciones del desarrollo (Opcional)</label>
+                            <textarea class="form-control" name="observacion_desarrollo" rows="3"></textarea>
                             <small class="form-text text-muted">
                               Ejemplo: hitos del desarrollo alcanzados, comportamientos atípicos, etc.
                             </small>
                           </div>
-
                         </div>
 
                         <!-- Botones de navegación -->
@@ -661,10 +656,9 @@
                               cómodo o expresa agrado por su escuela.</small>
                           </div>
 
-                          <div class="form-group col-md-12">
-                            <label class="control-label">Observaciones escolares</label>
-                            <textarea class="form-control" name="observacion" rows="3"
-                              placeholder="Notas sobre rendimiento, adaptación, u otros aspectos escolares..."></textarea>
+                          <div class="form-group col-md-6">
+                            <label>Observaciones escolares (Opcional)</label>
+                            <textarea class="form-control" name="observacion_escolar" rows="3"></textarea>
                             <small class="form-text text-muted">
                               Ejemplo: relación con compañeros, necesidades educativas especiales, etc.
                             </small>

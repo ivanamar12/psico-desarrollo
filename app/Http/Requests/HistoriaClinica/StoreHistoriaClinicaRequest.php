@@ -72,6 +72,11 @@ class StoreHistoriaClinicaRequest extends FormRequest
       'referencia' => ['required', 'string'],
       'especialista_refirio' => ['required', 'string'],
       'motivo' => ['required', 'string'],
+      // Campos de observación 
+      'observacion_historia' =>  ['nullable', 'string', 'max:500'],
+      'observacion_antecedentes' => ['nullable', 'string', 'max:500'],
+      'observacion_desarrollo' => ['nullable', 'string', 'max:500'],
+      'observacion_escolar' => ['nullable', 'string', 'max:500'],
     ];
   }
 }

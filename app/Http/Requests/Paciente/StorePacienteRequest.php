@@ -48,7 +48,6 @@ class StorePacienteRequest extends FormRequest
       'familiares.*.tipo_discapacidad' => 'nullable|string|max:120',
       'familiares.*.enfermedad_cronica' => 'nullable|string|max:120',
       'familiares.*.tipo_enfermedad' => 'nullable|string|max:120',
-      'tiene_observacion' => 'required|in:si,no',
       'observacion' => 'nullable|string|max:500',
     ];
   }

@@ -81,7 +81,7 @@ class PacienteController extends Controller
         'tipo_conexion_internet' => $request->tipo_conexion_internet,
         'acceso_servcios_publicos' => $request->acceso_servcios_publicos,
         'fuente_ingreso_familiar' => $request->fuente_ingreso_familiar,
-        'observacion' => $request->tiene_observacion === 'si' ? $request->observacion : null,
+        'observacion' => $request->observacion ?? null,
       ]);
 
       // Crear el paciente

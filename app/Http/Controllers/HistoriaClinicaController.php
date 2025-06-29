@@ -86,6 +86,7 @@ class HistoriaClinicaController extends Controller
         'alerta_recien_nacido' => $validatedData['alerta_recien_nacido'],
         'problemas_desarrollo_primeros_años' => $validatedData['problemas_desarrollo_primeros_años'],
         'cuales_problemas' => $validatedData['cuales_problemas'] ?? null,
+        'observacion' => $validatedData['observacion_desarrollo'] ?? null,
       ]);
 
       // Crear Antecedente Médico
@@ -99,6 +100,7 @@ class HistoriaClinicaController extends Controller
         'discapacidad' => $validatedData['discapacidad'],
         'tipo_discapacidad' => $validatedData['tipo_discapacidad'] ?? null,
         'otros' => $validatedData['otros'] ?? 'no aplica',
+        'observacion' => $validatedData['observacion_antecedentes'] ?? null,
       ]);
 
       // Crear Historia Escolar
@@ -111,6 +113,7 @@ class HistoriaClinicaController extends Controller
         'dificultad_aritmetica' => $validatedData['dificultad_aritmetica'],
         'dificultad_escribir' => $validatedData['dificultad_escribir'],
         'agrada_escuela' => $validatedData['agrada_escuela'],
+        'observacion' => $validatedData['observacion_escolar'] ?? null,
       ]);
 
       // Crear Historia Clínica
@@ -123,6 +126,7 @@ class HistoriaClinicaController extends Controller
         'referencia' => $validatedData['referencia'],
         'especialista_refirio' => $validatedData['especialista_refirio'],
         'motivo' => $validatedData['motivo'],
+        'observacion' => $validatedData['observacion_historia'] ?? null,
       ]);
     });
 

@@ -321,26 +321,13 @@
                               hogar.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-12">
-                            <h5>¿Desea agregar alguna observación? <span style="color:red">*</span></h5>
-                            <div>
-                              <label><input type="radio" name="tiene_observacion" value="si" required
-                                  onclick="toggleObservacion()"> Sí</label>
-                              <label><input type="radio" name="tiene_observacion" value="no"
-                                  onclick="toggleObservacion()"> No</label>
-                            </div>
-                            <small class="form-text text-muted">Marque "Sí" si desea agregar observaciones
-                              adicionales.</small>
+                          <div class="form-group col-md-6">
+                            <label>Observaciones (Opcional)</label>
+                            <textarea class="form-control" name="observacion" rows="3"></textarea>
+                            <small class="form-text text-muted">
+                              Ingrese cualquier observación adicional sobre el paciente.
+                            </small>
                           </div>
-
-                          <div class="form-group label-floating col-md-12" id="observacion-container"
-                            style="display: none;">
-                            <label class="control-label">Observaciones</label>
-                            <textarea class="form-control" id="observacion" name="observacion" rows="3"></textarea>
-                            <small class="form-text text-muted">Ingrese cualquier observación adicional sobre el paciente
-                              (opcional).</small>
-                          </div>
-
                         </div>
 
                         <p class="centro-texto">
@@ -603,18 +590,6 @@
       } else {
         tipo_conexionInput.style.display = 'none';
         tipo_conexionInput.value = 'no';
-      }
-    }
-
-    function toggleObservacion() {
-      const tieneObservacion = document.querySelector('input[name="tiene_observacion"]:checked').value;
-      const observacionContainer = document.getElementById('observacion-container');
-
-      if (tieneObservacion === 'si') {
-        observacionContainer.style.display = 'block';
-      } else {
-        observacionContainer.style.display = 'none';
-        document.getElementById('observacion').value = '';
       }
     }
   </script>
