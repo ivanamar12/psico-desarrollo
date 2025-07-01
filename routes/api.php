@@ -17,7 +17,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // API para obtener la historia clínica de un paciente
 Route::get('/historia/{id}', [HistoriaClinicaController::class, 'verHistoria'])->defaults('tipo', 'api');
 
-// 📌 API para obtener la última prueba registrada
+// API para obtener la última prueba registrada
 Route::get('/ultima-prueba', function () {
     $prueba = AplicacionPrueba::with('paciente')->latest()->first();
 
@@ -35,7 +35,7 @@ Route::get('/ultima-prueba', function () {
     ]);
 });
 
-// 📌 API para analizar una prueba automáticamente
+// API para analizar una prueba automáticamente
 Route::post('/analizar-prueba', [AnalisisPruebaController::class, 'analizarPrueba']);
 
 Route::get('/subescalas', function () {
@@ -48,13 +48,13 @@ Route::get('/subescalas', function () {
     }
 });
 
-// 📌 API para guardar los resultados analizados de una prueba
+//API para guardar los resultados analizados de una prueba
 Route::post('/guardar-resultados', [AnalisisPruebaController::class, 'guardarResultados']);
 
-// 📌 API para obtener las respuestas de una prueba aplicada
+//API para obtener las respuestas de una prueba aplicada
 Route::get('/ver-respuestas-prueba/{id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 
-// 📌 API para obtener los baremos desde la base de datos
+//API para obtener los baremos desde la base de datos
 Route::get('/baremos', function () {
     return response()->json(Baremos::all());
 });

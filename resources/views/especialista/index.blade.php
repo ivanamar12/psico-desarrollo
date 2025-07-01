@@ -52,9 +52,8 @@
                           <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ci" name="ci" required
-                              oninput="validateInput(this)" maxlength="10">
-                            <small class="form-text text-muted">Ej: V-12345678</small>
+                            <input type="text" class="form-control" id="ci" name="ci" required>
+                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna sea el caso V, P o E.</small>
                           </div>
 
                           <!-- FVP -->
@@ -140,10 +139,9 @@
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
 
-                          <div class="form-group label-floating col-md-6">
+                          <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="estado_id" name="estado_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
@@ -151,8 +149,7 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="municipio_id" name="municipio_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
@@ -160,29 +157,28 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="parroquia_id" name="parroquia_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
                             <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-6">
+                          <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required>
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
 
-                        </div>
+                            </div>
 
-                        <p class="centro-texto">
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
-                            <i class="zmdi zmdi-arrow-back"></i> Regresar
-                          </button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
-                            <i class="zmdi zmdi-floppy"></i> Registrar
-                          </button>
-                        </p>
+                            <p class="centro-texto">
+                              <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                                <i class="zmdi zmdi-arrow-back"></i> Regresar
+                              </button>
+                              <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                                <i class="zmdi zmdi-floppy"></i> Registrar
+                              </button>
+                            </p>
                       </div>
                     </form>
                   </div>

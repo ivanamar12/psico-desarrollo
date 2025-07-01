@@ -41,63 +41,54 @@
                     <form id="registro-paciente">@csrf
                       <!-- paso 1 -->
                       <div id="paso1">
-                        <h3>Datos Personales</h3>
-                        <div class="fila-formulario">
+    <h3>Datos Personales</h3>
+    <div class="fila-formulario">
+      <!-- Fila 1 -->
+      <div class="form-group label-floating col-md-6">
+        <label class="control-label">Representante <span style="color: red;">*</span></label>
+        <select class="form-control form-control-solid select2" required style="width: 100%;" id="representante_id" name="representante_id">
+          <option selected disabled>Seleccione el representante</option>
+        </select>
+        <small class="form-text text-muted">Busque al representante por su cedula.</small>
+      </div>
 
-                          <!-- Representante -->
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Representante <span style="color: red;">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;"
-                              id="representante_id" name="representante_id">
-                              <option selected disabled>Seleccione el representante</option>
-                            </select>
-                            <small class="form-text text-muted">Busque al representante por su cedula.</small>
-                          </div>
+      <div class="form-group label-floating col-md-6">
+        <label class="control-label">Nombre <span style="color: red;">*</span></label>
+        <input class="form-control" id="nombre" name="nombre" type="text" required oninput="validarTexto(this)">
+        <small class="form-text text-muted">Ingrese el nombre Ej: Carlos.</small>
+      </div>
 
-                          <!-- Nombre -->
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre <span style="color: red;">*</span></label>
-                            <input class="form-control" id="nombre" name="nombre" type="text" required
-                              oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Ingrese el nombre Ej: Carlos.</small>
-                          </div>
+      <!-- Fila 2 -->
+      <div class="form-group label-floating col-md-6">
+        <label class="control-label">Apellido <span style="color: red;">*</span></label>
+        <input class="form-control" id="apellido" name="apellido" type="text" required oninput="validarTexto(this)">
+        <small class="form-text text-muted">Ingrese el apellido Ej: Garcia.</small>
+      </div>
 
-                          <!-- Apellido -->
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Apellido <span style="color: red;">*</span></label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required
-                              oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Ingrese el apellido Ej: Garcia.</small>
-                          </div>
+      <div class="form-group col-md-6">
+        <label class="control-label">Fecha de Nacimiento <span style="color: red;">*</span></label>
+        <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
+        <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio, mínimo 3 meses.</small>
+      </div>
 
-                          <!-- Fecha de nacimiento -->
-                          <div class="form-group col-md-6">
-                            <label class="control-label">Fecha de Nacimiento <span style="color: red;">*</span></label>
-                            <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
-                            <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio,
-                              mínimo 3 meses.</small>
-                          </div>
+      <!-- Fila 3 -->
+      <div class="form-group col-md-6">
+        <label class="control-label">Género <span style="color: red;">*</span></label>
+        <select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
+          <option selected disabled>Seleccione su género</option>
+          @foreach ($generos as $genero)
+            <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+          @endforeach
+        </select>
+        <small class="form-text text-muted">Seleccione su genero.</small>
+      </div>
+    </div>
 
-                          <!-- Género -->
-                          <div class="form-group col-md-6">
-                            <label class="control-label">Género <span style="color: red;">*</span></label>
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
-                              name="genero_id">
-                              <option selected disabled>Seleccione su género</option>
-                              @foreach ($generos as $genero)
-                                <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-                              @endforeach
-                            </select>
-                            <small class="form-text text-muted">Seleccione su genero.</small>
-                          </div>
-
-                        </div>
-
-                        <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
-                        </p>
-                      </div>
+    <!-- Botones centrados y alineados horizontalmente -->
+    <div class="text-center mt-4 d-flex justify-content-center gap-2">
+      <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">Siguiente</button>
+    </div>
+  </div>
                       <!-- paso 2 -->
                       <div id="paso2">
                         <h3>Datos Familiares</h3>

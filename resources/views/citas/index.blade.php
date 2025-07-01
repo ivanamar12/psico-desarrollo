@@ -83,53 +83,69 @@
 
   <!-- modal para agendar la cita -->
   @if (auth()->user()->can('crear citas'))
-    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
-      aria-hidden="true">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h3 class="modal-title w-100 text-center" style="color: white;">Agendar Cita</h3>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <form id="eventForm">
-              <div class="form-group ">
-                <label class="control-label">Paciente</label>
-                <select class="form-control form-control-solid select2" required style="width: 100%;" id="paciente_id">
-                  <option selected>Seleccione un paciente</option>
-                  @foreach ($pacientes as $paciente)
-                    <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }}</option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group ">
-                <label class="control-label">Especialista</label>
-                <select class="form-control form-control-solid select2" required style="width: 100%;"
-                  id="especialista_id">
-                  <option selected>Seleccione un Especialista</option>
-                  @foreach ($especialistas as $especialista)
-                    <option value="{{ $especialista->id }}">{{ $especialista->nombre }} {{ $especialista->apellido }}
-                    </option>
-                  @endforeach
-                </select>
-              </div>
-              <div class="form-group">
-                <label for="hora">Hora</label>
-                <input type="time" class="form-control" id="hora" required onchange="validateHour()">
-              </div>
+<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
 
-            </form>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-regresar" data-dismiss="modal" style="color: white;">Cerrar</button>
-            <button type="button" class="btn btn-custom" id="saveEvent" style="color: white;">Agendar Cita </button>
-          </div>
-        </div>
+      <div class="modal-header">
+        <h3 class="modal-title w-100 text-center" style="color: white;">Agendar Cita</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
       </div>
+
+      <div class="modal-body">
+        <form id="eventForm">
+
+          <!-- Paciente -->
+          <div class="form-group">
+            <label>Paciente <span class="text-danger">*</span></label>
+            <select class="form-control form-control-solid select2" required style="width: 100%;"
+              id="paciente_id" name="paciente_id">
+              <option selected disabled>Seleccione el paciente</option>
+              @foreach ($pacientes as $paciente)
+                <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }}</option>
+              @endforeach
+            </select>
+            <small class="form-text text-muted">Busque al paciente por su nombre.</small>
+          </div>
+
+          <!-- Especialista -->
+          <div class="form-group">
+            <label>Especialista <span class="text-danger">*</span></label>
+            <select class="form-control form-control-solid select2" required style="width: 100%;"
+              id="especialista_id" name="especialista_id">
+              <option selected disabled>Seleccione el especialista</option>
+              @foreach ($especialistas as $especialista)
+                <option value="{{ $especialista->id }}">{{ $especialista->nombre }} {{ $especialista->apellido }}</option>
+              @endforeach
+            </select>
+            <small class="form-text text-muted">Busque al especialista por su nombre.</small>
+          </div>
+
+          <!-- Hora -->
+          <div class="form-group">
+            <label for="hora">Hora <span class="text-danger">*</span></label>
+            <input type="time" class="form-control" id="hora" name="hora" required onchange="validateHour()">
+            <small class="form-text text-muted">
+              El horario disponible es de <strong>7:30 a.m. a 11:00 p.m.</strong> y de <strong>1:00 p.m. a 3:00 p.m.</strong>
+            </small>
+          </div>
+
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-regresar" data-dismiss="modal" style="color: white;">Cerrar</button>
+        <button type="button" class="btn btn-custom" id="saveEvent" style="color: white;">Agendar Cita</button>
+      </div>
+
     </div>
-  @endif
+  </div>
+</div>
+@endif
+
   <!-- Modal para editar el estado de la cita -->
   @if (auth()->user()->can('cambiar estado citas'))
     <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
@@ -173,6 +189,15 @@
 @endsection
 @section('js')
   <script>
+    $(document).ready(function () {
+  $('#paciente_id').select2({
+    dropdownParent: $('#eventModal')
+  });
+  $('#especialista_id').select2({
+    dropdownParent: $('#eventModal')
+  });
+});
+
     $(document).ready(function() {
       var tablaCitasHoy = $('#tab-citas_hoy').DataTable({
         language: {
@@ -251,142 +276,180 @@
     });
   </script>
   <script>
-    $(document).ready(function() {
-      $('#calendar').fullCalendar({
-        lang: 'es',
-        header: {
-          left: 'prev,next today',
-          center: 'title',
-          right: 'month,agendaWeek,agendaDay'
-        },
-        selectable: true,
-        selectHelper: true,
-        hiddenDays: [0, 6],
-        events: function(start, end, timezone, callback) {
-          loadEvents(callback);
-        },
-        dayRender: function(date, cell) {
-          var today = moment().startOf('day');
-          if (date.isBefore(today)) {
-            cell.addClass('fc-past');
-          }
-        },
-        select: function(start, end) {
-          var today = moment().startOf('day');
-          if (start.isBefore(today)) {
-            toastr.warning('No se pueden seleccionar fechas pasadas.');
-            $('#calendar').fullCalendar('unselect');
-            return;
-          }
-          var eventCount = $('#calendar').fullCalendar('clientEvents', function(event) {
-            return event.start.isSame(start, 'day');
-          }).length;
-          if (eventCount >= 4) {
-            toastr.warning('No se pueden agregar más de 4 citas por día.');
-            $('#calendar').fullCalendar('unselect');
-            return;
-          }
-          $('#eventModal').modal('show');
-          $('#saveEvent').off('click').on('click', function() {
-            validateHour();
+    $(document).ready(function () {
+  $('#calendar').fullCalendar({
+    lang: 'es',
+    header: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'month,agendaWeek,agendaDay'
+    },
+    selectable: true,
+    selectHelper: true,
+    hiddenDays: [0, 6],
+    events: function (start, end, timezone, callback) {
+      loadEvents(callback);
+    },
 
-            if (document.getElementById('hora').validity.valid) {
-              var formData = {
-                paciente_id: $('#paciente_id').val(),
-                especialista_id: $('#especialista_id').val(),
-                fecha: start.format('YYYY-MM-DD'),
-                hora: $('#hora').val(),
-                _token: '{{ csrf_token() }}'
-              };
-              $.ajax({
-                url: "{{ route('citas.store') }}",
-                type: "POST",
-                data: formData,
-                success: function(response) {
-                  toastr.success(response.message);
-                  $('#eventModal').modal('hide');
-                  $('#eventForm')[0].reset();
-                  reloadEvents();
-                },
-                error: function(xhr) {
-                  console.error(xhr);
-                  toastr.error('Error al crear la cita');
-                }
-              });
-            }
-          });
+    dayRender: function (date, cell) {
+      const today = moment().startOf('day');
+      if (date.isBefore(today)) {
+        cell.addClass('fc-past');
+      }
+    },
 
-        },
-        eventClick: function(event) {
-          $('#statusModal').modal('show');
-          $('#statusModal .modal-body').find('p').remove();
+    select: function (start, end) {
+      const today = moment().startOf('day');
+      if (start.isBefore(today)) {
+        toastr.warning('No se pueden seleccionar fechas pasadas.');
+        $('#calendar').fullCalendar('unselect');
+        return;
+      }
 
-          $.ajax({
-            url: '/citas/' + event.id + '/edit',
-            type: 'GET',
-            success: function(data) {
-              $('#statusModal .modal-body').prepend(`
+      $('#eventModal').modal('show');
+
+      $('#saveEvent').off('click').on('click', function () {
+  validateHour(); // Asegúrate de que esta funcione para validar el rango horario (7:30–12 y 13–16)
+
+  if (document.getElementById('hora').validity.valid) {
+    const fecha = start.format('YYYY-MM-DD');
+    const hora = $('#hora').val();
+    const pacienteId = $('#paciente_id').val();
+    const especialistaId = $('#especialista_id').val();
+    const nuevaHora = moment(`${fecha} ${hora}`, 'YYYY-MM-DD HH:mm');
+
+    const citasDelDia = $('#calendar').fullCalendar('clientEvents', function (event) {
+      return event.start.format('YYYY-MM-DD') === fecha;
+    });
+
+    // ✅ Validar que el paciente no tenga otra cita el mismo día
+    const pacienteTieneCita = citasDelDia.some(event => {
+      if (!event.extendedProps || !event.extendedProps.paciente_id) {
+        console.warn('Cita sin paciente_id:', event);
+        return false;
+      }
+      return event.extendedProps.paciente_id == pacienteId;
+    });
+
+    if (pacienteTieneCita) {
+      toastr.warning('Este paciente ya tiene una cita registrada para este día.');
+      $('#calendar').fullCalendar('unselect');
+      return;
+    }
+
+    // ✅ Obtener todas las citas del especialista ese día
+    const citasEspecialista = citasDelDia.filter(event =>
+      event.extendedProps && event.extendedProps.especialista_id == especialistaId
+    );
+
+    // ✅ Verificar si ya tiene 3 citas
+    if (citasEspecialista.length >= 3) {
+      toastr.warning('Este especialista ya tiene 3 citas para este día.');
+      $('#calendar').fullCalendar('unselect');
+      return;
+    }
+
+    // ✅ Verificar si hay una cita a la misma hora o muy cercana (menos de 90 minutos)
+    const conflictoHora = citasEspecialista.some(event => {
+      const eventHora = moment(event.start);
+      const diferencia = Math.abs(nuevaHora.diff(eventHora, 'minutes'));
+
+      const mismaHora = nuevaHora.format('HH:mm') === eventHora.format('HH:mm');
+      return mismaHora || diferencia < 90;
+    });
+
+    if (conflictoHora) {
+      toastr.warning('Este especialista ya tiene una cita en esta hora o muy cercana. Deben pasar al menos 1h30 entre sus citas.');
+      $('#calendar').fullCalendar('unselect');
+      return;
+    }
+
+    // ✅ Si pasa todas las validaciones, enviar al servidor
+    const formData = {
+      paciente_id: pacienteId,
+      especialista_id: especialistaId,
+      fecha: fecha,
+      hora: hora,
+      _token: '{{ csrf_token() }}'
+    };
+
+    $.ajax({
+      url: "{{ route('citas.store') }}",
+      type: "POST",
+      data: formData,
+      success: function (response) {
+        toastr.success(response.message);
+        $('#eventModal').modal('hide');
+        $('#eventForm')[0].reset();
+        reloadEvents();
+      },
+      error: function (xhr) {
+        toastr.error('Error al crear la cita');
+        console.error(xhr);
+      }
+    });
+  }
+});
+
+
+    },
+
+    eventClick: function (event) {
+      $('#statusModal').modal('show');
+      $('#statusModal .modal-body').find('p').remove();
+
+      $.ajax({
+        url: '/citas/' + event.id + '/edit',
+        type: 'GET',
+        success: function (data) {
+          $('#statusModal .modal-body').prepend(`
             <p><strong>Hora:</strong> ${data.hora}</p>
             <p><strong>Representante:</strong> ${data.representante_nombre}</p>
             <p><strong>Paciente:</strong> ${data.paciente_nombre}</p>
-            <p><strong>Especialista:</strong> ${data.especialista_nombre}</p>`);
+            <p><strong>Especialista:</strong> ${data.especialista_nombre}</p>
+          `);
 
-              $('#confirmRadio').prop('checked', false);
-              $('#cancelRadio').prop('checked', false);
-              $('#asistioRadio').prop('checked', false);
-              $('#noAsistioRadio').prop('checked', false);
-              $('#errorMessage').hide();
+          // Reset radios
+          $('#confirmRadio, #cancelRadio, #asistioRadio, #noAsistioRadio').prop('checked', false);
+          $('#errorMessage').hide();
 
-              if (data.status === 'confirmada') {
-                $('#confirmRadio').closest('.form-check').hide();
-                $('#cancelRadio').closest('.form-check').hide();
-                $('#asistioRadio').closest('.form-check').show();
-                $('#noAsistioRadio').closest('.form-check').show();
-                $('#saveStatusButton').show();
-              } else if (data.status === 'pendiente') {
-                $('#confirmRadio').closest('.form-check').show();
-                $('#cancelRadio').closest('.form-check').show();
-                $('#asistioRadio').closest('.form-check').hide();
-                $('#noAsistioRadio').closest('.form-check').hide();
-                $('#saveStatusButton').show();
-              } else if (data.status === 'cancelada' || data.status === 'asistio' || data.status ===
-                'no asistio') {
-                $('#confirmRadio').closest('.form-check').hide();
-                $('#cancelRadio').closest('.form-check').hide();
-                $('#asistioRadio').closest('.form-check').hide();
-                $('#noAsistioRadio').closest('.form-check').hide();
-                $('#statusModal .modal-body').append(`<p><strong>Estado:</strong> ${data.status}</p>`);
-                $('#saveStatusButton').hide();
-              }
+          // Mostrar opciones según estado
+          if (data.status === 'confirmada') {
+            $('#confirmRadio, #cancelRadio').closest('.form-check').hide();
+            $('#asistioRadio, #noAsistioRadio').closest('.form-check').show();
+            $('#saveStatusButton').show();
+          } else if (data.status === 'pendiente') {
+            $('#confirmRadio, #cancelRadio').closest('.form-check').show();
+            $('#asistioRadio, #noAsistioRadio').closest('.form-check').hide();
+            $('#saveStatusButton').show();
+          } else {
+            $('.form-check').hide();
+            $('#statusModal .modal-body').append(`<p><strong>Estado:</strong> ${data.status}</p>`);
+            $('#saveStatusButton').hide();
+          }
 
-              $('#saveStatusButton').off('click').on('click', function() {
-                let status = null;
-                if ($('#confirmRadio').is(':checked')) {
-                  status = 'confirmada';
-                } else if ($('#cancelRadio').is(':checked')) {
-                  status = 'cancelada';
-                } else if ($('#asistioRadio').is(':checked')) {
-                  status = 'asistio';
-                } else if ($('#noAsistioRadio').is(':checked')) {
-                  status = 'no asistio';
-                } else {
-                  $('#errorMessage').text('Debes seleccionar un estado.').show();
-                  return;
-                }
-                updateCitaStatus(event.id, status);
-              });
-            },
-            error: function(xhr) {
-              console.error(xhr);
-              toastr.error('Error al obtener los detalles de la cita');
+          $('#saveStatusButton').off('click').on('click', function () {
+            let status = null;
+            if ($('#confirmRadio').is(':checked')) status = 'confirmada';
+            else if ($('#cancelRadio').is(':checked')) status = 'cancelada';
+            else if ($('#asistioRadio').is(':checked')) status = 'asistio';
+            else if ($('#noAsistioRadio').is(':checked')) status = 'no asistio';
+            else {
+              $('#errorMessage').text('Debes seleccionar un estado.').show();
+              return;
             }
+            updateCitaStatus(event.id, status);
           });
-
-
+        },
+        error: function (xhr) {
+          toastr.error('Error al obtener los detalles de la cita');
+          console.error(xhr);
         }
-
       });
-    });
+    }
+  });
+});
+
 
     function loadEvents(callback) {
       $.ajax({

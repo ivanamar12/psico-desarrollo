@@ -49,7 +49,7 @@
                           <label class="control-label">Nombre de la especialidad <span
                               class="text-danger">*</span></label>
                           <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
-                            maxlength="30">
+                           oninput="validarTexto(this)">
                           <small class="form-text text-muted">Máximo 30 caracteres</small>
                         </div>
 
