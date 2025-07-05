@@ -48,7 +48,6 @@
                         </small>
                       </div>
 
-                      <!-- Selección de paciente -->
                       <div class="form-group">
                         <label for="paciente_id">Paciente <span class="text-danger">*</span></label>
                         <select id="paciente_id" name="paciente_id" class="form-control select2" required
@@ -58,25 +57,23 @@
                             @php
                               $codigo = optional($paciente->historiaclinicas->first())->codigo ?? 'Sin código';
                             @endphp
-                            <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }} -
-                              Código: {{ $codigo }}</option>
+                            <option value="{{ $paciente->id }}" data-fecha-nac="{{ $paciente->fecha_nac }}">
+                              {{ $paciente->nombre }} {{ $paciente->apellido }} - Código: {{ $codigo }}
+                            </option>
                           @endforeach
                         </select>
-                        <small class="form-text text-muted">
-                          Seleccione el paciente al que se aplicará la prueba.
-                        </small>
                       </div>
 
-                      <!-- Selección de prueba -->
-                      <div class="form-group">
+                      <!-- Selector de pruebas -->
+                      <div class="form-group" id="prueba-container" style="display: none;">
                         <label for="prueba_id">Prueba <span class="text-danger">*</span></label>
-                        <select id="prueba_id" class="form-control select2" required style="width: 100%;">
-                          <option value="">Seleccione una prueba</option>
-                          @foreach ($pruebas as $prueba)
-                            <option value="{{ $prueba->id }}">{{ $prueba->nombre }}</option>
-                          @endforeach
+                        <select id="prueba_id" name="prueba_id" class="form-control select2" required
+                          style="width: 100%;">
+                          <option value="">Cargando pruebas disponibles...</option>
                         </select>
-                        <small class="form-text text-muted">Seleccione la prueba psicológica a aplicar.</small>
+                        <small class="form-text text-muted">
+                          Pruebas disponibles para el rango de edad del paciente.
+                        </small>
                       </div>
 
                       <button type="button" id="btnIniciarPrueba" class="btn btn-custom" style="color: white;">
@@ -139,7 +136,7 @@
   <script>
     $(document).ready(function() {
       // Inicializar Select2 para el select de pacientes
-      $('#paciente_id').select2({
+      const pacienteSelect = $('#paciente_id').select2({
         placeholder: 'Seleccione un paciente con historia clínica',
         allowClear: true,
         language: {
@@ -148,32 +145,30 @@
           }
         },
         ajax: {
-          url: '/pacientes/buscar', // Ruta para la búsqueda remota
+          url: '{{ route('pacientes.buscar') }}',
           dataType: 'json',
-          delay: 250, // Retardo en milisegundos antes de realizar la búsqueda
+          delay: 250,
           data: function(params) {
             return {
-              q: params.term // Término de búsqueda enviado al servidor
+              q: params.term
             };
           },
           processResults: function(data) {
-            // Procesar los resultados devueltos por el servidor
             return {
-              results: data.map(function(item) {
-                return {
-                  id: item.id,
-                  text: item.nombre + ' ' + item.apellido // Texto que se muestra en el select
-                };
-              })
+              results: data.map((item) => ({
+                id: item.id,
+                text: item.nombre + ' ' + item.apellido,
+                fecha_nac: item.fecha_nac
+              }))
             };
           },
-          cache: true // Habilitar caché para mejorar el rendimiento
+          cache: true
         },
-        minimumInputLength: 2 // Mínimo de caracteres para comenzar la búsqueda
+        minimumInputLength: 2
       });
 
       // Inicializar Select2 para el select de pruebas
-      $('#prueba_id').select2({
+      const pruebaSelect = $('#prueba_id').select2({
         placeholder: 'Seleccione una prueba',
         allowClear: true,
         language: {
@@ -182,6 +177,84 @@
           }
         }
       });
+
+      // Ocultar selector de pruebas inicialmente
+      $('#prueba-container').hide();
+      $('#prueba_id').prop('disabled', true);
+
+      pacienteSelect.on('change', function() {
+        const pacienteId = $(this).val();
+
+        if (!pacienteId) {
+          $('#prueba-container').hide();
+          $('#prueba_id').prop('disabled', true).val(null).trigger('change');
+          return;
+        }
+
+        const selectedData = $(this).select2('data')[0];
+
+        // Verificar si tenemos fecha de nacimiento
+        if (!selectedData.fecha_nac) {
+          $.ajax({
+            url: '/obtener-fecha-nacimiento/' + pacienteId,
+            method: 'GET',
+            success: function(data) {
+              cargarPruebasDisponibles(calcularEdadEnMeses(data.fecha_nacimiento));
+              $('#prueba-container').show();
+            },
+            error: function() {
+              toastr.error('Error al obtener fecha de nacimiento del paciente');
+            }
+          });
+        } else {
+          const edadEnMeses = calcularEdadEnMeses(selectedData.fecha_nac);
+          cargarPruebasDisponibles(edadEnMeses);
+          $('#prueba-container').show();
+        }
+      });
+
+      function calcularEdadEnMeses(fechaNacimiento) {
+        if (!moment(fechaNacimiento).isValid()) {
+          console.error("Fecha inválida:", fechaNacimiento);
+          return 0;
+        }
+        return moment().diff(moment(fechaNacimiento), 'months');
+      }
+
+      function cargarPruebasDisponibles(edadEnMeses) {
+        $('#prueba_id').empty().append('<option value="">Cargando pruebas disponibles...</option>').prop('disabled',
+          true);
+
+        $.ajax({
+          url: '{{ route('pruebas.disponibles') }}',
+          method: 'GET',
+          data: {
+            edad_meses: edadEnMeses
+          },
+          success: function(data) {
+            $('#prueba_id').empty();
+
+            if (data.length > 0) {
+              $.each(data, function(index, prueba) {
+                $('#prueba_id').append(
+                  $('<option></option>').val(prueba.id).text(prueba.nombre)
+                );
+              });
+              $('#prueba_id').prop('disabled', false).trigger('change');
+            } else {
+              $('#prueba_id').append(
+                $('<option></option>').val('').text('No hay pruebas disponibles para este rango de edad')
+                .prop('disabled', true)
+              );
+            }
+          },
+          error: function() {
+            $('#prueba_id').empty().append(
+              $('<option></option>').val('').text('Error al cargar pruebas').prop('disabled', true)
+            );
+          }
+        });
+      }
     });
   </script>
   <script>

@@ -49,13 +49,38 @@ class AplicarPruebaController extends Controller
   public function buscarPacientes(Request $request)
   {
     $searchTerm = $request->get('q');
-    $pacientes = Paciente::whereHas('historiaclinicas') // Filtra pacientes que tienen al menos una historia clínica
+    $pacientes = Paciente::whereHas('historiaclinicas')
       ->where(function ($query) use ($searchTerm) {
         $query->where('nombre', 'like', "%$searchTerm%")
           ->orWhere('apellido', 'like', "%$searchTerm%");
       })
-      ->get(['id', 'nombre', 'apellido']);
+      ->get(['id', 'nombre', 'apellido', 'fecha_nac']);
     return response()->json($pacientes);
+  }
+
+  public function pruebasDisponibles(Request $request)
+  {
+    $edadMeses = intval($request->input('edad_meses'));
+
+    $rangos = [
+      '0-3 meses' => [0, 3],
+      '4-6 meses' => [4, 6],
+      '7-12 meses' => [7, 12],
+      '13-24 meses' => [13, 24],
+      '25-36 meses' => [25, 36],
+      '37-48 meses' => [37, 48],
+      '49-72 meses' => [49, 72],
+      '36-78 meses' => [36, 78],
+      '60-78 meses' => [60, 78]
+    ];
+
+    $rangosAplicables = array_filter($rangos, function ($rango) use ($edadMeses) {
+      return $edadMeses >= $rango[0] && $edadMeses <= $rango[1];
+    });
+
+    $rangosClaves = array_keys($rangosAplicables);
+
+    return response()->json(Prueba::whereIn('rango_edad', $rangosClaves)->get());
   }
 
   public function obtenerPrueba($id)

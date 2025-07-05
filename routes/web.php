@@ -224,6 +224,10 @@ Route::middleware('auth')->group(function () {
   Route::get('pruebas', [PruebaController::class, 'index'])
     ->name('pruebas.index');
 
+  // Pruebas disponibles
+  Route::get('pruebas/disponibles', [AplicarPruebaController::class, 'pruebasDisponibles'])
+    ->name('pruebas.disponibles');
+
   Route::get('pruebas/{id}', [PruebaController::class, 'show'])
     ->name('pruebas.show');
 
