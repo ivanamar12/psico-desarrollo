@@ -8,8 +8,12 @@
     <!-- SideBar User info -->
     <div class="full-box dashboard-sideBar-UserInfo">
       <figure class="full-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px">
-        <img src="./assets/img/avatar.png" alt="UserIcon">
+        <img src="{{ asset('assets/img/logo.webp') }}" alt="UserIcon">
         <div style="display: flex; flex-direction: column; align-items: center">
+          <p
+            style="margin: 0; font-size: 16px; color: #fff; background: #00869b; padding: 2px 8px; border-radius: 4px;">
+            {{ current_user()->roles()->first()->name }}
+          </p>
           <p style="margin: 0; font-size: 22px">{{ current_user()->name }}</p>
           <p style="margin: 0; font-size: 13px">{{ current_user()->email }}</p>
         </div>

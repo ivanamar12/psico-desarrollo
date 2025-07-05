@@ -7,8 +7,6 @@
     <!-- NavBar -->
     <x-navbar />
 
-    <!-- Content page -->
-
     <!-- Page title -->
     <x-page-header title="Secretarias" icon="zmdi zmdi-male-female zmdi-hc-fw" />
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\Role;
 use App\Http\Controllers\AuditLogController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\RepresentativeController;
@@ -121,13 +122,17 @@ Route::middleware('auth')->group(function () {
   Route::get('paciente/{id}', [PacienteController::class, 'show'])
     ->name('paciente.show');
 
+  /**
+   * Citas
+   */
+
   // Ruta para pacientes y especialistas
   Route::get('citas', [CitaController::class, 'index'])
     ->name('citas.index');
 
   // Ruta para mostrar las citas 
-  Route::get('citas/web', [CitaController::class, 'indexWeb'])
-    ->name('citas.indexWeb');
+  Route::get('citas/calendario', [CitaController::class, 'calendario'])
+    ->name('citas.calendario');
 
   // Ruta para agendar nueva cita
   Route::post('citas', [CitaController::class, 'store'])
@@ -145,12 +150,27 @@ Route::middleware('auth')->group(function () {
     ->name('pdf.citas');
 
   // Ruta para descargar reporte de todas las citas del dia
-  Route::get('pdf/citas_hoy', [CitaController::class, 'citasDeHoy'])
-    ->name('pdf.citas_hoy');
+  Route::get('pdf/citas-hoy', [CitaController::class, 'citasDeHoy'])
+    ->name('pdf.citas-hoy');
+
+  // Rutas para PDFs de especialistas
+  Route::middleware(['role:' . Role::ESPECIALISTA->value])->group(function () {
+    // Citas del día del especialista autenticado
+    Route::get('pdf/citas-hoy-especialista', [CitaController::class, 'citasDeHoyEspecialista'])
+      ->name('pdf.citas-hoy-especialista');
+
+    // Todas las citas del especialista autenticado
+    Route::get('pdf/citas-especialista', [CitaController::class, 'citasEspecialista'])
+      ->name('pdf.citas-especialista');
+  });
 
   // Ruta para descargar reporte de una cita
-  Route::get('pdf/generarPdfCita/{id}', [CitaController::class, 'generarPdfCita'])
-    ->name('pdf.generarPdfCita');
+  Route::get('pdf/generar-pdf-cita/{id}', [CitaController::class, 'generarPdfCita'])
+    ->name('pdf.generar-pdf-cita');
+
+  /**
+   * Historias
+   */
 
   // Ruta para la lista de historias
   Route::get('historias', [HistoriaClinicaController::class, 'index'])

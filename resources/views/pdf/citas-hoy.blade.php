@@ -61,14 +61,13 @@
     <h1>Consultorio Psicologico Infantil PsicoDesarrollo</h1>
   </header>
   <p>
-  <h3><b>Listado de citas del consultorio</b></h3>
+  <h3><b>Listado de citas del dia de hoy del consultorio</b></h3>
   </p>
   <main>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Represenante</th>
           <th>Paciente</th>
           <th>Especialista</th>
           <th>Fecha</th>
@@ -80,13 +79,6 @@
         @foreach ($citas as $cita)
           <tr>
             <td>{{ $cita->id }}</td>
-            <td>
-              @if ($cita->paciente && $cita->paciente->representante)
-                {{ $cita->paciente->representante->nombre }} {{ $cita->paciente->representante->apellido }}
-              @else
-                No registrado
-              @endif
-            </td>
             <td>{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</td>
             <td>{{ $cita->especialista->nombre }} {{ $cita->especialista->apellido }}</td>
             <td>{{ $cita->fecha_consulta }}</td>

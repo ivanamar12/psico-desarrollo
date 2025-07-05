@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
+use App\Http\Requests\Especialista\StoreEspecialistaRequest;
 use App\Models\User;
 use App\Models\Especialista;
 use App\Models\Direccion;
@@ -10,15 +12,10 @@ use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Parroquia;
 use App\Models\Especialidad;
-
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class EspecialistaController extends Controller
 {
@@ -29,20 +26,20 @@ class EspecialistaController extends Controller
       return DataTables::of($especialistas)
         ->addColumn('action', function ($especialista) {
           $acciones = '';
-      
+
           if (auth()->user()->can('editar especialista')) {
-              $acciones .= '<a href="javascript:void(0)" onclick="editespecialista(' . $especialista->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
+            $acciones .= '<a href="javascript:void(0)" onclick="editespecialista(' . $especialista->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
           }
-      
+
           if (auth()->user()->can('eliminar especialista')) {
-              $acciones .= '<button type="button" name="delete" id="' . $especialista->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+            $acciones .= '<button type="button" name="delete" id="' . $especialista->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
           }
-      
+
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-especialista" data-id="' . $especialista->id . '"><i class="zmdi zmdi-eye"></i></button>';
-      
+
           return $acciones;
-      })
-    
+        })
+
         ->rawColumns(['action'])
         ->make(true);
     }
@@ -64,68 +61,50 @@ class EspecialistaController extends Controller
   }
 
   public function show($id)
-    {
-        $especialista = Especialista::obtenerEspecialista($id);
-    
-        if (!$especialista) {
-            return response()->json(['error' => 'Especialista no encontrado'], 404);
-        }
-    
-        return response()->json($especialista);
-    }
-  
-
-
-  public function store(Request $request)
   {
-      $validatedData = $request->validate([
-          'nombre' => 'required|string|max:255',
-          'apellido' => 'required|string|max:255',
-          'ci' => 'required|string|max:255',
-          'fecha_nac' => 'required|date|max:10',
-          'especialidad_id' => 'required|string|max:255',
-          'telefono' => 'required|string|max:255',
-          'email' => 'required|string|email|max:255|unique:especialistas,email|unique:users,email',
-          'fvp' => 'required|string|max:255',
-          'genero_id' => 'required|exists:generos,id',
-          'estado_id' => 'required|exists:estados,id',
-          'municipio_id' => 'required|exists:municipios,id',
-          'parroquia_id' => 'required|exists:parroquias,id',
-          'sector' => 'required|string|max:255',
+    $especialista = Especialista::obtenerEspecialista($id);
+
+    if (!$especialista) {
+      return response()->json(['error' => 'Especialista no encontrado'], 404);
+    }
+
+    return response()->json($especialista);
+  }
+
+  public function store(StoreEspecialistaRequest $request)
+  {
+    $validatedData = $request->validated();
+
+    \DB::transaction(function () use ($validatedData) {
+      $direccion = Direccion::create([
+        'estado_id' => $validatedData['estado_id'],
+        'municipio_id' => $validatedData['municipio_id'],
+        'parroquia_id' => $validatedData['parroquia_id'],
+        'sector' => $validatedData['sector'],
       ]);
 
-      \DB::transaction(function () use ($validatedData) {
-          $direccion = Direccion::create([
-              'estado_id' => $validatedData['estado_id'],
-              'municipio_id' => $validatedData['municipio_id'],
-              'parroquia_id' => $validatedData['parroquia_id'],
-              'sector' => $validatedData['sector'],
-          ]);
+      $user = User::create([
+        'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
+        'email' => $validatedData['email'],
+        'password' => Hash::make('password123'),
+      ])->assignRole(Role::ESPECIALISTA);
 
-          $especialista = Especialista::create([
-              'nombre' => $validatedData['nombre'],
-              'apellido' => $validatedData['apellido'],
-              'ci' => $validatedData['ci'],
-              'fecha_nac' => $validatedData['fecha_nac'],
-              'especialidad_id' => $validatedData['especialidad_id'],
-              'telefono' => $validatedData['telefono'],
-              'email' => $validatedData['email'],
-              'fvp' => $validatedData['fvp'],
-              'genero_id' => $validatedData['genero_id'],
-              'direccion_id' => $direccion->id,
-          ]);
+      Especialista::create([
+        'nombre' => $validatedData['nombre'],
+        'apellido' => $validatedData['apellido'],
+        'ci' => $validatedData['ci'],
+        'fecha_nac' => $validatedData['fecha_nac'],
+        'especialidad_id' => $validatedData['especialidad_id'],
+        'telefono' => $validatedData['telefono'],
+        'email' => $validatedData['email'],
+        'fvp' => $validatedData['fvp'],
+        'user_id' => $user->id,
+        'genero_id' => $validatedData['genero_id'],
+        'direccion_id' => $direccion->id,
+      ]);
+    });
 
-          $user = User::create([
-              'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
-              'email' => $validatedData['email'],
-              'password' => Hash::make('password123'), 
-          ]);
-
-          $user->assignRole('ESPECIALISTA');
-          $especialista->update(['user_id' => $user->id]);
-      });
-
-      return response()->json(['success' => true, 'message' => 'Especialista y usuario creados correctamente']);
+    return response()->json(['success' => true, 'message' => 'Especialista y usuario creados correctamente']);
   }
 
   public function edit($id)

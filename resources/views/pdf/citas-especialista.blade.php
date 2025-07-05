@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>Citas</title>
+  <title>Mis Citas</title>
   <style>
     table {
       width: 100%;
@@ -53,6 +53,12 @@
       padding: 20px;
       margin: 60px 0;
     }
+
+    .titulo-especialista {
+      color: #2c6aa0;
+      border-bottom: 2px solid #2c6aa0;
+      padding-bottom: 10px;
+    }
   </style>
 </head>
 
@@ -61,19 +67,24 @@
     <h1>Consultorio Psicologico Infantil PsicoDesarrollo</h1>
   </header>
   <p>
-  <h3><b>Listado de citas del consultorio</b></h3>
+  <h3 class="titulo-especialista">
+    <b>Mis Citas - {{ $nombreEspecialista }}</b>
+    @if (isset($fechaEspecifica))
+      <br><span style="font-size: 0.8em;">{{ $fechaEspecifica }}</span>
+    @endif
+  </h3>
   </p>
   <main>
     <table>
       <thead>
         <tr>
           <th>ID</th>
-          <th>Represenante</th>
+          <th>Representante</th>
           <th>Paciente</th>
-          <th>Especialista</th>
           <th>Fecha</th>
           <th>Estado</th>
           <th>Hora</th>
+          <th>Observaciones</th>
         </tr>
       </thead>
       <tbody>
@@ -88,17 +99,17 @@
               @endif
             </td>
             <td>{{ $cita->paciente->nombre }} {{ $cita->paciente->apellido }}</td>
-            <td>{{ $cita->especialista->nombre }} {{ $cita->especialista->apellido }}</td>
             <td>{{ $cita->fecha_consulta }}</td>
-            <td>{{ $cita->status }}</td>
+            <td><strong>{{ ucfirst($cita->status) }}</strong></td>
             <td>{{ $cita->hora }}</td>
+            <td>{{ $cita->observaciones ?? 'Sin observaciones' }}</td>
           </tr>
         @endforeach
       </tbody>
     </table>
   </main>
   <footer>
-    <p>Consultorio Psicologico PsicoDesarrollo</p>
+    <p>Consultorio Psicologico PsicoDesarrollo - {{ $nombreEspecialista }}</p>
   </footer>
 </body>
 

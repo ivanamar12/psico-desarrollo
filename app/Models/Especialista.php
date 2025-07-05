@@ -4,47 +4,63 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Especialista extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['nombre', 'apellido', 'ci', 'fecha_nac', 'especialidad', 'telefono', 'email','fvp','especialidad_id','genero_id', 'direccion_id'];
+  protected $fillable = [
+    'nombre',
+    'apellido',
+    'ci',
+    'fecha_nac',
+    'especialidad',
+    'telefono',
+    'email',
+    'fvp',
+    'user_id',
+    'especialidad_id',
+    'genero_id',
+    'direccion_id'
+  ];
 
-    public function direccion(){
+  public function user(): BelongsTo
+  {
+    return $this->belongsTo(User::class);
+  }
 
-    	return $this->belongsTo(Direccion::class);
-    	
-    }
+  public function direccion(): BelongsTo
+  {
+    return $this->belongsTo(Direccion::class);
+  }
 
-    public function genero(){
+  public function genero(): BelongsTo
+  {
+    return $this->belongsTo(Genero::class);
+  }
 
-    	return $this->belongsTo(Genero::class);
-    	
-    }
+  public function especialidad(): BelongsTo
+  {
+    return $this->belongsTo(Especialidad::class);
+  }
 
-    public function especialidad(){
+  public function citas(): HasMany
+  {
+    return $this->hasMany(Cita::class);
+  }
 
-    	return $this->belongsTo(Especialidad::class);
-    	
-    }
-
-    public function citas(){
-
-    	return $this->hasMany(Cita::class);
-    	 
-    }
-
-    public static function obtenerEspecialista($id)
-    {
-        return self::with([
-            'genero',
-            'especialidad',
-            'direccion.estado',
-            'direccion.municipio',
-            'direccion.parroquia'
-        ])
-        ->where('id', $id)
-        ->first();
-    }
+  public static function obtenerEspecialista($id)
+  {
+    return self::with([
+      'genero',
+      'especialidad',
+      'direccion.estado',
+      'direccion.municipio',
+      'direccion.parroquia'
+    ])
+      ->where('id', $id)
+      ->first();
+  }
 }
