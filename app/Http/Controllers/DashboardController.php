@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Paciente;
-use App\Models\User;
 use App\Models\Representante;
 use App\Models\Especialista;
 use App\Models\Secretaria;
@@ -14,13 +13,12 @@ class DashboardController extends Controller
 {
   public function index()
   {
-    $totalEspecialistas = Especialista::count();
-    $totalSecretarias = Secretaria::count();
-
-    $totalPacientes = Paciente::count();
-    $totalRepresentantes = Representante::count();
-
-    return view('dashboard', compact('totalEspecialistas', 'totalSecretarias', 'totalPacientes', 'totalRepresentantes'));
+    return view('dashboard', [
+      'totalEspecialistas' => Especialista::count(),
+      'totalSecretarias' => Secretaria::count(),
+      'totalPacientes' => Paciente::count(),
+      'totalRepresentantes' => Representante::count()
+    ]);
   }
 
   public function estadisticasPacientes()
@@ -63,7 +61,6 @@ class DashboardController extends Controller
         'edades' => $edades
       ]);
     } catch (\Exception $e) {
-      \Log::error("Error en estadisticasPacientes: " . $e->getMessage());
       return response()->json(['error' => $e->getMessage()], 500);
     }
   }

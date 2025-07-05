@@ -38,33 +38,50 @@
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="formAplicarPrueba">
-                      <select id="paciente_id" name="paciente_id" class="form-control select2" required style="width: 100%;">
-    <option selected disabled>Seleccione un paciente</option>
-    @foreach ($pacientes as $paciente)
-        @php
-            $codigo = optional($paciente->historiaclinicas->first())->codigo ?? 'Sin código';
-        @endphp
-        <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }} - Código: {{ $codigo }}</option>
-    @endforeach
-</select>
-
-
+                      <!-- Especialista -->
                       <div class="form-group">
                         <label for="especialista">Especialista</label>
                         <input type="text" id="especialista" class="form-control" value="{{ auth()->user()->name }}"
                           disabled>
+                        <small class="form-text text-muted">
+                          Nombre del profesional que aplica la prueba (se autocompleta).
+                        </small>
                       </div>
+
+                      <!-- Selección de paciente -->
                       <div class="form-group">
-                        <label for="prueba_id">Prueba</label>
-                        <select id="prueba_id" class="form-control select2" required style="width: 100%;">
-    <option value="">Seleccione una prueba</option>
-    @foreach ($pruebas as $prueba)
-        <option value="{{ $prueba->id }}">{{ $prueba->nombre }}</option>
-    @endforeach
-</select>
+                        <label for="paciente_id">Paciente <span class="text-danger">*</span></label>
+                        <select id="paciente_id" name="paciente_id" class="form-control select2" required
+                          style="width: 100%;">
+                          <option selected disabled>Seleccione un paciente</option>
+                          @foreach ($pacientes as $paciente)
+                            @php
+                              $codigo = optional($paciente->historiaclinicas->first())->codigo ?? 'Sin código';
+                            @endphp
+                            <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }} -
+                              Código: {{ $codigo }}</option>
+                          @endforeach
+                        </select>
+                        <small class="form-text text-muted">
+                          Seleccione el paciente al que se aplicará la prueba.
+                        </small>
                       </div>
-                      <button type="button" id="btnIniciarPrueba" class="btn btn-custom" style="color: white;">Aplicar
-                        Prueba</button>
+
+                      <!-- Selección de prueba -->
+                      <div class="form-group">
+                        <label for="prueba_id">Prueba <span class="text-danger">*</span></label>
+                        <select id="prueba_id" class="form-control select2" required style="width: 100%;">
+                          <option value="">Seleccione una prueba</option>
+                          @foreach ($pruebas as $prueba)
+                            <option value="{{ $prueba->id }}">{{ $prueba->nombre }}</option>
+                          @endforeach
+                        </select>
+                        <small class="form-text text-muted">Seleccione la prueba psicológica a aplicar.</small>
+                      </div>
+
+                      <button type="button" id="btnIniciarPrueba" class="btn btn-custom" style="color: white;">
+                        Aplicar Prueba
+                      </button>
                     </form>
                   </div>
                 </div>
@@ -75,6 +92,7 @@
       </div>
     </div>
   </section>
+
   <div id="modalPrueba" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -94,6 +112,7 @@
       </div>
     </div>
   </div>
+
   <div id="modalPruebaVer" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
@@ -117,54 +136,54 @@
 
 @endsection
 @section('js')
-<script>
-$(document).ready(function () {
-    // Inicializar Select2 para el select de pacientes
-    $('#paciente_id').select2({
+  <script>
+    $(document).ready(function() {
+      // Inicializar Select2 para el select de pacientes
+      $('#paciente_id').select2({
         placeholder: 'Seleccione un paciente con historia clínica',
         allowClear: true,
         language: {
-            noResults: function () {
-                return "Paciente no encontrado";
-            }
+          noResults: function() {
+            return "Paciente no encontrado";
+          }
         },
         ajax: {
-            url: '/pacientes/buscar', // Ruta para la búsqueda remota
-            dataType: 'json',
-            delay: 250, // Retardo en milisegundos antes de realizar la búsqueda
-            data: function (params) {
+          url: '/pacientes/buscar', // Ruta para la búsqueda remota
+          dataType: 'json',
+          delay: 250, // Retardo en milisegundos antes de realizar la búsqueda
+          data: function(params) {
+            return {
+              q: params.term // Término de búsqueda enviado al servidor
+            };
+          },
+          processResults: function(data) {
+            // Procesar los resultados devueltos por el servidor
+            return {
+              results: data.map(function(item) {
                 return {
-                    q: params.term // Término de búsqueda enviado al servidor
+                  id: item.id,
+                  text: item.nombre + ' ' + item.apellido // Texto que se muestra en el select
                 };
-            },
-            processResults: function (data) {
-                // Procesar los resultados devueltos por el servidor
-                return {
-                    results: data.map(function (item) {
-                        return {
-                            id: item.id,
-                            text: item.nombre + ' ' + item.apellido // Texto que se muestra en el select
-                        };
-                    })
-                };
-            },
-            cache: true // Habilitar caché para mejorar el rendimiento
+              })
+            };
+          },
+          cache: true // Habilitar caché para mejorar el rendimiento
         },
         minimumInputLength: 2 // Mínimo de caracteres para comenzar la búsqueda
-    });
+      });
 
-    // Inicializar Select2 para el select de pruebas
-    $('#prueba_id').select2({
+      // Inicializar Select2 para el select de pruebas
+      $('#prueba_id').select2({
         placeholder: 'Seleccione una prueba',
         allowClear: true,
         language: {
-            noResults: function () {
-                return "Prueba no encontrada";
-            }
+          noResults: function() {
+            return "Prueba no encontrada";
+          }
         }
+      });
     });
-});
-</script>
+  </script>
   <script>
     $(document).ready(function() {
       let subescalas = [];
@@ -177,7 +196,9 @@ $(document).ready(function () {
         let pruebaNombre = $("#prueba_id option:selected").text();
 
         if (!pacienteId || !pruebaId) {
-          alert("Seleccione un paciente y una prueba.");
+          toastr.warning('Seleccione un paciente y una prueba.', {
+            timeOut: 5000
+          });
           return;
         }
 

@@ -43,19 +43,29 @@ Route::middleware(['auth', 'role:ADMIN'])->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
-  // Dashboard
-  Route::get('/dashboard', function () {
-    return view('dashboard');
-  })->name('dashboard');
+  /**
+   * Dashboard
+   */
 
-  Route::get('/perfil', [PerfilController::class, 'index'])->name('perfil.index');
-  Route::post('/perfil/update', [PerfilController::class, 'update'])->name('perfil.update');
+  Route::get('/dashboard', [DashboardController::class, 'index'])
+    ->name('dashboard');
 
-  Route::get('/perfil/list', [PerfilController::class, 'list'])->name('perfil.list');
+  /**
+   * Profile
+   */
+
+  Route::get('/perfil', [PerfilController::class, 'index'])
+    ->name('perfil.index');
+  Route::post('/perfil/update', [PerfilController::class, 'update'])
+    ->name('perfil.update');
+
+  Route::get('/perfil/list', [PerfilController::class, 'list'])
+    ->name('perfil.list');
   Route::get('/perfil/show/{id}', [PerfilController::class, 'show']);
   Route::get('/perfil/edit/{id}', [PerfilController::class, 'edit']);
 
-  Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])->name('perfil.delete');
+  Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])
+    ->name('perfil.delete');
 
   /**
    * Notifications routes
@@ -180,7 +190,10 @@ Route::middleware('auth')->group(function () {
   Route::post('historias', [HistoriaClinicaController::class, 'store'])
     ->name('historias.store');
 
-  // Rutas para especialidad
+  /**
+   * Rutas para especialidad
+   */
+
   Route::resource('especialidad', EspecialidadController::class)
     ->except(['destroy', 'show']);
 
@@ -192,9 +205,27 @@ Route::middleware('auth')->group(function () {
   Route::get('pdf/generarPdfHistoria/{id}', [HistoriaClinicaController::class, 'generarPdfHistoria'])
     ->name('pdf.generarPdfHistoria');
 
+  /**
+   * Pruebas
+   */
+
+  // Ruta para almacenar un nueva prueba
+  Route::post('pruebas/prueba', [PruebaController::class, 'storePrueba'])
+    ->name('pruebas.storePrueba');
+
+  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
+    ->name('pruebas.destroy');
+
+  /**
+   * Aplicacion de Pruebas
+   */
+
   // Ruta para la lista de pruebas
   Route::get('pruebas', [PruebaController::class, 'index'])
     ->name('pruebas.index');
+
+  Route::get('pruebas/{id}', [PruebaController::class, 'show'])
+    ->name('pruebas.show');
 
   // Ruta para aplicar prueba
   Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])
@@ -205,10 +236,6 @@ Route::middleware('auth')->group(function () {
   Route::post('/aplicar-prueba/guardar', [AplicarPruebaController::class, 'guardarRespuestas']);
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
-
-  Route::get('pruebas/{id}', [PruebaController::class, 'show'])
-    ->name('pruebas.show')
-    ->middleware('auth');
 
   Route::get('/obtener-fecha-nacimiento/{paciente_id}', function ($paciente_id) {
     $paciente = \App\Models\Paciente::find($paciente_id);
@@ -222,29 +249,17 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 
-  Route::get('/resultados-pdf/{id}', [AplicarPruebaController::class, 'generarPDF'])->name('resultados.pdf');
+  Route::get('/resultados-pdf/{id}', [AplicarPruebaController::class, 'generarPDF'])
+    ->name('resultados.pdf');
 
-  Route::get('/resultados/koppitz/{id}', [AplicarPruebaController::class, 'generarPDFKoppitz'])->name('resultados.koppitz.pdf');
+  Route::get('/resultados/koppitz/{id}', [AplicarPruebaController::class, 'generarPDFKoppitz'])
+    ->name('resultados.koppitz.pdf');
 
   Route::get('/resultados/no-estandarizada/{id}', [AplicarPruebaController::class, 'generarPDFNoEstandarizada'])
     ->name('resultados.no_estandarizada.pdf');
 
-  Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->name('dashboard');
+  Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])
+    ->name('pacientes.buscar');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
-
-  // web.php
-  Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])->name('pacientes.buscar');
-});
-
-// Grupo de rutas que utiliza el middleware 'web'
-Route::middleware(['web', 'auth'])->group(function () {
-
-  // Ruta para almacenar un nueva prueba
-  Route::post('pruebas/prueba', [PruebaController::class, 'storePrueba'])
-    ->name('pruebas.storePrueba');
-
-  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
-    ->name('pruebas.destroy');
 });
