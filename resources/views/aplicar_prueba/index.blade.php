@@ -268,8 +268,15 @@
         let tipoPrueba = $("#prueba_id option:selected").data("tipo");
         let pruebaNombre = $("#prueba_id option:selected").text();
 
-        if (!pacienteId || !pruebaId) {
-          toastr.warning('Seleccione un paciente y una prueba.', {
+        if (!pacienteId) {
+          toastr.warning('Seleccione un paciente.', {
+            timeOut: 5000
+          });
+          return;
+        }
+
+        if (!pruebaId) {
+          toastr.warning('Seleccione una prueba.', {
             timeOut: 5000
           });
           return;
