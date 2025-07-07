@@ -1,3 +1,5 @@
+// ========== VALIDACIONES DE TEXTO ==========
+
 function validarTexto(input) {
   let texto = input.value.replace(/[^a-zA-ZÁÉÍÓÚÑáéíóúñ\s]/g, "");
   texto = texto.toLowerCase().replace(/\b\w/g, letra => letra.toUpperCase());
@@ -5,31 +7,28 @@ function validarTexto(input) {
   input.value = texto;
 }
 
+// ========== CÉDULA ==========
+
 function validarCedulaInput(input) {
   let valor = input.value.toUpperCase();
-  
-  // Permitimos escribir V, E o P al inicio, con o sin guion
-  const match = valor.match(/^([VEP])\-?(\d{0,8})$/);
+  const match = valor.match(/^([VEP])\-?(\d{0,9})$/);
 
   if (match) {
     let tipo = match[1];
     let numero = match[2].replace(/\D/g, "");
-    if (numero.length > 8) numero = numero.slice(0, 8);
+    if (numero.length > 9) numero = numero.slice(0, 9);
     input.value = `${tipo}-${numero}`;
   } else {
-    // Limpieza si no cumple con patrón
     input.value = "";
   }
 }
 
 function validarCedulaRango(input) {
   const valor = input.value.toUpperCase().trim();
-  const match = valor.match(/^([VEP])-?(\d{1,8})$/); // V-, E-, P- y hasta 8 números
+  const match = valor.match(/^([VEP])-?(\d{1,9})$/);
 
   if (!match) {
-    toastr.warning("Debe ingresar una cédula válida (V-, E- o P- seguido de números).", "Advertencia", {
-      timeOut: 5000
-    });
+    toastr.warning("Debe ingresar una cédula válida (V-, E- o P- seguido de números).", "Advertencia", { timeOut: 5000 });
     input.value = "V-";
     return;
   }
@@ -37,10 +36,8 @@ function validarCedulaRango(input) {
   const tipo = match[1];
   const numero = parseInt(match[2]);
 
-  if (isNaN(numero) || match[2].length < 6 || match[2].length > 8 || numero < 100000 || numero > 34000000) {
-    toastr.warning("La cédula debe tener entre 6 y 8 dígitos y estar entre 100.000 y 34.000.000.", "Advertencia", {
-      timeOut: 5000
-    });
+  if (isNaN(numero) || match[2].length < 6 || match[2].length > 9 || numero < 100000 || numero > 9999999999) {
+    toastr.warning("La cédula debe tener entre 6 y 8 dígitos y estar entre 100.000 y 34.000.000.", "Advertencia", { timeOut: 5000 });
     input.value = `${tipo}-`;
     return;
   }
@@ -48,7 +45,7 @@ function validarCedulaRango(input) {
   input.value = `${tipo}-${match[2]}`;
 }
 
-
+// ========== TELÉFONO ==========
 
 function validarTelefonoInput(input) {
   let telefono = input.value.replace(/\D/g, "");
@@ -67,9 +64,7 @@ function validarTelefonoInput(input) {
   input.value = telefono;
 
   if (telefono.replace("-", "").length === 11 && !isValidPrefix) {
-    toastr.warning("El número debe comenzar con 0412, 0424, 0414, 0416, 0426 o 0422.", "Advertencia", {
-      timeOut: 5000
-    });
+    toastr.warning("El número debe comenzar con 0412, 0424, 0414, 0416, 0426 o 0422.", "Advertencia", { timeOut: 5000 });
     input.value = "";
   }
 }
@@ -77,12 +72,12 @@ function validarTelefonoInput(input) {
 function validarTelefonoRango(input) {
   const numero = input.value.replace(/\D/g, "");
   if (numero.length !== 11) {
-    toastr.warning("El número de teléfono debe tener exactamente 11 dígitos.", "Advertencia", {
-      timeOut: 5000
-    });
+    toastr.warning("El número de teléfono debe tener exactamente 11 dígitos.", "Advertencia", { timeOut: 5000 });
     input.value = "";
   }
 }
+
+// ========== FVP ==========
 
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
@@ -108,68 +103,78 @@ document.addEventListener("DOMContentLoaded", function () {
   tel2.addEventListener("input", function () { validarTelefonoInput(this); });
   tel2.addEventListener("blur", function () { validarTelefonoRango(this); });
 
-  // Cédula
-const cedulas = ["ci", "ci2"];
+  // Cédulas
+  const cedulas = ["ci", "ci2"];
+  cedulas.forEach(function (id) {
+    const input = document.getElementById(id);
+    if (input) {
+      input.addEventListener("input", function () { validarCedulaInput(this); });
+      input.addEventListener("blur", function () { validarCedulaRango(this); });
+    }
+  });
 
-cedulas.forEach(function (id) {
-  const input = document.getElementById(id);
-  if (input) {
-    input.addEventListener("input", function () {
-      validarCedulaInput(this);
-    });
-    input.addEventListener("blur", function () {
-      validarCedulaRango(this);
-    });
-  }
-});
-
-
-
-  // Solo números para FVP
+  // FVP solo números
   document.getElementById("fvp").addEventListener("keypress", function (e) {
     if (e.key < "0" || e.key > "9") e.preventDefault();
   });
 });
 
-// Email
+
+// ========== VALIDACIONES REMOTAS (GLOBALES) ==========
+
+window.emailValidated = false;
+window.telefonoValidated = false;
+window.cedulaValidated = false;
+
 $(document).ready(function () {
-  console.log("JS cargado");
+    function validateField(input, url, validationVar) {
+        const value = input.val().trim();
 
-  $(".email-verificar").on("blur", function () {
-    const input = $(this);
-    const email = input.val().trim();
-    if (email === "") return;
-
-    $.ajax({
-      url: "/verificar-email",
-      method: "GET",
-      data: { email: email },
-      success: function (response) {
-        if (response.exists) {
-          toastr.error("Este correo ya está registrado en el sistema.");
-          input.val("").focus();
-          input.removeClass("is-valid").addClass("is-invalid");
-          input.data("valid", false);
-        } else {
-          input.removeClass("is-invalid").addClass("is-valid");
-          input.data("valid", true);
+        if (value === "") {
+            input.removeClass("is-valid is-invalid");
+            window[validationVar] = false;
+            return;
         }
-      },
-      error: function () {
-        toastr.error("El correo ya está en el sistema.");
-      }
-    });
-  });
 
-  $("form").on("submit", function (e) {
-    let valid = true;
-    $(".email-verificar").each(function () {
-      const isValid = $(this).data("valid");
-      if (isValid === false || typeof isValid === "undefined") {
-        toastr.error("Uno de los correos ingresados ya está en uso o no ha sido validado.");
-        valid = false;
-      }
+        input.prop("disabled", true);
+
+        $.ajax({
+            url: url,
+            method: "GET",
+            data: { [input.attr("name")]: value },
+            success: function (response) {
+                if (response.exists) {
+                    toastr.error("Este " + input.attr("name") + " ya está registrado.");
+                    input.val("").removeClass("is-valid").addClass("is-invalid");
+                    window[validationVar] = false;
+                } else {
+                    input.removeClass("is-invalid").addClass("is-valid");
+                    window[validationVar] = true;
+                }
+            },
+            error: function (xhr) {
+                console.error("Error en validación de " + input.attr("name"), xhr.responseText);
+                toastr.error("Error al verificar el " + input.attr("name") + ".");
+                window[validationVar] = false;
+            },
+            complete: function () {
+                input.prop("disabled", false);
+            }
+        });
+    }
+
+    // Validación de email
+    $(document).on("blur", ".email-verificar", function () {
+        validateField($(this), "/verificar-email", "emailValidated");
     });
-    if (!valid) e.preventDefault();
-  });
+
+    // Validación de teléfono
+    $(document).on("blur", ".telefono-verificar", function () {
+        validateField($(this), "/verificar-telefono", "telefonoValidated");
+    });
+
+    // Validación de cédula
+    $(document).on("blur", ".ci-verificar", function () {
+        validateField($(this), "/verificar-cedula", "cedulaValidated");
+    });
 });

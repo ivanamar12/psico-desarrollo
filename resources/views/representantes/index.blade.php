@@ -46,29 +46,29 @@
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario row">
 
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Cédula de Identidad (CI) <span
+                          <div class="form-group  col-md-6">
+                            <label >Cédula de Identidad (CI) <span
                                 class="text-danger">*</span></label>
-                            <input class="form-control" id="ci" name="ci" type="text" required maxlength="10">
+                            <input class="form-control ci-verificar" id="ci" name="ci" type="text" required >
                             <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna sea el caso V, P o E.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Nombre <span class="text-danger">*</span></label>
+                          <div class="form-group  col-md-6">
+                            <label >Nombre <span class="text-danger">*</span></label>
                             <input class="form-control" id="nombre" name="nombre" type="text" required
                               maxlength="50" oninput="validarTexto(this)">
                             <small class="leyenda-input">Nombre completo del representante.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Apellido <span class="text-danger">*</span></label>
+                          <div class="form-group  col-md-6">
+                            <label >Apellido <span class="text-danger">*</span></label>
                             <input class="form-control" id="apellido" name="apellido" type="text" required
                               maxlength="50" oninput="validarTexto(this)">
                             <small class="leyenda-input">Apellido completo del representante.</small>
                           </div>
 
-                          <div class="form-group label-floating col-md-6">
-                            <label class="control-label">Teléfono<span class="text-danger">*</span></label>
+                          <div class="form-group  col-md-6">
+                            <label >Teléfono<span class="text-danger">*</span></label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
                             <small class="leyenda-input">Número telefónico de contacto.</small>
                           </div>
@@ -80,7 +80,7 @@
                           </div> 
 
                           <div class="form-group col-md-6">
-                            <label class="control-label">Género <span class="text-danger">*</span></label>
+                            <label >Género <span class="text-danger">*</span></label>
                             <select class="form-control select2" required style="width: 100%;" id="genero_id"
                               name="genero_id">
                               <option selected disabled>Seleccione su género</option>
@@ -382,56 +382,51 @@
 </script>
   <script>
     $(document).ready(function() {
-
-      $("#registro-representante").submit(function(event) {
+    $("#registro-representante").submit(function (event) {
         event.preventDefault();
-        var nombre = $('#nombre').val();
-        var apellido = $('#apellido').val();
-        var ci = $('#ci').val();
-        var telefono = $('#telefono').val();
-        var email = $('#email').val();
-        var genero_id = $('#genero_id').val();
-        var estado_id = $('#estado_id').val();
-        var municipio_id = $('#municipio_id').val();
-        var parroquia_id = $('#parroquia_id').val();
-        var sector = $('#sector').val();
-        var _token = $("input[name=_token]").val();
+        toastr.clear();
+
+        registerRepresentante();
+    });
+
+      function registerRepresentante() {
+        var formData = {
+           nombre: $('#nombre').val(),
+           apellido: $('#apellido').val(),
+           ci: $('#ci').val(),
+           telefono: $('#telefono').val(),
+           email: $('#email').val(),
+           genero_id: $('#genero_id').val(),
+           estado_id: $('#estado_id').val(),
+           municipio_id: $('#municipio_id').val(),
+           parroquia_id: $('#parroquia_id').val(),
+           sector: $('#sector').val(),
+           _token: $("input[name=_token]").val(),
+        };
 
         $.ajax({
           url: "{{ route('representantes.store') }}",
           type: "POST",
-          data: {
-            nombre: nombre,
-            apellido: apellido,
-            ci: ci,
-            telefono: telefono,
-            email: email,
-            genero_id: genero_id,
-            estado_id: estado_id,
-            municipio_id: municipio_id,
-            parroquia_id: parroquia_id,
-            sector: sector,
-            _token: _token
-          },
+          data: formData,
           success: function(response) {
-            if (response.success) {
-              $('#registro-representante')[0].reset();
-              toastr.success('El registro se ingresó correctamente', 'Nuevo registro', {
-                timeOut: 5000
-              });
-              $('#tab-representante').DataTable().ajax.reload();
-              $("#paso1").show();
-              $("#paso2").hide();
+                if (response.success) {
+                    $('#registro-representante')[0].reset();
+                    $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+
+                    $("#paso1").show();
+                    $("#paso2").hide();
+
+                    toastr.success('¡Registro exitoso!', 'Éxito', { timeOut: 3000 });
+                    $('#tab-representante').DataTable().ajax.reload(null, false);
+                }
+            },
+            error: function(xhr) {
+                console.error(xhr.responseText);
+                toastr.error('Error al registrar.', 'Error', { timeOut: 5000 });
             }
-          },
-          error: function(xhr) {
-            console.error(xhr.responseText);
-            toastr.error('Ocurrió un error al registrar el representante', 'Error', {
-              timeOut: 5000
-            });
-          }
         });
-      });
+      };
+
     });
   </script>
  <script>
@@ -626,51 +621,4 @@
       });
     });
   </script>
-  <script>
-    $(document).ready(function() {
-    console.log("JS cargado");
-    $(".email-verificar").on("blur", function() {
-      const input = $(this);
-      const email = input.val().trim();
-
-      if (email === "") return;
-
-      $.ajax({
-        url: "/verificar-email",
-        method: "GET",
-        data: { email: email },
-        success: function(response) {
-          if (response.exists) {
-            toastr.error("Este correo ya está registrado en el sistema.");
-            input.val("").focus();
-            input.removeClass("is-valid").addClass("is-invalid");
-            input.data("valid", false);
-          } else {
-            input.removeClass("is-invalid").addClass("is-valid");
-            input.data("valid", true);
-          }
-        },
-        error: function() {
-          toastr.error("El correo ya esta en el sistema.");
-        }
-      });
-    });
-
-    $("form").on("submit", function(e) {
-      let valid = true;
-      $(".email-verificar").each(function() {
-        const isValid = $(this).data("valid");
-        if (isValid === false || typeof isValid === "undefined") {
-          toastr.error(
-            "Uno de los correos ingresados ya está en uso o no ha sido validado."
-          );
-          valid = false;
-        }
-      });
-
-      if (!valid) e.preventDefault();
-    });
-   });
-
-</script>
 @endsection

@@ -266,4 +266,6 @@ Route::middleware('auth')->group(function () {
     ->name('pacientes.buscar');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
+  Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
+Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
 });
