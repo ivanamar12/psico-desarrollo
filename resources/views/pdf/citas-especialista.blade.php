@@ -64,6 +64,7 @@
 
 <body>
   <header>
+    <img width="30" height="30" src="{{ public_path('assets/img/logo.webp') }}" alt="Logo PsicoDesarrollo">
     <h1>Consultorio Psicologico Infantil PsicoDesarrollo</h1>
   </header>
   <p>

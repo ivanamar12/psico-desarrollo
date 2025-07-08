@@ -6,9 +6,9 @@ use App\Enums\Role;
 use App\Models\Paciente;
 use App\Models\Especialista;
 use App\Models\Cita;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
 
 class CitaController extends Controller
 {
@@ -160,7 +160,7 @@ class CitaController extends Controller
         return redirect()->back()->with('error', 'No hay citas disponibles para generar PDF');
       }
 
-      $pdf = PDF::loadView('pdf.citas', ['citas' => $citas]);
+      $pdf = Pdf::loadView('pdf.citas', ['citas' => $citas]);
 
       return $pdf->download('citas-generales-' . now()->format('Y-m-d') . '.pdf');
     } catch (\Exception $e) {
@@ -182,7 +182,7 @@ class CitaController extends Controller
         return redirect()->back()->with('error', 'No hay citas disponibles para hoy');
       }
 
-      $pdf = PDF::loadView('pdf.citas', ['citas' => $citas]);
+      $pdf = Pdf::loadView('pdf.citas', ['citas' => $citas]);
 
       return $pdf->download('citas-hoy-' . $fechaHoy . '.pdf');
     } catch (\Exception $e) {
@@ -210,7 +210,7 @@ class CitaController extends Controller
         ->orderBy('hora', 'asc')
         ->get();
 
-      $pdf = PDF::loadView('pdf.citas-especialista', [
+      $pdf = Pdf::loadView('pdf.citas-especialista', [
         'citas' => $citas,
         'nombreEspecialista' => $especialista->nombre . ' ' . $especialista->apellido,
         'fechaEspecifica' => 'Citas de hoy - ' . now()->format('d/m/Y')
@@ -237,7 +237,7 @@ class CitaController extends Controller
         ->orderBy('hora', 'desc')
         ->get();
 
-      $pdf = PDF::loadView('pdf.citas-especialista', [
+      $pdf = Pdf::loadView('pdf.citas-especialista', [
         'citas' => $citas,
         'nombreEspecialista' => $especialista->nombre . ' ' . $especialista->apellido,
         'fechaEspecifica' => 'Historial completo - ' . now()->format('d/m/Y')
@@ -258,7 +258,7 @@ class CitaController extends Controller
         return response()->json(['error' => 'Cita no encontrada'], 404);
       }
 
-      $pdf = PDF::loadView('pdf.generarPdfCita', compact('cita'));
+      $pdf = Pdf::loadView('pdf.generarPdfCita', compact('cita'));
 
       return $pdf->download('cita-' . $id . '.pdf');
     } catch (\Exception $e) {

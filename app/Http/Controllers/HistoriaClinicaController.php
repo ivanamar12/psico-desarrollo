@@ -9,10 +9,11 @@ use App\Models\HistoriaDesarrollo;
 use App\Models\HistoriaEscolar;
 use App\Models\Parentesco;
 use App\Models\Paciente;
+// use Barryvdh\DomPDF\Facade\Pdf;
+use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
 
 class HistoriaClinicaController extends Controller
 {
@@ -166,7 +167,7 @@ class HistoriaClinicaController extends Controller
 
     $datos = $historia->getDatosPdf();
 
-    $pdf = PDF::loadView('pdf.generarPdfHistoria', compact('datos'));
+    $pdf = Pdf::loadView('pdf.generarPdfHistoria', compact('datos'));
 
     return $pdf->download('historia_clinica_' . $id . '.pdf');
   }
