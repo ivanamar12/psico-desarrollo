@@ -22,7 +22,10 @@
           <button class="tab-trigger" data-tab="resumen" data-state="active">Resumen</button>
         </li>
         <li>
-          <button class="tab-trigger" data-tab="graficos">Gráficos</button>
+          <button class="tab-trigger" data-tab="graficos-distribucion-demografica">Distribución Demográfica</button>
+        </li>
+        <li>
+          <button class="tab-trigger" data-tab="graficos-escalas-riesgos">Evaluación de Riesgos</button>
         </li>
         <!-- Agregar más pestañas según necesites -->
         <li>
@@ -33,6 +36,10 @@
       <section class="tabs-content">
         <!-- Pestaña Resumen -->
         <section class="tab-pane" data-tab="resumen" data-state="active">
+          <section style="padding: 0px 12px">
+            <h2>Totales Registrados</h2>
+          </section>
+
           <section class="full-box text-center" style="padding: 30px 10px;">
             <article class="full-box tile">
               <div class="full-box tile-title text-center text-titles text-uppercase">
@@ -86,12 +93,22 @@
               </div>
             </article>
           </section>
+
+          <section>
+            <p>
+              Cifras actualizadas de especialistas, personal administrativo y pacientes en el sistema.
+            </p>
+          </section>
         </section>
 
         <!-- Pestaña Gráficos -->
-        <section class="tab-pane" data-tab="graficos">
+        <section class="tab-pane" data-tab="graficos-distribucion-demografica">
           <!-- Sección de gráficos -->
           <section class="container-fluid">
+            <section style="padding: 12px">
+              <h2>Distribución Demográfica de Pacientes</h2>
+            </section>
+
             <section class="row">
               <!-- Gráfico de géneros -->
               <article class="col-md-6">
@@ -120,6 +137,25 @@
                   </div>
                 </div>
               </article>
+            </section>
+
+            <section>
+              <p>
+                Visualización de la composición de la población de pacientes, segmentada por género y grupos de
+                edad en meses.
+              </p>
+            </section>
+          </section>
+        </section>
+
+        <section class="tab-pane" data-tab="graficos-escalas-riesgos">
+          <!-- Sección de gráficos -->
+          <section class="container-fluid">
+            <section style="padding: 12px">
+              <h2>Evaluación Integral de Riesgos en Pacientes</h2>
+            </section>
+
+            <section class="row">
               <!-- Gráfico de Riesgo Social -->
               <article class="col-md-4">
                 <div class="panel panel-default">
@@ -161,6 +197,12 @@
                   </div>
                 </div>
               </article>
+            </section>
+
+            <section>
+              <p>
+                Análisis de los niveles de riesgo (social, biológico y global) identificados en la población atendida.
+              </p>
             </section>
           </section>
         </section>
@@ -330,7 +372,12 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1
+                  }
+                }
               }
             }
           });
@@ -355,7 +402,12 @@
               responsive: true,
               maintainAspectRatio: false,
               scales: {
-                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+                y: {
+                  beginAtZero: true,
+                  ticks: {
+                    stepSize: 1
+                  }
+                }
               }
             }
           });

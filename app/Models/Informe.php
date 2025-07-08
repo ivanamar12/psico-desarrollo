@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Informe extends Model
 {
@@ -24,4 +25,14 @@ class Informe extends Model
     'especialista_id',
     'paciente_id'
   ];
+
+  public function especialista(): BelongsTo
+  {
+    return $this->belongsTo(Especialista::class);
+  }
+
+  public function paciente(): BelongsTo
+  {
+    return $this->belongsTo(Paciente::class);
+  }
 }

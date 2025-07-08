@@ -45,11 +45,11 @@
                       <!-- Paso único -->
                       <div id="paso1">
                         <h3>Información de la Especialidad</h3>
-                        <div class="form-group label-floating">
+                        <div class="form-group">
                           <label class="control-label">Nombre de la especialidad <span
                               class="text-danger">*</span></label>
                           <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
-                           oninput="validarTexto(this)">
+                            oninput="validarTexto(this)">
                           <small class="form-text text-muted">Máximo 30 caracteres</small>
                         </div>
 
@@ -86,7 +86,7 @@
             @csrf
             @method('PUT')
             <input type="hidden" name="id" id="especialidad_id">
-            <div class="form-group label-floating">
+            <div class="form-group">
               <label class="control-label">Nombre de la especialidad</label>
               <input class="form-control" type="text" name="especialidad" id="especialidad_nombre_edit" required
                 maxlength="30">

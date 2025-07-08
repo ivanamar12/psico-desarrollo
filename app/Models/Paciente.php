@@ -57,6 +57,11 @@ class Paciente extends Model
     return $this->hasMany(AplicacionPrueba::class);
   }
 
+  public function informes(): HasMany
+  {
+    return $this->hasMany(Informe::class);
+  }
+
   public static function obtenerPaciente($id)
   {
     return self::with([

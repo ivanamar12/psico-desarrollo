@@ -51,6 +51,11 @@ class Especialista extends Model
     return $this->hasMany(Cita::class);
   }
 
+  public function informes(): HasMany
+  {
+    return $this->hasMany(Informe::class);
+  }
+
   public static function obtenerEspecialista($id)
   {
     return self::with([
