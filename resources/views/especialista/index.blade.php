@@ -52,7 +52,7 @@
                           <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ci" name="ci" required>
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required>
                             <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna sea el caso V, P o E.</small>
                           </div>
 
@@ -102,7 +102,7 @@
                           <!-- Teléfono -->
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                            <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono" required>
                             <small class="form-text text-muted">Debe comenzar con 0412, 0424, etc. Máximo 11
                               dígitos.</small>
                           </div>
@@ -439,63 +439,58 @@
     });
   </script>
 
-  <script>
-    $(document).ready(function() {
-      $("#registro-especialista").submit(function(event) {
+<script>
+$(document).ready(function () {
+    $("#registro-especialista").submit(function (event) {
         event.preventDefault();
-        var nombre = $('#nombre').val();
-        var apellido = $('#apellido').val();
-        var ci = $('#ci').val();
-        var fecha_nac = $('#fecha_nac').val();
-        var especialidad_id = $('#especialidad_id').val();
-        var telefono = $('#telefono').val();
-        var email = $('#email').val();
-        var fvp = $('#fvp').val();
-        var genero_id = $('#genero_id').val();
-        var estado_id = $('#estado_id').val();
-        var municipio_id = $('#municipio_id').val();
-        var parroquia_id = $('#parroquia_id').val();
-        var sector = $('#sector').val();
-        var _token = $("input[name=_token]").val();
+        toastr.clear();
+
+        registerEspecialista();
+    });
+
+    function registerEspecialista() {
+        var formData = {
+            nombre: $('#nombre').val(),
+            apellido: $('#apellido').val(),
+            ci: $('#ci').val(),
+            fecha_nac: $('#fecha_nac').val(),
+            especialidad_id: $('#especialidad_id').val(),
+            telefono: $('#telefono').val(),
+            email: $('#email').val(),
+            fvp: $('#fvp').val(),
+            genero_id: $('#genero_id').val(),
+            estado_id: $('#estado_id').val(),
+            municipio_id: $('#municipio_id').val(),
+            parroquia_id: $('#parroquia_id').val(),
+            sector: $('#sector').val(),
+            _token: $("input[name=_token]").val()
+        };
 
         $.ajax({
-          url: "{{ route('especialista.store') }}",
-          type: "POST",
-          data: {
-            nombre: nombre,
-            apellido: apellido,
-            ci: ci,
-            fecha_nac: fecha_nac,
-            especialidad_id: especialidad_id,
-            telefono: telefono,
-            email: email,
-            fvp: fvp,
-            genero_id: genero_id,
-            estado_id: estado_id,
-            municipio_id: municipio_id,
-            parroquia_id: parroquia_id,
-            sector: sector,
-            _token: _token
-          },
-          success: function(response) {
-            if (response.success) {
-              $('#registro-especialista')[0].reset();
-              toastr.success('El registro se ingresó correctamente', 'Nuevo registro', {
-                timeOut: 5000
-              });
-              $('#tab-especialista').DataTable().ajax.reload();
+            url: "{{ route('especialista.store') }}",
+            type: "POST",
+            data: formData,
+            success: function (response) {
+                if (response.success) {
+                    $('#registro-especialista')[0].reset();
+                    $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+
+                    $("#paso1").show();
+                    $("#paso2").hide();
+
+                    toastr.success('¡Registro exitoso!', 'Éxito', { timeOut: 3000 });
+                    $('#tab-especialista').DataTable().ajax.reload(null, false);
+                }
+            },
+            error: function (xhr) {
+                console.error(xhr.responseText);
+                toastr.error('Error al registrar.', 'Error', { timeOut: 5000 });
             }
-          },
-          error: function(xhr) {
-            console.error(xhr.responseText);
-            toastr.error('Ocurrió un error al registrar el especialista', 'Error', {
-              timeOut: 5000
-            });
-          }
         });
-      });
-    });
-  </script>
+    }
+});
+</script>
+
   <script>
     $.ajaxSetup({
       headers: {

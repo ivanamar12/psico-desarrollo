@@ -52,7 +52,7 @@
                           <!-- Cédula -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="ci" name="ci" required
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required
                               >
                             <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna sea el caso V, P o E.</small>
                           </div>
@@ -90,7 +90,7 @@
                           <!-- Teléfono -->
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control" id="telefono" name="telefono" required>
+                            <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono" required>
                             <small class="form-text text-muted">Ej: 04141234567</small>
                           </div>
 
@@ -413,65 +413,55 @@
         });
     </script>
     <script>
+$(document).ready(function() {
+    $("#registro-secretaria").submit(function (event) {
+        event.preventDefault();
+        toastr.clear();
 
-      $(document).ready(function() {
-      
+        registerSecretaria();
+    });
 
-        $("#registro-secretaria").submit(function(event) {
-          event.preventDefault();
-          var nombre = $('#nombre').val();
-          var apellido = $('#apellido').val();
-          var ci = $('#ci').val();
-          var fecha_nac = $('#fecha_nac').val();
-          var grado = $('#grado').val();
-          var telefono = $('#telefono').val();
-          var email = $('#email').val();
-          var genero_id = $('#genero_id').val();
-          var estado_id = $('#estado_id').val();
-          var municipio_id = $('#municipio_id').val();
-          var parroquia_id = $('#parroquia_id').val();
-          var sector = $('#sector').val();
-          var _token = $("input[name=_token]").val();
+    function registerSecretaria() {
+        var formData = {
+            nombre: $('#nombre').val(),
+            apellido: $('#apellido').val(),
+            ci: $('#ci').val(),
+            fecha_nac: $('#fecha_nac').val(),
+            grado: $('#grado').val(),
+            telefono: $('#telefono').val(),
+            email: $('#email').val(),
+            genero_id: $('#genero_id').val(),
+            estado_id: $('#estado_id').val(),
+            municipio_id: $('#municipio_id').val(),
+            parroquia_id: $('#parroquia_id').val(),
+            sector: $('#sector').val(),
+            _token: $("input[name=_token]").val()
+        };
 
-          $.ajax({
+        $.ajax({
             url: "{{ route('secretaria.store') }}",
             type: "POST",
-            data: {
-              nombre: nombre,
-              apellido: apellido,
-              ci: ci,
-              fecha_nac: fecha_nac,
-              grado: grado,
-              telefono: telefono,
-              email: email,
-              genero_id: genero_id,
-              estado_id: estado_id,
-              municipio_id: municipio_id,
-              parroquia_id: parroquia_id,
-              sector: sector,
-              _token: _token
-            },
+            data: formData,
             success: function(response) {
-              if (response.success) {
-                $('#registro-secretaria')[0].reset();
-                toastr.success('El registro se ingresó correctamente', 'Nuevo registro', {
-                  timeOut: 5000
-                });
-                $('#tab-secretaria').DataTable().ajax.reload();
-                $("#paso1").show();
-                $("#paso2").hide();
-              }
+                if (response.success) {
+                    $('#registro-secretaria')[0].reset();
+                    $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+
+                    $("#paso1").show();
+                    $("#paso2").hide();
+
+                    toastr.success('¡Registro exitoso!', 'Éxito', { timeOut: 3000 });
+                    $('#tab-secretaria').DataTable().ajax.reload(null, false);
+                }
             },
             error: function(xhr) {
-              console.error(xhr.responseText);
-              toastr.error('Ocurrió un error al registrar el especialista', 'Error', {
-                timeOut: 5000
-              });
+                console.error(xhr.responseText);
+                toastr.error('Error al registrar.', 'Error', { timeOut: 5000 });
             }
-          });
         });
-      });
-    </script>
+    }
+});
+</script>
     <script>
       $.ajaxSetup({
         headers: {
@@ -706,52 +696,5 @@
           }
         });
       });
-    </script>
-    <script>
-        $(document).ready(function() {
-        console.log("JS cargado");
-        $(".email-verificar").on("blur", function() {
-          const input = $(this);
-          const email = input.val().trim();
-
-          if (email === "") return;
-
-          $.ajax({
-            url: "/verificar-email",
-            method: "GET",
-            data: { email: email },
-            success: function(response) {
-              if (response.exists) {
-                toastr.error("Este correo ya está registrado en el sistema.");
-                input.val("").focus();
-                input.removeClass("is-valid").addClass("is-invalid");
-                input.data("valid", false);
-              } else {
-                input.removeClass("is-invalid").addClass("is-valid");
-                input.data("valid", true);
-              }
-            },
-            error: function() {
-              toastr.error("El correo ya esta en el sistema.");
-            }
-          });
-        });
-
-        $("form").on("submit", function(e) {
-          let valid = true;
-          $(".email-verificar").each(function() {
-            const isValid = $(this).data("valid");
-            if (isValid === false || typeof isValid === "undefined") {
-              toastr.error(
-                "Uno de los correos ingresados ya está en uso o no ha sido validado."
-              );
-              valid = false;
-            }
-          });
-
-          if (!valid) e.preventDefault();
-        });
-       });
-
     </script>
   @endsection

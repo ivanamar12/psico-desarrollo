@@ -1,7 +1,7 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use App\Services\RiesgoService;
 use App\Http\Requests\HistoriaClinica\StoreHistoriaClinicaRequest;
 use App\Models\AntecedenteMedico;
 use App\Models\HistoriaClinica;
@@ -11,6 +11,7 @@ use App\Models\Parentesco;
 use App\Models\Paciente;
 // use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
+use App\Models\RiesgoPaciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -56,82 +57,102 @@ class HistoriaClinicaController extends Controller
 
   public function store(StoreHistoriaClinicaRequest $request)
   {
-    $validatedData = $request->validated();
+      $validatedData = $request->validated();
 
-    DB::transaction(function () use ($validatedData) {
-      // Crear Historia Desarrollo
-      $historiaDesarrollo = HistoriaDesarrollo::create([
-        'medicamento_embarazo' => $validatedData['medicamento_embarazo'],
-        'tipo_medicamento' => $validatedData['tipo_medicamento'] ?? null,
-        'fumo_embarazo' => $validatedData['fumo_embarazo'],
-        'cantidad' => $validatedData['cantidad'] ?? null,
-        'alcohol_embarazo' => $validatedData['alcohol_embarazo'],
-        'tipo_alcohol' => $validatedData['tipo_alcohol'] ?? null,
-        'cantidad_consumia_alcohol' => $validatedData['cantidad_consumia_alcohol'] ?? null,
-        'droga_embarazo' => $validatedData['droga_embarazo'],
-        'tipo_droga' => $validatedData['tipo_droga'] ?? null,
-        'forceps_parto' => $validatedData['forceps_parto'],
-        'cesarea' => $validatedData['cesarea'],
-        'razon_cesarea' => $validatedData['razon_cesarea'] ?? null,
-        'niño_prematuro' => $validatedData['niño_prematuro'],
-        'meses_prematuro' => $validatedData['meses_prematuro'] ?? null,
-        'peso_nacer_niño' => $validatedData['peso_nacer_niño'],
-        'complicaciones_nacer' => $validatedData['complicaciones_nacer'],
-        'tipo_complicacion' => $validatedData['tipo_complicacion'] ?? null,
-        'problema_alimentacion' => $validatedData['problema_alimentacion'],
-        'tipo_problema_alimenticio' => $validatedData['tipo_problema_alimenticio'] ?? null,
-        'problema_dormir' => $validatedData['problema_dormir'],
-        'tipo_problema_dormir' => $validatedData['tipo_problema_dormir'] ?? null,
-        'tranquilo_recien_nacido' => $validatedData['tranquilo_recien_nacido'],
-        'gustaba_cargaran_recien_nacido' => $validatedData['gustaba_cargaran_recien_nacido'],
-        'alerta_recien_nacido' => $validatedData['alerta_recien_nacido'],
-        'problemas_desarrollo_primeros_años' => $validatedData['problemas_desarrollo_primeros_años'],
-        'cuales_problemas' => $validatedData['cuales_problemas'] ?? null,
-        'observacion' => $validatedData['observacion_desarrollo'] ?? null,
-      ]);
+      DB::transaction(function () use ($validatedData) {
+          // Crear Historia Desarrollo
+          $historiaDesarrollo = HistoriaDesarrollo::create([
+              'medicamento_embarazo' => $validatedData['medicamento_embarazo'],
+              'tipo_medicamento' => $validatedData['tipo_medicamento'] ?? null,
+              'fumo_embarazo' => $validatedData['fumo_embarazo'],
+              'cantidad' => $validatedData['cantidad'] ?? null,
+              'alcohol_embarazo' => $validatedData['alcohol_embarazo'],
+              'tipo_alcohol' => $validatedData['tipo_alcohol'] ?? null,
+              'cantidad_consumia_alcohol' => $validatedData['cantidad_consumia_alcohol'] ?? null,
+              'droga_embarazo' => $validatedData['droga_embarazo'],
+              'tipo_droga' => $validatedData['tipo_droga'] ?? null,
+              'forceps_parto' => $validatedData['forceps_parto'],
+              'cesarea' => $validatedData['cesarea'],
+              'razon_cesarea' => $validatedData['razon_cesarea'] ?? null,
+              'niño_prematuro' => $validatedData['niño_prematuro'],
+              'meses_prematuro' => $validatedData['meses_prematuro'] ?? null,
+              'peso_nacer_niño' => $validatedData['peso_nacer_niño'],
+              'complicaciones_nacer' => $validatedData['complicaciones_nacer'],
+              'tipo_complicacion' => $validatedData['tipo_complicacion'] ?? null,
+              'problema_alimentacion' => $validatedData['problema_alimentacion'],
+              'tipo_problema_alimenticio' => $validatedData['tipo_problema_alimenticio'] ?? null,
+              'problema_dormir' => $validatedData['problema_dormir'],
+              'tipo_problema_dormir' => $validatedData['tipo_problema_dormir'] ?? null,
+              'tranquilo_recien_nacido' => $validatedData['tranquilo_recien_nacido'],
+              'gustaba_cargaran_recien_nacido' => $validatedData['gustaba_cargaran_recien_nacido'],
+              'alerta_recien_nacido' => $validatedData['alerta_recien_nacido'],
+              'problemas_desarrollo_primeros_años' => $validatedData['problemas_desarrollo_primeros_años'],
+              'cuales_problemas' => $validatedData['cuales_problemas'] ?? null,
+              'observacion' => $validatedData['observacion_desarrollo'] ?? null,
+          ]);
 
-      // Crear Antecedente Médico
-      $antecedenteMedico = AntecedenteMedico::create([
-        'enfermedad_infecciosa' => $validatedData['enfermedad_infecciosa'],
-        'tipo_enfermedad_infecciosa' => $validatedData['tipo_enfermedad_infecciosa'] ?? null,
-        'enfermedad_no_infecciosa' => $validatedData['enfermedad_no_infecciosa'],
-        'tipo_enfermedad_no_infecciosa' => $validatedData['tipo_enfermedad_no_infecciosa'] ?? null,
-        'enfermedad_cronica' => $validatedData['enfermedad_cronica'],
-        'tipo_enfermedad_cronica' => $validatedData['tipo_enfermedad_cronica'] ?? null,
-        'discapacidad' => $validatedData['discapacidad'],
-        'tipo_discapacidad' => $validatedData['tipo_discapacidad'] ?? null,
-        'otros' => $validatedData['otros'] ?? 'no aplica',
-        'observacion' => $validatedData['observacion_antecedentes'] ?? null,
-      ]);
+          // Crear Antecedente Médico
+          $antecedenteMedico = AntecedenteMedico::create([
+              'enfermedad_infecciosa' => $validatedData['enfermedad_infecciosa'],
+              'tipo_enfermedad_infecciosa' => $validatedData['tipo_enfermedad_infecciosa'] ?? null,
+              'enfermedad_no_infecciosa' => $validatedData['enfermedad_no_infecciosa'],
+              'tipo_enfermedad_no_infecciosa' => $validatedData['tipo_enfermedad_no_infecciosa'] ?? null,
+              'enfermedad_cronica' => $validatedData['enfermedad_cronica'],
+              'tipo_enfermedad_cronica' => $validatedData['tipo_enfermedad_cronica'] ?? null,
+              'discapacidad' => $validatedData['discapacidad'],
+              'tipo_discapacidad' => $validatedData['tipo_discapacidad'] ?? null,
+              'otros' => $validatedData['otros'] ?? 'no aplica',
+              'observacion' => $validatedData['observacion_antecedentes'] ?? null,
+          ]);
 
-      // Crear Historia Escolar
-      $historiaEscolar = HistoriaEscolar::create([
-        'escolarizado' => $validatedData['escolarizado'],
-        'tipo_educaion' => $validatedData['tipo_educaion'] ?? null,
-        'tutoria_terapias' => $validatedData['tutoria_terapias'],
-        'tutoria_terapias_cuales' => $validatedData['tutoria_terapias_cuales'] ?? null,
-        'dificultad_lectura' => $validatedData['dificultad_lectura'],
-        'dificultad_aritmetica' => $validatedData['dificultad_aritmetica'],
-        'dificultad_escribir' => $validatedData['dificultad_escribir'],
-        'agrada_escuela' => $validatedData['agrada_escuela'],
-        'observacion' => $validatedData['observacion_escolar'] ?? null,
-      ]);
+          // Crear Historia Escolar
+          $historiaEscolar = HistoriaEscolar::create([
+              'escolarizado' => $validatedData['escolarizado'],
+              'tipo_educaion' => $validatedData['tipo_educaion'] ?? null,
+              'tutoria_terapias' => $validatedData['tutoria_terapias'],
+              'tutoria_terapias_cuales' => $validatedData['tutoria_terapias_cuales'] ?? null,
+              'dificultad_lectura' => $validatedData['dificultad_lectura'],
+              'dificultad_aritmetica' => $validatedData['dificultad_aritmetica'],
+              'dificultad_escribir' => $validatedData['dificultad_escribir'],
+              'agrada_escuela' => $validatedData['agrada_escuela'],
+              'observacion' => $validatedData['observacion_escolar'] ?? null,
+          ]);
 
-      // Crear Historia Clínica
-      HistoriaClinica::create([
-        'paciente_id' => $validatedData['paciente_id'],
-        'historia_desarrollo_id' => $historiaDesarrollo->id,
-        'antecedente_medico_id' => $antecedenteMedico->id,
-        'historia_escolar_id' => $historiaEscolar->id,
-        'codigo' => $validatedData['codigo'],
-        'referencia' => $validatedData['referencia'],
-        'especialista_refirio' => $validatedData['especialista_refirio'],
-        'motivo' => $validatedData['motivo'],
-        'observacion' => $validatedData['observacion_historia'] ?? null,
-      ]);
-    });
+          // Crear Historia Clínica
+          $historiaClinica = HistoriaClinica::create([
+              'paciente_id' => $validatedData['paciente_id'],
+              'historia_desarrollo_id' => $historiaDesarrollo->id,
+              'antecedente_medico_id' => $antecedenteMedico->id,
+              'historia_escolar_id' => $historiaEscolar->id,
+              'codigo' => $validatedData['codigo'],
+              'referencia' => $validatedData['referencia'],
+              'especialista_refirio' => $validatedData['especialista_refirio'],
+              'motivo' => $validatedData['motivo'],
+              'observacion' => $validatedData['observacion_historia'] ?? null,
+          ]);
 
-    return response()->json(['message' => 'Registro creado exitosamente.'], 201);
+          // ✅ Calcular y guardar riesgos
+          $paciente = Paciente::find($validatedData['paciente_id']);
+          $riesgoService = new RiesgoService();
+
+          $riesgoSocial = $paciente->datosEconomico
+              ? $riesgoService->calcularRiesgoSocial($paciente->datosEconomico)
+              : 0;
+
+          $riesgoBiologico = $riesgoService->calcularRiesgoBiologico($historiaClinica);
+          $riesgoGlobal = $riesgoService->calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico);
+
+          RiesgoPaciente::updateOrCreate(
+              ['historia_clinica_id' => $historiaClinica->id],
+              [
+                  'riesgo_social' => $riesgoSocial,
+                  'riesgo_biologico' => $riesgoBiologico,
+                  'riesgo_global' => $riesgoGlobal,
+              ]
+          );
+      });
+
+      return response()->json(['message' => 'Registro creado exitosamente.'], 201);
   }
 
   public function destroy($id)
@@ -174,120 +195,41 @@ class HistoriaClinicaController extends Controller
 
   public function verHistoria($id, $tipo)
   {
-    $historia = HistoriaClinica::obtenerHistoriaCompleta($id);
+      $historia = HistoriaClinica::obtenerHistoriaCompleta($id);
 
-    if (!$historia) {
+      if (!$historia) {
+          if ($tipo === 'api') {
+              return response()->json(['error' => 'Historia clínica no encontrada.'], 404);
+          }
+          return redirect()->back()->with('error', 'La historia clínica no fue encontrada.');
+      }
+
+      $paciente = $historia->paciente;
+
+      if (!$paciente) {
+          if ($tipo === 'api') {
+              return response()->json(['error' => 'Paciente no encontrado.'], 404);
+          }
+          return redirect()->back()->with('error', 'El paciente no fue encontrado.');
+      }
+
+      // ✅ Leer riesgos desde la base de datos
+      $riesgo = \App\Models\RiesgoPaciente::where('historia_clinica_id', $historia->id)->first();
+
+      $riesgoSocial = $riesgo->riesgo_social ?? 0;
+      $riesgoBiologico = $riesgo->riesgo_biologico ?? 0;
+      $riesgoGlobal = $riesgo->riesgo_global ?? 'bajo';
+
+      // Respuesta según el tipo
       if ($tipo === 'api') {
-        return response()->json(['error' => 'Historia clínica no encontrada.'], 404);
+          return response()->json([
+              'historia' => $historia,
+              'riesgoSocial' => $riesgoSocial,
+              'riesgoBiologico' => $riesgoBiologico,
+              'riesgoGlobal' => $riesgoGlobal,
+          ]);
       }
-      return redirect()->back()->with('error', 'La historia clínica no fue encontrada.');
-    }
 
-    $paciente = $historia->paciente;
-
-    if (!$paciente) {
-      if ($tipo === 'api') {
-        return response()->json(['error' => 'Paciente no encontrado.'], 404);
-      }
-      return redirect()->back()->with('error', 'El paciente no fue encontrado.');
-    }
-
-    if ($paciente->datosEconomico) {
-      $riesgoSocial = $this->calcularRiesgoSocial($paciente->datosEconomico);
-    } else {
-      $riesgoSocial = 0;
-    }
-
-    $riesgoBiologico = $this->calcularRiesgoBiologico($historia);
-    $riesgoGlobal = $this->calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico);
-
-    if ($tipo === 'api') {
-      return response()->json([
-        'historia' => $historia,
-        'riesgoSocial' => $riesgoSocial,
-        'riesgoBiologico' => $riesgoBiologico,
-        'riesgoGlobal' => $riesgoGlobal,
-      ]);
-    }
-
-    return view('historia.ver', compact('historia', 'riesgoSocial', 'riesgoBiologico', 'riesgoGlobal'));
-  }
-
-
-  private function calcularRiesgoSocial($datosEconomico)
-  {
-    $riesgo = 0;
-
-    $tiposViviendaRiesgo = [
-      'casa_unifamiliar' => 1,
-      'apartamento' => 1,
-      'vivienda social' => 2,
-      'precaria' => 3,
-    ];
-    $riesgo += $tiposViviendaRiesgo[$datosEconomico->tipo_vivienda] ?? 0;
-
-    $riesgo += ($datosEconomico->cantidad_personas > ($datosEconomico->cantidad_habitaciones + 5)) ? 1 : 0;
-
-    $serviciosNo = collect([
-      $datosEconomico->servecio_agua_potable,
-      $datosEconomico->servecio_gas,
-      $datosEconomico->servecio_electricidad,
-      $datosEconomico->servecio_drenaje,
-      $datosEconomico->disponibilidad_internet,
-    ])->filter(fn($v) => $v === 'no')->count();
-
-    $riesgo += match (true) {
-      $serviciosNo >= 3 => 3,
-      $serviciosNo === 2 => 2,
-      default => 1,
-    };
-
-    return $riesgo;
-  }
-
-  private function calcularRiesgoBiologico($historia)
-  {
-    $riesgo = 0;
-
-    // Verificar si parentescos no es nulo y es iterable
-    if ($historia->parentescos) {
-      foreach ($historia->parentescos as $familiar) {
-        if ($familiar->discapacidad === 'si') $riesgo += 1;
-        if ($familiar->enfermedad_cronica === 'si') $riesgo += 1;
-      }
-    }
-
-    $antecedentes = $historia->antecedenteMedico;
-    if ($antecedentes) {
-      $riesgo += collect([
-        $antecedentes->enfermedad_infecciosa,
-        $antecedentes->enfermedad_no_infecciosa,
-        $antecedentes->enfermedad_cronica,
-        $antecedentes->discapacidad,
-      ])->filter(fn($v) => $v === 'si')->count();
-    }
-
-    $desarrollo = $historia->historiaDesarrollo;
-    if ($desarrollo) {
-      $riesgo += collect([
-        $desarrollo->medicamento_embarazo,
-        $desarrollo->fumo_embarazo,
-        $desarrollo->alcohol_embarazo,
-        $desarrollo->droga_embarazo,
-      ])->filter(fn($v) => $v === 'si')->count();
-    }
-
-    return $riesgo;
-  }
-
-  private function calcularRiesgoGlobal($riesgoSocial, $riesgoBiologico)
-  {
-    $riesgoTotal = $riesgoSocial + $riesgoBiologico;
-
-    return match (true) {
-      $riesgoTotal >= 15 => 'alto',
-      $riesgoTotal >= 8 => 'medio',
-      default => 'bajo',
-    };
+      return view('historia.ver', compact('historia', 'riesgoSocial', 'riesgoBiologico', 'riesgoGlobal'));
   }
 }

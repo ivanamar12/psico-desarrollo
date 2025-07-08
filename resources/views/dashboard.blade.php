@@ -120,6 +120,47 @@
                   </div>
                 </div>
               </article>
+              <!-- Gráfico de Riesgo Social -->
+              <article class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-alert-triangle"></i> &nbsp; RIESGO SOCIAL
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaRiesgoSocial"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Gráfico de Riesgo Biológico -->
+              <article class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-alert-triangle"></i> &nbsp; RIESGO BIOLÓGICO
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaRiesgoBiologico"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Gráfico de Riesgo Global -->
+              <article class="col-md-4">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-alert-triangle"></i> &nbsp; RIESGO GLOBAL
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaRiesgoGlobal"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
             </section>
           </section>
         </section>
@@ -178,7 +219,6 @@
           return response.json();
         })
         .then((data) => {
-          // Configuración común para ambos gráficos
           const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
           const colorTexto = "#333";
 
@@ -268,6 +308,82 @@
                 },
               },
             },
+          });
+
+          // Gráfico de Riesgo Social
+          new Chart(document.getElementById("graficaRiesgoSocial"), {
+            type: "bar",
+            data: {
+              labels: ["Bajo", "Medio", "Alto"],
+              datasets: [{
+                label: "Nivel de Riesgo Social",
+                data: [
+                  data.riesgoSocial.bajo,
+                  data.riesgoSocial.medio,
+                  data.riesgoSocial.alto
+                ],
+                backgroundColor: ["#4CAF50", "#FFCE56", "#FF6384"],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+              }
+            }
+          });
+
+          // Gráfico de Riesgo Biológico
+          new Chart(document.getElementById("graficaRiesgoBiologico"), {
+            type: "bar",
+            data: {
+              labels: ["Bajo", "Medio", "Alto"],
+              datasets: [{
+                label: "Nivel de Riesgo Biológico",
+                data: [
+                  data.riesgoBiologico.bajo,
+                  data.riesgoBiologico.medio,
+                  data.riesgoBiologico.alto
+                ],
+                backgroundColor: ["#4CAF50", "#FFCE56", "#FF6384"],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: { beginAtZero: true, ticks: { stepSize: 1 } }
+              }
+            }
+          });
+
+          // Gráfico de Riesgo Global (Dona)
+          new Chart(document.getElementById("graficaRiesgoGlobal"), {
+            type: "doughnut",
+            data: {
+              labels: ["Bajo", "Medio", "Alto"],
+              datasets: [{
+                data: [
+                  data.riesgoGlobal.bajo,
+                  data.riesgoGlobal.medio,
+                  data.riesgoGlobal.alto
+                ],
+                backgroundColor: ["#4CAF50", "#FFCE56", "#FF6384"],
+                borderWidth: 1
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "bottom"
+                }
+              }
+            }
           });
         })
         .catch((error) => {
