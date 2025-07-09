@@ -7,8 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Baremos extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['sub_escala', 'p_c', 'edad_meses','puntos'];
-
+  protected $fillable = [
+    'sub_escala',
+    'p_c',
+    'edad_meses',
+    'puntos'
+  ];
 }
