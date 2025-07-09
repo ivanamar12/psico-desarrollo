@@ -17,6 +17,7 @@ class CreateInformesTable extends Migration
       $table->id();
       $table->date('fecha_emision');
       $table->date('fecha_vencimiento');
+      $table->json('motivo')->nullable();
       $table->json('recursos')->nullable();
       $table->json('instrumentos')->nullable();
       $table->text('condiciones_generales')->nullable();

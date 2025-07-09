@@ -13,6 +13,7 @@ class Informe extends Model
   protected $fillable = [
     'fecha_emision',
     'fecha_vencimiento',
+    'motivo',
     'recursos',
     'instrumentos',
     'condiciones_generales',
