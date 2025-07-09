@@ -4,28 +4,31 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class SubEscala extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['prueba_id', 'sub_escala', 'descripcion'];
+  protected $fillable = [
+    'prueba_id',
+    'sub_escala',
+    'descripcion'
+  ];
 
-    public function prueba(){
+  public function prueba(): BelongsTo
+  {
+    return $this->belongsTo(Prueba::class);
+  }
 
-        return $this->belongsTo(Prueba::class);
-        
-    }
+  public function Items(): HasMany
+  {
+    return $this->hasMany(Item::class);
+  }
 
-    public function Items(){
-
-    	return $this->hasMany(Item::class);
-    	
-    }
-
-    public function Baremos(){
-
-    	return $this->hasMany(Baremos::class);
-    	
-    }
+  public function Baremos(): HasMany
+  {
+    return $this->hasMany(Baremos::class);
+  }
 }
