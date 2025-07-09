@@ -109,6 +109,12 @@
           </ul>
         </li>
       @endif
+      <li>
+        <a href="{{ route('informes.index') }}" class="btn-sideBar-SubMenu"
+          data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="7">
+          <i class="zmdi zmdi-file zmdi-hc-fw"></i>Informes<i class="zmdi zmdi-caret-"></i>
+        </a>
+      </li>
       @if (auth()->user()->can('bitacora'))
         <li>
           <a href="{{ route('bitacora.index') }}" class="btn-sideBar-SubMenu"

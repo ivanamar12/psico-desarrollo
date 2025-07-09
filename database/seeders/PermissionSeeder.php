@@ -44,6 +44,7 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'descargar informe']);
     Permission::firstOrCreate(['name' => 'pruebas']);
     Permission::firstOrCreate(['name' => 'bitacora']);
+    Permission::firstOrCreate(['name' => 'generar informes']);
     Permission::firstOrCreate(['name' => 'usuarios']);
 
     $admin = Role::where('name', 'ADMIN')->first();
@@ -121,7 +122,8 @@ class PermissionSeeder extends Seeder
         'ver prueba',
         'aplicar prueba',
         'descargar informe',
-        'pruebas'
+        'pruebas',
+        'generar informes'
       ]);
     }
   }

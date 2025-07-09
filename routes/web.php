@@ -14,6 +14,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ValidacionController;
+use App\Http\Controllers\InformeController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -131,6 +132,11 @@ Route::middleware('auth')->group(function () {
   // Ruta para obtener un paciente específico en formato JSON
   Route::get('paciente/{id}', [PacienteController::class, 'show'])
     ->name('paciente.show');
+  /**
+  * Informes
+  */
+  Route::get('informes', [InformeController::class, 'index'])
+    ->name('informes.index');
 
   /**
    * Citas
