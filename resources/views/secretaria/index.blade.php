@@ -391,6 +391,62 @@
             }
           ]
         });
+
+        $("#registro-secretaria").submit(function(event) {
+          event.preventDefault();
+          toastr.clear();
+
+          registerSecretaria();
+        });
+
+        function registerSecretaria() {
+          var formData = {
+            nombre: $('#nombre').val(),
+            apellido: $('#apellido').val(),
+            ci: $('#ci').val(),
+            fecha_nac: $('#fecha_nac').val(),
+            grado: $('#grado').val(),
+            telefono: $('#telefono').val(),
+            email: $('#email').val(),
+            genero_id: $('#genero_id').val(),
+            estado_id: $('#estado_id').val(),
+            municipio_id: $('#municipio_id').val(),
+            parroquia_id: $('#parroquia_id').val(),
+            sector: $('#sector').val(),
+            _token: $("input[name=_token]").val()
+          };
+
+          $.ajax({
+            url: "{{ route('secretaria.store') }}",
+            type: "POST",
+            data: formData,
+            success: function(response) {
+              if (response.success) {
+                $('#registro-secretaria')[0].reset();
+
+                $('#estado_id').val(null).trigger('change');
+                $('#municipio_id').val(null).trigger('change');
+                $('#parroquia_id').val(null).trigger('change');
+
+                $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+
+                toastr.success('¡Registro exitoso!', 'Éxito', {
+                  timeOut: 3000
+                });
+
+                tablaSecretaria.ajax.reload();
+
+                $('.nav-tabs a[href="#list"]').tab('show');
+              }
+            },
+            error: function(xhr) {
+              console.error(xhr.responseText);
+              toastr.error('Error al registrar.', 'Error', {
+                timeOut: 5000
+              });
+            }
+          });
+        }
       });
     </script>
     <script>
@@ -424,60 +480,7 @@
         $("#paso1").show();
       });
     </script>
-    <script>
-      $(document).ready(function() {
-        $("#registro-secretaria").submit(function(event) {
-          event.preventDefault();
-          toastr.clear();
 
-          registerSecretaria();
-        });
-
-        function registerSecretaria() {
-          var formData = {
-            nombre: $('#nombre').val(),
-            apellido: $('#apellido').val(),
-            ci: $('#ci').val(),
-            fecha_nac: $('#fecha_nac').val(),
-            grado: $('#grado').val(),
-            telefono: $('#telefono').val(),
-            email: $('#email').val(),
-            genero_id: $('#genero_id').val(),
-            estado_id: $('#estado_id').val(),
-            municipio_id: $('#municipio_id').val(),
-            parroquia_id: $('#parroquia_id').val(),
-            sector: $('#sector').val(),
-            _token: $("input[name=_token]").val()
-          };
-
-          $.ajax({
-            url: "{{ route('secretaria.store') }}",
-            type: "POST",
-            data: formData,
-            success: function(response) {
-              if (response.success) {
-                $('#registro-secretaria')[0].reset();
-                $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
-
-                $("#paso1").show();
-                $("#paso2").hide();
-
-                toastr.success('¡Registro exitoso!', 'Éxito', {
-                  timeOut: 3000
-                });
-                $('#tab-secretaria').DataTable().ajax.reload(null, false);
-              }
-            },
-            error: function(xhr) {
-              console.error(xhr.responseText);
-              toastr.error('Error al registrar.', 'Error', {
-                timeOut: 5000
-              });
-            }
-          });
-        }
-      });
-    </script>
     <script>
       $.ajaxSetup({
         headers: {
@@ -617,6 +620,17 @@
           $("#paso1_edit").show();
         });
 
+        // Resetear fomulario en caso de volver a la vista
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+          if (e.target.hash === '#list') {
+            $('#estado_id').val(null).trigger('change');
+            $('#municipio_id').val(null).trigger('change');
+            $('#parroquia_id').val(null).trigger('change');
+
+            $('#registro-secretaria')[0].reset();
+          }
+        });
+
         $("#editar-secretaria").submit(function(event) {
           event.preventDefault();
 
@@ -655,9 +669,15 @@
             success: function(response) {
               if (response.success) {
                 $('#editsecretaria').modal('hide');
+
+                $('#estado_id').val(null).trigger('change');
+                $('#municipio_id').val(null).trigger('change');
+                $('#parroquia_id').val(null).trigger('change');
+
                 toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
                   timeOut: 5000
                 });
+
                 $('#tab-secretaria').DataTable().ajax.reload();
               } else {
                 alert('No se pudo actualizar el registro.');
