@@ -2,13 +2,17 @@ $(document).ready(function () {
     let subescalas = [];
     let respuestasTotales = {}; 
     let currentStep = 0;
-    let tipoPrueba = ""; // Se inicializa correctamente
-    let nombrePrueba = ""; // Variable para almacenar el nombre de la prueba
+    let tipoPrueba = ""; 
+    let nombrePrueba = ""; 
+
+    function sanitizarNombreSubescala(nombre) {
+        return nombre.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
+    }
 
     function iniciarPruebaCumanin(subescalasData, tipo, nombre) {
         subescalas = subescalasData.filter(subescala => subescala.items && subescala.items.length > 0);
-        tipoPrueba = tipo; // Se recibe el tipo de prueba como parámetro
-        nombrePrueba = nombre; // Se recibe el nombre de la prueba como parámetro
+        tipoPrueba = tipo;
+        nombrePrueba = nombre;
         
         if (subescalas.length === 0) {
             alert("No hay subescalas con ítems disponibles.");
@@ -24,6 +28,8 @@ $(document).ready(function () {
         if (step < 0 || step >= subescalas.length) return;
 
         let subescala = subescalas[step];
+        let idSanitizado = sanitizarNombreSubescala(subescala.sub_escala);
+        
         let contenido = `<h4>${subescala.sub_escala}</h4><p>${subescala.descripcion}</p>`;
         
         contenido += `<table class="table table-bordered">`;
@@ -65,6 +71,14 @@ $(document).ready(function () {
         });
 
         contenido += `</tbody></table>`;
+        
+        // Agregar campo de observaciones con ID sanitizado
+        let observacionesGuardadas = respuestasTotales[subescala.sub_escala]?.observaciones || "";
+        contenido += `<div class="form-group">
+            <label for="observaciones_${idSanitizado}">Observaciones: <span class="text-danger">*</span></label>
+            <textarea class="form-control observaciones" id="observaciones_${idSanitizado}" name="observaciones_${idSanitizado}" rows="3" required>${observacionesGuardadas}</textarea>
+        </div>`;
+        
         $("#contenidoPrueba").html(contenido);
         actualizarBotones(step);
     }
@@ -73,14 +87,40 @@ $(document).ready(function () {
         $("#btnAnterior").toggle(step > 0);
         $("#btnSiguiente").toggle(step < subescalas.length - 1);
         $("#btnFinalizar").toggle(step === subescalas.length - 1);
+
+        // Actualizar barra de progreso
+        let progreso = ((step + 1) / subescalas.length) * 100;
+        $("#barraProgreso").css("width", progreso + "%").attr("aria-valuenow", progreso);
+        $("#progresoTexto").text(`Paso ${step + 1} de ${subescalas.length}`);
+    }
+
+    function validarObservaciones() {
+        let subescala = subescalas[currentStep];
+        let idSanitizado = sanitizarNombreSubescala(subescala.sub_escala);
+        let campoObservaciones = $(`#observaciones_${idSanitizado}`);
+        
+        if (campoObservaciones.length === 0) {
+            console.warn("Campo de observaciones no encontrado:", `observaciones_${idSanitizado}`);
+            return true;
+        }
+        
+        let observaciones = campoObservaciones.val().trim();
+        
+        if (!observaciones) {
+            toastr.error("Por favor, complete las observaciones antes de continuar.", "Campo obligatorio");
+            return false;
+        } else {
+            return true;
+        }
     }
 
     function guardarRespuestasActuales() {
         let respuestas = {};
         let lateralidad = {};
+        let observaciones = "";
         let subescala = subescalas[currentStep]; 
 
-        let esCumanin = nombrePrueba === "CUMANIN"; // Verifica si la prueba es CUMANIN
+        let esCumanin = nombrePrueba === "CUMANIN";
 
         $(`input[type=radio]:checked`).each(function () {
             let name = $(this).attr("name");
@@ -88,9 +128,9 @@ $(document).ready(function () {
             let itemNombre = subescala.items.find(i => i.id == itemId)?.item;
 
             if (!esCumanin && itemNombre) {
-                respuestas[itemNombre] = $(this).val(); // Guarda el nombre del ítem si no es CUMANIN
+                respuestas[itemNombre] = $(this).val();
             } else {
-                respuestas[`respuesta_${itemId}`] = $(this).val(); // Guarda el ID si es CUMANIN
+                respuestas[`respuesta_${itemId}`] = $(this).val();
             }
         });
 
@@ -112,54 +152,68 @@ $(document).ready(function () {
             let itemNombre = subescala.items.find(i => i.id == itemId)?.item;
 
             if (!esCumanin && itemNombre) {
-                respuestas[itemNombre] = $(this).val(); // Guarda el nombre del ítem si no es CUMANIN
+                respuestas[itemNombre] = $(this).val();
             } else {
-                respuestas[`respuesta_${itemId}`] = $(this).val(); // Guarda el ID si es CUMANIN
+                respuestas[`respuesta_${itemId}`] = $(this).val();
             }
         });
+
+        // Guardar observaciones con ID sanitizado
+        let idSanitizado = sanitizarNombreSubescala(subescala.sub_escala);
+        let campoObservaciones = $(`#observaciones_${idSanitizado}`);
+        if (campoObservaciones.length > 0) {
+            observaciones = campoObservaciones.val().trim();
+        }
 
         respuestasTotales[subescala.sub_escala] = {
             respuestas: respuestas,
-            lateralidad: lateralidad
+            lateralidad: lateralidad,
+            observaciones: observaciones
         };
 
-        console.log("✅ Respuestas guardadas:", respuestasTotales);
+        console.log("✅ Respuestas y observaciones guardadas:", respuestasTotales);
     }
     
     $("#btnSiguiente").click(function () {
-        guardarRespuestasActuales(); 
-        currentStep++;
-        mostrarSubescala(currentStep);
+        if (validarObservaciones()) {
+            guardarRespuestasActuales(); 
+            currentStep++;
+            mostrarSubescala(currentStep);
+        }
     });
 
     $("#btnAnterior").click(function () {
-        guardarRespuestasActuales(); 
-        currentStep--;
-        mostrarSubescala(currentStep);
+        if (validarObservaciones()) {
+            guardarRespuestasActuales(); 
+            currentStep--;
+            mostrarSubescala(currentStep);
+        }
     });
 
     $("#btnFinalizar").off("click").on("click", function () {
-        guardarRespuestasActuales(); 
-    
-        $.ajax({
-            url: "/aplicar-prueba/guardar",
-            method: "POST",
-            data: {
-                paciente_id: $("#paciente_id").val(),
-                prueba_id: $("#prueba_id").val(),
-                respuestas: respuestasTotales, 
-                _token: $('meta[name="csrf-token"]').attr('content')
-            },
-            success: function (response) {
-                toastr.success("Prueba guardada correctamente.");
-                $("#modalPrueba").modal("hide");
-                window.location.reload();
-            },
-            error: function (xhr, status, error) {
-                console.error("❌ Error al guardar la prueba:", error);
-                toastr.error("Hubo un error al guardar la prueba.");
-            }
-        });
+        if (validarObservaciones()) {
+            guardarRespuestasActuales(); 
+        
+            $.ajax({
+                url: "/aplicar-prueba/guardar",
+                method: "POST",
+                data: {
+                    paciente_id: $("#paciente_id").val(),
+                    prueba_id: $("#prueba_id").val(),
+                    respuestas: respuestasTotales, 
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    toastr.success("Prueba guardada correctamente.");
+                    $("#modalPrueba").modal("hide");
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error("❌ Error al guardar la prueba:", error);
+                    toastr.error("Hubo un error al guardar la prueba.");
+                }
+            });
+        }
     });
 
     window.iniciarPruebaCumanin = iniciarPruebaCumanin;
