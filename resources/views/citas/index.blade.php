@@ -45,13 +45,13 @@
                     </div>
 
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Fecha</th>
-                      <th class="text-center">Hora</th>
-                      <th class="text-center">Especialista</th>
-                      <th class="text-center">Paciente</th>
-                      <th class="text-center">Asistencia</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Fecha</th>
+                      <th style="text-align: center">Hora</th>
+                      <th style="text-align: center">Especialista</th>
+                      <th style="text-align: center">Paciente</th>
+                      <th style="text-align: center">Asistencia</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
@@ -83,13 +83,13 @@
                     </div>
 
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Fecha</th>
-                      <th class="text-center">Hora</th>
-                      <th class="text-center">Especialista</th>
-                      <th class="text-center">Paciente</th>
-                      <th class="text-center">Asistencia</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Fecha</th>
+                      <th style="text-align: center">Hora</th>
+                      <th style="text-align: center">Especialista</th>
+                      <th style="text-align: center">Paciente</th>
+                      <th style="text-align: center">Asistencia</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>

@@ -23,11 +23,11 @@
                 <table class="table table-hover text-center" id="tab-prueba">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Paciente</th>
-                      <th class="text-center">Prueba</th>
-                      <th class="text-center">Fecha</th>
-                      <th class="text-center">resultados</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Paciente</th>
+                      <th style="text-align: center">Prueba</th>
+                      <th style="text-align: center">Fecha</th>
+                      <th style="text-align: center">resultados</th>
                     </tr>
                   </thead>
                 </table>
@@ -90,31 +90,32 @@
     </div>
   </section>
 
-<div id="modalPrueba" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <div id="modalPrueba" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title w-100 text-center" style="color: white;">Aplicación de la prueba</h3>
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-            </div>
-            <div class="modal-body">
-                <!-- Barra de progreso -->
-                <div class="progress" style="height: 20px;">
-                    <div id="barraProgreso" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                </div>
-                <div id="progresoTexto" class="text-center"></div>
-                
-                <div id="contenidoPrueba">
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button id="btnAnterior" class="btn btn-regresar" style="display: none; color: white;">Anterior</button>
-                <button id="btnSiguiente" class="btn btn-regresar" style="color: white;">Siguiente</button>
-                <button id="btnFinalizar" class="btn btn-custom" style="display: none; color: white;">Finalizar</button>
-            </div>
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Aplicación de la prueba</h3>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
+        <div class="modal-body">
+          <!-- Barra de progreso -->
+          <div class="progress" style="height: 20px;">
+            <div id="barraProgreso" class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0"
+              aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
+          <div id="progresoTexto" style="text-align: center"></div>
+
+          <div id="contenidoPrueba">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button id="btnAnterior" class="btn btn-regresar" style="display: none; color: white;">Anterior</button>
+          <button id="btnSiguiente" class="btn btn-regresar" style="color: white;">Siguiente</button>
+          <button id="btnFinalizar" class="btn btn-custom" style="display: none; color: white;">Finalizar</button>
+        </div>
+      </div>
     </div>
-</div>
+  </div>
 
   <div id="modalPruebaVer" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -367,32 +368,32 @@
     });
   </script>
   <script>
-$(document).on('click', '.ver-resultados', function() {
-    let aplicacionId = $(this).data('id');
+    $(document).on('click', '.ver-resultados', function() {
+      let aplicacionId = $(this).data('id');
 
-    $.ajax({
+      $.ajax({
         url: `/aplicar-prueba/ver-respuestas/${aplicacionId}`,
         method: 'GET',
         success: function(data) {
-            console.log("Datos recibidos:", data);
-            let resultados = data.prueba.resultados;
-            let contenidoHTML = `
+          console.log("Datos recibidos:", data);
+          let resultados = data.prueba.resultados;
+          let contenidoHTML = `
                 <h5><strong>Paciente:</strong> ${data.paciente.nombre}</h5>
                 <h5><strong>Prueba:</strong> ${data.prueba.nombre}</h5>
                 <h5><strong>Fecha:</strong> ${data.prueba.fecha || 'No disponible'}</h5>
                 <hr>`;
 
-            // 📌 Verificar si la prueba es Koppitz
-            if (data.prueba.nombre === "Koppitz") {
-                contenidoHTML += `
+          // 📌 Verificar si la prueba es Koppitz
+          if (data.prueba.nombre === "Koppitz") {
+            contenidoHTML += `
                     <h5><strong>Puntaje Total:</strong> ${resultados.resultados.puntajeTotal}</h5>
                     <h5><strong>Categoría:</strong> ${resultados.resultados.categoria}</h5>
                     <h5><strong>Ítems Excepcionales:</strong> ${resultados.resultados.itemsExcepcionales}</h5>
                 `;
-            }
-            // 📌 Verificar si la prueba es CUMANIN
-            else if (data.prueba.nombre === "CUMANIN") {
-                contenidoHTML += `
+          }
+          // 📌 Verificar si la prueba es CUMANIN
+          else if (data.prueba.nombre === "CUMANIN") {
+            contenidoHTML += `
                     <h5><strong>Resultados:</strong></h5>
                     <table class="table table-bordered">
                         <thead>
@@ -405,33 +406,33 @@ $(document).on('click', '.ver-resultados', function() {
                         </thead>
                         <tbody>`;
 
-                if (resultados && resultados.resultados) {
-                    for (let clave in resultados.resultados) {
-                        let resultado = resultados.resultados[clave];
-                        let puntaje = resultado.puntaje ?? 'N/A';
-                        let percentil = resultado.percentil ?? 'No disponible';
-                        let observaciones = resultado.observaciones ?? 'Sin observaciones';
+            if (resultados && resultados.resultados) {
+              for (let clave in resultados.resultados) {
+                let resultado = resultados.resultados[clave];
+                let puntaje = resultado.puntaje ?? 'N/A';
+                let percentil = resultado.percentil ?? 'No disponible';
+                let observaciones = resultado.observaciones ?? 'Sin observaciones';
 
-                        contenidoHTML += `
+                contenidoHTML += `
                             <tr>
                                 <td><strong>${clave}</strong></td>
                                 <td>${puntaje}</td>
                                 <td>${percentil}</td>
                                 <td>${observaciones}</td>
                             </tr>`;
-                    }
-                } else {
-                    contenidoHTML +=
-                        `<tr><td colspan="4" class="text-center">No hay resultados disponibles</td></tr>`;
-                }
+              }
+            } else {
+              contenidoHTML +=
+                `<tr><td colspan="4" style="text-align: center">No hay resultados disponibles</td></tr>`;
+            }
 
-                contenidoHTML += `
+            contenidoHTML += `
                         </tbody>
                     </table>`;
-            }
-            // 📌 Para otras pruebas (NO estandarizadas)
-            else {
-                contenidoHTML += `
+          }
+          // 📌 Para otras pruebas (NO estandarizadas)
+          else {
+            contenidoHTML += `
                     <h5><strong>Resultados:</strong></h5>
                     <table class="table table-bordered">
                         <thead>
@@ -442,54 +443,54 @@ $(document).on('click', '.ver-resultados', function() {
                         </thead>
                         <tbody>`;
 
-                if (resultados && resultados.resultados) {
-                    for (let subescala in resultados.resultados) {
-                        let respuestas = resultados.resultados[subescala].respuestas;
-                        let observaciones = resultados.resultados[subescala].observaciones ?? 'Sin observaciones';
+            if (resultados && resultados.resultados) {
+              for (let subescala in resultados.resultados) {
+                let respuestas = resultados.resultados[subescala].respuestas;
+                let observaciones = resultados.resultados[subescala].observaciones ?? 'Sin observaciones';
 
-                        if (respuestas) {
-                            for (let item in respuestas) {
-                                let respuesta = respuestas[item];
-                                contenidoHTML += `
+                if (respuestas) {
+                  for (let item in respuestas) {
+                    let respuesta = respuestas[item];
+                    contenidoHTML += `
                                     <tr>
                                         <td><strong>${item}</strong></td>
                                         <td>${respuesta}</td>
                                     </tr>`;
-                            }
-                        }
-                        
-                        // Agregar observaciones de la subescala
-                        contenidoHTML += `
+                  }
+                }
+
+                // Agregar observaciones de la subescala
+                contenidoHTML += `
                             <tr>
                                 <td colspan="2"><strong>Observaciones ${subescala}:</strong> ${observaciones}</td>
                             </tr>`;
-                    }
-                } else {
-                    contenidoHTML +=
-                        `<tr><td colspan="2" class="text-center">No hay respuestas disponibles</td></tr>`;
-                }
+              }
+            } else {
+              contenidoHTML +=
+                `<tr><td colspan="2" style="text-align: center">No hay respuestas disponibles</td></tr>`;
+            }
 
-                contenidoHTML += `
+            contenidoHTML += `
                         </tbody>
                     </table>`;
-            }
+          }
 
-            if (resultados.lateralidad) {
-                contenidoHTML += `<h5><strong>Lateralidad:</strong> ${resultados.lateralidad}</h5>`;
-            }
+          if (resultados.lateralidad) {
+            contenidoHTML += `<h5><strong>Lateralidad:</strong> ${resultados.lateralidad}</h5>`;
+          }
 
-            // Cerrar el modal de prueba antes de abrir el de ver resultados
-            $("#modalPrueba").modal("hide");
+          // Cerrar el modal de prueba antes de abrir el de ver resultados
+          $("#modalPrueba").modal("hide");
 
-            // Inyectar el contenido en el modal
-            $("#contenidoPruebaVer").html(contenidoHTML);
-            $("#modalPruebaVer").modal("show");
+          // Inyectar el contenido en el modal
+          $("#contenidoPruebaVer").html(contenidoHTML);
+          $("#modalPruebaVer").modal("show");
         },
         error: function(xhr, status, error) {
-            console.error("❌ Error al obtener los resultados:", status, error);
-            alert("No se encontraron resultados para esta prueba.");
+          console.error("❌ Error al obtener los resultados:", status, error);
+          alert("No se encontraron resultados para esta prueba.");
         }
+      });
     });
-});
   </script>
 @endsection

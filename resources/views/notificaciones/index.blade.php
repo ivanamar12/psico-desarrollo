@@ -29,11 +29,11 @@
                 <table class="table table-hover text-center" id="tab-notificaciones">
                   <thead>
                     <tr>
-                      <th class="text-center">Título</th>
-                      <th class="text-center">Mensaje</th>
-                      <th class="text-center">Fecha</th>
-                      <th class="text-center">Estado</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">Título</th>
+                      <th style="text-align: center">Mensaje</th>
+                      <th style="text-align: center">Fecha</th>
+                      <th style="text-align: center">Estado</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
@@ -56,7 +56,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <p class="text-center">¿Estás seguro que deseas eliminar esta notificación?</p>
+          <p style="text-align: center">¿Estás seguro que deseas eliminar esta notificación?</p>
           <form id="formEliminarNotificacion">
             @csrf
             @method('DELETE')

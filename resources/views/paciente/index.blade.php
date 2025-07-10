@@ -19,22 +19,23 @@
               <li><a href="#new-paciente" data-toggle="tab"> Nuevo</a></li>
             @endif
           </ul>
-          <div id="myTabContent" class="tab-content">
-            <div class="tab-pane fade active in" id="list">
+          <section id="myTabContent" class="tab-content">
+            <section class="tab-pane fade active in" id="list">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-paciente">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Apellido</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Nombre</th>
+                      <th style="text-align: center">Apellido</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
               </div>
-            </div>
-            <div class="tab-pane fade in" id="new-paciente">
+            </section>
+
+            <section class="tab-pane fade in" id="new-paciente">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -45,36 +46,41 @@
                         <div class="fila-formulario row">
                           <!-- Fila 1 -->
                           <div class="form-group  col-md-6">
-                            <label >Representante <span style="color: red;">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="representante_id" name="representante_id">
+                            <label>Representante <span style="color: red;">*</span></label>
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="representante_id" name="representante_id">
                               <option selected disabled>Seleccione el representante</option>
                             </select>
                             <small class="form-text text-muted">Busque al representante por su cedula.</small>
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label >Nombre <span style="color: red;">*</span></label>
-                            <input class="form-control" id="nombre" name="nombre" type="text" required oninput="validarTexto(this)">
+                            <label>Nombre <span style="color: red;">*</span></label>
+                            <input class="form-control" id="nombre" name="nombre" type="text" required
+                              oninput="validarTexto(this)">
                             <small class="form-text text-muted">Ingrese el nombre Ej: Carlos.</small>
                           </div>
 
                           <!-- Fila 2 -->
                           <div class="form-group col-md-6">
-                            <label >Apellido <span style="color: red;">*</span></label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required oninput="validarTexto(this)">
+                            <label>Apellido <span style="color: red;">*</span></label>
+                            <input class="form-control" id="apellido" name="apellido" type="text" required
+                              oninput="validarTexto(this)">
                             <small class="form-text text-muted">Ingrese el apellido Ej: Garcia.</small>
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label >Fecha de Nacimiento <span style="color: red;">*</span></label>
+                            <label>Fecha de Nacimiento <span style="color: red;">*</span></label>
                             <input class="form-control" type="date" name="fecha_nac" id="fecha_nac" required>
-                            <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio, mínimo 3 meses.</small>
+                            <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio,
+                              mínimo 3 meses.</small>
                           </div>
 
                           <!-- Fila 3 -->
                           <div class="form-group col-md-6">
-                            <label >Género <span style="color: red;">*</span></label>
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id" name="genero_id">
+                            <label>Género <span style="color: red;">*</span></label>
+                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
+                              name="genero_id">
                               <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
@@ -97,35 +103,34 @@
                           <div class="fila-formulario" id="formulario-familiar-0">
 
                             <div class="form-group  col-md-6">
-                              <label >Nombre <span style="color: red;">*</span></label>
+                              <label>Nombre <span style="color: red;">*</span></label>
                               <input class="form-control" name="familiares[0][nombre]" type="text" required
                                 maxlength="50" oninput="validarTexto(this)">
                               <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
                             </div>
 
                             <div class="form-group col-md-6">
-                              <label >Apellido <span style="color: red;">*</span></label>
+                              <label>Apellido <span style="color: red;">*</span></label>
                               <input class="form-control" name="familiares[0][apellido]" type="text" required
                                 maxlength="50" oninput="validarTexto(this)">
                               <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
                             </div>
 
                             <div class="form-group col-md-6">
-                              <label >Fecha de Nacimiento <span
-                                  style="color: red;">*</span></label>
+                              <label>Fecha de Nacimiento <span style="color: red;">*</span></label>
                               <input class="form-control" type="date" name="familiares[0][fecha_nac]" required>
                               <small class="form-text text-muted">Ingrese la fecha de nacimiento.</small>
                             </div>
 
                             <div class="form-group  col-md-6">
-                              <label >Parentesco <span style="color: red;">*</span></label>
+                              <label>Parentesco <span style="color: red;">*</span></label>
                               <input class="form-control" name="familiares[0][parentesco]" type="text" required
                                 maxlength="50" oninput="validarTexto(this)">
                               <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
                             </div>
 
                             <div class="form-group  col-md-6">
-                              <label >Género <span style="color: red;">*</span></label>
+                              <label>Género <span style="color: red;">*</span></label>
                               <select class="form-control select2" required style="width: 100%;"
                                 name="familiares[0][genero_id]">
                                 <option selected disabled>Seleccione su género</option>
@@ -193,7 +198,7 @@
 
                           <!-- Tipo de Vivienda -->
                           <div class="form-group  col-md-6">
-                            <label >Tipo de Vivienda <span style="color:red">*</span></label>
+                            <label>Tipo de Vivienda <span style="color:red">*</span></label>
                             <select name="tipo_vivienda" class="form-control" required>
                               <option value="" disabled selected>Seleccione un tipo</option>
                               <option value="casa_unifamiliar">Casa Unifamiliar</option>
@@ -207,8 +212,7 @@
 
                           <!-- Cantidad de Habitaciones -->
                           <div class="form-group  col-md-6">
-                            <label >Cantidad de Habitaciones <span
-                                style="color:red">*</span></label>
+                            <label>Cantidad de Habitaciones <span style="color:red">*</span></label>
                             <input class="form-control" type="number" id="cantidad_habitaciones"
                               name="cantidad_habitaciones" required min="0"
                               oninput="this.value = this.value.replace(/[^0-9]/g, '')">
@@ -218,8 +222,7 @@
 
                           <!-- Cantidad de Personas -->
                           <div class="form-group col-md-6">
-                            <label >Cantidad de Personas en la Vivienda <span
-                                style="color:red">*</span></label>
+                            <label>Cantidad de Personas en la Vivienda <span style="color:red">*</span></label>
                             <input class="form-control" type="number" id="cantidad_personas" name="cantidad_personas"
                               required min="0"
                               oninput="this.value = this.value.replace(/[^0-9]/g, ''); actualizarMiembros();">
@@ -229,8 +232,7 @@
 
                           <!-- Servicios -->
                           <div class="form-group  col-md-6">
-                            <label >¿Servicio de Agua Potable? <span
-                                style="color:red">*</span></label>
+                            <label>¿Servicio de Agua Potable? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_agua_potable" value="si" required>
                                 Sí</label>
@@ -241,7 +243,7 @@
                           </div>
 
                           <div class="form-group  col-md-6">
-                            <label >¿Servicio de Gas? <span style="color:red">*</span></label>
+                            <label>¿Servicio de Gas? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_gas" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_gas" value="no"> No</label>
@@ -251,8 +253,7 @@
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label >¿Servicio de Electricidad? <span
-                                style="color:red">*</span></label>
+                            <label>¿Servicio de Electricidad? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_electricidad" value="si" required>
                                 Sí</label>
@@ -262,7 +263,7 @@
                           </div>
 
                           <div class="form-group col-md-6">
-                            <label >¿Servicio de Drenaje? <span style="color:red">*</span></label>
+                            <label>¿Servicio de Drenaje? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="servecio_drenaje" value="si" required> Sí</label>
                               <label><input type="radio" name="servecio_drenaje" value="no"> No</label>
@@ -271,8 +272,7 @@
                           </div>
 
                           <div class="form-group  col-md-6">
-                            <label >¿Acceso a Servicios Públicos? <span
-                                style="color:red">*</span></label>
+                            <label>¿Acceso a Servicios Públicos? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="acceso_servcios_publicos" value="si" required>
                                 Sí</label>
@@ -284,8 +284,7 @@
 
                           <!-- Internet -->
                           <div class="form-group  col-md-6">
-                            <label >¿Tiene servicio de Internet en casa? <span
-                                style="color:red">*</span></label>
+                            <label>¿Tiene servicio de Internet en casa? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="disponibilidad_internet" value="si" required
                                   onclick="toggleInterInput()"> Sí</label>
@@ -297,15 +296,14 @@
                           </div>
 
                           <div class="form-group  col-md-6">
-                            <label >Tipo de conexión de Internet</label>
+                            <label>Tipo de conexión de Internet</label>
                             <input class="form-control" id="tipo_conexion_internet" name="tipo_conexion_internet"
                               type="text" placeholder="Especifique si aplica" style="display: none;">
                             <small class="form-text text-muted">Ejemplo: Fibra óptica, datos móviles, ADSL, etc.</small>
                           </div>
 
                           <div class="form-group  col-md-6">
-                            <label >Fuente de Ingreso Familiar <span
-                                style="color:red">*</span></label>
+                            <label>Fuente de Ingreso Familiar <span style="color:red">*</span></label>
                             <input class="form-control" id="fuente_ingreso_familiar" name="fuente_ingreso_familiar"
                               type="text" required>
                             <small class="form-text text-muted">Indique la principal fuente de ingreso económico del
@@ -334,8 +332,8 @@
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </section>
+          </section>
         </div>
       </div>
     </div>

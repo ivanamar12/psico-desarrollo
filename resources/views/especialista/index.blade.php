@@ -23,14 +23,14 @@
                 <table class="table table-hover text-center" id="tab-especialista">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">CI</th>
-                      <th class="text-center">FVP</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Apellido</th>
-                      <th class="text-center">Correo</th>
-                      <th class="text-center">Teléfono</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">CI</th>
+                      <th style="text-align: center">FVP</th>
+                      <th style="text-align: center">Nombre</th>
+                      <th style="text-align: center">Apellido</th>
+                      <th style="text-align: center">Correo</th>
+                      <th style="text-align: center">Teléfono</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
@@ -52,8 +52,10 @@
                           <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required>
-                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna sea el caso V, P o E.</small>
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci"
+                              required>
+                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna
+                              sea el caso V, P o E.</small>
                           </div>
 
                           <!-- FVP -->
@@ -102,7 +104,8 @@
                           <!-- Teléfono -->
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
-                            <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono" required>
+                            <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono"
+                              required>
                             <small class="form-text text-muted">Debe comenzar con 0412, 0424, etc. Máximo 11
                               dígitos.</small>
                           </div>
@@ -110,7 +113,8 @@
                           <!-- Email -->
                           <div class="form-group col-md-6">
                             <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
-                            <input type="email" class="form-control email-verificar" id="email" name="email" required>
+                            <input type="email" class="form-control email-verificar" id="email" name="email"
+                              required>
                             <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
                           </div>
 
@@ -141,7 +145,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id" name="estado_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="estado_id" name="estado_id">
                               <option selected disabled>Seleccione su estado</option>
                             </select>
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
@@ -149,7 +154,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="municipio_id" name="municipio_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="municipio_id" name="municipio_id">
                               <option selected disabled>Seleccione su municipio</option>
                             </select>
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
@@ -157,7 +163,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
-                            <select class="form-control form-control-solid select2" required style="width: 100%;" id="parroquia_id" name="parroquia_id">
+                            <select class="form-control form-control-solid select2" required style="width: 100%;"
+                              id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
                             <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
@@ -169,16 +176,16 @@
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
 
-                            </div>
+                        </div>
 
-                            <p class="centro-texto">
-                              <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
-                                <i class="zmdi zmdi-arrow-back"></i> Regresar
-                              </button>
-                              <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
-                                <i class="zmdi zmdi-floppy"></i> Registrar
-                              </button>
-                            </p>
+                        <p class="centro-texto">
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i> Registrar
+                          </button>
+                        </p>
                       </div>
                     </form>
                   </div>
@@ -439,57 +446,61 @@
     });
   </script>
 
-<script>
-$(document).ready(function () {
-    $("#registro-especialista").submit(function (event) {
+  <script>
+    $(document).ready(function() {
+      $("#registro-especialista").submit(function(event) {
         event.preventDefault();
         toastr.clear();
 
         registerEspecialista();
-    });
+      });
 
-    function registerEspecialista() {
+      function registerEspecialista() {
         var formData = {
-            nombre: $('#nombre').val(),
-            apellido: $('#apellido').val(),
-            ci: $('#ci').val(),
-            fecha_nac: $('#fecha_nac').val(),
-            especialidad_id: $('#especialidad_id').val(),
-            telefono: $('#telefono').val(),
-            email: $('#email').val(),
-            fvp: $('#fvp').val(),
-            genero_id: $('#genero_id').val(),
-            estado_id: $('#estado_id').val(),
-            municipio_id: $('#municipio_id').val(),
-            parroquia_id: $('#parroquia_id').val(),
-            sector: $('#sector').val(),
-            _token: $("input[name=_token]").val()
+          nombre: $('#nombre').val(),
+          apellido: $('#apellido').val(),
+          ci: $('#ci').val(),
+          fecha_nac: $('#fecha_nac').val(),
+          especialidad_id: $('#especialidad_id').val(),
+          telefono: $('#telefono').val(),
+          email: $('#email').val(),
+          fvp: $('#fvp').val(),
+          genero_id: $('#genero_id').val(),
+          estado_id: $('#estado_id').val(),
+          municipio_id: $('#municipio_id').val(),
+          parroquia_id: $('#parroquia_id').val(),
+          sector: $('#sector').val(),
+          _token: $("input[name=_token]").val()
         };
 
         $.ajax({
-            url: "{{ route('especialista.store') }}",
-            type: "POST",
-            data: formData,
-            success: function (response) {
-                if (response.success) {
-                    $('#registro-especialista')[0].reset();
-                    $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+          url: "{{ route('especialista.store') }}",
+          type: "POST",
+          data: formData,
+          success: function(response) {
+            if (response.success) {
+              $('#registro-especialista')[0].reset();
+              $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
-                    $("#paso1").show();
-                    $("#paso2").hide();
+              $("#paso1").show();
+              $("#paso2").hide();
 
-                    toastr.success('¡Registro exitoso!', 'Éxito', { timeOut: 3000 });
-                    $('#tab-especialista').DataTable().ajax.reload(null, false);
-                }
-            },
-            error: function (xhr) {
-                console.error(xhr.responseText);
-                toastr.error('Error al registrar.', 'Error', { timeOut: 5000 });
+              toastr.success('¡Registro exitoso!', 'Éxito', {
+                timeOut: 3000
+              });
+              $('#tab-especialista').DataTable().ajax.reload(null, false);
             }
+          },
+          error: function(xhr) {
+            console.error(xhr.responseText);
+            toastr.error('Error al registrar.', 'Error', {
+              timeOut: 5000
+            });
+          }
         });
-    }
-});
-</script>
+      }
+    });
+  </script>
 
   <script>
     $.ajaxSetup({

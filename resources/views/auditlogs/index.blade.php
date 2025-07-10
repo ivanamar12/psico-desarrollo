@@ -23,12 +23,12 @@
                 <table class="table table-hover text-center" id="tab-auditLogs">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Email</th>
-                      <th class="text-center">Rol</th>
-                      <th class="text-center">Acción</th>
-                      <th class="text-center">Fecha</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Nombre</th>
+                      <th style="text-align: center">Email</th>
+                      <th style="text-align: center">Rol</th>
+                      <th style="text-align: center">Acción</th>
+                      <th style="text-align: center">Fecha</th>
                     </tr>
                   </thead>
                 </table>

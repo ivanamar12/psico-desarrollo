@@ -25,9 +25,9 @@
                 <table class="table table-hover text-center" id="tab-especialidad">
                   <thead>
                     <tr>
-                      <th class="text-center">ID</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Nombre</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>

@@ -23,13 +23,13 @@
                 <table class="table table-hover text-center" id="tab-prueba">
                   <thead>
                     <tr>
-                      <th class="text-center">#</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Descripción</th>
-                      <th class="text-center">Rango de Edad</th>
-                      <th class="text-center">Area de Desarrollo</th>
-                      <th class="text-center">Tipo</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Nombre</th>
+                      <th style="text-align: center">Descripción</th>
+                      <th style="text-align: center">Rango de Edad</th>
+                      <th style="text-align: center">Area de Desarrollo</th>
+                      <th style="text-align: center">Tipo</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
