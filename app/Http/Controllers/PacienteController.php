@@ -13,10 +13,6 @@ use App\Models\DatosEconomico;
 use App\Models\Parentesco;
 use App\Models\Representante;
 
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Foundation\Validation\ValidatesRequests;
-use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -94,20 +90,21 @@ class PacienteController extends Controller
         'genero_id' => $request->genero_id,
       ]);
 
-      // Crear los familiares
-      foreach ($request->familiares as $familiar) {
-        Parentesco::create([
-          'paciente_id' => $paciente->id,
-          'nombre' => $familiar['nombre'],
-          'apellido' => $familiar['apellido'],
-          'fecha_nac' => $familiar['fecha_nac'],
-          'parentesco' => $familiar['parentesco'],
-          'discapacidad' => $familiar['discapacidad'] ?? 'no aplica',
-          'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? 'no aplica',
-          'enfermedad_cronica' => $familiar['enfermedad_cronica'] ?? 'no aplica',
-          'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? 'no aplica',
-          'genero_id' => $familiar['genero_id'] ?? null, // Asegúrate de que este campo esté presente si es necesario
-        ]);
+      if (!empty($request->familiares)) {
+        foreach ($request->familiares as $familiar) {
+          Parentesco::create([
+            'paciente_id' => $paciente->id,
+            'nombre' => $familiar['nombre'],
+            'apellido' => $familiar['apellido'],
+            'fecha_nac' => $familiar['fecha_nac'],
+            'parentesco' => $familiar['parentesco'],
+            'discapacidad' => $familiar['discapacidad'] ?? 'no aplica',
+            'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? 'no aplica',
+            'enfermedad_cronica' => $familiar['enfermedad_cronica'] ?? 'no aplica',
+            'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? 'no aplica',
+            'genero_id' => $familiar['genero_id'] ?? null,
+          ]);
+        }
       }
 
       DB::commit();
@@ -228,7 +225,6 @@ class PacienteController extends Controller
 
       return response()->json(['success' => true]);
     } catch (\Exception $e) {
-      \Log::error('Error al eliminar el paciente: ' . $e->getMessage());
       return response()->json(['message' => 'Error al eliminar el paciente: ' . $e->getMessage()], 500);
     }
   }
