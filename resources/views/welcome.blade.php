@@ -16,7 +16,15 @@
   <!-- Header -->
   <header>
     <nav class="navbar">
-      <div class="logo">PsicoDesarrollo</div>
+      <div class="logo" style="display: flex; gap: 5px; align-items: center">
+        <img alt="logo" src="{{ asset('assets/img/logo.webp') }}"
+          style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
+
+        <p style="color: #fff; font-weight: 800">
+          PSICODESARROLLO
+        </p>
+      </div>
+
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
         <li><a href="#areas">Áreas de Desarrollo</a></li>

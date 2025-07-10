@@ -1,35 +1,3 @@
-# Admin
-
-## Registro de Especialista
-
-- Crear status: para hacer softdelete
-
-## Registro de Secretaria
-
-- Crear status: para hacer softdelete
-
-## Registro de Representantes
-
-- Crear status: para hacer softdelete
-
-## Registro de Pacientes
-
-- Crear status: para hacer softdelete
-
-
-
-# Secretaria
-
-## Gestion de cita
-
-- Descargar y ver historias
-
-# Especialista
-
-## Ver pacientes, citas
-
-- Validacion de que se muestren solo sus citas
-
 # Nuevos MODULOS
 
 ## Generar Informe del paciente
@@ -54,3 +22,33 @@
 - recomendaciones: string
 - especialista_id: int
 - paciente_id: int
+
+# Correcciones
+
+LA AYUDA EN TODAS LAS VISTAS
+
+ALERTA EN INGLES (ESPECIALIDAD)
+
+EN DATOS DE DIRECCIÓN (CAMPO SECTOR PONERLE LO DE MIN Y MAX)
+
+ESPECIALISTA, ARREGLAR EL MAXIMO DE LOS CAMPOS
+
+CAMPO CORREO, ARREGLAR QUE NO SE GUARDE O DEJE REGISTRAR SI NO ESTA EN FORMATO CORREO, Y QUE NO DEJE GUARDARLO EN MAYUSCULAS
+
+NÚMERO TLF QUE SEA ÚNICO
+
+INPUT EN CAMPO DISCAPACIDAD DE DATOS FAMILIARES
+
+CENTRAR CABEZERAS DE LAS TABLAS
+
+OCULTAR EL CAMPO DE TIPO CONEXIÓN CUANDO SE SELECCIONA (NO)
+
+VERIFICAR LO DEL ARRAY VACÍO
+
+EN AGENDAR CITA, ARREGLAR QUE NO DEJE AGENDAR A UN MISMO PACIENTE MAS DE 1 VEZ EN UN DIA
+
+REFRESCAR VISTA DE FORMULARIO DE HISTORIAS
+
+LOGO EN LOS PDF
+
+<!-- LOGO EN EL landing page -> LISTO -->
