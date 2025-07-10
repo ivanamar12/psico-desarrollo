@@ -49,7 +49,7 @@
                           <label class="control-label">Nombre de la especialidad <span
                               class="text-danger">*</span></label>
                           <input class="form-control" type="text" name="especialidad" id="especialidad_nombre" required
-                            oninput="validarTexto(this)">
+                            maxlength="30">
                           <small class="form-text text-muted">Máximo 30 caracteres</small>
                         </div>
 
@@ -151,8 +151,14 @@
             }
           },
           error: function(xhr) {
-            toastr.error(xhr.responseJSON.message, 'Error', {
-              timeOut: 5000
+            const {
+              especialidad
+            } = xhr.responseJSON.errors;
+
+            especialidad.forEach(e => {
+              toastr.error(e, 'Error', {
+                timeOut: 5000
+              });
             });
           }
         });
@@ -186,8 +192,14 @@
             }
           },
           error: function(xhr) {
-            toastr.error(xhr.responseJSON.message, 'Error', {
-              timeOut: 5000
+            const {
+              especialidad
+            } = xhr.responseJSON.errors;
+
+            especialidad.forEach(e => {
+              toastr.error(e, 'Error', {
+                timeOut: 5000
+              });
             });
           }
         });
