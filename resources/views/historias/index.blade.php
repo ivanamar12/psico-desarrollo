@@ -390,7 +390,7 @@
                           <div class="form-group col-md-6 mb-4">
                             <label>Peso al nacer<span class="text-danger">*</label>
                             <input class="form-control" id="peso_nacer_niño" name="peso_nacer_niño" type="text"
-                              placeholder="Ejemplo: 3.2">
+                              placeholder="Ejemplo: 3.2" required>
                             <small class="form-text text-muted">Ingrese el peso del niño al nacer, expresado en
                               kilogramos.</small>
                           </div>
@@ -1017,7 +1017,34 @@
   </script>
 
   <script>
-    $(function() {
+    $(document).ready(function() {
+      var tablaHistorias = $('#tab-historias').DataTable({
+        language: {
+          url: './js/datatables/es-ES.json',
+        },
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "{{ route('historias.index') }}",
+          type: 'GET',
+        },
+        columns: [{
+            data: 'codigo'
+          },
+          {
+            data: 'nombre'
+          },
+          {
+            data: 'apellido'
+          },
+          {
+            data: 'action',
+            orderable: false,
+            searchable: false
+          } // Desactivar orden y búsqueda en la columna de acciones
+        ]
+      });
+
       var $peso = $('#peso_nacer_niño');
       $peso.attr('inputmode', 'numeric');
 
@@ -1087,13 +1114,17 @@
           type: 'POST',
           data: formStr,
           success: function(resp) {
-            console.log('✅ Éxito:', resp);
-            toastr.success(resp.message || 'Registro creado con éxito');
             $('#registro-historia')[0].reset();
+
+            toastr.success(resp.message || 'Registro creado con éxito');
+
+            // Recargar tabla
+            tablaHistorias.ajax.reload();
+
+            // Cambiar a la pestaña de lista
+            $('.nav-tabs a[href="#list"]').tab('show');
           },
           error: function(xhr) {
-            console.error('❌ Error', xhr.status, xhr.responseText);
-
             if (xhr.responseJSON && xhr.responseJSON.errors) {
               $.each(xhr.responseJSON.errors, function(k, msgs) {
                 toastr.error(msgs[0]);
@@ -1106,39 +1137,9 @@
           }
         });
       });
+    });
+  </script>
 
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
-      var tablaSecretaria = $('#tab-historias').DataTable({
-        language: {
-          url: './js/datatables/es-ES.json',
-        },
-        processing: true,
-        serverSide: true,
-        ajax: {
-          url: "{{ route('historias.index') }}",
-          type: 'GET',
-        },
-        columns: [{
-            data: 'codigo'
-          },
-          {
-            data: 'nombre'
-          },
-          {
-            data: 'apellido'
-          },
-          {
-            data: 'action',
-            orderable: false,
-            searchable: false
-          } // Desactivar orden y búsqueda en la columna de acciones
-        ]
-      });
-    });
-  </script>
   <script>
     $.ajaxSetup({
       headers: {
