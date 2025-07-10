@@ -388,7 +388,7 @@
   <script>
     $(document).ready(function() {
       const representantes = @json($representantes);
-      console.log(representantes);
+
       $('#representante_id').select2({
         placeholder: "Seleccione el representante",
         allowClear: true,
@@ -399,8 +399,6 @@
             const filteredRepresentantes = representantes.filter(representante =>
               representante.ci.toLowerCase().includes(searchTerm)
             );
-
-            console.log(filteredRepresentantes);
 
             const results = filteredRepresentantes.map(representante => ({
               id: representante.id,
@@ -415,8 +413,34 @@
       });
     });
   </script>
+
   <script>
     $(document).ready(function() {
+      var tablaPaciente = $('#tab-paciente').DataTable({
+        language: {
+          url: './js/datatables/es-ES.json',
+        },
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "{{ route('paciente.index') }}",
+        },
+        columns: [{
+            data: 'id'
+          },
+          {
+            data: 'nombre'
+          },
+          {
+            data: 'apellido'
+          },
+          {
+            data: 'action',
+            orderable: false
+          }
+        ]
+      });
+
       let contador = 1;
       $("#paso1").show();
       $("#paso2").hide();
@@ -518,20 +542,27 @@
 
       $("#registro-paciente").on("submit", function(event) {
         event.preventDefault();
-        const formData = $(this).serialize();
-        console.log(formData);
+
         $.ajax({
           url: "{{ route('paciente.store') }}",
           type: 'POST',
-          data: formData,
+          data: $(this).serialize(),
           success: function(response) {
-            console.log(response);
-            toastr.success("Paciente registrado exitosamente.");
-            $("#registro-paciente")[0].reset();
-            location.reload();
+            if (response.success) {
+              $("#registro-paciente")[0].reset();
+
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+
+              // Recargar tabla
+              tablaPaciente.ajax.reload();
+
+              // Cambiar a la pestaña de lista
+              $('.nav-tabs a[href="#list"]').tab('show');
+            }
           },
           error: function(xhr, status, error) {
-            console.error(xhr.responseText);
             toastr.error("Error al registrar el paciente: " + xhr.responseText);
           }
         });
@@ -582,6 +613,7 @@
       }
     }
   </script>
+
   <script>
     function establecerRangoFechas() {
       const fechaNacInputs = document.querySelectorAll('input[name="fecha_nac"]');
@@ -608,34 +640,7 @@
 
     document.addEventListener('DOMContentLoaded', establecerRangoFechas);
   </script>
-  <script>
-    $(document).ready(function() {
-      var tablaPaciente = $('#tab-paciente').DataTable({
-        language: {
-          url: './js/datatables/es-ES.json',
-        },
-        processing: true,
-        serverSide: true,
-        ajax: {
-          url: "{{ route('paciente.index') }}",
-        },
-        columns: [{
-            data: 'id'
-          },
-          {
-            data: 'nombre'
-          },
-          {
-            data: 'apellido'
-          },
-          {
-            data: 'action',
-            orderable: false
-          }
-        ]
-      });
-    });
-  </script>
+
   <script>
     $.ajaxSetup({
       headers: {
@@ -664,7 +669,6 @@
           $('#tab-paciente').DataTable().ajax.reload();
         },
         error: function(xhr, status, error) {
-          console.error('Error al eliminar el registro:', error);
           toastr.error('No se pudo eliminar el registro', 'Error', {
             timeOut: 5000
           });
@@ -681,8 +685,6 @@
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-          console.log("Datos del paciente:", data);
-
           let nombreApellido = data.nombre + " " + data.apellido;
           let fechaNacimiento = data.fecha_nac;
           let genero = data.genero ? data.genero.genero : "No disponible";
@@ -704,7 +706,6 @@
           $('#pacienteModal').modal('show');
         },
         error: function(xhr, status, error) {
-          console.error("Error al obtener los datos:", error);
           alert("Hubo un problema al obtener la información del paciente.");
         }
       });

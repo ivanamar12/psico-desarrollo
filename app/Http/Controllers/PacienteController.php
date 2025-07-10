@@ -108,7 +108,7 @@ class PacienteController extends Controller
       }
 
       DB::commit();
-      return response()->json(['message' => 'Paciente registrado exitosamente.'], 201);
+      return response()->json(['success' => true, 'message' => 'Paciente registrado exitosamente.'], 201);
     } catch (\Exception $e) {
       DB::rollBack();
       return response()->json(['error' => 'Error al registrar el paciente: ' . $e->getMessage()], 500);
