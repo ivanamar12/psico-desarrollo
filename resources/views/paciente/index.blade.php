@@ -271,7 +271,7 @@
                             <small class="form-text text-muted">Seleccione si tiene sistema de drenaje sanitario.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>¿Acceso a Servicios Públicos? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="acceso_servcios_publicos" value="si" required>
@@ -283,7 +283,7 @@
                           </div>
 
                           <!-- Internet -->
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>¿Tiene servicio de Internet en casa? <span style="color:red">*</span></label>
                             <div>
                               <label><input type="radio" name="disponibilidad_internet" value="si" required
@@ -295,14 +295,14 @@
                               hogar.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6" id="tipo_conexion_internet" style="display: none;">
                             <label>Tipo de conexión de Internet</label>
-                            <input class="form-control" id="tipo_conexion_internet" name="tipo_conexion_internet"
-                              type="text" placeholder="Especifique si aplica" style="display: none;">
+                            <input class="form-control" name="tipo_conexion_internet" type="text"
+                              placeholder="Especifique si aplica">
                             <small class="form-text text-muted">Ejemplo: Fibra óptica, datos móviles, ADSL, etc.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>Fuente de Ingreso Familiar <span style="color:red">*</span></label>
                             <input class="form-control" id="fuente_ingreso_familiar" name="fuente_ingreso_familiar"
                               type="text" required>
@@ -558,6 +558,9 @@
               // Recargar tabla
               tablaPaciente.ajax.reload();
 
+              $("#paso3").hide();
+              $("#paso1").show();
+
               // Cambiar a la pestaña de lista
               $('.nav-tabs a[href="#list"]').tab('show');
             }
@@ -581,10 +584,12 @@
     }
 
     function toggleTipoDiscapacidad(index) {
-      const disponibilidadDiscapacidadYes = document.querySelector(`input[name="discapacidad_${index}"][value="si"]`);
+      const disponibilidadDiscapacidadYes = document.querySelector(
+        `input[name="familiares[${index}][discapacidad]"][value="si"]`);
       const tipoDiscapacidadInput = document.getElementById(`tipo-discapacidad-${index}`);
       if (disponibilidadDiscapacidadYes.checked) {
         tipoDiscapacidadInput.style.display = 'block';
+        tipoDiscapacidadInput.value = '';
       } else {
         tipoDiscapacidadInput.style.display = 'none';
         tipoDiscapacidadInput.value = 'no aplica';
@@ -592,10 +597,12 @@
     }
 
     function toggleTipoEnfermedad(index) {
-      const disponibilidadEnfermedadYes = document.querySelector(`input[name="enfermedad_cronica_${index}"][value="si"]`);
+      const disponibilidadEnfermedadYes = document.querySelector(
+        `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`);
       const tipoEnfermedadInput = document.getElementById(`tipo-enfermedad-${index}`);
       if (disponibilidadEnfermedadYes.checked) {
         tipoEnfermedadInput.style.display = 'block';
+        tipoEnfermedadInput.value = '';
       } else {
         tipoEnfermedadInput.style.display = 'none';
         tipoEnfermedadInput.value = 'no aplica';
@@ -604,11 +611,14 @@
 
     function toggleInterInput() {
       const disponibilidad_internetYes = document.querySelector(`input[name="disponibilidad_internet"][value="si"]`);
-      const tipo_conexionInput = document.getElementById('tipo_conexion_internet');
+      const tipo_conexionContainer = document.getElementById('tipo_conexion_internet');
+      const tipo_conexionInput = document.querySelector('#tipo_conexion_internet input')
+
       if (disponibilidad_internetYes.checked) {
-        tipo_conexionInput.style.display = 'block';
+        tipo_conexionContainer.style.display = 'block';
+        tipo_conexionInput.value = '';
       } else {
-        tipo_conexionInput.style.display = 'none';
+        tipo_conexionContainer.style.display = 'none';
         tipo_conexionInput.value = 'no';
       }
     }
