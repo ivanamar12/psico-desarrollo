@@ -41,7 +41,7 @@
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-paciente">@csrf
                       <!-- paso 1 -->
-                      <div id="paso1">
+                      <section id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario row">
                           <!-- Fila 1 -->
@@ -91,108 +91,28 @@
                         </div>
 
                         <p class="text-center mt-3">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
-                      </div>
+                      </section>
                       <!-- paso 2 -->
-                      <div id="paso2">
+                      <section id="paso2">
                         <h3>Datos Familiares</h3>
                         <h4>Familiares que vivan en el hogar</h4>
-                        <div id="miembrosContainer row">
-                          <div class="fila-formulario" id="formulario-familiar-0">
-
-                            <div class="form-group  col-md-6">
-                              <label>Nombre <span style="color: red;">*</span></label>
-                              <input class="form-control" name="familiares[0][nombre]" type="text" required
-                                maxlength="50" oninput="validarTexto(this)">
-                              <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                              <label>Apellido <span style="color: red;">*</span></label>
-                              <input class="form-control" name="familiares[0][apellido]" type="text" required
-                                maxlength="50" oninput="validarTexto(this)">
-                              <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
-                            </div>
-
-                            <div class="form-group col-md-6">
-                              <label>Fecha de Nacimiento <span style="color: red;">*</span></label>
-                              <input class="form-control" type="date" name="familiares[0][fecha_nac]" required>
-                              <small class="form-text text-muted">Ingrese la fecha de nacimiento.</small>
-                            </div>
-
-                            <div class="form-group  col-md-6">
-                              <label>Parentesco <span style="color: red;">*</span></label>
-                              <input class="form-control" name="familiares[0][parentesco]" type="text" required
-                                maxlength="50" oninput="validarTexto(this)">
-                              <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
-                            </div>
-
-                            <div class="form-group  col-md-6">
-                              <label>Género <span style="color: red;">*</span></label>
-                              <select class="form-control select2" required style="width: 100%;"
-                                name="familiares[0][genero_id]">
-                                <option selected disabled>Seleccione su género</option>
-                                @foreach ($generos as $genero)
-                                  <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-                                @endforeach
-                              </select>
-                              <small class="form-text text-muted">Seleccione el género del familiar.</small>
-                            </div>
-
-                            <div class="form-group label-floating col-md-6">
-                              <h5>¿Tiene alguna discapacidad? <span style="color: red;">*</span></h5>
-                              <div>
-                                <label><input type="radio" name="familiares[0][discapacidad]" value="si" required
-                                    onclick="toggleTipoDiscapacidad(0)"> Sí</label>
-                                <label><input type="radio" name="familiares[0][discapacidad]" value="no"
-                                    onclick="toggleTipoDiscapacidad(0)"> No</label>
-                              </div>
-                              <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
-                            </div>
-
-                            <div class="form-group label-floating col-md-6">
-                              <input class="form-control" id="tipo-discapacidad-0"
-                                name="familiares[0][tipo_discapacidad]" type="text" style="display: none;"
-                                placeholder="Describa el tipo de discapacidad">
-                              <small class="form-text text-muted" style="display: none;"
-                                id="ayuda-discapacidad-0">Describa la discapacidad si aplica.</small>
-                            </div>
-
-                            <div class="form-group label-floating col-md-6">
-                              <h5>¿Tiene alguna enfermedad crónica? <span style="color: red;">*</span></h5>
-                              <div>
-                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="si"
-                                    required onclick="toggleTipoEnfermedad(0)"> Sí</label>
-                                <label><input type="radio" name="familiares[0][enfermedad_cronica]" value="no"
-                                    onclick="toggleTipoEnfermedad(0)"> No</label>
-                              </div>
-                              <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
-                            </div>
-
-                            <div class="form-group label-floating col-md-6">
-                              <input class="form-control" id="tipo-enfermedad-0" name="familiares[0][tipo_enfermedad]"
-                                type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
-                              <small class="form-text text-muted" style="display: none;"
-                                id="ayuda-enfermedad-0">Describa la enfermedad si aplica.</small>
-                            </div>
-
-                            <button type="button" class="eliminar btn btn-danger"
-                              onclick="eliminarMiembro(this)">Eliminar</button>
-
-                          </div>
-                        </div>
+                        <div id="miembrosContainer"></div>
 
                         <p class="text-center mt-3">
-                          <button type="button" id="agregarFamiliar" class="btn btn-custom"
-                            style="color: white;">Agregar Familiar</button>
-                          <button type="button" id="siguiente2" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="agregarFamiliar" class="btn btn-custom" style="color: white;">
+                            Agregar Familiar
+                          </button>
+                          <button type="button" id="siguiente2" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
-                      </div>
+                      </section>
                       <!-- paso 3 -->
-                      <div id="paso3">
+                      <section id="paso3">
                         <h3>Datos Socioeconómicos</h3>
                         <div class="fila-formulario row">
 
@@ -224,8 +144,7 @@
                           <div class="form-group col-md-6">
                             <label>Cantidad de Personas en la Vivienda <span style="color:red">*</span></label>
                             <input class="form-control" type="number" id="cantidad_personas" name="cantidad_personas"
-                              required min="0"
-                              oninput="this.value = this.value.replace(/[^0-9]/g, ''); actualizarMiembros();">
+                              required min="0" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
                             <small class="form-text text-muted">Ingrese solo números. Total de personas que viven en la
                               vivienda.</small>
                           </div>
@@ -327,7 +246,7 @@
                             <i class="zmdi zmdi-floppy" style="color: white;"></i> Registrar
                           </button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
@@ -441,7 +360,6 @@
         ]
       });
 
-      let contador = 1;
       $("#paso1").show();
       $("#paso2").hide();
       $("#paso3").hide();
@@ -461,7 +379,11 @@
       }
 
       $("#siguiente1").click(function() {
-        if ($("#representante_id").val() && $("#apellido").val()) {
+        if ($("#representante_id").val() &&
+          $("#nombre").val() &&
+          $("#apellido").val() &&
+          $("#fecha_nac").val() &&
+          $("#genero_id").val()) {
           $("#paso1").hide();
           $("#paso2").show();
         } else {
@@ -469,66 +391,99 @@
         }
       });
 
+      let contadorFamiliares = 1;
+
       $("#agregarFamiliar").click(function() {
-        const nuevoFormulario = `<div class="fila-formulario" id="formulario-familiar-${contador}">
-        <div class="form-group label-floating col-md-6">
-          <label class="control-label">Nombre <span class="text-danger">*</span></label>
-          <input class="form-control" name="familiares[${contador}][nombre]" type="text" required maxlength="50" oninput="validarTexto(this)">
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <label class="control-label">Apellido <span class="text-danger">*</span></label>
-          <input class="form-control" name="familiares[${contador}][apellido]" type="text" required maxlength="50" oninput="validarTexto(this)">
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group col-md-6">
-          <label class="control-label">Fecha de nacimiento <span class="text-danger">*</span></label>
-          <input class="form-control" type="date" name="familiares[${contador}][fecha_nac]" required>
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <label class="control-label">Parentesco <span class="text-danger">*</span></label>
-          <input class="form-control" name="familiares[${contador}][parentesco]" type="text" required maxlength="50" oninput="validarTexto(this)">
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <label class="control-label">Género <span class="text-danger">*</span></label>
-          <select class="form-control select2" required style="width: 100%;" name="familiares[${contador}][genero_id]">
-            <option selected disabled>Seleccione su género</option>
-            @foreach ($generos as $genero)
-              <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-            @endforeach
-          </select>
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <h5>¿Tiene alguna discapacidad? <span class="text-danger">*</span></h5>
-          <div>
-            <label><input type="radio" name="familiares[${contador}][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(${contador})"> Sí</label>
-            <label><input type="radio" name="familiares[${contador}][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(${contador})"> No</label>
+        const nuevoFormulario = `
+          <div class="fila-formulario row" id="formulario-familiar-${contadorFamiliares}">
+            <div class="form-group col-md-6">
+              <label>Nombre <span style="color: red;">*</span></label>
+              <input class="form-control" name="familiares[${contadorFamiliares}][nombre]" type="text" required maxlength="50" oninput="validarTexto(this)">
+              <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Apellido <span style="color: red;">*</span></label>
+              <input class="form-control" name="familiares[${contadorFamiliares}][apellido]" type="text" required maxlength="50" oninput="validarTexto(this)">
+              <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Fecha de Nacimiento <span style="color: red;">*</span></label>
+              <input class="form-control" type="date" name="familiares[${contadorFamiliares}][fecha_nac]" required>
+              <small class="form-text text-muted">Ingrese la fecha de nacimiento.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Parentesco <span style="color: red;">*</span></label>
+              <input class="form-control" name="familiares[${contadorFamiliares}][parentesco]" type="text" required maxlength="50" oninput="validarTexto(this)">
+              <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Género <span style="color: red;">*</span></label>
+              <select class="form-control select2" required style="width: 100%;" name="familiares[${contadorFamiliares}][genero_id]">
+                <option selected disabled>Seleccione su género</option>
+                @foreach ($generos as $genero)
+                  <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+                @endforeach
+              </select>
+              <small class="form-text text-muted">Seleccione el género del familiar.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <h5>¿Tiene alguna discapacidad? <span style="color: red;">*</span></h5>
+              <div>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(${contadorFamiliares})"> Sí</label>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(${contadorFamiliares})"> No</label>
+              </div>
+              <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
+            </div>
+
+            <div class="form-group col-md-6" id="tipo-discapacidad-container-${contadorFamiliares}" style="display: none;">
+              <label>Tipo de discapacidad</label>
+              <input class="form-control" id="tipo-discapacidad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_discapacidad]" type="text" placeholder="Describa el tipo de discapacidad">
+              <small class="form-text text-muted">Describa la discapacidad si aplica.</small>
+            </div>
+
+            <div class="form-group col-md-6">
+              <h5>¿Tiene alguna enfermedad crónica? <span style="color: red;">*</span></h5>
+              <div>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(${contadorFamiliares})"> Sí</label>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(${contadorFamiliares})"> No</label>
+              </div>
+              <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
+            </div>
+
+            <div class="form-group col-md-6" id="tipo-enfermedad-container-${contadorFamiliares}" style="display: none;">
+              <label>Tipo de enfermedad</label>
+              <input class="form-control" id="tipo-enfermedad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_enfermedad]" type="text" placeholder="Describa el tipo de Enfermedad">
+              <small class="form-text text-muted">Describa la enfermedad si aplica.</small>
+            </div>
+
+            <div class="col-md-12 text-right">
+              <button type="button" class="btn btn-danger" onclick="eliminarMiembro(${contadorFamiliares})">
+                <i class="zmdi zmdi-delete"></i> Eliminar
+              </button>
+            </div>
           </div>
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <input class="form-control" id="tipo-discapacidad-${contador}" name="familiares[${contador}][tipo_discapacidad]" type="text" style="display: none;" placeholder="Describa el tipo de discapacidad">
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <h5>¿Tiene alguna enfermedad crónica? <span class="text-danger">*</span></h5>
-          <div>
-            <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(${contador})"> Sí</label>
-            <label><input type="radio" name="familiares[${contador}][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(${contador})"> No</label>
-          </div>
-          <small class="text-danger">Campo obligatorio</small>
-        </div>
-        <div class="form-group label-floating col-md-6">
-          <input class="form-control" id="tipo-enfermedad-${contador}" name="familiares[${contador}][tipo_enfermedad]" type="text" style="display: none;" placeholder="Describa el tipo de Enfermedad">
-        </div>
-        <button type="button" class="eliminar btn btn-danger" onclick="eliminarMiembro(this)">Eliminar</button>
-      </div>`;
+        `;
 
         $("#miembrosContainer").append(nuevoFormulario);
-        contador++;
+
+        // Inicializar Select2 para el nuevo select
+        $(`select[name="familiares[${contadorFamiliares}][genero_id]"]`).select2();
+
+        // Establecer el rango de fechas para el nuevo campo
+        establecerFechaMaximaFamiliares();
+
+        contadorFamiliares++;
       });
+
+      // Función para eliminar un familiar
+      window.eliminarMiembro = function(id) {
+        $(`#formulario-familiar-${id}`).remove();
+      };
 
       $("#siguiente2").click(function() {
         $("#paso2").hide();
@@ -579,35 +534,30 @@
       establecerFechaMaximaFamiliares();
     });
 
-    function eliminarMiembro(button) {
-      $(button).closest('.fila-formulario').remove();
-    }
-
-    function toggleTipoDiscapacidad(index) {
-      const disponibilidadDiscapacidadYes = document.querySelector(
-        `input[name="familiares[${index}][discapacidad]"][value="si"]`);
-      const tipoDiscapacidadInput = document.getElementById(`tipo-discapacidad-${index}`);
-      if (disponibilidadDiscapacidadYes.checked) {
-        tipoDiscapacidadInput.style.display = 'block';
-        tipoDiscapacidadInput.value = '';
+    // Funciones para mostrar/ocultar campos condicionales
+    window.toggleTipoDiscapacidad = function(index) {
+      const discapacidadSi = $(`input[name="familiares[${index}][discapacidad]"][value="si"]`).is(':checked');
+      if (discapacidadSi) {
+        $(`#tipo-discapacidad-container-${index}`).show();
+        $(`#tipo-discapacidad-${index}`).prop('required', true);
       } else {
-        tipoDiscapacidadInput.style.display = 'none';
-        tipoDiscapacidadInput.value = 'no aplica';
+        $(`#tipo-discapacidad-container-${index}`).hide();
+        $(`#tipo-discapacidad-${index}`).prop('required', false);
+        $(`#tipo-discapacidad-${index}`).val('');
       }
-    }
+    };
 
-    function toggleTipoEnfermedad(index) {
-      const disponibilidadEnfermedadYes = document.querySelector(
-        `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`);
-      const tipoEnfermedadInput = document.getElementById(`tipo-enfermedad-${index}`);
-      if (disponibilidadEnfermedadYes.checked) {
-        tipoEnfermedadInput.style.display = 'block';
-        tipoEnfermedadInput.value = '';
+    window.toggleTipoEnfermedad = function(index) {
+      const enfermedadSi = $(`input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+      if (enfermedadSi) {
+        $(`#tipo-enfermedad-container-${index}`).show();
+        $(`#tipo-enfermedad-${index}`).prop('required', true);
       } else {
-        tipoEnfermedadInput.style.display = 'none';
-        tipoEnfermedadInput.value = 'no aplica';
+        $(`#tipo-enfermedad-container-${index}`).hide();
+        $(`#tipo-enfermedad-${index}`).prop('required', false);
+        $(`#tipo-enfermedad-${index}`).val('');
       }
-    }
+    };
 
     function toggleInterInput() {
       const disponibilidad_internetYes = document.querySelector(`input[name="disponibilidad_internet"][value="si"]`);
