@@ -20,7 +20,7 @@ class CreateEspecialistasTable extends Migration
       $table->string('ci', 30);
       $table->date('fecha_nac');
       $table->string('telefono', 30);
-      $table->string('email', 120);
+      $table->string('email');
       $table->string('fvp', 120);
       $table->foreignId('user_id')
         ->constrained();

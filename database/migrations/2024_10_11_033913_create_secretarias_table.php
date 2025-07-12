@@ -21,7 +21,7 @@ class CreateSecretariasTable extends Migration
       $table->date('fecha_nac');
       $table->string('grado', 120);
       $table->string('telefono', 30);
-      $table->string('email', 120);
+      $table->string('email');
       $table->foreignId('user_id')
         ->constrained();
       $table->unsignedBigInteger('genero_id')->nullable();
