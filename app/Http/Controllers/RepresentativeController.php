@@ -65,7 +65,10 @@ class RepresentativeController extends Controller
       ]);
     });
 
-    return response()->json(['success' => true]);
+    return response()->json([
+      'success' => true,
+      'message' => 'Representante y creado correctamente!'
+    ]);
   }
 
   public function show($id)
