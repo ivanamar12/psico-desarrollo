@@ -17,10 +17,10 @@ class CreateSecretariasTable extends Migration
       $table->id();
       $table->string('nombre', 120);
       $table->string('apellido', 120);
-      $table->string('ci', 30);
+      $table->string('ci', 30)->unique();
       $table->date('fecha_nac');
       $table->string('grado', 120);
-      $table->string('telefono', 30);
+      $table->string('telefono', 30)->unique();
       $table->string('email');
       $table->foreignId('user_id')
         ->constrained();
