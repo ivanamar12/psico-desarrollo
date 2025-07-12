@@ -26,8 +26,8 @@ class StoreRepresentanteRequest extends FormRequest
     return [
       'nombre' => 'required|string|max:255',
       'apellido' => 'required|string|max:255',
-      'ci' => 'required|string|max:255',
-      'telefono' => 'required|string|max:255',
+      'ci' => 'required|string|max:255|unique:representantes,ci',
+      'telefono' => 'required|string|max:255|unique:representantes,telefono',
       'email' => 'required|string|email|max:255|unique:representantes,email',
       'genero_id' => 'required|exists:generos,id',
       'estado_id' => 'required|exists:estados,id',
