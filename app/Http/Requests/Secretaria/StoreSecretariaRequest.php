@@ -35,7 +35,7 @@ class StoreSecretariaRequest extends FormRequest
       'estado_id' => 'required|exists:estados,id',
       'municipio_id' => 'required|exists:municipios,id',
       'parroquia_id' => 'required|exists:parroquias,id',
-      'sector' => 'required|string|min:10|max:60',
+      'sector' => 'required|string|min:10|max:80',
     ];
   }
 }

@@ -155,7 +155,7 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="sector" name="sector" required minlength="10" maxlength="60">
+                            <input class="form-control" type="text" id="sector" name="sector" required minlength="10" maxlength="80">
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
 
