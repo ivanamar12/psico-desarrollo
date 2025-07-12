@@ -360,41 +360,37 @@
           }
         ]
       });
-    });
-  </script>
-  <script>
-    $("#paso1").show();
-    $("#paso2").hide();
+    
+      $("#paso1").show();
+      $("#paso2").hide();
 
-    $("#siguiente1").click(function() {
-      let valid = true;
+      $("#siguiente1").click(function() {
+        let valid = true;
 
-      // Validar campos requeridos dentro de #paso1
-      $('#paso1 :input[required]').each(function() {
-        if ($(this).val() === '' || $(this).val() === null) {
-          $(this).addClass('is-invalid');
-          valid = false;
+        // Validar campos requeridos dentro de #paso1
+        $('#paso1 :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        // Validación final
+        if (valid) {
+          $("#paso1").hide();
+          $("#paso2").show();
         } else {
-          $(this).removeClass('is-invalid');
+          toastr.error("Debe completar todos los campos requeridos del paso 1.");
         }
       });
 
-      // Validación final
-      if (valid) {
-        $("#paso1").hide();
-        $("#paso2").show();
-      } else {
-        toastr.error("Debe completar todos los campos requeridos del paso 1.");
-      }
-    });
+      $("#regresar").click(function() {
+        $("#paso2").hide();
+        $("#paso1").show();
+      });
 
-    $("#regresar").click(function() {
-      $("#paso2").hide();
-      $("#paso1").show();
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
       $("#registro-representante").submit(function(event) {
         event.preventDefault();
         toastr.clear();
@@ -424,15 +420,26 @@
           success: function(response) {
             if (response.success) {
               $('#registro-representante')[0].reset();
+
+              $('#estado_id').val(null).trigger('change');
+              $('#municipio_id').val(null).trigger('change');
+              $('#parroquia_id').val(null).trigger('change');
+
               $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
-              $("#paso1").show();
               $("#paso2").hide();
+              $("#paso1").show();
 
-              toastr.success('¡Registro exitoso!', 'Éxito', {
-                timeOut: 3000
+              // Mostrar mensaje
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
               });
-              $('#tab-representante').DataTable().ajax.reload(null, false);
+
+              // Recargar tabla
+              tablaRepresentante.ajax.reload();
+
+              // Cambiar a la pestaña de lista
+              $('.nav-tabs a[href="#list"]').tab('show');
             }
           },
           error: function(xhr) {
@@ -443,9 +450,9 @@
           }
         });
       };
-
     });
   </script>
+
   <script>
     function editRepresentante(id) {
       $.get('/representantes/' + id + '/edit', function(representante) {
