@@ -428,12 +428,19 @@
           }
         });
 
+        const emailInput = document.getElementById('email');
+        const emailValid = validarEmail(emailInput);
+        
         // Validación final
-        if (valid) {
+        if (valid && emailValid) {
           $("#paso1").hide();
           $("#paso2").show();
         } else {
-          toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          if (!emailValid) {
+            toastr.error("Por favor ingrese un email válido antes de continuar.");
+          } else {
+            toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          }
         }
       });
 
@@ -638,8 +645,30 @@
       $("#paso2_edit").hide();
 
       $("#siguiente1_edit").click(function() {
-        $("#paso1_edit").hide();
-        $("#paso2_edit").show();
+        let valid = true;
+
+        $('#paso1_edit :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        const emailInputEdit = document.getElementById('email2');
+        const emailValidEdit = validarEmail(emailInputEdit);
+        
+        if (valid && emailValidEdit) {
+          $("#paso1_edit").hide();
+          $("#paso2_edit").show();
+        } else {
+          if (!emailValidEdit) {
+            toastr.error("Por favor ingrese un email válido antes de continuar.");
+          } else {
+            toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          }
+        }
       });
 
       $("#regresar_edit").click(function() {
