@@ -430,7 +430,7 @@
 
                 $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
-                toastr.success('¡Registro exitoso!', 'Éxito', {
+                toastr.success(response.message, 'Éxito', {
                   timeOut: 3000
                 });
 

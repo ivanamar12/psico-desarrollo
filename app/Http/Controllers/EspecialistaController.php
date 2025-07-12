@@ -180,6 +180,7 @@ class EspecialistaController extends Controller
 
     \DB::transaction(function () use ($especialista, $direccion) {
       $especialista->delete();
+      $especialista->user->delete();
       $direccion->delete();
     });
 

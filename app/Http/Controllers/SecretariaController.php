@@ -83,7 +83,7 @@ class SecretariaController extends Controller
       ]);
     });
 
-    return response()->json(['success' => true, 'message' => 'Secretaria y usuario creados correctamente']);
+    return response()->json(['success' => true, 'message' => 'Secretaria y usuario creados correctamente!']);
   }
 
   public function destroy($id)
