@@ -15,10 +15,12 @@ class ValidacionController extends Controller
     $email = $request->query('email');
 
     $existeUsuario = User::where('email', $email)->exists();
+    $existeEspecialista = Especialista::where('email', $email)->exists();
+    $existeSecretaria = Secretaria::where('email', $email)->exists();
     $existeRepresentante = Representante::where('email', $email)->exists();
 
     return response()->json([
-      'exists' => $existeUsuario || $existeRepresentante
+      'exists' => $existeUsuario || $existeEspecialista || $existeSecretaria || $existeRepresentante
     ]);
   }
 

@@ -133,8 +133,8 @@ Route::middleware('auth')->group(function () {
   Route::get('paciente/{id}', [PacienteController::class, 'show'])
     ->name('paciente.show');
   /**
-  * Informes
-  */
+   * Informes
+   */
   Route::get('informes', [InformeController::class, 'index'])
     ->name('informes.index');
 
@@ -273,5 +273,5 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
-Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
+  Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
 });
