@@ -447,37 +447,43 @@
             }
           });
         }
-      });
-    </script>
-    <script>
-      $("#paso1").show();
-      $("#paso2").hide();
 
-      $("#siguiente1").click(function() {
-        let valid = true;
+        $("#paso1").show();
+        $("#paso2").hide();
 
-        // Validar campos requeridos dentro de #paso1
-        $('#paso1 :input[required]').each(function() {
-          if ($(this).val() === '' || $(this).val() === null) {
-            $(this).addClass('is-invalid');
-            valid = false;
+        $("#siguiente1").click(function() {
+          let valid = true;
+
+          // Validar campos requeridos dentro de #paso1
+          $('#paso1 :input[required]').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+              $(this).addClass('is-invalid');
+              valid = false;
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          const emailInput = document.getElementById('email');
+          const emailValid = validarEmail(emailInput);
+          
+          // Validación final
+          if (valid && emailValid) {
+            $("#paso1").hide();
+            $("#paso2").show();
           } else {
-            $(this).removeClass('is-invalid');
+            if (!emailValid) {
+              toastr.error("Por favor ingrese un email válido antes de continuar.");
+            } else {
+              toastr.error("Debe completar todos los campos requeridos del paso 1.");
+            }
           }
         });
 
-        // Validación final
-        if (valid) {
-          $("#paso1").hide();
-          $("#paso2").show();
-        } else {
-          toastr.error("Debe completar todos los campos requeridos del paso 1.");
-        }
-      });
-
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
+        $("#regresar").click(function() {
+          $("#paso2").hide();
+          $("#paso1").show();
+        });
       });
     </script>
 
@@ -611,8 +617,30 @@
         $("#paso2_edit").hide();
 
         $("#siguiente1_edit").click(function() {
-          $("#paso1_edit").hide();
-          $("#paso2_edit").show();
+          let valid = true;
+
+          $('#paso1_edit :input[required]').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+              $(this).addClass('is-invalid');
+              valid = false;
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          const emailInputEdit = document.getElementById('email2');
+          const emailValidEdit = validarEmail(emailInputEdit);
+          
+          if (valid && emailValidEdit) {
+            $("#paso1_edit").hide();
+            $("#paso2_edit").show();
+          } else {
+            if (!emailValidEdit) {
+              toastr.error("Por favor ingrese un email válido antes de continuar.");
+            } else {
+              toastr.error("Debe completar todos los campos requeridos del paso 1.");
+            }
+          }
         });
 
         $("#regresar_edit").click(function() {
