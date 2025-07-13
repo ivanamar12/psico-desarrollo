@@ -104,7 +104,10 @@ class EspecialistaController extends Controller
       ]);
     });
 
-    return response()->json(['success' => true, 'message' => 'Especialista y usuario creados correctamente']);
+    return response()->json([
+      'success' => true,
+      'message' => 'Especialista y usuario creados correctamente'
+    ]);
   }
 
   public function edit($id)
@@ -180,6 +183,7 @@ class EspecialistaController extends Controller
 
     \DB::transaction(function () use ($especialista, $direccion) {
       $especialista->delete();
+      $especialista->user->delete();
       $direccion->delete();
     });
 

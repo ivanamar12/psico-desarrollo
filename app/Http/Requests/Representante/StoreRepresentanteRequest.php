@@ -26,14 +26,14 @@ class StoreRepresentanteRequest extends FormRequest
     return [
       'nombre' => 'required|string|max:255',
       'apellido' => 'required|string|max:255',
-      'ci' => 'required|string|max:255',
-      'telefono' => 'required|string|max:255',
+      'ci' => 'required|string|max:255|unique:representantes,ci',
+      'telefono' => 'required|string|max:255|unique:representantes,telefono',
       'email' => 'required|string|email|max:255|unique:representantes,email',
       'genero_id' => 'required|exists:generos,id',
       'estado_id' => 'required|exists:estados,id',
       'municipio_id' => 'required|exists:municipios,id',
       'parroquia_id' => 'required|exists:parroquias,id',
-      'sector' => 'required|string|max:255',
+      'sector' => 'required|string|min:10|max:80',
     ];
   }
 }

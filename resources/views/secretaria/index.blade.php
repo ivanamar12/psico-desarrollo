@@ -99,7 +99,7 @@
                           <div class="form-group col-md-6">
                             <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
                             <input type="email" class="form-control email-verificar" id="email" name="email"
-                              required>
+                              required maxlength="255">
                             <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
                           </div>
 
@@ -155,7 +155,7 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="sector" name="sector" required>
+                            <input class="form-control" type="text" id="sector" name="sector" required minlength="10" maxlength="80">
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
 
@@ -233,7 +233,7 @@
                     <div class="form-group col-md-6">
                       <label>Correo electrónico</label>
                       <input class="form-control email-verificar" type="email" id="email2" name="email2"
-                        required>
+                        required maxlength="255">
                     </div>
 
                     <div class="form-group col-md-6">
@@ -430,7 +430,7 @@
 
                 $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
-                toastr.success('¡Registro exitoso!', 'Éxito', {
+                toastr.success(response.message, 'Éxito', {
                   timeOut: 3000
                 });
 
@@ -447,37 +447,43 @@
             }
           });
         }
-      });
-    </script>
-    <script>
-      $("#paso1").show();
-      $("#paso2").hide();
 
-      $("#siguiente1").click(function() {
-        let valid = true;
+        $("#paso1").show();
+        $("#paso2").hide();
 
-        // Validar campos requeridos dentro de #paso1
-        $('#paso1 :input[required]').each(function() {
-          if ($(this).val() === '' || $(this).val() === null) {
-            $(this).addClass('is-invalid');
-            valid = false;
+        $("#siguiente1").click(function() {
+          let valid = true;
+
+          // Validar campos requeridos dentro de #paso1
+          $('#paso1 :input[required]').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+              $(this).addClass('is-invalid');
+              valid = false;
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          const emailInput = document.getElementById('email');
+          const emailValid = validarEmail(emailInput);
+          
+          // Validación final
+          if (valid && emailValid) {
+            $("#paso1").hide();
+            $("#paso2").show();
           } else {
-            $(this).removeClass('is-invalid');
+            if (!emailValid) {
+              toastr.error("Por favor ingrese un email válido antes de continuar.");
+            } else {
+              toastr.error("Debe completar todos los campos requeridos del paso 1.");
+            }
           }
         });
 
-        // Validación final
-        if (valid) {
-          $("#paso1").hide();
-          $("#paso2").show();
-        } else {
-          toastr.error("Debe completar todos los campos requeridos del paso 1.");
-        }
-      });
-
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
+        $("#regresar").click(function() {
+          $("#paso2").hide();
+          $("#paso1").show();
+        });
       });
     </script>
 
@@ -611,8 +617,30 @@
         $("#paso2_edit").hide();
 
         $("#siguiente1_edit").click(function() {
-          $("#paso1_edit").hide();
-          $("#paso2_edit").show();
+          let valid = true;
+
+          $('#paso1_edit :input[required]').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+              $(this).addClass('is-invalid');
+              valid = false;
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          const emailInputEdit = document.getElementById('email2');
+          const emailValidEdit = validarEmail(emailInputEdit);
+          
+          if (valid && emailValidEdit) {
+            $("#paso1_edit").hide();
+            $("#paso2_edit").show();
+          } else {
+            if (!emailValidEdit) {
+              toastr.error("Por favor ingrese un email válido antes de continuar.");
+            } else {
+              toastr.error("Debe completar todos los campos requeridos del paso 1.");
+            }
+          }
         });
 
         $("#regresar_edit").click(function() {
