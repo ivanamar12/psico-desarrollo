@@ -8,7 +8,6 @@ use App\Http\Controllers\AplicarPruebaController;
 use App\Http\Controllers\DashboardController;
 use App\Models\AplicacionPrueba;
 use App\Models\SubEscala;
-use App\Models\Baremos;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
