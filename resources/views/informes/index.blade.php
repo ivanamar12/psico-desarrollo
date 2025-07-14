@@ -10,7 +10,7 @@
     <!-- Page title -->
     <x-page-header title="Informes" icon="zmdi zmdi-assignment-o zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <article class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -78,37 +78,19 @@
                       </section>
 
                       <section id="paso2">
+                        <h3>II. Motivo de Consulta</h3>
+
                         <div class="form-group col-md-12">
-                          <h3>II. Motivo de Consulta</h3>
                           <p class="text-muted mb-4" id="motivo_completo_texto">
                             Seleccione un paciente para ver la información...
                           </p>
                           <label>Motivo <span class="text-danger">*</span></label>
-                          <input class="form-control" id="motivo" name="motivo" type="textarea" required>
+                          <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
                           <small class="form-text text-muted">
                             Redacte para el informe el motivo de la evaluacion.
                           </small>
                         </div>
 
-                        <div class="form-group col-md-12">
-                          <h3>III. Instrumentos y Recursos</h3>
-                          <h4>Instrumentos</h4>
-                          <p class="text-muted mb-4" id="instrumentos_texto">
-                            Seleccione un paciente para ver la información...
-                          </p>
-                          <label>Instrumentos <span class="text-danger">*</span></label>
-                          <input class="form-control" id="motivo" name="motivo" type="textarea" required>
-                          <small class="form-text text-muted">Redacte para el informe el como se aplicaron los
-                            instrumentos.</small>
-                          <h4>Recursos</h4>
-                          <p class="text-muted mb-4" id="recursos_texto">
-                            Seleccione un paciente para ver la información...
-                          </p>
-                          <label>Recursos <span class="text-danger">*</span></label>
-                          <input class="form-control" id="motivo" name="motivo" type="textarea" required>
-                          <small class="form-text text-muted">Redacte para el informe como se aplicaron los
-                            recursos.</small>
-                        </div>
                         <!-- Botones centrados -->
                         <div class="text-center mt-4">
                           <button type="button" id="regresar1" class="btn btn-regresar mr-3" style="color: white;">
@@ -121,17 +103,32 @@
                       </section>
 
                       <section id="paso3">
-                        <h3>IV. Consideraciones Generales</h3>
-                        <p class="text-muted mb-4" id="consideraciones_texto">
-                          Seleccione un paciente para ver la información...
-                        </p>
+                        <h3>III. Instrumentos y Recursos</h3>
+
                         <div class="form-group col-md-12">
-                          <label>Consideraciones Generales <span class="text-danger">*</span></label>
-                          <input class="form-control" id="motivo" name="motivo" type="textarea" required>
+                          <h4>Instrumentos</h4>
+                          <p class="text-muted mb-4" id="instrumentos_texto">
+                            Seleccione un paciente para ver la información...
+                          </p>
+                          <label>Instrumentos <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="instrumentos" name="instrumentos" rows="3" required></textarea>
                           <small class="form-text text-muted">
-                            Redacte para el informe las concideraciones generales del paciente en la evaluacion.
+                            Redacte para el informe el como se aplicaron los instrumentos.
                           </small>
                         </div>
+
+                        <div class="form-group col-md-12">
+                          <h4>Recursos</h4>
+                          <p class="text-muted mb-4" id="recursos_texto">
+                            Seleccione un paciente para ver la información...
+                          </p>
+                          <label>Recursos <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="recursos" name="recursos" rows="3" required></textarea>
+                          <small class="form-text text-muted">
+                            Redacte para el informe como se aplicaron los recursos.
+                          </small>
+                        </div>
+
                         <!-- Botones centrados -->
                         <div class="text-center mt-4">
                           <button type="button" id="regresar2" class="btn btn-regresar mr-3" style="color: white;">
@@ -144,6 +141,29 @@
                       </section>
 
                       <section id="paso4">
+                        <h3>IV. Consideraciones Generales</h3>
+                        <p class="text-muted mb-4" id="consideraciones_texto">
+                          Seleccione un paciente para ver la información...
+                        </p>
+                        <div class="form-group col-md-12">
+                          <label>Consideraciones Generales <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="condiciones_generales" name="condiciones_generales" rows="3" required></textarea>
+                          <small class="form-text text-muted">
+                            Redacte para el informe las concideraciones generales del paciente en la evaluacion.
+                          </small>
+                        </div>
+                        <!-- Botones centrados -->
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar3" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente4" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </div>
+                      </section>
+
+                      <section id="paso5">
                         <h3>V. Resultados por Área</h3>
 
                         <div class="form-group col-md-12">
@@ -181,26 +201,6 @@
                         </div>
 
                         <div class="text-center mt-4">
-                          <button type="button" id="regresar3" class="btn btn-regresar mr-3" style="color: white;">
-                            <i class="zmdi zmdi-arrow-back"></i> Regresar
-                          </button>
-                          <button type="button" id="siguiente4" class="btn btn-regresar" style="color: white;">
-                            Siguiente
-                          </button>
-                        </div>
-                      </section>
-
-                      <section id="paso5">
-                        <h3>VI. Conclusiones</h3>
-
-                        <div class="form-group col-md-12">
-                          <label>Conclusiones <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="conclusion" name="conclusion" rows="3" required></textarea>
-                          <small class="form-text text-muted">Redacte las conclusiones generales del informe basadas en
-                            los hallazgos.</small>
-                        </div>
-
-                        <div class="text-center mt-4">
                           <button type="button" id="regresar4" class="btn btn-regresar mr-3" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
@@ -211,6 +211,26 @@
                       </section>
 
                       <section id="paso6">
+                        <h3>VI. Conclusiones</h3>
+
+                        <div class="form-group col-md-12">
+                          <label>Conclusiones <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="conclusion" name="conclusion" rows="3" required></textarea>
+                          <small class="form-text text-muted">Redacte las conclusiones generales del informe basadas en
+                            los hallazgos.</small>
+                        </div>
+
+                        <div class="text-center mt-4">
+                          <button type="button" id="regresar5" class="btn btn-regresar mr-3" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="button" id="siguiente6" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </div>
+                      </section>
+
+                      <section id="paso7">
                         <h3>VII. Recomendaciones</h3>
 
                         <div class="form-group col-md-12">
@@ -221,7 +241,7 @@
                         </div>
 
                         <div class="text-center mt-4">
-                          <button type="button" id="regresar5" class="btn btn-regresar mr-3" style="color: white;">
+                          <button type="button" id="regresar6" class="btn btn-regresar mr-3" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
                           <button type="submit" class="btn btn-regresar" style="color: white;">
@@ -237,7 +257,7 @@
           </section>
         </div>
       </div>
-    </div>
+    </article>
   </section>
 
   <!-- Modal editar -->
@@ -480,7 +500,7 @@
   <script>
     $(document).ready(function() {
       $("#paso1").show();
-      $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();
+      $("#paso2, #paso3, #paso4, #paso5, #paso6, #paso7").hide();
 
       function setupRealTimeValidation(pasoId) {
         $(`${pasoId} :input[type="text"], ${pasoId} :input[type="textarea"]`).on('input', function() {
@@ -499,6 +519,7 @@
       setupRealTimeValidation("#paso4");
       setupRealTimeValidation("#paso5");
       setupRealTimeValidation("#paso6");
+      setupRealTimeValidation("#paso7");
 
       function validarPaso(pasoId) {
         let valid = true;
@@ -578,6 +599,15 @@
         }
       });
 
+      $("#siguiente6").click(function() {
+        if (validarPaso("#paso6")) {
+          $("#paso6").hide();
+          $("#paso7").show();
+        } else {
+          toastr.error("Debe completar todos los campos requeridos del paso 6.");
+        }
+      });
+
       // Botones de regresar
       $("#regresar1").click(function() {
         $("#paso2").hide();
@@ -602,6 +632,11 @@
       $("#regresar5").click(function() {
         $("#paso6").hide();
         $("#paso5").show();
+      });
+
+      $("#regresar6").click(function() {
+        $("#paso7").hide();
+        $("#paso6").show();
       });
     });
   </script>
