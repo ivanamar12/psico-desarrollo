@@ -108,13 +108,16 @@ class HistoriaClinicaController extends Controller
           // Crear Historia Escolar
           $historiaEscolar = HistoriaEscolar::create([
               'escolarizado' => $validatedData['escolarizado'],
-              'tipo_educaion' => $validatedData['tipo_educaion'] ?? null,
+              'tipo_educacion' => $validatedData['tipo_educacion'] ?? null,
+              'modalidad_educacion' => $validatedData['modalidad_educacion'] ?? null,
+              'nombre_escuela' => $validatedData ['nombre_escuela'] ?? null,
               'tutoria_terapias' => $validatedData['tutoria_terapias'],
               'tutoria_terapias_cuales' => $validatedData['tutoria_terapias_cuales'] ?? null,
               'dificultad_lectura' => $validatedData['dificultad_lectura'],
               'dificultad_aritmetica' => $validatedData['dificultad_aritmetica'],
               'dificultad_escribir' => $validatedData['dificultad_escribir'],
               'agrada_escuela' => $validatedData['agrada_escuela'],
+              'otro_servicio' => $validatedData['otro_servicio'] ?? null,
               'observacion' => $validatedData['observacion_escolar'] ?? null,
           ]);
 
@@ -191,6 +194,29 @@ class HistoriaClinicaController extends Controller
     $pdf = Pdf::loadView('pdf.generarPdfHistoria', compact('datos'));
 
     return $pdf->download('historia_clinica_' . $id . '.pdf');
+  }
+
+  public function generarPdfCompleto($id)
+  {
+      // Cargar historia con TODO
+      $historia = HistoriaClinica::with([
+          'paciente.genero',
+          'paciente.representante.genero',
+          'paciente.representante.direccion.estado',
+          'paciente.representante.direccion.municipio',
+          'paciente.representante.direccion.parroquia',
+          'paciente.datosEconomico',
+          'paciente.parentescos',
+          'historiaDesarrollo',
+          'antecedenteMedico',
+          'historiaEscolar',
+          'paciente.aplicacionPruebas.resultadosPruebas',
+          'paciente.aplicacionPruebas.prueba'
+      ])->findOrFail($id);
+
+      $pdf = PDF::loadView('pdf.historia-completa', compact('historia'));
+
+      return $pdf->download("historia_clinica_{$id}.pdf");
   }
 
   public function verHistoria($id, $tipo)
