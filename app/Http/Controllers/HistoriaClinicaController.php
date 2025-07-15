@@ -9,8 +9,21 @@ use App\Models\HistoriaDesarrollo;
 use App\Models\HistoriaEscolar;
 use App\Models\Parentesco;
 use App\Models\Paciente;
+use App\Models\AplicacionPrueba;
+use App\Models\ResultadosPruebas;
+use App\Models\Representante;
+use App\Models\DatosEconomico;
+use App\Models\Direccion;
+use App\Models\Especialista;
+use App\Models\Estado;
+use App\Models\Genero;
+use App\Models\Municipio;
+use App\Models\Parroquia;
+use App\Models\Prueba;
+use App\Http\Controllers\AplicarPruebaController;
 // use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
+use setasign\Fpdi\Fpdi;
 use App\Models\RiesgoPaciente;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,21 +34,22 @@ class HistoriaClinicaController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $historias = DB::select('SELECT pacientes.nombre as nombre, 
-        pacientes.apellido as apellido, 
-        historia_clinicas.* FROM historia_clinicas 
-        JOIN pacientes ON historia_clinicas.paciente_id = pacientes.id');
+            $historias = DB::select('SELECT pacientes.nombre as nombre, 
+                pacientes.apellido as apellido, 
+                historia_clinicas.* FROM historia_clinicas 
+                JOIN pacientes ON historia_clinicas.paciente_id = pacientes.id');
 
-      return DataTables::of($historias)
-        ->addColumn('action', function ($historia) {
-          $acciones = '<a href="' . route('pdf.generarPdfHistoria', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
-          $acciones .= '<button type="button" class="verHistoria btn btn-info btn-raised btn-xs" data-id="' . $historia->id . '"><i class="zmdi zmdi-eye"></i></button>';
-          $acciones .= '<button type="button" name="delete" id="' . $historia->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-          return $acciones;
-        })
-        ->rawColumns(['action'])
-        ->make(true);
-    }
+            return DataTables::of($historias)
+                ->addColumn('action', function ($historia) {
+                    // Cambiar la ruta para generar el PDF completo
+                    $acciones = '<a href="' . route('pdf.generarPdfCompleto', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF Completo</a>';
+                    $acciones .= '<button type="button" class="verHistoria btn btn-info btn-raised btn-xs" data-id="' . $historia->id . '"><i class="zmdi zmdi-eye"></i></button>';
+                    $acciones .= '<button type="button" name="delete" id="' . $historia->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+                    return $acciones;
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
 
     $antecedentesMedicos = AntecedenteMedico::all();
     $historiaClinicas = HistoriaClinica::all();
@@ -196,28 +210,87 @@ class HistoriaClinicaController extends Controller
     return $pdf->download('historia_clinica_' . $id . '.pdf');
   }
 
+  protected $aplicarPruebaController;
+
+    public function __construct(AplicarPruebaController $aplicarPruebaController)
+    {
+        $this->aplicarPruebaController = $aplicarPruebaController;
+    }
+
   public function generarPdfCompleto($id)
-  {
-      // Cargar historia con TODO
-      $historia = HistoriaClinica::with([
-          'paciente.genero',
-          'paciente.representante.genero',
-          'paciente.representante.direccion.estado',
-          'paciente.representante.direccion.municipio',
-          'paciente.representante.direccion.parroquia',
-          'paciente.datosEconomico',
-          'paciente.parentescos',
-          'historiaDesarrollo',
-          'antecedenteMedico',
-          'historiaEscolar',
-          'paciente.aplicacionPruebas.resultadosPruebas',
-          'paciente.aplicacionPruebas.prueba'
-      ])->findOrFail($id);
+{
+    // Cargar historia con TODAS las relaciones necesarias
+    $historia = HistoriaClinica::with([
+        'paciente.genero',
+        'paciente.representante.genero',
+        'paciente.representante.direccion.estado',
+        'paciente.representante.direccion.municipio',
+        'paciente.representante.direccion.parroquia',
+        'paciente.datosEconomico',
+        'paciente.parentescos',
+        'historiaDesarrollo',
+        'antecedenteMedico',
+        'historiaEscolar',
+        'paciente.aplicacionPruebas.prueba',
+        'paciente.aplicacionPruebas.resultadosPruebas'
+    ])->findOrFail($id);
 
-      $pdf = PDF::loadView('pdf.historia-completa', compact('historia'));
+    // Generar el PDF de la historia clínica
+    $pdfHistoria = Pdf::loadView('pdf.historia-completa', compact('historia'))->output();
 
-      return $pdf->download("historia_clinica_{$id}.pdf");
-  }
+    // Guardar el PDF de la historia clínica temporalmente
+    $tempHistoriaPath = storage_path("temp_historia_clinica_{$id}.pdf");
+    file_put_contents($tempHistoriaPath, $pdfHistoria);
+
+    // Inicializar FPDI para combinar PDFs
+    $pdf = new Fpdi();
+
+    // Agregar la historia clínica al PDF combinado
+    $pageCount = $pdf->setSourceFile($tempHistoriaPath);
+    for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+        $tplIdx = $pdf->importPage($pageNo);
+        $pdf->addPage();
+        $pdf->useTemplate($tplIdx);
+    }
+
+    // Agregar los resultados de las pruebas al PDF combinado
+    foreach ($historia->paciente->aplicacionPruebas as $aplicacion) {
+        if ($aplicacion->resultadosPruebas) {
+            // Determinar el nombre de la prueba
+            $pruebaNombre = $aplicacion->prueba->nombre;
+
+            // Llamar al método correspondiente según el nombre de la prueba
+            if ($pruebaNombre === 'CUMANIN') {
+                $tempPdfPath = $this->aplicarPruebaController->generarPDF($aplicacion->id);
+            } elseif ($pruebaNombre === 'Koppitz') {
+                $tempPdfPath = $this->aplicarPruebaController->generarPDFKoppitz($aplicacion->id);
+            } elseif ($pruebaNombre === 'NO-Estandarizada') {
+                $tempPdfPath = $this->aplicarPruebaController->generarPDFNoEstandarizada($aplicacion->id);
+            } else {
+                // Si no se reconoce el nombre de la prueba, puedes manejarlo aquí
+                continue;
+            }
+
+            // Agregar el PDF del resultado de la prueba al PDF combinado
+            if (file_exists($tempPdfPath)) {
+                $pageCount = $pdf->setSourceFile($tempPdfPath);
+                for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+                    $tplIdx = $pdf->importPage($pageNo);
+                    $pdf->addPage();
+                    $pdf->useTemplate($tplIdx);
+                }
+                // Eliminar el archivo temporal del resultado de la prueba
+                unlink($tempPdfPath);
+            }
+        }
+    }
+
+    // Eliminar el archivo temporal de la historia clínica
+    unlink($tempHistoriaPath);
+
+    // Enviar el PDF combinado al usuario
+    $pdf->Output("historia_clinica_{$id}.pdf", 'D');
+}
 
   public function verHistoria($id, $tipo)
   {

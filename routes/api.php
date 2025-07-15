@@ -16,9 +16,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // API para obtener la historia clínica de un paciente
 Route::get('/historia/{id}', [HistoriaClinicaController::class, 'verHistoria'])->defaults('tipo', 'api');
 
-// API para obtener la última prueba registrada
+// Obtener la última prueba completa con resultados
 Route::get('/ultima-prueba', function () {
-    $prueba = AplicacionPrueba::with('paciente')->latest()->first();
+    $prueba = AplicacionPrueba::with('paciente', 'prueba')->latest()->first();
 
     if (!$prueba) {
         return response()->json(['mensaje' => 'No hay pruebas registradas']);
@@ -29,10 +29,16 @@ Route::get('/ultima-prueba', function () {
             'id' => $prueba->id,
             'tipo' => $prueba->prueba->tipo,
             'nombre' => $prueba->prueba->nombre,
-            'genero_id' => $prueba->paciente->genero_id // 📌 Agregamos el ID del género
+            'resultados' => $prueba->resultados,
+            'observaciones' => $prueba->observaciones,
+            'genero_id' => $prueba->paciente->genero_id
         ]
     ]);
 });
+
+// Ejecutar el análisis POST
+Route::post('/verificar-nueva-prueba', [AnalisisPruebaController::class, 'verificarNuevaPrueba']);
+
 
 // API para analizar una prueba automáticamente
 Route::post('/analizar-prueba', [AnalisisPruebaController::class, 'analizarPrueba']);
@@ -63,3 +69,4 @@ Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, '
 
 Route::get('estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])
     ->name('estadisticas.pacientes');
+
