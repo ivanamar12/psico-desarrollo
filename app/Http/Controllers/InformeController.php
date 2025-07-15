@@ -6,12 +6,11 @@ use App\Models\Especialista;
 use App\Models\Paciente;
 use App\Models\Informe;
 use App\Models\AplicacionPrueba;
-use App\Models\Prueba;
+use App\Models\HistoriaClinica;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Yajra\DataTables\Facades\DataTables;
 
 class InformeController extends Controller
 {
@@ -30,23 +29,12 @@ class InformeController extends Controller
 			->pluck('paciente_id')
 			->toArray();
 
-		// Cargar pacientes con su historia clínica más reciente y relaciones completas
+		// Cargar pacientes con su historia clínica más reciente
 		$pacientes = Paciente::with([
-			// Última historia clínica con relaciones internas
 			'historiaClinicas' => function ($q) {
-				$q->with([
-					'historiaDesarrollo',
-					'historiaEscolar',
-					'antecedenteMedico'
-				])->orderByDesc('created_at')->limit(1);
-			},
-			'datosEconomico',
-			'parentescos',
-			'representante.direccion.estado',
-			'representante.direccion.municipio',
-			'representante.direccion.parroquia'
+				$q->orderByDesc('created_at')->limit(1);
+			}
 		])
-			->withCount('historiaClinicas')
 			->whereIn('id', $pacientesConPruebas)
 			->whereHas('historiaClinicas')
 			->get();
@@ -57,15 +45,36 @@ class InformeController extends Controller
 			->get()
 			->groupBy('paciente_id');
 
-		$especialistas = Especialista::all();
-		$informes = Informe::all();
-
 		return view('informes.index', [
 			'especialista_actual' => $especialista,
-			'especialistas' => $especialistas,
 			'pacientes' => $pacientes,
-			'informes' => $informes,
 			'aplicaciones' => $aplicaciones,
 		]);
+	}
+
+	public function pdfHistoria(string $pacienteId)
+	{
+		$historia = HistoriaClinica::with([
+			'paciente',
+			'paciente.representante',
+			'paciente.genero',
+			'paciente.representante.direccion',
+			'paciente.representante.direccion.estado',
+			'paciente.representante.direccion.municipio',
+			'paciente.representante.direccion.parroquia',
+			'historiaDesarrollo',
+			'antecedenteMedico',
+			'historiaEscolar'
+		])->find($pacienteId);
+
+		if (!$historia) {
+			return response()->json(['error' => 'Historia clínica no encontrada'], 404);
+		}
+
+		$datos = $historia->getDatosPdf();
+
+		$pdf = Pdf::loadView('pdf.generarPdfHistoria', compact('datos'));
+
+		return $pdf->stream('historia-clinica-' . $pacienteId . '.pdf');
 	}
 }

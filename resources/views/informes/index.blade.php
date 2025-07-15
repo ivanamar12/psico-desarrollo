@@ -142,16 +142,21 @@
 
                       <section id="paso4">
                         <h3>IV. Consideraciones Generales</h3>
-                        <p class="text-muted mb-4" id="consideraciones_texto">
-                          Seleccione un paciente para ver la información...
-                        </p>
+
+                        <div class="form-group col-md-12 text-right mb-4">
+                          <button type="button" id="btnModalHistoria" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-file-text"></i> Ver Historia Clínica
+                          </button>
+                        </div>
+
                         <div class="form-group col-md-12">
                           <label>Consideraciones Generales <span class="text-danger">*</span></label>
                           <textarea class="form-control" id="condiciones_generales" name="condiciones_generales" rows="3" required></textarea>
                           <small class="form-text text-muted">
-                            Redacte para el informe las concideraciones generales del paciente en la evaluacion.
+                            Redacte para el informe las consideraciones generales del paciente en la evaluación.
                           </small>
                         </div>
+
                         <!-- Botones centrados -->
                         <div class="text-center mt-4">
                           <button type="button" id="regresar3" class="btn btn-regresar mr-3" style="color: white;">
@@ -260,7 +265,27 @@
     </article>
   </section>
 
-  <!-- Modal editar -->
+  <!-- Modal Historia Clínica -->
+  <section class="modal fade" id="modalHistoriaClinica" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document" style="max-width: 90%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Historia Clínica</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="embed-responsive embed-responsive-16by9">
+            <iframe id="pdf-viewer" class="embed-responsive-item" src="" style="border: none;"></iframe>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div>
+    </div>
+  </section>
 
 @endsection
 
@@ -303,7 +328,6 @@
         const pacienteId = e.params.data.id;
         const historia = e.params.data.historia;
         const paciente = pacientes.find(p => p.id === pacienteId);
-        const historiaClinica = paciente.historia_clinicas?.[0];
 
         // Motivo de consulta
         const motivo = historia?.motivo || 'sin motivo';
@@ -329,170 +353,12 @@
         $('#instrumentos_texto').text(
           `Se aplicaron ${estructuradas} pruebas Estandarizadas y ${noEstructuradas} NO-Estandarizadas.`);
         $('#recursos_texto').text(recursosTexto.trim());
-
-        // -------- Consideraciones Generales organizadas por párrafos --------
-        let consideraciones = '';
-
-        // 1. Datos Socioeconómicos
-        if (paciente.datos_economico) {
-          const de = paciente.datos_economico;
-
-          consideraciones += `<p><strong>Datos Socioeconómicos:</strong><br>`;
-
-          consideraciones += `• Tipo de vivienda: ${de.tipo_vivienda}.<br>`;
-          consideraciones += `• Número de habitaciones: ${de.cantidad_habitaciones}.<br>`;
-          consideraciones += `• Número de personas que habitan: ${de.cantidad_personas}.<br>`;
-
-          consideraciones += `• Servicios básicos disponibles:<br>`;
-          consideraciones += `&nbsp;&nbsp;- Agua potable: ${de.servecio_agua_potable ? 'sí' : 'no'}<br>`;
-          consideraciones += `&nbsp;&nbsp;- Gas: ${de.servecio_gas ? 'sí' : 'no'}<br>`;
-          consideraciones += `&nbsp;&nbsp;- Electricidad: ${de.servecio_electricidad ? 'sí' : 'no'}<br>`;
-          consideraciones += `&nbsp;&nbsp;- Drenaje: ${de.servecio_drenaje ? 'sí' : 'no'}<br>`;
-
-          consideraciones +=
-            `• Acceso a servicios públicos: ${de.acceso_servcios_publicos ?? 'no especificado'}<br>`;
-
-          consideraciones += `• Acceso a internet: ${de.disponibilidad_internet ? 'sí' : 'no'}`;
-          if (de.tipo_conexion_internet) {
-            consideraciones += ` (Tipo: ${de.tipo_conexion_internet})`;
-          }
-          consideraciones += '.<br>';
-
-          consideraciones += `• Fuente principal de ingreso familiar: ${de.fuente_ingreso_familiar}.<br>`;
-
-          if (de.observacion) {
-            consideraciones += `• Observaciones adicionales: ${de.observacion}<br>`;
-          }
-
-          consideraciones += `</p>`;
-        }
-
-        // 2. Datos Familiares
-        if (paciente.parentescos?.length > 0 || paciente.representante) {
-          let familiares = '';
-          paciente.parentescos?.forEach(fam => {
-            familiares += `• ${fam.nombre} ${fam.apellido}, ${fam.parentesco}, nacido(a) el ${fam.fecha_nac}`;
-            if (fam.discapacidad) familiares += `, discapacidad: ${fam.tipo_discapacidad}`;
-            if (fam.enfermedad_cronica) familiares += `, enfermedad crónica: ${fam.tipo_enfermedad}`;
-            familiares += '.<br>';
-          });
-
-          const rep = paciente.representante;
-          if (rep) {
-            familiares +=
-              `• Representante: ${rep.nombre} ${rep.apellido}, CI: ${rep.ci}, Teléfono: ${rep.telefono}, Email: ${rep.email}.<br>`;
-          }
-
-          consideraciones += `<p><strong>Datos Familiares:</strong><br>${familiares}</p>`;
-        }
-
-        // 3. Historia de Desarrollo
-        if (historiaClinica?.historia_desarrollo) {
-          const hd = historiaClinica.historia_desarrollo;
-
-          consideraciones += `<p><strong>Historia de Desarrollo:</strong><br>`;
-
-          // Embarazo
-          consideraciones += `• Medicamentos durante el embarazo: ${hd.medicamento_embarazo ? 'sí' : 'no'}`;
-          if (hd.tipo_medicamento) consideraciones += ` (${hd.tipo_medicamento})`;
-          consideraciones += '.<br>';
-
-          consideraciones += `• Fumó durante el embarazo: ${hd.fumo_embarazo ? 'sí' : 'no'}`;
-          if (hd.cantidad) consideraciones += ` (Cantidad: ${hd.cantidad})`;
-          consideraciones += '.<br>';
-
-          consideraciones += `• Consumo de alcohol durante el embarazo: ${hd.alcohol_embarazo ? 'sí' : 'no'}`;
-          if (hd.tipo_alcohol) consideraciones += ` (${hd.tipo_alcohol})`;
-          if (hd.cantidad_consumia_alcohol) consideraciones += ` (Cantidad: ${hd.cantidad_consumia_alcohol})`;
-          consideraciones += '.<br>';
-
-          consideraciones += `• Consumo de drogas durante el embarazo: ${hd.droga_embarazo ? 'sí' : 'no'}`;
-          if (hd.tipo_droga) consideraciones += ` (${hd.tipo_droga})`;
-          consideraciones += '.<br>';
-
-          // Nacimiento
-          consideraciones += `• Nacimiento por fórceps: ${hd.forceps_parto ? 'sí' : 'no'}.<br>`;
-          consideraciones += `• Nacimiento por cesárea: ${hd.cesarea ? 'sí' : 'no'}`;
-          if (hd.razon_cesarea) consideraciones += ` (Razón: ${hd.razon_cesarea})`;
-          consideraciones += '.<br>';
-          consideraciones += `• Prematuro: ${hd.niño_prematuro ? 'sí' : 'no'}`;
-          if (hd.meses_prematuro) consideraciones += ` (${hd.meses_prematuro} meses antes)`;
-          consideraciones += '.<br>';
-          consideraciones += `• Peso al nacer: ${hd.peso_nacer_niño} gramos.<br>`;
-          consideraciones += `• Complicaciones al nacer: ${hd.complicaciones_nacer ? 'sí' : 'no'}`;
-          if (hd.tipo_complicacion) consideraciones += ` (${hd.tipo_complicacion})`;
-          consideraciones += '.<br>';
-
-          // Lactancia y sueño
-          consideraciones += `• Problemas de alimentación: ${hd.problema_alimentacion ? 'sí' : 'no'}`;
-          if (hd.tipo_problema_alimenticio) consideraciones += ` (${hd.tipo_problema_alimenticio})`;
-          consideraciones += '.<br>';
-
-          consideraciones += `• Problemas para dormir: ${hd.problema_dormir ? 'sí' : 'no'}`;
-          if (hd.tipo_problema_dormir) consideraciones += ` (${hd.tipo_problema_dormir})`;
-          consideraciones += '.<br>';
-
-          consideraciones += `• Tranquilo como recién nacido: ${hd.tranquilo_recien_nacido ? 'sí' : 'no'}.<br>`;
-          consideraciones +=
-            `• Le gustaba que lo cargaran: ${hd.gustaba_cargaran_recien_nacido ? 'sí' : 'no'}.<br>`;
-          consideraciones += `• Estaba alerta como recién nacido: ${hd.alerta_recien_nacido ? 'sí' : 'no'}.<br>`;
-
-          // Desarrollo temprano
-          consideraciones +=
-            `• Problemas en el desarrollo en los primeros años: ${hd.problemas_desarrollo_primeros_años ? 'sí' : 'no'}`;
-          if (hd.cuales_problemas) consideraciones += ` (${hd.cuales_problemas})`;
-          consideraciones += '.<br>';
-
-          if (hd.observacion) {
-            consideraciones += `• Observaciones: ${hd.observacion}<br>`;
-          }
-
-          consideraciones += `</p>`;
-        }
-
-        // 4. Historia Escolar
-        if (historiaClinica?.historia_escolar) {
-          const he = historiaClinica.historia_escolar;
-          consideraciones +=
-            `<p><strong>Historia Escolar:</strong> Escolarizado: ${he.escolarizado ? 'sí' : 'no'}. Tipo de educación: ${he.tipo_educaion}. ` +
-            `Tutorías o terapias: ${he.tutoria_terapias ? `sí (${he.tutoria_terapias_cuales})` : 'no'}. ` +
-            `Dificultades: lectura (${he.dificultad_lectura}), escritura (${he.dificultad_escribir}), aritmética (${he.dificultad_aritmetica}).</p>`;
-        }
-
-        // 5. Antecedentes Médicos
-        if (historiaClinica?.antecedente_medico) {
-          const am = historiaClinica.antecedente_medico;
-
-          consideraciones += `<p><strong>Antecedentes Médicos:</strong><br>`;
-
-          consideraciones +=
-            `• Enfermedades infecciosas: ${am.enfermedad_infecciosa ? 'sí' : 'no'}${am.tipo_enfermedad_infecciosa ? ` (${am.tipo_enfermedad_infecciosa})` : ''}.<br>`;
-          consideraciones +=
-            `• Enfermedades no infecciosas: ${am.enfermedad_no_infecciosa ? 'sí' : 'no'}${am.tipo_enfermedad_no_infecciosa ? ` (${am.tipo_enfermedad_no_infecciosa})` : ''}.<br>`;
-          consideraciones +=
-            `• Enfermedades crónicas: ${am.enfermedad_cronica ? 'sí' : 'no'}${am.tipo_enfermedad_cronica ? ` (${am.tipo_enfermedad_cronica})` : ''}.<br>`;
-          consideraciones +=
-            `• Discapacidad: ${am.discapacidad ? 'sí' : 'no'}${am.tipo_discapacidad ? ` (${am.tipo_discapacidad})` : ''}.<br>`;
-
-          if (am.otros) {
-            consideraciones += `• Otros: ${am.otros}<br>`;
-          }
-
-          if (am.observacion) {
-            consideraciones += `• Observaciones: ${am.observacion}<br>`;
-          }
-
-          consideraciones += `</p>`;
-        }
-
-        // Mostrar en el HTML con saltos de línea y párrafos
-        $('#consideraciones_texto').html(consideraciones);
       });
+
       $('#paciente_id').on('select2:clear', function() {
         $('#motivo_completo_texto').text('Seleccione un paciente para ver la información...');
         $('#instrumentos_texto').text('Seleccione un paciente para ver la información...');
         $('#recursos_texto').text('Seleccione un paciente para ver la información...');
-        $('#consideraciones_texto').text('Seleccione un paciente para ver la información...');
       });
     });
   </script>
@@ -637,6 +503,29 @@
       $("#regresar6").click(function() {
         $("#paso7").hide();
         $("#paso6").show();
+      });
+    });
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $('#btnModalHistoria').click(function() {
+        const pacienteId = $('#paciente_id').val();
+
+        if (pacienteId) {
+          const pdfUrl = "{{ route('informes.pdf-historia', ['pacienteId' => 'PLACEHOLDER']) }}".replace(
+            'PLACEHOLDER', pacienteId);
+
+          $('#pdf-viewer').attr('src', pdfUrl);
+
+          $('#modalHistoriaClinica').modal('show');
+        } else {
+          toastr.error('Debe seleccionar un paciente primero');
+        }
+      });
+
+      $('#modalHistoriaClinica').on('hidden.bs.modal', function() {
+        $('#pdf-viewer').attr('src', '');
       });
     });
   </script>
