@@ -39,8 +39,10 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="pruebaForm">@csrf
-                      <div id="paso1">
+                    <form id="registro-prueba">
+                      @csrf
+
+                      <section id="paso1">
                         <h3>Datos de la Prueba</h3>
                         <div class="fila-formulario">
                           <!-- Campo Nombre -->
@@ -98,10 +100,10 @@
                           <button type="button" id="siguiente1" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
+                      </section>
 
                       <!-- Paso 2 -->
-                      <div id="paso2" style="display: none;">
+                      <section id="paso2" style="display: none;">
                         <h3>Items de la Prueba</h3>
                         <p><strong>Indicación:</strong> Agregue uno o varios ítems que componen la prueba. Cada ítem
                           representa una tarea o pregunta específica para evaluar al niño.</p>
@@ -118,14 +120,17 @@
                         </div>
 
                         <p class="centro-texto">
-                          <button type="button" id="addItem" class="btn btn-regresar" style="color: white;">Agregar
-                            Item</button>
-                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;"><i
-                              class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                              class="zmdi zmdi-floppy"></i>Registrar</button>
+                          <button type="button" id="addItem" class="btn btn-regresar" style="color: white;">
+                            Agregar Item
+                          </button>
+                          <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
+                            <i class="zmdi zmdi-arrow-back"></i> Regresar
+                          </button>
+                          <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                            <i class="zmdi zmdi-floppy"></i>Registrar
+                          </button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
@@ -136,6 +141,7 @@
       </div>
     </div>
   </section>
+
   <!-- Modal de ver prueba -->
   <div class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-labelledby="modalTitulo"
     aria-hidden="true">
@@ -161,6 +167,7 @@
       </div>
     </div>
   </div>
+
   <!-- modal eliminar-->
   <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -184,105 +191,7 @@
   </div>
 @endsection
 @section('js')
-  <script>
-    $("#paso1").show();
-    $("#paso2").hide();
-
-    $("#siguiente1").click(function() {
-      let valid = true;
-
-      // Validar campos requeridos dentro de #paso1
-      $('#paso1 :input[required]').each(function() {
-        if ($(this).val() === '' || $(this).val() === null) {
-          $(this).addClass('is-invalid');
-          valid = false;
-        } else {
-          $(this).removeClass('is-invalid');
-        }
-      });
-
-      // Validación final
-      if (valid) {
-        $("#paso1").hide();
-        $("#paso2").show();
-      } else {
-        toastr.error("Debe completar todos los campos requeridos del paso 1.");
-      }
-    });
-
-    $("#regresar").click(function() {
-      $("#paso2").hide();
-      $("#paso1").show();
-    });
-    $("#nombre").on('input', function() {
-      const valor = $(this).val();
-      const regex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]{0,60}$/;
-
-      if (!regex.test(valor)) {
-        $(this).addClass("is-invalid");
-      } else {
-        $(this).removeClass("is-invalid");
-      }
-    });
-  </script>
-  <script>
-    $(document).ready(function() {
-      let contadorItems = 1;
-      $("#addItem").click(function() {
-        const nuevoItemFormulario = `
-            <div class="fila-formulario" id="formulario-item-${contadorItems}">
-                <div class="form-group">
-                    <label class="control-label">Item</label>
-                    <input class="form-control" name="items[${contadorItems}][nombre]" type="text" required>
-                </div>
-                <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
-            </div>`;
-        $("#itemsContainer").append(nuevoItemFormulario);
-        contadorItems++;
-      });
-    });
-
-    function eliminarItem(button) {
-      $(button).closest('.fila-formulario').remove();
-    }
-    $(document).ready(function() {
-      $('#pruebaForm').on('submit', function(e) {
-        e.preventDefault();
-        $.ajax({
-          url: '/pruebas/prueba',
-          type: 'POST',
-          data: $(this).serialize(),
-          success: function(response) {
-            if (response.success) {
-              toastr.success('El registro se ingresó correctamente', 'Nuevo registro', {
-                timeOut: 5000
-              });
-            } else {
-              toastr.success(response.message, 'Exito', {
-                timeOut: 5000
-              });
-            }
-
-            setTimeout(function() {
-              $('#pruebaForm')[0].reset();
-              location.reload();
-            }, 2000);
-          },
-          error: function(xhr) {
-            console.error(xhr.responseText);
-            toastr.error('Ocurrió un error al registrar el especialista', 'Error', {
-              timeOut: 5000
-            });
-
-            setTimeout(function() {
-              $('#pruebaForm')[0].reset();
-              location.reload();
-            }, 2000);
-          }
-        });
-      });
-    });
-  </script>
+  <script></script>
   <script>
     $(document).ready(function() {
       var tablaPrueba = $('#tab-prueba').DataTable({
@@ -317,6 +226,113 @@
             orderable: false
           }
         ]
+      });
+
+      $("#paso1").show();
+      $("#paso2").hide();
+
+      $("#siguiente1").click(function() {
+        let valid = true;
+
+        // Validar campos requeridos dentro de #paso1
+        $('#paso1 :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        // Validación final
+        if (valid) {
+          $("#paso1").hide();
+          $("#paso2").show();
+        } else {
+          toastr.error("Debe completar todos los campos requeridos del paso 1.");
+        }
+      });
+
+      $("#regresar").click(function() {
+        $("#paso2").hide();
+        $("#paso1").show();
+      });
+
+      $("#nombre").on('input', function() {
+        const valor = $(this).val();
+        const regex = /^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]{0,60}$/;
+
+        if (!regex.test(valor)) {
+          $(this).addClass("is-invalid");
+        } else {
+          $(this).removeClass("is-invalid");
+        }
+      });
+
+      let contadorItems = 1;
+
+      $("#addItem").click(function() {
+        const nuevoItemFormulario = `
+            <div class="fila-formulario" id="formulario-item-${contadorItems}">
+                <div class="form-group">
+                    <label class="control-label">Item</label>
+                    <input class="form-control" name="items[${contadorItems}][nombre]" type="text" required>
+                </div>
+                <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
+            </div>`;
+        $("#itemsContainer").append(nuevoItemFormulario);
+        contadorItems++;
+      });
+
+      function eliminarItem(button) {
+        $(button).closest('.fila-formulario').remove();
+      }
+
+      $('#registro-prueba').submit(function(e) {
+        e.preventDefault();
+
+        const submitButton = $(this).find('button[type="submit"]');
+        const originalText = submitButton.html();
+        submitButton.prop('disabled', true).html('<i class="zmdi zmdi-spinner zmdi-hc-spin"></i> Guardando...');
+
+        $.ajax({
+          url: "{{ route('pruebas.store') }}",
+          type: 'POST',
+          data: $(this).serialize(),
+          success: function(response) {
+            if (response.success) {
+              $('#registro-prueba')[0].reset();
+
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+
+              tablaPrueba.ajax.reload();
+
+              $('.nav-tabs a[href="#list"]').tab('show');
+
+              $("#paso1").show();
+              $("#paso2").hide();
+            }
+          },
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al guardar la prueba', 'Error');
+            }
+          },
+          complete: function() {
+            submitButton.prop('disabled', false).html(originalText);
+          }
+        });
       });
     });
   </script>

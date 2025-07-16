@@ -224,20 +224,13 @@ Route::middleware('auth')->group(function () {
    * Pruebas
    */
 
-  // Ruta para almacenar un nueva prueba
-  Route::post('pruebas/prueba', [PruebaController::class, 'storePrueba'])
-    ->name('pruebas.storePrueba');
-
-  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
-    ->name('pruebas.destroy');
-
-  /**
-   * Aplicacion de Pruebas
-   */
-
   // Ruta para la lista de pruebas
   Route::get('pruebas', [PruebaController::class, 'index'])
     ->name('pruebas.index');
+
+  // Ruta para almacenar un nueva prueba
+  Route::post('pruebas', [PruebaController::class, 'store'])
+    ->name('pruebas.store');
 
   // Pruebas disponibles
   Route::get('pruebas/disponibles', [AplicarPruebaController::class, 'pruebasDisponibles'])
@@ -245,6 +238,13 @@ Route::middleware('auth')->group(function () {
 
   Route::get('pruebas/{id}', [PruebaController::class, 'show'])
     ->name('pruebas.show');
+
+  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
+    ->name('pruebas.destroy');
+
+  /**
+   * Aplicacion de Pruebas
+   */
 
   // Ruta para aplicar prueba
   Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])

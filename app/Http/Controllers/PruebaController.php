@@ -41,7 +41,7 @@ class PruebaController extends BaseController
     return view('pruebas.index');
   }
 
-  public function storePrueba(StorePruebaRequest $request)
+  public function store(StorePruebaRequest $request)
   {
     DB::beginTransaction();
     try {
@@ -71,6 +71,7 @@ class PruebaController extends BaseController
 
       DB::commit();
       return response()->json([
+        'success' => true,
         'message' => 'Prueba y items registrados con éxito',
         'prueba_id' => $prueba->id,
       ], 201);
