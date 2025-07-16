@@ -41,10 +41,6 @@ class InformeController extends Controller
 				->addColumn('action', function ($informe) {
 					$acciones = '';
 
-					if (auth()->user()->can('ver informes')) {
-						$acciones .= '<a href="' . route('informes.show', $informe->id) . '" class="btn btn-info btn-raised btn-xs" title="Ver"><i class="zmdi zmdi-eye"></i></a> ';
-					}
-
 					if (auth()->user()->can('eliminar informes')) {
 						$acciones .= '<a href="javascript:void(0)" onclick="deleteInforme(' . $informe->id . ')" class="btn btn-danger btn-raised btn-xs" title="Eliminar"><i class="zmdi zmdi-delete"></i></a>';
 					}
@@ -156,10 +152,8 @@ class InformeController extends Controller
 		// Agregar los resultados de las pruebas al PDF combinado
 		foreach ($historia->paciente->aplicacionPruebas as $aplicacion) {
 			if ($aplicacion->resultadosPruebas) {
-				// Determinar el nombre de la prueba
 				$pruebaNombre = $aplicacion->prueba->nombre;
 
-				// Llamar al método correspondiente según el nombre de la prueba
 				if ($pruebaNombre === 'CUMANIN') {
 					$tempPdfPath = $this->aplicarPruebaController->generarPDF($aplicacion->id);
 				} elseif ($pruebaNombre === 'Koppitz') {
@@ -167,11 +161,9 @@ class InformeController extends Controller
 				} elseif ($pruebaNombre === 'NO-Estandarizada') {
 					$tempPdfPath = $this->aplicarPruebaController->generarPDFNoEstandarizada($aplicacion->id);
 				} else {
-					// Si no se reconoce el nombre de la prueba, puedes manejarlo aquí
 					continue;
 				}
 
-				// Agregar el PDF del resultado de la prueba al PDF combinado
 				if (file_exists($tempPdfPath)) {
 					$pageCount = $pdf->setSourceFile($tempPdfPath);
 					for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
@@ -179,7 +171,6 @@ class InformeController extends Controller
 						$pdf->addPage();
 						$pdf->useTemplate($tplIdx);
 					}
-					// Eliminar el archivo temporal del resultado de la prueba
 					unlink($tempPdfPath);
 				}
 			}
@@ -188,7 +179,24 @@ class InformeController extends Controller
 		// Eliminar el archivo temporal de la historia clínica
 		unlink($tempHistoriaPath);
 
-		// Enviar el PDF combinado al usuario
-		$pdf->stream("historia_clinica_{$pacienteId}.pdf", 'D');
+		// Guardar el PDF combinado en un archivo temporal
+		$combinedPdfPath = storage_path("combined_historia_{$pacienteId}.pdf");
+		$pdf->Output($combinedPdfPath, 'F');
+
+		// Crear una respuesta de stream
+		return response()->stream(
+			function () use ($combinedPdfPath) {
+				readfile($combinedPdfPath);
+				// Eliminar el archivo temporal después de enviarlo
+				if (file_exists($combinedPdfPath)) {
+					unlink($combinedPdfPath);
+				}
+			},
+			200,
+			[
+				'Content-Type' => 'application/pdf',
+				'Content-Disposition' => 'inline; filename="historia_clinica_' . $pacienteId . '.pdf"'
+			]
+		);
 	}
 }
