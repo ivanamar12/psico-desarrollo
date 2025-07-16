@@ -515,28 +515,33 @@
       function validarPaso(pasoId) {
         let valid = true;
         $(`${pasoId} :input[required]`).each(function() {
-          if ($(this).is(':radio')) {
-            const name = $(this).attr('name');
-            if (!$(`${pasoId} input[name="${name}"]:checked`).length) {
-              $(`${pasoId} input[name="${name}"]`).addClass("is-invalid");
+          const value = $(this).val();
+          const fieldName = $(this).attr('name');
+
+          // Validar si está vacío
+          if (value === '' || value === null) {
+            $(this).addClass("is-invalid");
+            toastr.warning(`El campo ${fieldName} es requerido.`);
+            valid = false;
+            return;
+          }
+
+          // Validar textarea (mínimo y máximo)
+          if ($(this).is('textarea')) {
+            const minLength = 30;
+            const maxLength = 1000;
+
+            if (value.length < minLength) {
+              $(this).addClass("is-invalid");
+              toastr.warning(`El campo ${fieldName} debe tener al menos ${minLength} caracteres.`);
+              valid = false;
+            } else if (value.length > maxLength) {
+              $(this).addClass("is-invalid");
+              toastr.warning(`El campo ${fieldName} no debe superar los ${maxLength} caracteres.`);
               valid = false;
             } else {
-              $(`${pasoId} input[name="${name}"]`).removeClass("is-invalid");
+              $(this).removeClass("is-invalid");
             }
-          } else if ($(this).val() === '' || $(this).val() === null) {
-            $(this).addClass("is-invalid");
-            valid = false;
-          } else {
-            $(this).removeClass("is-invalid");
-          }
-        });
-
-        // Validación de longitud para campos de descripción
-        $(`${pasoId} :input[type="text"], ${pasoId} :input[type="textarea"]`).each(function() {
-          if ($(this).val().length > 50) {
-            $(this).addClass("is-invalid");
-            toastr.error(`El campo ${$(this).attr("name")} no debe superar los 50 caracteres.`);
-            valid = false;
           } else {
             $(this).removeClass("is-invalid");
           }
