@@ -399,6 +399,7 @@
           {
             data: 'action',
             orderable: false,
+            searchable: false
           }
         ],
       });

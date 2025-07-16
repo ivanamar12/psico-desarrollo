@@ -111,7 +111,6 @@
                           discapacidades u otras condiciones relevantes que el niño haya padecido.</p>
 
                         <div class="row">
-
                           <!-- Enfermedad Infecciosa -->
                           <div class="form-group col-md-6 mb-4">
                             <h5>¿El niño ha sufrido de alguna enfermedad infecciosa? <span class="text-danger">*</span>
@@ -185,12 +184,13 @@
                           </div>
 
                           <!-- Otros (centrado abajo) -->
-                          <div class="form-group col-md-12 mt-3 text-center">
+                          <div class="form-group col-md-6 mt-3">
                             <label for="otros"><strong>Otros</strong></label>
-                            <textarea class="form-control" id="otros" name="otros" rows="3"
-                              placeholder="Ingrese cualquier otro antecedente médico relevante..."></textarea>
-                            <small class="form-text text-muted">Ingrese cualquier otro antecedente médico relevante que
-                              no haya sido mencionado anteriormente.</small>
+                            <textarea class="form-control" id="otros" name="otros" rows="3"></textarea>
+                            <small class="form-text text-muted">
+                              Ingrese cualquier otro antecedente médico relevante que no haya sido mencionado
+                              anteriormente.
+                            </small>
                           </div>
 
                           <div class="form-group col-md-6">
@@ -220,7 +220,6 @@
                           Esta información es clave para comprender el desarrollo del niño.</p>
 
                         <div class="row">
-
                           <!-- Medicamentos en el embarazo -->
                           <div class="form-group col-md-6 mb-4">
                             <h5>¿La madre recibió algún tipo de medicamento?<span class="text-danger">*</h5>
@@ -312,7 +311,6 @@
                           incluyendo condiciones médicas y tipo de parto.</p>
 
                         <div class="row">
-
                           <!-- Fórceps -->
                           <div class="form-group col-md-6 mb-4">
                             <h5>¿Se utilizaron fórceps durante el parto?<span class="text-danger">*</h5>
@@ -393,7 +391,6 @@
                             <small class="form-text text-muted">Ingrese el peso del niño al nacer, expresado en
                               kilogramos.</small>
                           </div>
-
                         </div>
 
                         <!-- Botones de navegación -->
@@ -413,7 +410,6 @@
                           experiencias del niño en cuanto a alimentación, sueño, comportamiento y desarrollo general.</p>
 
                         <div class="row">
-
                           <!-- Problema de alimentación -->
                           <div class="form-group col-md-6 mb-4">
                             <h5>¿Hubo algún tipo de problema de alimentación?<span class="text-danger">*</h5>
@@ -565,14 +561,15 @@
                               </select>
 
                               <!-- Modalidad de educación -->
-                              <select class="form-control ml-3 mt-2" name="modalidad_educacion" id="modalidad_educacion">
+                              <select class="form-control ml-3 mt-2" name="modalidad_educacion"
+                                id="modalidad_educacion">
                                 <option value="" disabled selected>Seleccione una opción</option>
                                 <option value="educacion_inicial">Educación Inicial</option>
                                 <option value="educacion_primaria">Educación Primaria</option>
                                 <option value="educacion_especial">Educación Especial</option>
                               </select>
-                              <input class="form-control ml-3 mt-2" name="nombre_escuela" id="nombre_escuela" type="text"
-                                placeholder="Nombre de la escuela">
+                              <input class="form-control ml-3 mt-2" name="nombre_escuela" id="nombre_escuela"
+                                type="text" placeholder="Nombre de la escuela">
                             </div>
                             <small class="form-text text-muted">Indique si el niño asiste a preescolar, primaria u otra
                               modalidad ueducativa.</small>
@@ -671,8 +668,10 @@
 
                           <!-- Otro servicio al que asiste -->
                           <div class="form-group col-md-6">
-                            <label>¿Asiste a algún otro tipo de servicio? (CAIPA, CDI, UPE, etc.)</label>
-                            <input class="form-control" name="otro_servicio" type="text" placeholder="Indique el servicio si aplica">
+                            <label>¿Asiste a algún otro tipo de servicio? (CAIPA, CDI, UPE, etc.)<span
+                                class="text-danger">*</span></label>
+                            <input class="form-control" name="otro_servicio" type="text"
+                              placeholder="Indique el servicio si aplica">
                           </div>
 
                           <div class="form-group col-md-6">
@@ -693,7 +692,6 @@
                           </button>
                         </p>
                       </section>
-
                     </form>
                   </div>
                 </div>
@@ -704,6 +702,7 @@
       </div>
     </div>
   </section>
+
   <!-- Modal de Confirmación -->
   <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -754,10 +753,10 @@
     </div>
   </section>
 @endsection
+
 @section('js')
   <script>
     $(function() {
-
       const pacientes = @json($pacientes);
 
       $('#paciente_id').select2({
@@ -988,7 +987,7 @@
           name: 'problemas_desarrollo_primeros_años',
           id: 'cuales_problemas'
         }
-          ];
+      ];
 
       /* --------- Radios “sí / no” estándar --------- */
       $.each(toggleConfig, function(i, cfg) {
@@ -1025,28 +1024,28 @@
       /* --------- Caso especial: escolarizado (3 campos) --------- */
       var $escolarizadoRadios = $("input[name='escolarizado']");
       if ($escolarizadoRadios.length) {
-          var toggleEscolarizado = function() {
-              var show = $("input[name='escolarizado'][value='si']").prop('checked');
+        var toggleEscolarizado = function() {
+          var show = $("input[name='escolarizado'][value='si']").prop('checked');
 
-              var $tipo = $('#tipo_educacion');
-              var $modalidad = $('#modalidad_educacion');
-              var $escuela = $('#nombre_escuela');
+          var $tipo = $('#tipo_educacion');
+          var $modalidad = $('#modalidad_educacion');
+          var $escuela = $('#nombre_escuela');
 
-              $tipo.toggle(show)
-                  .prop('required', show)
-                  .val(show ? '' : 'no aplica');
+          $tipo.toggle(show)
+            .prop('required', show)
+            .val(show ? '' : 'no aplica');
 
-              $modalidad.toggle(show)
-                  .prop('required', show)
-                  .val(show ? '' : 'no aplica');
+          $modalidad.toggle(show)
+            .prop('required', show)
+            .val(show ? '' : 'no aplica');
 
-              $escuela.toggle(show)
-                  .prop('required', show)
-                  .val(show ? '' : 'no aplica');
-          };
+          $escuela.toggle(show)
+            .prop('required', show)
+            .val(show ? '' : 'no aplica');
+        };
 
-          $escolarizadoRadios.on('change', toggleEscolarizado);
-          toggleEscolarizado(); // estado inicial
+        $escolarizadoRadios.on('change', toggleEscolarizado);
+        toggleEscolarizado(); // estado inicial
       }
     });
   </script>
