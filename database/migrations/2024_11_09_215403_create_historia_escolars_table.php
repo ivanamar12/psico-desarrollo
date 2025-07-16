@@ -14,22 +14,21 @@ class CreateHistoriaEscolarsTable extends Migration
   public function up()
   {
     Schema::create('historia_escolars', function (Blueprint $table) {
-    $table->id();
-    $table->string('escolarizado'); 
-    $table->string('tipo_educacion'); 
-    $table->string('modalidad_educacion'); 
-    $table->string('nombre_escuela'); 
-    $table->string('tutoria_terapias'); 
-    $table->string('tutoria_terapias_cuales')->nullable(); 
-    $table->string('dificultad_lectura');
-    $table->string('dificultad_aritmetica');
-    $table->string('dificultad_escribir');
-    $table->string('agrada_escuela');
-    $table->string('otro_servicio')->nullable(); 
-    $table->text('observacion')->nullable();
-    $table->timestamps();
-});
-
+      $table->id();
+      $table->string('escolarizado');
+      $table->string('tipo_educacion');
+      $table->string('modalidad_educacion');
+      $table->string('nombre_escuela');
+      $table->string('tutoria_terapias');
+      $table->string('tutoria_terapias_cuales')->nullable();
+      $table->string('dificultad_lectura');
+      $table->string('dificultad_aritmetica');
+      $table->string('dificultad_escribir');
+      $table->string('agrada_escuela');
+      $table->string('otro_servicio')->nullable();
+      $table->text('observacion')->nullable();
+      $table->timestamps();
+    });
   }
 
   /**
