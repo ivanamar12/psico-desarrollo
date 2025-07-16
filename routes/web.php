@@ -15,6 +15,7 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\InformeController;
+use App\Http\Controllers\AnalisisPruebaController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -282,4 +283,7 @@ Route::middleware('auth')->group(function () {
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
   Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
+  // routes/web.php
+Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])->name('pdf.generarPdfCompleto');
+
 });

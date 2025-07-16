@@ -182,7 +182,7 @@
                     <td><span>Tipo de Educación:</span> {{ $datos['tipo_educaion'] }}</td>
                 </tr>
                 <tr>
-                    <td><span>El Nilo Recibe Algún Tipo de Terapias o Tutorias:</span> {{ $datos['tutoria_terapias'] }}</td>
+                    <td><span>El Niño Recibe Algún Tipo de Terapias o Tutorias:</span> {{ $datos['tutoria_terapias'] }}</td>
                     <td><span>Cuales:</span> {{ $datos['tutoria_terapias_cuales'] }}</td>
                 </tr>
                 <tr>

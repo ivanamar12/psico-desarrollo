@@ -21,49 +21,79 @@ use PDF;
 
 class AnalisisPruebaController extends Controller
 {
-    public function guardarResultados(Request $request)
+
+   public function verificarNuevaPrueba(Request $request)
+{
+    try {
+        // Validar los datos de entrada
+        $request->validate([
+            'paciente' => 'required|array',
+            'paciente.id' => 'required|integer',
+            'paciente.nombre' => 'required|string',
+            'paciente.fecha_nac' => 'required|date',
+            'paciente.genero_id' => 'required|integer',
+            'prueba' => 'required|array',
+            'prueba.id' => 'required|integer',
+            'prueba.nombre' => 'required|string',
+            'prueba.resultados' => 'required|array',
+            'fecha_aplicacion' => 'required|date'
+        ]);
+
+        // Extraer datos del paciente y la prueba
+        $paciente = $request->paciente;
+        $prueba = $request->prueba;
+
+        // Calcular la edad en meses del paciente
+        $edadMeses = $this->calcularEdadEnMeses($paciente['fecha_nac']);
+
+        // Procesar los datos de la prueba
+        if ($prueba['nombre'] === 'CUMANIN') {
+            $resultados = $this->analizarCumaninPHP($prueba['resultados'], $edadMeses);
+        } elseif ($prueba['nombre'] === 'Koppitz') {
+            $resultados = $this->analizarKoppitzPHP($prueba['resultados'], $edadMeses, $paciente['genero_id']);
+        } else {
+            $resultados = [
+                'edad_meses' => $edadMeses,
+                'resultados' => $prueba['resultados'],
+                'lateralidad' => null,
+                'observaciones' => null
+            ];
+        }
+
+        // Guardar resultados solo si no existen
+        $yaGuardado = ResultadosPruebas::where('aplicacion_pruebas_id', $prueba['id'])->exists();
+        if ($yaGuardado) {
+            return response()->json(['mensaje' => 'ℹ️ Los resultados ya han sido guardados previamente.']);
+        }
+
+        $this->guardarResultados($prueba['id'], $resultados);
+
+        return response()->json(['mensaje' => '✅ Prueba procesada y resultados guardados correctamente.']);
+    } catch (\Exception $e) {
+        \Log::error("❌ Error verificando prueba: " . $e->getMessage());
+        return response()->json(['error' => '❌ Error verificando prueba.'], 500);
+    }
+}
+    public function guardarResultados($pruebaId, $resultados)
     {
         try {
-            $pruebaId = $request->input('prueba_id');
-            $edadMeses = $request->input('edad_meses');
-            $generoId = $request->input('genero_id') ?? 1;
-            $lateralidad = $request->input('lateralidad');
-            $observaciones = $request->input('observaciones');
-            $nombrePrueba = $request->input('nombre_prueba') ?? 'Koppitz';
-
-            // ⚠️ Evitar duplicados
+            // Verificar si ya hay resultados guardados para esta prueba
             if (ResultadosPruebas::where('aplicacion_pruebas_id', $pruebaId)->exists()) {
-                return response()->json(['mensaje' => 'El resultado ya fue guardado previamente']);
+                return response()->json(['mensaje' => 'Los resultados para esta prueba ya han sido guardados.'], 400);
             }
 
-            // ✅ Si es Koppitz, recalculamos en backend
-            if ($nombrePrueba === 'Koppitz') {
-                $respuestas = $request->input('respuestas');
-                $resultados = $this->analizarKoppitzPHP($respuestas, $edadMeses, $generoId);
-            } else {
-                // CUMANIN o NO-Estandarizada: usamos lo que vino
-                $resultados = [
-                    'edad_meses' => $edadMeses,
-                    'resultados' => $request->input('resultados'),
-                    'lateralidad' => $lateralidad,
-                    'observaciones' => $observaciones
-                ];
-            }
-
-            // Guardar
+            // Guardar los resultados
             $resultado = new ResultadosPruebas();
             $resultado->aplicacion_pruebas_id = $pruebaId;
             $resultado->resultados_finales = json_encode($resultados, JSON_UNESCAPED_UNICODE);
             $resultado->save();
 
             return response()->json(['mensaje' => 'Resultados guardados correctamente']);
-
         } catch (\Exception $e) {
             \Log::error("❌ Error guardando resultados: " . $e->getMessage());
             return response()->json(['error' => 'Error al guardar los resultados'], 500);
         }
     }
-    
     public function analizarPrueba(Request $request)
     {
         $pruebaId = $request->prueba_id;
@@ -121,20 +151,20 @@ class AnalisisPruebaController extends Controller
             if (!$p_c) continue;
 
             $baremo = $baremos->first(function ($b) use ($p_c, $edadMeses, $generoId) {
-    $parts = explode('-', $b->edad_meses);
-    $min = (int) $parts[0];
-    $max = isset($parts[1]) ? (int) $parts[1] : $min;
+            $parts = explode('-', $b->edad_meses);
+            $min = (int) $parts[0];
+            $max = isset($parts[1]) ? (int) $parts[1] : $min;
 
-    $esMasculino = str_contains($b->p_c, 'masculino');
-    $esFemenino = str_contains($b->p_c, 'femenino');
+            $esMasculino = str_contains($b->p_c, 'masculino');
+            $esFemenino = str_contains($b->p_c, 'femenino');
 
-    // ✅ Si el baremo no tiene género definido, ignora el filtro
-    $generoCoincide = (!$esMasculino && !$esFemenino) ||
-                      ($esMasculino && $generoId == 1) ||
-                      ($esFemenino && $generoId == 2);
+            // ✅ Si el baremo no tiene género definido, ignora el filtro
+            $generoCoincide = (!$esMasculino && !$esFemenino) ||
+                              ($esMasculino && $generoId == 1) ||
+                              ($esFemenino && $generoId == 2);
 
-    return $b->p_c === $p_c && $edadMeses >= $min && $edadMeses <= $max && $generoCoincide;
-});
+            return $b->p_c === $p_c && $edadMeses >= $min && $edadMeses <= $max && $generoCoincide;
+        });
 
                 if ($baremo) {
                     $detallesPuntaje[$itemNombre] = [
@@ -175,4 +205,66 @@ class AnalisisPruebaController extends Controller
             ]
         ];
     } 
+
+    private function analizarCumaninPHP($respuestas, $fechaNacimiento) 
+    {
+        // Calcular la edad en meses desde la fecha de nacimiento
+        $edadMeses = $this->calcularEdadEnMeses($fechaNacimiento);
+
+        // Obtener baremos desde la base de datos
+        $baremos = Baremos::all();
+
+        // Inicializar resultados
+        $resultados = [];
+        $lateralidad = ['izquierda' => 0, 'derecha' => 0];
+
+        // Procesar respuestas por subescala
+        foreach ($respuestas as $subescalaNombre => $datosSubescala) {
+            if ($subescalaNombre === "lateralidad") {
+                foreach ($datosSubescala as $respuesta) {
+                    if ($respuesta === "Izquierda") $lateralidad['izquierda']++;
+                    if ($respuesta === "Derecha") $lateralidad['derecha']++;
+                }
+                continue;
+            }
+
+            $puntaje = 0;
+            foreach ($datosSubescala['respuestas'] as $itemNombre => $respuesta) {
+                // Buscar baremo correspondiente
+                $baremo = $baremos->first(function ($b) use ($subescalaNombre, $itemNombre, $edadMeses) {
+                    return $b->sub_escala === $subescalaNombre && $b->item === $itemNombre && $edadMeses >= $b->edad_min && $edadMeses <= $b->edad_max;
+                });
+
+                if ($baremo) {
+                    if ($baremo->puntos === "esperado" && $respuesta === "no") {
+                        $puntaje--;
+                    } elseif ($baremo->puntos === "excepcional" && $respuesta === "si") {
+                        $puntaje++;
+                    }
+                }
+            }
+
+            $resultados[$subescalaNombre] = [
+                'puntaje' => $puntaje,
+                'observaciones' => $datosSubescala['observaciones'] ?? "Sin observaciones"
+            ];
+        }
+
+        // Determinar lateralidad
+        $resultadoLateralidad = $lateralidad['izquierda'] > $lateralidad['derecha'] ? "Izquierda" : ($lateralidad['derecha'] > $lateralidad['izquierda'] ? "Derecha" : "Indefinida");
+
+        return [
+            'edad_meses' => $edadMeses,
+            'resultados' => $resultados,
+            'lateralidad' => $resultadoLateralidad
+        ];
+    }
+
+    private function calcularEdadEnMeses($fechaNacimiento) 
+    {
+        $fechaNacimiento = new \DateTime($fechaNacimiento);
+        $fechaActual = new \DateTime();
+        $diferencia = $fechaActual->diff($fechaNacimiento);
+        return $diferencia->y * 12 + $diferencia->m;
+    }
 }

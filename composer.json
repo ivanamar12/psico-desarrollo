@@ -16,6 +16,8 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "pavel-mironchik/laravel-backup-panel": "^2.2",
+        "setasign/fpdf": "^1.8",
+        "setasign/fpdi": "^2.6",
         "spatie/laravel-backup": "^7.0",
         "spatie/laravel-permission": "^6.10",
         "tzsk/otp": "^9.0",

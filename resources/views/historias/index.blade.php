@@ -34,7 +34,6 @@
                 </table>
               </div>
             </div>
-
             <section class="tab-pane fade in" id="new-historia">
               <div class="container-fluid">
                 <div class="row">
@@ -558,11 +557,25 @@
                                 <input type="radio" name="escolarizado" value="no">
                                 <span>No</span>
                               </label>
-                              <input class="form-control ml-3" name="tipo_educaion" id="tipo_educaion" type="text"
-                                placeholder="Especificar el tipo de educación que recibe el niño">
+                              <select class="form-control ml-3 mt-2" name="tipo_educacion" id="tipo_educacion">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="pública">Pública</option>
+                                <option value="privada">Privada</option>
+                                <option value="semi_privada">Semi Privada</option>
+                              </select>
+
+                              <!-- Modalidad de educación -->
+                              <select class="form-control ml-3 mt-2" name="modalidad_educacion" id="modalidad_educacion">
+                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="educacion_inicial">Educación Inicial</option>
+                                <option value="educacion_primaria">Educación Primaria</option>
+                                <option value="educacion_especial">Educación Especial</option>
+                              </select>
+                              <input class="form-control ml-3 mt-2" name="nombre_escuela" id="nombre_escuela" type="text"
+                                placeholder="Nombre de la escuela">
                             </div>
                             <small class="form-text text-muted">Indique si el niño asiste a preescolar, primaria u otra
-                              modalidad educativa.</small>
+                              modalidad ueducativa.</small>
                           </div>
 
                           <!-- ¿Recibe terapias o tutoría? -->
@@ -656,6 +669,12 @@
                               cómodo o expresa agrado por su escuela.</small>
                           </div>
 
+                          <!-- Otro servicio al que asiste -->
+                          <div class="form-group col-md-6">
+                            <label>¿Asiste a algún otro tipo de servicio? (CAIPA, CDI, UPE, etc.)</label>
+                            <input class="form-control" name="otro_servicio" type="text" placeholder="Indique el servicio si aplica">
+                          </div>
+
                           <div class="form-group col-md-6">
                             <label>Observaciones escolares (Opcional)</label>
                             <textarea class="form-control" name="observacion_escolar" rows="3"></textarea>
@@ -734,7 +753,6 @@
       </div>
     </div>
   </section>
-
 @endsection
 @section('js')
   <script>
@@ -772,7 +790,6 @@
 
     });
   </script>
-
   <script>
     $(document).ready(function() {
       $("#paso1").show();
@@ -970,16 +987,8 @@
         {
           name: 'problemas_desarrollo_primeros_años',
           id: 'cuales_problemas'
-        },
-        {
-          name: 'escolarizado',
-          id: 'tipo_educaion'
-        },
-        {
-          name: 'tutoria_terapias',
-          id: 'tutoria_terapias_cuales'
         }
-      ];
+          ];
 
       /* --------- Radios “sí / no” estándar --------- */
       $.each(toggleConfig, function(i, cfg) {
@@ -1013,9 +1022,34 @@
         $alcoholRadios.on('change', toggleAlcohol);
         toggleAlcohol(); // estado inicial
       }
+      /* --------- Caso especial: escolarizado (3 campos) --------- */
+      var $escolarizadoRadios = $("input[name='escolarizado']");
+      if ($escolarizadoRadios.length) {
+          var toggleEscolarizado = function() {
+              var show = $("input[name='escolarizado'][value='si']").prop('checked');
+
+              var $tipo = $('#tipo_educacion');
+              var $modalidad = $('#modalidad_educacion');
+              var $escuela = $('#nombre_escuela');
+
+              $tipo.toggle(show)
+                  .prop('required', show)
+                  .val(show ? '' : 'no aplica');
+
+              $modalidad.toggle(show)
+                  .prop('required', show)
+                  .val(show ? '' : 'no aplica');
+
+              $escuela.toggle(show)
+                  .prop('required', show)
+                  .val(show ? '' : 'no aplica');
+          };
+
+          $escolarizadoRadios.on('change', toggleEscolarizado);
+          toggleEscolarizado(); // estado inicial
+      }
     });
   </script>
-
   <script>
     $(document).ready(function() {
       var tablaHistorias = $('#tab-historias').DataTable({
@@ -1139,7 +1173,6 @@
       });
     });
   </script>
-
   <script>
     $.ajaxSetup({
       headers: {
@@ -1228,5 +1261,4 @@
       });
     });
   </script>
-
 @endsection

@@ -29,4 +29,10 @@ class AplicacionPrueba extends Model
     {
         return $this->belongsTo(Prueba::class)->withDefault();
     }
+
+    // Definir la relación con ResultadosPruebas
+    public function resultadosPruebas()
+    {
+        return $this->hasMany(ResultadosPruebas::class, 'aplicacion_pruebas_id');
+    }
 }
