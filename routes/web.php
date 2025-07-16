@@ -283,7 +283,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
   Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
-  // routes/web.php
-Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])->name('pdf.generarPdfCompleto');
 
+  Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])->name('pdf.generarPdfCompleto');
 });

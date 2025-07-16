@@ -11,75 +11,78 @@ use Carbon\Carbon;
 
 class AuditLogMiddleware
 {
-    public function handle(Request $request, Closure $next)
-    {
-        $response = $next($request);
-        $route = Route::currentRouteName();
+  public function handle(Request $request, Closure $next)
+  {
+    $response = $next($request);
+    $route = Route::currentRouteName();
 
-        if (!$route) return $response;
+    if (!$route) return $response;
 
-        $description = $this->descriptions[$route] ?? null;
+    $description = $this->descriptions[$route] ?? null;
 
-        if ($description && Auth::check()) {
-            $userId = Auth::id();
-            $yaRegistrado = AuditLog::where('user_id', $userId)
-                ->where('action', $description)
-                ->where('created_at', '>=', Carbon::now()->subSeconds(60))
-                ->exists();
+    if ($description && Auth::check()) {
+      $userId = Auth::id();
+      $yaRegistrado = AuditLog::where('user_id', $userId)
+        ->where('action', $description)
+        ->where('created_at', '>=', Carbon::now()->subSeconds(60))
+        ->exists();
 
-            if (!$yaRegistrado) {
-                AuditLog::create([
-                    'user_id' => $userId,
-                    'action' => $description,
-                ]);
-            }
-        }
-
-        return $response;
+      if (!$yaRegistrado) {
+        AuditLog::create([
+          'user_id' => $userId,
+          'action' => $description,
+        ]);
+      }
     }
 
-    protected $descriptions = [
-        // Especialistas
-        'especialista.store' => 'Crear nuevo especialista',
-        'especialista.update' => 'Actualizar especialista',
-        'especialista.destroy' => 'Eliminar especialista',
+    return $response;
+  }
 
-        // Secretarias
-        'secretaria.store' => 'Crear nueva secretaria',
-        'secretaria.update' => 'Actualizar secretaria',
-        'secretaria.destroy' => 'Eliminar secretaria',
+  protected $descriptions = [
+    // Especialistas
+    'especialista.store' => 'Crear nuevo especialista',
+    'especialista.update' => 'Actualizar especialista',
+    'especialista.destroy' => 'Eliminar especialista',
 
-        // Representantes
-        'representantes.store' => 'Crear nuevo representante',
-        'representantes.update' => 'Actualizar representante',
-        'representantes.destroy' => 'Eliminar representante',
+    // Secretarias
+    'secretaria.store' => 'Crear nueva secretaria',
+    'secretaria.update' => 'Actualizar secretaria',
+    'secretaria.destroy' => 'Eliminar secretaria',
 
-        // Pacientes
-        'paciente.store' => 'Crear nuevo paciente',
-        'paciente.update' => 'Actualizar paciente',
-        'paciente.destroy' => 'Eliminar paciente',
+    // Representantes
+    'representantes.store' => 'Crear nuevo representante',
+    'representantes.update' => 'Actualizar representante',
+    'representantes.destroy' => 'Eliminar representante',
 
-        // Citas
-        'citas.store' => 'Agendar nueva cita',
-        'citas.update' => 'Actualizar cita',
+    // Pacientes
+    'paciente.store' => 'Crear nuevo paciente',
+    'paciente.update' => 'Actualizar paciente',
+    'paciente.destroy' => 'Eliminar paciente',
 
-        // Historias Clínicas
-        'historias.store' => 'Crear nueva historia clínica',
-        'historias.destroy' => 'Eliminar historia clínica',
+    // Citas
+    'citas.store' => 'Agendar nueva cita',
+    'citas.update' => 'Actualizar cita',
 
-        // Pruebas
-        'pruebas.storePrueba' => 'Crear nueva prueba',
-        'pruebas.destroy' => 'Eliminar prueba',
+    // Historias Clínicas
+    'historias.store' => 'Crear nueva historia clínica',
+    'historias.destroy' => 'Eliminar historia clínica',
 
-        // Perfil
-        'perfil.update' => 'Actualizar perfil de usuario',
-        'perfil.delete' => 'Eliminar cuenta de usuario',
+    // Pruebas
+    'pruebas.storePrueba' => 'Crear nueva prueba',
+    'pruebas.destroy' => 'Eliminar prueba',
 
-        // Notificaciones
-        'notificaciones.marcar-todas' => 'Marcar todas las notificaciones como leídas',
-        'notificaciones.destroy' => 'Eliminar notificación',
+    // Informe
+    'informes.store' => 'Crear nuevo informe',
 
-        // Auditoría (GET)
-        'bitacora.index' => 'Ver bitácora de auditoría',
-    ];
+    // Perfil
+    'perfil.update' => 'Actualizar perfil de usuario',
+    'perfil.delete' => 'Eliminar cuenta de usuario',
+
+    // Notificaciones
+    'notificaciones.marcar-todas' => 'Marcar todas las notificaciones como leídas',
+    'notificaciones.destroy' => 'Eliminar notificación',
+
+    // Auditoría (GET)
+    'bitacora.index' => 'Ver bitácora de auditoría',
+  ];
 }
