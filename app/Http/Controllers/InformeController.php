@@ -13,10 +13,18 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use setasign\Fpdi\Fpdi;
 use Yajra\DataTables\Facades\DataTables;
 
 class InformeController extends Controller
 {
+	protected $aplicarPruebaController;
+
+	public function __construct(AplicarPruebaController $aplicarPruebaController)
+	{
+		$this->aplicarPruebaController = $aplicarPruebaController;
+	}
+
 	public function index(Request $request)
 	{
 		$userId = Auth::id();
@@ -113,26 +121,74 @@ class InformeController extends Controller
 	public function pdfHistoria(string $pacienteId)
 	{
 		$historia = HistoriaClinica::with([
-			'paciente',
-			'paciente.representante',
 			'paciente.genero',
-			'paciente.representante.direccion',
+			'paciente.representante.genero',
 			'paciente.representante.direccion.estado',
 			'paciente.representante.direccion.municipio',
 			'paciente.representante.direccion.parroquia',
+			'paciente.datosEconomico',
+			'paciente.parentescos',
 			'historiaDesarrollo',
 			'antecedenteMedico',
-			'historiaEscolar'
-		])->find($pacienteId);
+			'historiaEscolar',
+			'paciente.aplicacionPruebas.prueba',
+			'paciente.aplicacionPruebas.resultadosPruebas'
+		])->findOrFail($pacienteId);
 
-		if (!$historia) {
-			return response()->json(['error' => 'Historia clínica no encontrada'], 404);
+		// Generar el PDF de la historia clínica
+		$pdfHistoria = Pdf::loadView('pdf.historia-completa', compact('historia'))->output();
+
+		// Guardar el PDF de la historia clínica temporalmente
+		$tempHistoriaPath = storage_path("temp_historia_clinica_{$pacienteId}.pdf");
+		file_put_contents($tempHistoriaPath, $pdfHistoria);
+
+		// Inicializar FPDI para combinar PDFs
+		$pdf = new Fpdi();
+
+		// Agregar la historia clínica al PDF combinado
+		$pageCount = $pdf->setSourceFile($tempHistoriaPath);
+		for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+			$tplIdx = $pdf->importPage($pageNo);
+			$pdf->addPage();
+			$pdf->useTemplate($tplIdx);
 		}
 
-		$datos = $historia->getDatosPdf();
+		// Agregar los resultados de las pruebas al PDF combinado
+		foreach ($historia->paciente->aplicacionPruebas as $aplicacion) {
+			if ($aplicacion->resultadosPruebas) {
+				// Determinar el nombre de la prueba
+				$pruebaNombre = $aplicacion->prueba->nombre;
 
-		$pdf = Pdf::loadView('pdf.generarPdfHistoria', compact('datos'));
+				// Llamar al método correspondiente según el nombre de la prueba
+				if ($pruebaNombre === 'CUMANIN') {
+					$tempPdfPath = $this->aplicarPruebaController->generarPDF($aplicacion->id);
+				} elseif ($pruebaNombre === 'Koppitz') {
+					$tempPdfPath = $this->aplicarPruebaController->generarPDFKoppitz($aplicacion->id);
+				} elseif ($pruebaNombre === 'NO-Estandarizada') {
+					$tempPdfPath = $this->aplicarPruebaController->generarPDFNoEstandarizada($aplicacion->id);
+				} else {
+					// Si no se reconoce el nombre de la prueba, puedes manejarlo aquí
+					continue;
+				}
 
-		return $pdf->stream('historia-clinica-' . $pacienteId . '.pdf');
+				// Agregar el PDF del resultado de la prueba al PDF combinado
+				if (file_exists($tempPdfPath)) {
+					$pageCount = $pdf->setSourceFile($tempPdfPath);
+					for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+						$tplIdx = $pdf->importPage($pageNo);
+						$pdf->addPage();
+						$pdf->useTemplate($tplIdx);
+					}
+					// Eliminar el archivo temporal del resultado de la prueba
+					unlink($tempPdfPath);
+				}
+			}
+		}
+
+		// Eliminar el archivo temporal de la historia clínica
+		unlink($tempHistoriaPath);
+
+		// Enviar el PDF combinado al usuario
+		$pdf->stream("historia_clinica_{$pacienteId}.pdf", 'D');
 	}
 }
