@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Http\Requests\Informe\StoreInformeRequest;
 use App\Models\Especialista;
 use App\Models\Paciente;
@@ -22,9 +23,11 @@ class InformeController extends Controller
 		$especialista = Especialista::where('user_id', $userId)->first();
 
 		if ($request->ajax()) {
-			$informes = Informe::with(['paciente', 'especialista'])
-				->where('especialista_id', $especialista->id)
-				->select('*');
+			$informes = Informe::with(['paciente', 'especialista']);
+
+			if (!auth()->user()->hasRole(Role::ADMIN->value)) {
+				$informes->where('especialista_id', $especialista->id);
+			}
 
 			return DataTables::of($informes)
 				->addColumn('action', function ($informe) {
@@ -47,7 +50,6 @@ class InformeController extends Controller
 				->make(true);
 		}
 
-		// Pacientes con 3-4 pruebas aplicadas por este usuario
 		$pacientesConPruebas = AplicacionPrueba::select('paciente_id', DB::raw('COUNT(*) as total'))
 			->where('user_id', $userId)
 			->groupBy('paciente_id')
@@ -55,7 +57,6 @@ class InformeController extends Controller
 			->pluck('paciente_id')
 			->toArray();
 
-		// Cargar pacientes con su historia clínica más reciente
 		$pacientes = Paciente::with([
 			'historiaClinicas' => function ($q) {
 				$q->orderByDesc('created_at')->limit(1);
@@ -65,7 +66,6 @@ class InformeController extends Controller
 			->whereHas('historiaClinicas')
 			->get();
 
-		// Obtener todas las pruebas aplicadas (con sus pruebas) agrupadas por paciente
 		$aplicaciones = AplicacionPrueba::with('prueba')
 			->whereIn('paciente_id', $pacientesConPruebas)
 			->get()

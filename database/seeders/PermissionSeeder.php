@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Enums\Role as EnumsRole;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
@@ -46,10 +47,12 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'bitacora']);
     Permission::firstOrCreate(['name' => 'generar informes']);
     Permission::firstOrCreate(['name' => 'usuarios']);
+    Permission::firstOrCreate(['name' => 'ver informes']);
+    Permission::firstOrCreate(['name' => 'eliminar informes']);
 
-    $admin = Role::where('name', 'ADMIN')->first();
-    $secretaria = Role::where('name', 'SECRETARIA')->first();
-    $especialista = Role::where('name', 'ESPECIALISTA')->first();
+    $admin = Role::where('name', EnumsRole::ADMIN)->first();
+    $secretaria = Role::where('name', EnumsRole::SECRETARIA)->first();
+    $especialista = Role::where('name', EnumsRole::ESPECIALISTA)->first();
 
     if ($admin) {
       $admin->givePermissionTo([
@@ -80,7 +83,9 @@ class PermissionSeeder extends Seeder
         'editar historia',
         'descargar informe',
         'bitacora',
-        'usuarios'
+        'usuarios',
+        'ver informes',
+        'eliminar informes'
       ]);
     }
 
@@ -123,7 +128,9 @@ class PermissionSeeder extends Seeder
         'aplicar prueba',
         'descargar informe',
         'pruebas',
-        'generar informes'
+        'generar informes',
+        'ver informes',
+        'eliminar informes'
       ]);
     }
   }

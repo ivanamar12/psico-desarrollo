@@ -290,7 +290,6 @@
                             <small class="form-text text-muted">Mencione el tipo de sustancia y si fue ocasional o
                               continua.</small>
                           </div>
-
                         </div>
 
                         <!-- Botones centrados -->
@@ -571,8 +570,9 @@
                               <input class="form-control ml-3 mt-2" name="nombre_escuela" id="nombre_escuela"
                                 type="text" placeholder="Nombre de la escuela">
                             </div>
-                            <small class="form-text text-muted">Indique si el niño asiste a preescolar, primaria u otra
-                              modalidad ueducativa.</small>
+                            <small class="form-text text-muted">
+                              Indique si el niño asiste a preescolar, primaria u otra modalidad ueducativa.
+                            </small>
                           </div>
 
                           <!-- ¿Recibe terapias o tutoría? -->
@@ -591,8 +591,9 @@
                                 id="tutoria_terapias_cuales" type="text"
                                 placeholder="Especificar las terapias o tutorías que recibe el niño">
                             </div>
-                            <small class="form-text text-muted">Por ejemplo: terapia del lenguaje, psicopedagogía, apoyo
-                              escolar, etc.</small>
+                            <small class="form-text text-muted">
+                              Por ejemplo: terapia del lenguaje, psicopedagogía, apoyo escolar, etc.
+                            </small>
                           </div>
 
                           <!-- Dificultad lectura -->
@@ -609,8 +610,9 @@
                                 <span>No</span>
                               </label>
                             </div>
-                            <small class="form-text text-muted">Considere si el niño tiene problemas para reconocer
-                              letras o palabras.</small>
+                            <small class="form-text text-muted">
+                              Considere si el niño tiene problemas para reconocer letras o palabras.
+                            </small>
                           </div>
 
                           <!-- Dificultad aritmética -->
@@ -986,6 +988,10 @@
         {
           name: 'problemas_desarrollo_primeros_años',
           id: 'cuales_problemas'
+        },
+        {
+          name: 'tutoria_terapias',
+          id: 'tutoria_terapias_cuales'
         }
       ];
 
