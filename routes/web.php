@@ -138,9 +138,13 @@ Route::middleware('auth')->group(function () {
   Route::get('informes', [InformeController::class, 'index'])
     ->name('informes.index');
 
+  Route::post('informes', [InformeController::class, 'store'])
+    ->name('informes.store');
+
   // Ruta para descargar reporte de una historia clínica
   Route::get('informes/pdf-historia/{pacienteId}', [InformeController::class, 'pdfHistoria'])
     ->name('informes.pdf-historia');
+
 
   /**
    * Citas

@@ -24,12 +24,14 @@
             <!-- Pestaña Lista -->
             <section class="tab-pane fade active in" id="list">
               <div class="table-responsive">
-                <table class="table table-hover text-center" id="tab-especialidad">
+                <table class="table table-hover text-center" id="tab-informes">
                   <thead>
                     <tr>
-                      <th class="text-center">ID</th>
-                      <th class="text-center">Nombre</th>
-                      <th class="text-center">Acciones</th>
+                      <th style="text-align: center">#</th>
+                      <th style="text-align: center">Paciente</th>
+                      <th style="text-align: center">Fecha</th>
+                      <th style="text-align: center">Especialista</th>
+                      <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
@@ -365,6 +367,124 @@
 
   <script>
     $(document).ready(function() {
+      var tablaInformes = $('#tab-informes').DataTable({
+        language: {
+          url: "{{ asset('js/datatables/es-ES.json') }}",
+        },
+        processing: true,
+        serverSide: true,
+        ajax: "{{ route('informes.index') }}",
+        columns: [{
+            data: 'id',
+            name: 'id'
+          },
+          {
+            data: 'paciente.nombre',
+            name: 'paciente.nombre',
+            render: function(data, type, row) {
+              return row.paciente.nombre + ' ' + row.paciente.apellido;
+            }
+          },
+          {
+            data: 'created_at',
+            name: 'created_at'
+          },
+          {
+            data: 'especialista.nombre',
+            name: 'especialista.nombre',
+            render: function(data, type, row) {
+              return row.especialista.nombre + ' ' + row.especialista.apellido;
+            }
+          },
+          {
+            data: 'action',
+            orderable: false,
+          }
+        ],
+      });
+
+      $('#registro-informes').submit(function(e) {
+        e.preventDefault();
+
+        // Validar todos los pasos antes de enviar
+        let allValid = true;
+        for (let i = 1; i <= 7; i++) {
+          if (!validarPaso("#paso" + i)) {
+            allValid = false;
+            // Mostrar el paso con errores
+            $("#paso1, #paso2, #paso3, #paso4, #paso5, #paso6, #paso7").hide();
+            $("#paso" + i).show();
+            toastr.error("Por favor complete correctamente el paso " + i);
+            break;
+          }
+        }
+
+        if (!allValid) return;
+
+        const submitButton = $(this).find('button[type="submit"]');
+        const originalText = submitButton.html();
+        submitButton.prop('disabled', true).html('<i class="zmdi zmdi-spinner zmdi-hc-spin"></i> Guardando...');
+
+        $.ajax({
+          url: "{{ route('informes.store') }}",
+          type: "POST",
+          data: $(this).serialize(),
+          success: function(response) {
+            if (response.success) {
+              $('#registro-informes')[0].reset();
+
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+
+              tablaInformes.ajax.reload();
+
+              $('.nav-tabs a[href="#list"]').tab('show');
+
+              $("#paso1").show();
+              $("#paso2, #paso3, #paso4, #paso5, #paso6, #paso7").hide();
+            }
+          },
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al guardar el informe', 'Error');
+            }
+          },
+          complete: function() {
+            submitButton.prop('disabled', false).html(originalText);
+          }
+        });
+      });
+
+      function deleteInforme(id) {
+        if (confirm('¿Está seguro de eliminar este informe?')) {
+          $.ajax({
+            url: '/informes/' + id,
+            type: 'DELETE',
+            data: {
+              _token: "{{ csrf_token() }}"
+            },
+            success: function(response) {
+              if (response.success) {
+                toastr.success(response.message);
+                $('#tab-informes').DataTable().ajax.reload();
+              } else {
+                toastr.error(response.message);
+              }
+            }
+          });
+        }
+      }
+
       $("#paso1").show();
       $("#paso2, #paso3, #paso4, #paso5, #paso6, #paso7").hide();
 
@@ -379,6 +499,7 @@
           }
         });
       }
+
       setupRealTimeValidation("#paso1");
       setupRealTimeValidation("#paso2");
       setupRealTimeValidation("#paso3");
