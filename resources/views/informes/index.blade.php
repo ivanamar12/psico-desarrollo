@@ -60,6 +60,7 @@
                               registrado previamente en el sistema.</small>
                           </div>
 
+                          <!-- Especialista -->
                           <div class="form-group col-md-6">
                             <label>Especialista Responsable <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" readonly
@@ -87,7 +88,7 @@
                             Seleccione un paciente para ver la información...
                           </p>
                           <label>Motivo <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="motivo" name="motivo" rows="3" required></textarea>
+                          <textarea class="form-control" id="motivo" name="motivo" rows="3" required minlength="30" maxlength="1000"></textarea>
                           <small class="form-text text-muted">
                             Redacte para el informe el motivo de la evaluacion.
                           </small>
@@ -113,7 +114,8 @@
                             Seleccione un paciente para ver la información...
                           </p>
                           <label>Instrumentos <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="instrumentos" name="instrumentos" rows="3" required></textarea>
+                          <textarea class="form-control" id="instrumentos" name="instrumentos" rows="3" required minlength="30"
+                            maxlength="1000"></textarea>
                           <small class="form-text text-muted">
                             Redacte para el informe el como se aplicaron los instrumentos.
                           </small>
@@ -125,7 +127,7 @@
                             Seleccione un paciente para ver la información...
                           </p>
                           <label>Recursos <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="recursos" name="recursos" rows="3" required></textarea>
+                          <textarea class="form-control" id="recursos" name="recursos" rows="3" required minlength="30" maxlength="1000"></textarea>
                           <small class="form-text text-muted">
                             Redacte para el informe como se aplicaron los recursos.
                           </small>
@@ -143,7 +145,9 @@
                       </section>
 
                       <section id="paso4">
-                        <h3>IV. Consideraciones Generales</h3>
+                        <div class="form-group col-md-12">
+                          <h3>IV. Consideraciones Generales</h3>
+                        </div>
 
                         <div class="form-group col-md-12 text-right mb-4">
                           <button type="button" id="btnModalHistoria" class="btn btn-regresar" style="color: white;">
@@ -153,9 +157,52 @@
 
                         <div class="form-group col-md-12">
                           <label>Consideraciones Generales <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="condiciones_generales" name="condiciones_generales" rows="3" required></textarea>
+                          <textarea class="form-control" id="condiciones_generales" name="condiciones_generales" rows="3" required
+                            minlength="30" maxlength="1000"></textarea>
                           <small class="form-text text-muted">
                             Redacte para el informe las consideraciones generales del paciente en la evaluación.
+                          </small>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                          <h3>V. Resultados por Área</h3>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                          <label>Física y Salud <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="fisica_salud" name="fisica_salud" rows="3" required minlength="30"
+                            maxlength="1000"></textarea>
+                          <small class="form-text text-muted">
+                            Describa cómo está la salud física del paciente (ejemplo: talla, peso, enfermedades, etc.)
+                          </small>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                          <label>Perceptivo Motriz <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="perceptivo_motriz" name="perceptivo_motriz" rows="3" required
+                            minlength="30" maxlength="1000"></textarea>
+                          <small class="form-text text-muted">
+                            Describa cómo el paciente ve, escucha y se mueve (ejemplo: coordinación, uso de las manos,
+                            etc.)
+                          </small>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                          <label>Coeficiente Intelectual <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="coeficiente_intelectual" name="coeficiente_intelectual" rows="3" required
+                            minlength="30" maxlength="1000"></textarea>
+                          <small class="form-text text-muted">
+                            Describa cómo piensa y aprende el paciente (ejemplo: cómo resuelve problemas, memoria, etc.)
+                          </small>
+                        </div>
+
+                        <div class="form-group col-md-12">
+                          <label>Afectiva Social <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="afectiva_social" name="afectiva_social" rows="3" required minlength="30"
+                            maxlength="1000"></textarea>
+                          <small class="form-text text-muted">
+                            Describa cómo el paciente se relaciona con otros (ejemplo: si es tímido, cómo controla sus
+                            emociones, etc.)
                           </small>
                         </div>
 
@@ -171,40 +218,14 @@
                       </section>
 
                       <section id="paso5">
-                        <h3>V. Resultados por Área</h3>
+                        <h3>V. Conclusiones</h3>
 
                         <div class="form-group col-md-12">
-                          <label>Física y Salud <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="fisica_salud" name="fisica_salud" rows="3" required></textarea>
-                          <small class="form-text text-muted">
-                            Describa cómo está la salud física del paciente (ejemplo: talla, peso, enfermedades, etc.)
-                          </small>
-                        </div>
-
-                        <div class="form-group col-md-12">
-                          <label>Perceptivo Motriz <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="perceptivo_motriz" name="perceptivo_motriz" rows="3" required></textarea>
-                          <small class="form-text text-muted">
-                            Describa cómo el paciente ve, escucha y se mueve (ejemplo: coordinación, uso de las manos,
-                            etc.)
-                          </small>
-                        </div>
-
-                        <div class="form-group col-md-12">
-                          <label>Coeficiente Intelectual <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="coeficiente_intelectual" name="coeficiente_intelectual" rows="3" required></textarea>
-                          <small class="form-text text-muted">
-                            Describa cómo piensa y aprende el paciente (ejemplo: cómo resuelve problemas, memoria, etc.)
-                          </small>
-                        </div>
-
-                        <div class="form-group col-md-12">
-                          <label>Afectiva Social <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="afectiva_social" name="afectiva_social" rows="3" required></textarea>
-                          <small class="form-text text-muted">
-                            Describa cómo el paciente se relaciona con otros (ejemplo: si es tímido, cómo controla sus
-                            emociones, etc.)
-                          </small>
+                          <label>Conclusiones <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="conclusion" name="conclusion" rows="3" required minlength="30"
+                            maxlength="1000"></textarea>
+                          <small class="form-text text-muted">Redacte las conclusiones generales del informe basadas en
+                            los hallazgos.</small>
                         </div>
 
                         <div class="text-center mt-4">
@@ -218,37 +239,18 @@
                       </section>
 
                       <section id="paso6">
-                        <h3>VI. Conclusiones</h3>
-
-                        <div class="form-group col-md-12">
-                          <label>Conclusiones <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="conclusion" name="conclusion" rows="3" required></textarea>
-                          <small class="form-text text-muted">Redacte las conclusiones generales del informe basadas en
-                            los hallazgos.</small>
-                        </div>
-
-                        <div class="text-center mt-4">
-                          <button type="button" id="regresar5" class="btn btn-regresar mr-3" style="color: white;">
-                            <i class="zmdi zmdi-arrow-back"></i> Regresar
-                          </button>
-                          <button type="button" id="siguiente6" class="btn btn-regresar" style="color: white;">
-                            Siguiente
-                          </button>
-                        </div>
-                      </section>
-
-                      <section id="paso7">
-                        <h3>VII. Recomendaciones</h3>
+                        <h3>VI. Recomendaciones</h3>
 
                         <div class="form-group col-md-12">
                           <label>Recomendaciones <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="recomendaciones" name="recomendaciones" rows="3" required></textarea>
+                          <textarea class="form-control" id="recomendaciones" name="recomendaciones" rows="3" required minlength="30"
+                            maxlength="1000"></textarea>
                           <small class="form-text text-muted">Redacte las recomendaciones específicas para el paciente
                             basadas en los hallazgos.</small>
                         </div>
 
                         <div class="text-center mt-4">
-                          <button type="button" id="regresar6" class="btn btn-regresar mr-3" style="color: white;">
+                          <button type="button" id="regresar5" class="btn btn-regresar mr-3" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
                           <button type="submit" class="btn btn-regresar" style="color: white;">
@@ -434,6 +436,8 @@
             if (response.success) {
               $('#registro-informes')[0].reset();
 
+              $('#paciente_id').val(null).trigger('change');
+
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
@@ -487,7 +491,7 @@
       }
 
       $("#paso1").show();
-      $("#paso2, #paso3, #paso4, #paso5, #paso6, #paso7").hide();
+      $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();
 
       function setupRealTimeValidation(pasoId) {
         $(`${pasoId} :input[type="text"], ${pasoId} :input[type="textarea"]`).on('input', function() {
@@ -507,7 +511,6 @@
       setupRealTimeValidation("#paso4");
       setupRealTimeValidation("#paso5");
       setupRealTimeValidation("#paso6");
-      setupRealTimeValidation("#paso7");
 
       function validarPaso(pasoId) {
         let valid = true;
@@ -587,15 +590,6 @@
         }
       });
 
-      $("#siguiente6").click(function() {
-        if (validarPaso("#paso6")) {
-          $("#paso6").hide();
-          $("#paso7").show();
-        } else {
-          toastr.error("Debe completar todos los campos requeridos del paso 6.");
-        }
-      });
-
       // Botones de regresar
       $("#regresar1").click(function() {
         $("#paso2").hide();
@@ -621,11 +615,6 @@
         $("#paso6").hide();
         $("#paso5").show();
       });
-
-      $("#regresar6").click(function() {
-        $("#paso7").hide();
-        $("#paso6").show();
-      });
     });
   </script>
 
@@ -648,6 +637,29 @@
 
       $('#modalHistoriaClinica').on('hidden.bs.modal', function() {
         $('#pdf-viewer').attr('src', '');
+      });
+
+      // Contador de caracteres para todos los textarea
+      $('textarea').on('input', function() {
+        const currentLength = $(this).val().length;
+        const maxLength = $(this).attr('maxlength');
+        const counterId = `${$(this).attr('id')}-counter`;
+
+        $(`#${counterId}`).text(`${currentLength}/${maxLength}`);
+
+        if (currentLength > maxLength) {
+          $(`#${counterId}`).addClass('text-danger');
+        } else {
+          $(`#${counterId}`).removeClass('text-danger');
+        }
+      });
+
+      // Inicializar contadores
+      $('textarea').each(function() {
+        const maxLength = $(this).attr('maxlength');
+        $(this).after(
+          `<div class="text-right text-muted"><span id="${$(this).attr('id')}-counter">0</span> caracteres</div>`
+        );
       });
     });
   </script>

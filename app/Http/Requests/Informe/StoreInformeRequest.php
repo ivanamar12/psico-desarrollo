@@ -26,16 +26,16 @@ class StoreInformeRequest extends FormRequest
     return [
       'paciente_id' => 'required|exists:pacientes,id',
       'especialista_id' => 'required|exists:especialistas,id',
-      'motivo' => 'required|string|max:1000',
-      'instrumentos' => 'required|string|max:1000',
-      'recursos' => 'required|string|max:1000',
-      'condiciones_generales' => 'required|string|max:1000',
-      'fisica_salud' => 'required|string|max:1000',
-      'perceptivo_motriz' => 'required|string|max:1000',
-      'coeficiente_intelectual' => 'required|string|max:1000',
-      'afectiva_social' => 'required|string|max:1000',
-      'conclusion' => 'required|string|max:1000',
-      'recomendaciones' => 'required|string|max:1000',
+      'motivo' => 'required|string|min:30|max:1000',
+      'instrumentos' => 'required|string|min:30|max:1000',
+      'recursos' => 'required|string|min:30|max:1000',
+      'condiciones_generales' => 'required|string|min:30|max:1000',
+      'fisica_salud' => 'required|string|min:30|max:1000',
+      'perceptivo_motriz' => 'required|string|min:30|max:1000',
+      'coeficiente_intelectual' => 'required|string|min:30|max:1000',
+      'afectiva_social' => 'required|string|min:30|max:1000',
+      'conclusion' => 'required|string|min:30|max:1000',
+      'recomendaciones' => 'required|string|min:30|max:1000',
     ];
   }
 

@@ -172,7 +172,8 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="sector" name="sector" required minlength="10" maxlength="80">
+                            <input class="form-control" type="text" id="sector" name="sector" required
+                              minlength="10" maxlength="80">
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
                         </div>
@@ -276,7 +277,8 @@
                 </div>
                 <div class="form-group col-md-6">
                   <label>Correo electrónico</label>
-                  <input class="form-control email-verificar" type="email" id="email2" name="email2" required maxlength="255">
+                  <input class="form-control email-verificar" type="email" id="email2" name="email2" required
+                    maxlength="255">
                 </div>
                 <div class="form-group col-md-6">
                   <label>Género</label>
@@ -430,7 +432,7 @@
 
         const emailInput = document.getElementById('email');
         const emailValid = validarEmail(emailInput);
-        
+
         // Validación final
         if (valid && emailValid) {
           $("#paso1").hide();
@@ -658,7 +660,7 @@
 
         const emailInputEdit = document.getElementById('email2');
         const emailValidEdit = validarEmail(emailInputEdit);
-        
+
         if (valid && emailValidEdit) {
           $("#paso1_edit").hide();
           $("#paso2_edit").show();
