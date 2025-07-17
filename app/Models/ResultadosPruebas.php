@@ -4,19 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ResultadosPruebas extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['aplicacion_pruebas_id', 'resultados_finales'];
+  protected $fillable = [
+    'aplicacion_pruebas_id',
+    'resultados_finales'
+  ];
 
-    protected $casts = [
-        'resultados' => 'array', 
-    ];
+  protected $casts = [
+    'resultados' => 'array',
+  ];
 
-    public function aplicacionPrueba()
-    {
-        return $this->belongsTo(AplicacionPrueba::class)->withDefault();
-    }
+  public function aplicacionPrueba(): BelongsTo
+  {
+    return $this->belongsTo(AplicacionPrueba::class)->withDefault();
+  }
 }
