@@ -142,6 +142,9 @@ Route::middleware('auth')->group(function () {
   Route::post('informes', [InformeController::class, 'store'])
     ->name('informes.store');
 
+  Route::delete('informes/{informe}', [InformeController::class, 'destroy'])
+    ->name('informes.destroy');
+
   // Ruta para descargar reporte de una historia clínica
   Route::get('informes/pdf-historia/{pacienteId}', [InformeController::class, 'pdfHistoria'])
     ->name('informes.pdf-historia');

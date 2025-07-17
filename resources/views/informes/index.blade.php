@@ -291,6 +291,35 @@
     </div>
   </section>
 
+  <!-- Modal confirmación eliminación -->
+  <section class="modal fade" id="modalEliminarInforme" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="modal-title w-100 text-center" style="color: white;">Eliminar Informe</h3>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p style="text-align: center">¿Estás seguro que deseas eliminar este informe?</p>
+          <form id="formEliminarInforme">
+            @csrf
+            @method('DELETE')
+            <input type="hidden" name="id" id="informe_id">
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+              @if (auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value) &&
+                      ($informe->especialista_id ?? null) == auth()->user()->especialista?->id)
+                <button type="submit" class="btn btn-danger">Eliminar</button>
+              @endif
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
 @endsection
 
 @section('js')
@@ -401,7 +430,18 @@
           {
             data: 'action',
             orderable: false,
-            searchable: false
+            searchable: false,
+            render: function(data, type, row) {
+              const isEspecialista = @json(auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value));
+              const isOwner = row.especialista_id === @json(auth()->user()->especialista?->id);
+
+              return isEspecialista && isOwner ?
+                `<button onclick="mostrarModalEliminarInforme('${data}')" 
+                    class="btn btn-danger btn-raised btn-xs" title="Eliminar">
+                <i class="zmdi zmdi-delete"></i>
+            </button>` :
+                '';
+            }
           }
         ],
       });
@@ -470,25 +510,44 @@
         });
       });
 
-      function deleteInforme(id) {
-        if (confirm('¿Está seguro de eliminar este informe?')) {
-          $.ajax({
-            url: '/informes/' + id,
-            type: 'DELETE',
-            data: {
-              _token: "{{ csrf_token() }}"
-            },
-            success: function(response) {
-              if (response.success) {
-                toastr.success(response.message);
-                $('#tab-informes').DataTable().ajax.reload();
-              } else {
-                toastr.error(response.message);
-              }
-            }
-          });
-        }
+      function mostrarModalEliminarInforme(id) {
+        $('#informe_id').val(id);
+        $('#modalEliminarInforme').modal('show');
       }
+
+      // Eliminar informe
+      $('#formEliminarInforme').submit(function(e) {
+        e.preventDefault();
+        var id = $('#informe_id').val();
+
+        $.ajax({
+          url: '/informes/' + id,
+          type: 'POST',
+          data: $(this).serialize() + '&_method=DELETE',
+          success: function(response) {
+            if (response.success) {
+              $('#modalEliminarInforme').modal('hide');
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+              tablaInformes.ajax.reload();
+            } else {
+              toastr.error(response.message, 'Error', {
+                timeOut: 5000
+              });
+            }
+          },
+          error: function(xhr) {
+            let errorMsg = 'Error al procesar la solicitud';
+            if (xhr.responseJSON && xhr.responseJSON.message) {
+              errorMsg = xhr.responseJSON.message;
+            }
+            toastr.error(errorMsg, 'Error', {
+              timeOut: 5000
+            });
+          }
+        });
+      });
 
       $("#paso1").show();
       $("#paso2, #paso3, #paso4, #paso5, #paso6").hide();

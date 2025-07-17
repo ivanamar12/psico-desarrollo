@@ -114,6 +114,39 @@ class InformeController extends Controller
 		]);
 	}
 
+	public function destroy($id)
+	{
+		try {
+			$informe = Informe::findOrFail($id);
+
+			if (!auth()->user()->hasRole(Role::ESPECIALISTA->value)) {
+				return response()->json([
+					'success' => false,
+					'message' => 'Solo los especialistas pueden eliminar informes'
+				], 403);
+			}
+
+			if ($informe->especialista_id != auth()->user()->especialista->id) {
+				return response()->json([
+					'success' => false,
+					'message' => 'Solo puedes eliminar informes que hayas creado'
+				], 403);
+			}
+
+			$informe->delete();
+
+			return response()->json([
+				'success' => true,
+				'message' => 'Informe eliminado correctamente!'
+			]);
+		} catch (\Exception $e) {
+			return response()->json([
+				'success' => false,
+				'message' => 'Error al eliminar el informe: ' . $e->getMessage()
+			], 500);
+		}
+	}
+
 	public function pdfHistoria(string $pacienteId)
 	{
 		$historia = HistoriaClinica::with([
