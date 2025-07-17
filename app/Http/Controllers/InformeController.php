@@ -119,17 +119,10 @@ class InformeController extends Controller
 		try {
 			$informe = Informe::findOrFail($id);
 
-			if (!auth()->user()->hasRole(Role::ESPECIALISTA->value)) {
+			if (!auth()->user()->can('eliminar informes')) {
 				return response()->json([
 					'success' => false,
-					'message' => 'Solo los especialistas pueden eliminar informes'
-				], 403);
-			}
-
-			if ($informe->especialista_id != auth()->user()->especialista->id) {
-				return response()->json([
-					'success' => false,
-					'message' => 'Solo puedes eliminar informes que hayas creado'
+					'message' => 'No tienes permiso para eliminar informes'
 				], 403);
 			}
 

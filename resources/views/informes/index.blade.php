@@ -309,10 +309,7 @@
             <input type="hidden" name="id" id="informe_id">
             <div class="modal-footer">
               <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-              @if (auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value) &&
-                      ($informe->especialista_id ?? null) == auth()->user()->especialista?->id)
-                <button type="submit" class="btn btn-danger">Eliminar</button>
-              @endif
+              <button type="submit" class="btn btn-danger">Eliminar</button>
             </div>
           </form>
         </div>
@@ -432,15 +429,9 @@
             orderable: false,
             searchable: false,
             render: function(data, type, row) {
-              const isEspecialista = @json(auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value));
-              const isOwner = row.especialista_id === @json(auth()->user()->especialista?->id);
-
-              return isEspecialista && isOwner ?
-                `<button onclick="mostrarModalEliminarInforme('${data}')" 
-                    class="btn btn-danger btn-raised btn-xs" title="Eliminar">
+              return `<button data-id="${row.id}" class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" title="Eliminar">
                 <i class="zmdi zmdi-delete"></i>
-            </button>` :
-                '';
+            </button>`;
             }
           }
         ],
@@ -510,10 +501,11 @@
         });
       });
 
-      function mostrarModalEliminarInforme(id) {
+      $(document).on('click', '.btn-eliminar-informe', function() {
+        const id = $(this).data('id');
         $('#informe_id').val(id);
         $('#modalEliminarInforme').modal('show');
-      }
+      });
 
       // Eliminar informe
       $('#formEliminarInforme').submit(function(e) {
@@ -523,7 +515,10 @@
         $.ajax({
           url: '/informes/' + id,
           type: 'POST',
-          data: $(this).serialize() + '&_method=DELETE',
+          data: {
+            _token: $('meta[name="csrf-token"]').attr('content'),
+            _method: 'DELETE'
+          },
           success: function(response) {
             if (response.success) {
               $('#modalEliminarInforme').modal('hide');
