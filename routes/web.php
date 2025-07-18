@@ -51,6 +51,7 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
+    Route::get('/estadisticas/escolarizacion', [DashboardController::class, 'estadisticasEscolarizacion'])->name('estadisticas.escolarizacion');
 
   /**
    * Profile

@@ -89,4 +89,36 @@ class DashboardController extends Controller
       return response()->json(['error' => $e->getMessage()], 500);
     }
   }
+
+  public function estadisticasEscolarizacion()
+  {
+      try {
+          // === Datos de escolarización ===
+          $escolarizados = DB::table('historia_escolars')
+              ->select('escolarizado', DB::raw('count(*) as total'))
+              ->groupBy('escolarizado')
+              ->get()
+              ->mapWithKeys(function ($item) {
+                  return [$item->escolarizado => $item->total];
+              })
+              ->toArray();
+
+          // === Datos de modalidad de educación ===
+          $modalidades = DB::table('historia_escolars')
+              ->select('modalidad_educacion', DB::raw('count(*) as total'))
+              ->groupBy('modalidad_educacion')
+              ->get()
+              ->mapWithKeys(function ($item) {
+                  return [$item->modalidad_educacion => $item->total];
+              })
+              ->toArray();
+
+          return response()->json([
+              'escolarizados' => $escolarizados,
+              'modalidades' => $modalidades,
+          ]);
+      } catch (\Exception $e) {
+          return response()->json(['error' => $e->getMessage()], 500);
+      }
+  }
 }
