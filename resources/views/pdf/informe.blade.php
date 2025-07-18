@@ -18,6 +18,10 @@
   <div
     style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
 
+    <section style="text-align: right;">
+      <h4>Fecha: {{ $informe->fecha_emision_larga }}</h4>
+    </section>
+
     <!-- Sección I: Datos de Identificación -->
     <div style="margin-bottom: 25px;">
       <h2
