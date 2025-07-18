@@ -38,7 +38,7 @@
         </tr>
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
-            <strong>Grado:</strong> Cortesía
+            <strong>Grado:</strong> {{ $informe->paciente->historiaclinicas[0]->historiaEscolar->modalidad_educacion }}
           </td>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Sexo:</strong> {{ $informe->paciente->genero->genero }}
@@ -49,7 +49,7 @@
             <strong>Edad:</strong> {{ $informe->paciente->tiempo_transcurrido }}
           </td>
           <td style="padding: 8px; border: 1px solid #ddd;">
-            <strong>Escuela:</strong> Por Precisar
+            <strong>Escuela:</strong> {{ $informe->paciente->historiaclinicas[0]->historiaEscolar->nombre_escuela }}
           </td>
         </tr>
       </table>
