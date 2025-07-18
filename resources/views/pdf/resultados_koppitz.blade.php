@@ -21,8 +21,7 @@
     <!-- Datos del Paciente -->
     <table>
         <tr>
-            <td><strong>Nombre y Apellidos:</strong> {{ $paciente['nombre'] }}</td>
-            <td><strong>Edad en meses:</strong> {{ $datos['edad_meses'] }}</td>
+            <td><strong>Nombre y Apellidos:</strong> {{ $paciente['nombre'] }} {{ $paciente['apellido'] }}</td>
             <td><strong>Fecha:</strong> {{ $aplicacion->created_at->format('d/m/Y') }}</td>
         </tr>
         <tr>
@@ -68,22 +67,31 @@
         </div>
     </div>
 
-    <!-- Resultados Finales -->
+    <!-- Resumen de Resultados -->
+   @php
+    $resultadosArray = $datos['resultados'] ?? [];
+    $resultado = !empty($resultadosArray) ? reset($resultadosArray) : null;
+@endphp
+
+    @if($resultado)
     <h3>Resumen</h3>
     <table>
         <tr>
             <td class="bold">Total de Puntaje:</td>
-            <td>{{ $datos['resultados']['puntajeTotal'] }}</td>
+            <td>{{ $resultado['puntajeTotal'] }}</td>
         </tr>
         <tr>
             <td class="bold">Categoría:</td>
-            <td>{{ $datos['resultados']['categoria'] }}</td>
+            <td>{{ $resultado['categoria'] }}</td>
         </tr>
         <tr>
             <td class="bold">Ítems Excepcionales:</td>
-            <td>{{ $datos['resultados']['itemsExcepcionales'] }}</td>
+            <td>{{ $resultado['itemsExcepcionales'] }}</td>
         </tr>
     </table>
+    @else
+    <p><strong>No hay resultados registrados para esta prueba.</strong></p>
+    @endif
 
 </body>
 </html>
