@@ -8,7 +8,7 @@
     <!-- SideBar User info -->
     <div class="full-box dashboard-sideBar-UserInfo">
       <figure class="full-box" style="display: flex; flex-direction: column; align-items: center; gap: 4px">
-        <img alt="logo" src="{{ asset('assets/img/logo.webp') }}"
+        <img alt="logo" src="{{ asset('img/logo.png') }}"
           style="width: 100px; height: 100px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
         <div style="display: flex; flex-direction: column; align-items: center">
           <p

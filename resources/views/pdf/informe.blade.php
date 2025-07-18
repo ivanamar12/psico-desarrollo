@@ -9,7 +9,9 @@
 <body style="font-family: Arial, sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333;">
 
   <!-- Header -->
-  <div style="background-color: #007bff; color: white; text-align: center; padding: 15px 0; margin-bottom: 20px;">
+  <div style="background-color: #00869b; color: white; text-align: center; padding: 15px 0; margin-bottom: 20px;">
+    <img src="{{ public_path('img/logo.png') }}" alt="Logo de PSICODESARROLLO"
+      style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
     <h1 style="margin: 0; font-size: 24px;">PsicoDesarrollo</h1>
     <p style="margin: 5px 0 0; font-size: 16px;">Informe Psicoeducativo</p>
   </div>
@@ -25,7 +27,7 @@
     <!-- Sección I: Datos de Identificación -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         I. Datos de Identificación</h2>
       <table style="width: 100%; border-collapse: collapse;">
         <tr>
@@ -58,7 +60,7 @@
     <!-- Sección II: Motivo de Consulta -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         II. Motivo de Consulta</h2>
       <p style="text-align: justify; line-height: 1.6; margin: 0;">
         {{ $informe->motivo }}
@@ -68,7 +70,7 @@
     <!-- Sección III: Instrumentos y Recursos -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         III. Instrumentos y Recursos
       </h2>
 
@@ -86,7 +88,7 @@
     <!-- Sección IV: Consideraciones Generales -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         IV. Consideraciones Generales</h2>
       <p style="text-align: justify; line-height: 1.6; margin: 0;">
         {{ $informe->condiciones_generales }}
@@ -96,7 +98,7 @@
     <!-- Sección V: Resultados Por Área -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         V. Resultados Por Área</h2>
 
       <p style="margin: 0 0 10px 0;"><strong>• Física y Salud:</strong></p>
@@ -123,7 +125,7 @@
     <!-- Sección VI: Conclusión -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         VI. Conclusión</h2>
       <p style="text-align: justify; line-height: 1.6; margin: 0;">
         {{ $informe->conclusion }}
@@ -133,7 +135,7 @@
     <!-- Sección VII: Recomendaciones -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #007bff; border-bottom: 2px solid #007bff; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
         VII. Recomendaciones</h2>
       <p style="text-align: justify; line-height: 1.6; margin: 0;">
         {{ $informe->recomendaciones }}
@@ -158,7 +160,7 @@
   </div>
 
   <!-- Footer -->
-  <div style="background-color: #007bff; color: white; text-align: center; padding: 10px 0;">
+  <div style="background-color: #00869b; color: white; text-align: center; padding: 10px 0;">
     <p style="margin: 0;">© PsicoDesarrollo {{ now()->year }} • Av. Principal, Edificio XYZ • Teléfono: 0212-5555555
     </p>
   </div>
