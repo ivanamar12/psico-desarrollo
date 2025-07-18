@@ -218,7 +218,7 @@
                       </section>
 
                       <section id="paso5">
-                        <h3>V. Conclusiones</h3>
+                        <h3>VI. Conclusiones</h3>
 
                         <div class="form-group col-md-12">
                           <label>Conclusiones <span class="text-danger">*</span></label>
@@ -239,7 +239,7 @@
                       </section>
 
                       <section id="paso6">
-                        <h3>VI. Recomendaciones</h3>
+                        <h3>VII. Recomendaciones</h3>
 
                         <div class="form-group col-md-12">
                           <label>Recomendaciones <span class="text-danger">*</span></label>
