@@ -428,11 +428,6 @@
             data: 'action',
             orderable: false,
             searchable: false,
-            render: function(data, type, row) {
-              return `<button data-id="${row.id}" class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" title="Eliminar">
-                <i class="zmdi zmdi-delete"></i>
-            </button>`;
-            }
           }
         ],
       });

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -72,5 +73,54 @@ class Paciente extends Model
     ])
       ->where('id', $id)
       ->first();
+  }
+
+  /**
+   * Get the formatted release date as DD/MM/YYYY.
+   *
+   * @return \Illuminate\Database\Eloquent\Casts\Attribute
+   */
+  protected function getFechaFormateadaDDMMYYYYAttribute(): string
+  {
+    if (empty($this->fecha_nac)) return 'N/A';
+
+    try {
+      return Carbon::parse($this->fecha_nac)->format('d/m/Y');
+    } catch (\Exception $e) {
+      return 'Fecha inválida';
+    }
+  }
+
+  public function getTiempoTranscurridoAttribute()
+  {
+    if (empty($this->fecha_nac)) {
+      return 'Fecha no disponible';
+    }
+
+    $carbonFecha = Carbon::parse($this->fecha_nac);
+    $ahora = Carbon::now();
+    $diff = $carbonFecha->diff($ahora);
+
+    $years = $diff->y;
+    $months = $diff->m;
+
+    $output = '';
+
+    if ($years > 0) {
+      $output .= $years . ' año' . ($years > 1 ? 's' : '');
+    }
+
+    if ($months > 0) {
+      if ($years > 0) {
+        $output .= ' y ';
+      }
+      $output .= $months . ' mes' . ($months > 1 ? 'es' : '');
+    }
+
+    if (empty($output)) {
+      $output = 'menos de un mes';
+    }
+
+    return $output;
   }
 }

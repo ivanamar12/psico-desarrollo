@@ -51,7 +51,9 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
-    Route::get('/estadisticas/escolarizacion', [DashboardController::class, 'estadisticasEscolarizacion'])->name('estadisticas.escolarizacion');
+
+  Route::get('/estadisticas/escolarizacion', [DashboardController::class, 'estadisticasEscolarizacion'])
+    ->name('estadisticas.escolarizacion');
 
   /**
    * Profile
@@ -134,6 +136,7 @@ Route::middleware('auth')->group(function () {
   // Ruta para obtener un paciente específico en formato JSON
   Route::get('paciente/{id}', [PacienteController::class, 'show'])
     ->name('paciente.show');
+
   /**
    * Informes
    */
@@ -143,13 +146,16 @@ Route::middleware('auth')->group(function () {
   Route::post('informes', [InformeController::class, 'store'])
     ->name('informes.store');
 
+  // Informe en PDF
+  Route::get('informes/{informe}/pdf', [InformeController::class, 'pdfInforme'])
+    ->name('informes.pdf');
+
   Route::delete('informes/{informe}', [InformeController::class, 'destroy'])
     ->name('informes.destroy');
 
   // Ruta para descargar reporte de una historia clínica
   Route::get('informes/pdf-historia/{pacienteId}', [InformeController::class, 'pdfHistoria'])
     ->name('informes.pdf-historia');
-
 
   /**
    * Citas
@@ -288,5 +294,6 @@ Route::middleware('auth')->group(function () {
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
   Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
 
-  Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])->name('pdf.generarPdfCompleto');
+  Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])
+    ->name('pdf.generarPdfCompleto');
 });

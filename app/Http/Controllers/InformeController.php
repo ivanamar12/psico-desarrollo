@@ -41,8 +41,12 @@ class InformeController extends Controller
 				->addColumn('action', function ($informe) {
 					$acciones = '';
 
+					$acciones .= '<a href="' . route('informes.pdf', $informe->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank" title="Reporte"><i class="zmdi zmdi-file"></i></a>';
+
 					if (auth()->user()->can('eliminar informes')) {
-						$acciones .= '<a href="javascript:void(0)" onclick="deleteInforme(' . $informe->id . ')" class="btn btn-danger btn-raised btn-xs" title="Eliminar"><i class="zmdi zmdi-delete"></i></a>';
+						$acciones .= '<button data-id="' . $informe->id . '" class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" title="Eliminar">
+                <i class="zmdi zmdi-delete"></i>
+            </button>';
 					}
 
 					return $acciones;
@@ -112,6 +116,14 @@ class InformeController extends Controller
 			'success' => true,
 			'message' => 'Informe creado correctamente!',
 		]);
+	}
+
+	public function pdfInforme(Informe $informe)
+	{
+		$pdf = Pdf::loadView('pdf.informe', ['informe' => $informe])
+			->setPaper('letter', 'portrait');
+
+		return $pdf->stream();
 	}
 
 	public function destroy($id)
