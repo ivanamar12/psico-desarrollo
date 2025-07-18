@@ -27,6 +27,9 @@
         <li>
           <button class="tab-trigger" data-tab="graficos-escalas-riesgos">Evaluación de Riesgos</button>
         </li>
+        <li>
+          <button class="tab-trigger" data-tab="escolarizacion-modalidades">Escolarización y Modalidades</button>
+        </li>
         <!-- Agregar más pestañas según necesites -->
         <li>
           <button class="tab-trigger" data-tab="otra">Otra Pestaña</button>
@@ -205,6 +208,44 @@
               </p>
             </section>
           </section>
+        </section>
+
+        <section class="tab-pane" data-tab="escolarizacion-modalidades">
+            <section class="container-fluid">
+                <section style="padding: 12px">
+                    <h2>Escolarización y Modalidades de Educación</h2>
+                </section>
+
+                <section class="row">
+                    <!-- Gráfico de Escolarización -->
+                    <article class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-titles text-center">
+                                <i class="zmdi zmdi-school"></i> &nbsp; EScolarización
+                            </div>
+                            <div class="panel-body">
+                                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                                    <canvas id="graficaEscolarizacion"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Gráfico de Modalidades de Educación -->
+                    <article class="col-md-6">
+                        <div class="panel panel-default">
+                            <div class="panel-heading text-titles text-center">
+                                <i class="zmdi zmdi-library"></i> &nbsp; Modalidades de Educación
+                            </div>
+                            <div class="panel-body">
+                                <div class="chart-container" style="position: relative; height:300px; width:100%">
+                                    <canvas id="graficaModalidades"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                </section>
+            </section>
         </section>
 
         <!-- Otra pestaña -->
@@ -442,6 +483,89 @@
           console.error("Error al cargar datos:", error);
           // Mostrar mensaje de error al usuario si lo deseas
         });
+    });
+fetch("{{ route('estadisticas.escolarizacion') }}")
+    .then((response) => {
+        if (!response.ok) throw new Error("Error en la respuesta del servidor");
+        return response.json();
+    })
+    .then((data) => {
+        const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+        const colorTexto = "#333";
+
+        // Gráfica de Dona (Escolarización)
+        new Chart(document.getElementById("graficaEscolarizacion"), {
+            type: "doughnut", 
+            data: {
+                labels: Object.keys(data.escolarizados),
+                datasets: [{
+                    label: "Cantidad de Pacientes",
+                    data: Object.values(data.escolarizados),
+                    backgroundColor: ["#4CAF50", "#FF6384"],
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            font: {
+                                family: fontFamily,
+                                size: 12
+                            },
+                            color: colorTexto,
+                        },
+                    },
+                    tooltip: {
+                        bodyFont: {
+                            family: fontFamily
+                        }
+                    },
+                },
+            },
+        });
+
+        // Gráfica de Dona (Modalidades de Educación)
+        new Chart(document.getElementById("graficaModalidades"), {
+            type: "bar", 
+            data: {
+                labels: Object.keys(data.modalidades),
+                datasets: [{
+                    label: "Cantidad de Pacientes",
+                    data: Object.values(data.modalidades),
+                    backgroundColor: ["#4CAF50", "#FF6384", "#FFCE56"],
+                    borderWidth: 1,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: "bottom",
+                        labels: {
+                            font: {
+                                family: fontFamily,
+                                size: 12
+                            },
+                            color: colorTexto,
+                        },
+                    },
+                    tooltip: {
+                        bodyFont: {
+                            family: fontFamily
+                        }
+                    },
+                },
+            },
+        });
+    })
+    .catch((error) => {
+        console.error("Error al cargar datos:", error);
+        // Mostrar mensaje de error al usuario si lo deseas
     });
   </script>
   <script>
