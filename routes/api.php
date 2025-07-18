@@ -7,6 +7,7 @@ use App\Http\Controllers\AnalisisPruebaController;
 use App\Http\Controllers\AplicarPruebaController;
 use App\Http\Controllers\DashboardController;
 use App\Models\AplicacionPrueba;
+use App\Models\Baremos;
 use App\Models\SubEscala;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -69,4 +70,3 @@ Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, '
 
 Route::get('estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])
     ->name('estadisticas.pacientes');
-
