@@ -49,6 +49,11 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'usuarios']);
     Permission::firstOrCreate(['name' => 'ver informes']);
     Permission::firstOrCreate(['name' => 'eliminar informes']);
+    // Referencia 
+    Permission::firstOrCreate(['name' => 'crear referencia']);
+    Permission::firstOrCreate(['name' => 'editar referencia']);
+    Permission::firstOrCreate(['name' => 'eliminar referencia']);
+    Permission::firstOrCreate(['name' => 'descargar referencia']);
 
     $admin = Role::where('name', EnumsRole::ADMIN)->first();
     $secretaria = Role::where('name', EnumsRole::SECRETARIA)->first();
@@ -85,7 +90,9 @@ class PermissionSeeder extends Seeder
         'bitacora',
         'usuarios',
         'ver informes',
-        'eliminar informes'
+        'eliminar informes',
+        // Referencia
+        'descargar referencia'
       ]);
     }
 
@@ -106,7 +113,9 @@ class PermissionSeeder extends Seeder
         'eliminar paciente',
         'ver paciente',
         'descargar historia',
-        'descargar informe'
+        'descargar informe',
+        // Referencia
+        'descargar referencia'
       ]);
     }
 
@@ -130,7 +139,12 @@ class PermissionSeeder extends Seeder
         'pruebas',
         'generar informes',
         'ver informes',
-        'eliminar informes'
+        'eliminar informes',
+        // Referencia 
+        'crear referencia',
+        'editar referencia',
+        'eliminar referencia',
+        'descargar referencia'
       ]);
     }
   }

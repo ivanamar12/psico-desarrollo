@@ -17,7 +17,7 @@
   <header>
     <nav class="navbar">
       <div class="logo" style="display: flex; gap: 5px; align-items: center">
-        <img alt="logo" src="{{ asset('assets/img/logo.webp') }}"
+        <img alt="logo" src="{{ asset('img/logo.png') }}"
           style="width: 40px; height: 40px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
 
         <p style="color: #fff; font-weight: 800">
