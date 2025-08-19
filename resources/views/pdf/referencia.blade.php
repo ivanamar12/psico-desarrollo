@@ -13,7 +13,7 @@
   <div style="background-color: #00869b; color: white; text-align: center; padding: 15px 0; margin-bottom: 20px;">
     <img src="{{ public_path('img/logo.png') }}" alt="Logo de PSICODESARROLLO"
       style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
-    <h1 style="margin: 0; font-size: 20px; text-transform: uppercase;">PsicoDesarrollo</h1>
+    <h1 style="margin: 0; font-size: 20px;">PSICODESARROLLO</h1>
   </div>
 
   <!-- Contenido principal -->
@@ -21,7 +21,7 @@
     style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
 
     <section style="text-align: right;">
-      <h4>Fecha: {{ $referencia->getFormattedLongDateAttribute('created_at') }}</h4>
+      <h4>Fecha: {{ $referencia->getFormattedLongDateAttribute('fecha_emision') }}</h4>
     </section>
 
     <!-- Título de la referencia (centrado) -->
