@@ -84,9 +84,15 @@
                         <h3>II. Motivo de Consulta</h3>
 
                         <div class="form-group col-md-12">
-                          <p class="text-muted mb-4" id="motivo_completo_texto">
-                            Seleccione un paciente para ver la información...
-                          </p>
+                          <label>Título <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="titulo" name="titulo" rows="1" required minlength="15" maxlength="255"
+                            placeholder="Ej: Referencia a Neurología"></textarea>
+                          <small class="form-text text-muted">
+                            Redacte el título de la referencia.
+                          </small>
+                        </div>
+
+                        <div class="form-group col-md-12">
                           <label>Motivo <span class="text-danger">*</span></label>
                           <textarea class="form-control" id="motivo" name="motivo" rows="3" required minlength="30" maxlength="1000"></textarea>
                           <small class="form-text text-muted">
@@ -107,7 +113,7 @@
 
                       <section id="paso3">
                         <div class="form-group col-md-12">
-                          <h3>III. Presentación del caso y antecedentes</h3>
+                          <h3>III. Presentación del caso, Antecedentes e Indicadores psicológicos</h3>
                         </div>
 
                         <div class="form-group col-md-12 text-right mb-4">
@@ -134,6 +140,15 @@
                           </small>
                         </div>
 
+                        <div class="form-group col-md-12">
+                          <label>Indicadores psicológicos <span class="text-danger">*</span></label>
+                          <textarea class="form-control" id="indicadores_psicologicos" name="indicadores_psicologicos" rows="3" required
+                            minlength="30" maxlength="1000"></textarea>
+                          <small class="form-text text-muted">
+                            Describa los indicadores psicológicos relevantes.
+                          </small>
+                        </div>
+
                         <!-- Botones centrados -->
                         <div class="text-center mt-4">
                           <button type="button" id="regresar2" class="btn btn-regresar mr-3" style="color: white;">
@@ -146,16 +161,7 @@
                       </section>
 
                       <section id="paso4">
-                        <h3>IV. Indicadores psicológicos y sugerencias</h3>
-
-                        <div class="form-group col-md-12">
-                          <label>Indicadores psicológicos <span class="text-danger">*</span></label>
-                          <textarea class="form-control" id="indicadores_psicologicos" name="indicadores_psicologicos" rows="3" required
-                            minlength="30" maxlength="1000"></textarea>
-                          <small class="form-text text-muted">
-                            Describa los indicadores psicológicos relevantes.
-                          </small>
-                        </div>
+                        <h3>IV. Sugerencias</h3>
 
                         <div class="form-group col-md-12">
                           <label>Sugerencias <span class="text-danger">*</span></label>
@@ -212,14 +218,14 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Eliminar Informe</h3>
+          <h3 class="modal-title w-100 text-center" style="color: white;">Eliminar Referencia</h3>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div class="modal-body">
-          <p style="text-align: center">¿Estás seguro que deseas eliminar este informe?</p>
-          <form id="formEliminarInforme">
+          <p style="text-align: center">¿Estás seguro que deseas eliminar esta referencia?</p>
+          <form id="formEliminarReferencia">
             @csrf
             @method('DELETE')
             <input type="hidden" name="id" id="referencia_id">
@@ -263,12 +269,6 @@
             });
           }
         }
-      });
-
-      $('#paciente_id').on('select2:clear', function() {
-        $('#motivo_completo_texto').text('Seleccione un paciente para ver la información...');
-        $('#instrumentos_texto').text('Seleccione un paciente para ver la información...');
-        $('#recursos_texto').text('Seleccione un paciente para ver la información...');
       });
     });
   </script>
@@ -382,8 +382,8 @@
         $('#modalEliminarReferencia').modal('show');
       });
 
-      // Eliminar informe
-      $('#formEliminarInforme').submit(function(e) {
+      // Eliminar Referencia
+      $('#formEliminarReferencia').submit(function(e) {
         e.preventDefault();
         var id = $('#referencia_id').val();
 
@@ -443,6 +443,7 @@
         let valid = true;
         $(`${pasoId} :input[required]`).each(function() {
           const value = $(this).val();
+          const fieldId = $(this).attr('id');
           const fieldName = $(this).attr('name');
 
           // Validar si está vacío
@@ -455,8 +456,15 @@
 
           // Validar textarea (mínimo y máximo)
           if ($(this).is('textarea')) {
-            const minLength = 30;
-            const maxLength = 1000;
+            let minLength, maxLength;
+
+            if (fieldId === 'titulo') {
+              minLength = 15;
+              maxLength = 255;
+            } else {
+              minLength = 30;
+              maxLength = 1000;
+            }
 
             if (value.length < minLength) {
               $(this).addClass("is-invalid");

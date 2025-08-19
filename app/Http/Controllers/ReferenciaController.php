@@ -55,7 +55,13 @@ class ReferenciaController extends Controller
       }
     }
 
-    $pacientes = Paciente::all();
+    $pacientes = Paciente::with([
+      'historiaClinicas' => function ($q) {
+        $q->orderByDesc('created_at')->limit(1);
+      }
+    ])
+      ->whereHas('historiaClinicas')
+      ->get();
 
     return view('referencias.index', [
       'especialista_actual' => $especialista,
@@ -65,31 +71,38 @@ class ReferenciaController extends Controller
 
   public function store(StoreReferenciaRequest $request)
   {
-    DB::transaction(function () use ($request) {
-      $fechaEmision = now();
-      $fechaVencimiento = now()->addMonth();
+    try {
+      DB::transaction(function () use ($request) {
+        $fechaEmision = now();
+        $fechaVencimiento = now()->addMonth();
 
-      Referencia::create([
-        'fecha_emision' => $fechaEmision,
-        'fecha_vencimiento' => $fechaVencimiento,
-        'motivo' => $request->motivo,
+        Referencia::create([
+          'fecha_emision' => $fechaEmision,
+          'fecha_vencimiento' => $fechaVencimiento,
+          'titulo' => $request->titulo,
+          'motivo' => $request->motivo,
 
-        'presentacion_caso' => $request->presentacion_caso,
-        'antecedentes' => $request->antecedentes,
-        'indicadores_psicologicos' => $request->indicadores_psicologicos,
-        'sugerencias' => $request->sugerencias,
+          'presentacion_caso' => $request->presentacion_caso,
+          'antecedentes' => $request->antecedentes,
+          'indicadores_psicologicos' => $request->indicadores_psicologicos,
+          'sugerencias' => $request->sugerencias,
 
-        'especialista_id' => $request->especialista_id,
-        'paciente_id' => $request->paciente_id
+          'especialista_id' => $request->especialista_id,
+          'paciente_id' => $request->paciente_id
+        ]);
+        // - Notificar al paciente o administrador
+      });
+
+      return response()->json([
+        'success' => true,
+        'message' => 'Referencia creada correctamente!',
       ]);
-
-      // - Notificar al paciente o administrador
-    });
-
-    return response()->json([
-      'success' => true,
-      'message' => 'Referencia creada correctamente!',
-    ]);
+    } catch (\Exception $e) {
+      return response()->json([
+        'success' => false,
+        'message' => 'Error al crear la referencia: ' . $e->getMessage()
+      ], 500);
+    }
   }
 
   public function destroy($id)

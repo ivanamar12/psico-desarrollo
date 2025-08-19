@@ -26,6 +26,7 @@ class StoreReferenciaRequest extends FormRequest
     return [
       'paciente_id' => 'required|exists:pacientes,id',
       'especialista_id' => 'required|exists:especialistas,id',
+      'titulo' => 'required|string|min:15|max:255',
       'motivo' => 'required|string|min:30|max:1000',
 
       'presentacion_caso' => 'required|string|min:30|max:1000',
@@ -40,6 +41,7 @@ class StoreReferenciaRequest extends FormRequest
     return [
       'paciente_id' => 'paciente',
       'especialista_id' => 'especialista',
+      'titulo' => 'título',
       'motivo' => 'motivo de consulta',
 
       'presentacion_caso' => 'presentación del caso',
