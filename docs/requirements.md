@@ -1,29 +1,7 @@
-# Nuevos MODULOS
-
-## Generar Informe del paciente
-
-- Descripcion para especialidad
-
-- Tabla de informe
-
-- Informes
-
-- id
-- fecha
-- fecha_expiracion
-- recursos: json
-- instrumentos: json
-- condiciones_generales: string
-- fisica_salud: string
-- perseptivo_motriz: string
-- coeficiente_intelectual: string
-- afectiva_social: string
-- conclusion: string
-- recomendaciones: string
-- especialista_id: int
-- paciente_id: int
 
 # Correcciones
+
+Mejorar el sidebar, dividirlo en secciones
 
 LA AYUDA EN TODAS LAS VISTAS
 

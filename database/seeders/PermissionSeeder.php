@@ -51,7 +51,6 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'eliminar informes']);
     // Referencia 
     Permission::firstOrCreate(['name' => 'crear referencia']);
-    Permission::firstOrCreate(['name' => 'editar referencia']);
     Permission::firstOrCreate(['name' => 'eliminar referencia']);
     Permission::firstOrCreate(['name' => 'descargar referencia']);
 
@@ -142,7 +141,6 @@ class PermissionSeeder extends Seeder
         'eliminar informes',
         // Referencia 
         'crear referencia',
-        'editar referencia',
         'eliminar referencia',
         'descargar referencia'
       ]);

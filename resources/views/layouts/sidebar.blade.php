@@ -85,6 +85,8 @@
           <i class="zmdi zmdi-file zmdi-hc-fw"></i>Historias Clinicas<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
+
+      {{-- Pruebas --}}
       @if (auth()->user()->can('pruebas'))
         <li>
           <a href="#!" class="btn-sideBar-SubMenu"
@@ -110,12 +112,39 @@
           </ul>
         </li>
       @endif
+
+      {{-- Informes --}}
       <li>
         <a href="{{ route('informes.index') }}" class="btn-sideBar-SubMenu"
           data-intro="En esta sección puedes gestionar los especialistas del sistema." data-step="7">
           <i class="zmdi zmdi-file zmdi-hc-fw"></i>Informes<i class="zmdi zmdi-caret-"></i>
         </a>
       </li>
+
+      {{-- Referencias y constancias de asistencia --}}
+      <li>
+        <a href="#!" class="btn-sideBar-SubMenu"
+          style="display: flex; align-items: center; justify-content: space-between">
+          <span>
+            <i class="zmdi zmdi-file-text zmdi-hc-fw"></i>Documentos
+          </span>
+          <i class="zmdi zmdi-caret-down"></i>
+        </a>
+        <ul class="list-unstyled full-box">
+          <li>
+            <a href="{{ route('referencias.index') }}">
+              <i class="zmdi zmdi-assignment" style="margin: 0px 8px"></i>Referencias
+            </a>
+          </li>
+          <li>
+            <a href="{{ route('constancias-asistencia.index') }}">
+              <i class="zmdi zmdi-assignment" style="margin: 0px 8px"></i>Constancias de Asistencia
+            </a>
+          </li>
+        </ul>
+      </li>
+
+      {{-- Bitacora --}}
       @if (auth()->user()->can('bitacora'))
         <li>
           <a href="{{ route('bitacora.index') }}" class="btn-sideBar-SubMenu"

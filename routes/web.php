@@ -16,6 +16,8 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\AnalisisPruebaController;
+use App\Http\Controllers\ConstanciaAsistenciaController;
+use App\Http\Controllers\ReferenciaController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', function () {
@@ -156,6 +158,28 @@ Route::middleware('auth')->group(function () {
   // Ruta para descargar reporte de una historia clínica
   Route::get('informes/pdf-historia/{pacienteId}', [InformeController::class, 'pdfHistoria'])
     ->name('informes.pdf-historia');
+
+  /**
+   * Referencias
+   */
+  Route::get('referencias', [ReferenciaController::class, 'index'])
+    ->name('referencias.index');
+
+  Route::post('referencias', [ReferenciaController::class, 'store'])
+    ->name('referencias.store');
+
+  Route::delete('referencias/{referencia}', [ReferenciaController::class, 'destroy'])
+    ->name('referencias.destroy');
+
+  // Referencia en PDF
+  Route::get('referencias/{referencia}/pdf', [ReferenciaController::class, 'pdfReferencia'])
+    ->name('referencias.pdf');
+
+  /**
+   * Constancias de asistencia
+   */
+  Route::get('constancias-asistencia', [ConstanciaAsistenciaController::class, 'index'])
+    ->name('constancias-asistencia.index');
 
   /**
    * Citas
