@@ -7,6 +7,7 @@ use App\Http\Requests\Referencia\StoreReferenciaRequest;
 use App\Models\Especialista;
 use App\Models\Paciente;
 use App\Models\Referencia;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -103,6 +104,14 @@ class ReferenciaController extends Controller
         'message' => 'Error al crear la referencia: ' . $e->getMessage()
       ], 500);
     }
+  }
+
+  public function pdfReferencia(Referencia $referencia)
+  {
+    $pdf = Pdf::loadView('pdf.referencia', ['referencia' => $referencia])
+      ->setPaper('letter', 'portrait');
+
+    return $pdf->stream();
   }
 
   public function destroy($id)

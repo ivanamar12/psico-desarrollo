@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use App\Traits\FormatsDates;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Referencia extends Model
 {
-  use HasFactory;
+  use HasFactory, FormatsDates;
 
   /**
    * The attributes that are mass assignable.
