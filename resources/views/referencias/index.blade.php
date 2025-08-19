@@ -16,7 +16,7 @@
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
             <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('crear referencia'))
-              <li><a href="#new-referencia" data-toggle="tab"> Nuevo</a></li>
+              <li><a href="#new-referencia" data-toggle="tab">Nuevo</a></li>
             @endif
           </ul>
 

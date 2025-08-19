@@ -22,10 +22,7 @@ class ReferenciaController extends Controller
       try {
         $referencias = Referencia::with(['paciente', 'especialista']);
 
-        if (
-          !auth()->user()->hasRole(Role::ADMIN->value) &&
-          !auth()->user()->hasRole(Role::SECRETARIA->value)
-        ) {
+        if (auth()->user()->hasRole(Role::ESPECIALISTA->value)) {
           $referencias->where('especialista_id', $especialista->id);
         }
 

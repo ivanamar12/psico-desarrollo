@@ -42,12 +42,13 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'descargar prueba']);
     Permission::firstOrCreate(['name' => 'ver prueba']);
     Permission::firstOrCreate(['name' => 'aplicar prueba']);
-    Permission::firstOrCreate(['name' => 'descargar informe']);
     Permission::firstOrCreate(['name' => 'pruebas']);
     Permission::firstOrCreate(['name' => 'bitacora']);
-    Permission::firstOrCreate(['name' => 'generar informes']);
     Permission::firstOrCreate(['name' => 'usuarios']);
+    // Informe
     Permission::firstOrCreate(['name' => 'ver informes']);
+    Permission::firstOrCreate(['name' => 'descargar informe']);
+    Permission::firstOrCreate(['name' => 'generar informes']);
     Permission::firstOrCreate(['name' => 'eliminar informes']);
     // Referencia 
     Permission::firstOrCreate(['name' => 'crear referencia']);
@@ -85,11 +86,12 @@ class PermissionSeeder extends Seeder
         'eliminar historia',
         'descargar historia',
         'editar historia',
-        'descargar informe',
         'bitacora',
         'usuarios',
+        // Informe
         'ver informes',
         'eliminar informes',
+        'descargar informe',
         // Referencia
         'descargar referencia'
       ]);
@@ -112,6 +114,7 @@ class PermissionSeeder extends Seeder
         'eliminar paciente',
         'ver paciente',
         'descargar historia',
+        // Informe
         'descargar informe',
         // Referencia
         'descargar referencia'
@@ -134,11 +137,12 @@ class PermissionSeeder extends Seeder
         'descargar prueba',
         'ver prueba',
         'aplicar prueba',
-        'descargar informe',
         'pruebas',
-        'generar informes',
+        // Informe
         'ver informes',
+        'generar informes',
         'eliminar informes',
+        'descargar informe',
         // Referencia 
         'crear referencia',
         'eliminar referencia',

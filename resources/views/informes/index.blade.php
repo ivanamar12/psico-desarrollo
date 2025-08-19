@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Informes')
+@section('title', 'Informes Psicológicos')
 
 @section('content')
   <section class="full-box dashboard-contentPage">
@@ -8,7 +8,7 @@
     <x-navbar />
 
     <!-- Page title -->
-    <x-page-header title="Informes" icon="zmdi zmdi-assignment-o zmdi-hc-fw" />
+    <x-page-header title="Informes Psicológicos" icon="zmdi zmdi-assignment-o zmdi-hc-fw" />
 
     <article class="container-fluid">
       <div class="row">
@@ -16,7 +16,7 @@
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
             <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('generar informes'))
-              <li><a href="#new-informe" data-toggle="tab"> Nuevo</a></li>
+              <li><a href="#new-informe" data-toggle="tab">Nuevo</a></li>
             @endif
           </ul>
 

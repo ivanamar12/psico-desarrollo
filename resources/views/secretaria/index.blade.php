@@ -155,10 +155,10 @@
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
-                            <input class="form-control" type="text" id="sector" name="sector" required minlength="10" maxlength="80">
+                            <input class="form-control" type="text" id="sector" name="sector" required
+                              minlength="10" maxlength="80">
                             <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
                           </div>
-
                         </div>
 
                         <p class="centro-texto">
@@ -179,8 +179,8 @@
         </div>
       </div>
     </div>
-
   </section>
+
   <!-- Modal editar -->
   <div class="modal fade" id="editsecretaria" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
     aria-hidden="true">
@@ -302,6 +302,7 @@
       </div>
     </div>
   </div>
+
   <!-- modal eliminar -->
   <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
@@ -323,7 +324,7 @@
       </div>
     </div>
   </div>
-  </div>
+
   <!-- modal mostrar secretaria -->
   <div id="secretariaModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -349,416 +350,418 @@
         </div>
       </div>
     </div>
-  @endsection
-  @section('js')
-    <script>
-      const estados = @json($estados);
-      const municipios = @json($municipios);
-      const parroquias = @json($parroquias);
-    </script>
-    <script>
-      $(document).ready(function() {
-        var tablaSecretaria = $('#tab-secretaria').DataTable({
-          language: {
-            url: './js/datatables/es-ES.json',
+  </div>
+@endsection
+
+@section('js')
+  <script>
+    const estados = @json($estados);
+    const municipios = @json($municipios);
+    const parroquias = @json($parroquias);
+  </script>
+  <script>
+    $(document).ready(function() {
+      var tablaSecretaria = $('#tab-secretaria').DataTable({
+        language: {
+          url: './js/datatables/es-ES.json',
+        },
+        processing: true,
+        serverSide: true,
+        ajax: {
+          url: "{{ route('secretaria.index') }}",
+        },
+        columns: [{
+            data: 'id'
           },
-          processing: true,
-          serverSide: true,
-          ajax: {
-            url: "{{ route('secretaria.index') }}",
+          {
+            data: 'ci'
           },
-          columns: [{
-              data: 'id'
-            },
-            {
-              data: 'ci'
-            },
-            {
-              data: 'nombre'
-            },
-            {
-              data: 'apellido'
-            },
-            {
-              data: 'email'
-            },
-            {
-              data: 'telefono'
-            },
-            {
-              data: 'action',
-              orderable: false
-            }
-          ]
-        });
+          {
+            data: 'nombre'
+          },
+          {
+            data: 'apellido'
+          },
+          {
+            data: 'email'
+          },
+          {
+            data: 'telefono'
+          },
+          {
+            data: 'action',
+            orderable: false
+          }
+        ]
+      });
 
-        $("#registro-secretaria").submit(function(event) {
-          event.preventDefault();
-          toastr.clear();
+      $("#registro-secretaria").submit(function(event) {
+        event.preventDefault();
+        toastr.clear();
 
-          registerSecretaria();
-        });
+        registerSecretaria();
+      });
 
-        function registerSecretaria() {
-          var formData = {
-            nombre: $('#nombre').val(),
-            apellido: $('#apellido').val(),
-            ci: $('#ci').val(),
-            fecha_nac: $('#fecha_nac').val(),
-            grado: $('#grado').val(),
-            telefono: $('#telefono').val(),
-            email: $('#email').val(),
-            genero_id: $('#genero_id').val(),
-            estado_id: $('#estado_id').val(),
-            municipio_id: $('#municipio_id').val(),
-            parroquia_id: $('#parroquia_id').val(),
-            sector: $('#sector').val(),
-            _token: $("input[name=_token]").val()
-          };
+      function registerSecretaria() {
+        var formData = {
+          nombre: $('#nombre').val(),
+          apellido: $('#apellido').val(),
+          ci: $('#ci').val(),
+          fecha_nac: $('#fecha_nac').val(),
+          grado: $('#grado').val(),
+          telefono: $('#telefono').val(),
+          email: $('#email').val(),
+          genero_id: $('#genero_id').val(),
+          estado_id: $('#estado_id').val(),
+          municipio_id: $('#municipio_id').val(),
+          parroquia_id: $('#parroquia_id').val(),
+          sector: $('#sector').val(),
+          _token: $("input[name=_token]").val()
+        };
 
-          $.ajax({
-            url: "{{ route('secretaria.store') }}",
-            type: "POST",
-            data: formData,
-            success: function(response) {
-              if (response.success) {
-                $('#registro-secretaria')[0].reset();
+        $.ajax({
+          url: "{{ route('secretaria.store') }}",
+          type: "POST",
+          data: formData,
+          success: function(response) {
+            if (response.success) {
+              $('#registro-secretaria')[0].reset();
 
-                $('#estado_id').val(null).trigger('change');
-                $('#municipio_id').val(null).trigger('change');
-                $('#parroquia_id').val(null).trigger('change');
+              $('#estado_id').val(null).trigger('change');
+              $('#municipio_id').val(null).trigger('change');
+              $('#parroquia_id').val(null).trigger('change');
 
-                $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+              $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
-                toastr.success(response.message, 'Éxito', {
-                  timeOut: 3000
-                });
-
-                tablaSecretaria.ajax.reload();
-
-                $('.nav-tabs a[href="#list"]').tab('show');
-              }
-            },
-            error: function(xhr) {
-              console.error(xhr.responseText);
-              toastr.error('Error al registrar.', 'Error', {
-                timeOut: 5000
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 3000
               });
+
+              tablaSecretaria.ajax.reload();
+
+              $('.nav-tabs a[href="#list"]').tab('show');
             }
-          });
-        }
+          },
+          error: function(xhr) {
+            console.error(xhr.responseText);
+            toastr.error('Error al registrar.', 'Error', {
+              timeOut: 5000
+            });
+          }
+        });
+      }
 
-        $("#paso1").show();
-        $("#paso2").hide();
+      $("#paso1").show();
+      $("#paso2").hide();
 
-        $("#siguiente1").click(function() {
-          let valid = true;
+      $("#siguiente1").click(function() {
+        let valid = true;
 
-          // Validar campos requeridos dentro de #paso1
-          $('#paso1 :input[required]').each(function() {
-            if ($(this).val() === '' || $(this).val() === null) {
-              $(this).addClass('is-invalid');
-              valid = false;
-            } else {
-              $(this).removeClass('is-invalid');
-            }
-          });
-
-          const emailInput = document.getElementById('email');
-          const emailValid = validarEmail(emailInput);
-          
-          // Validación final
-          if (valid && emailValid) {
-            $("#paso1").hide();
-            $("#paso2").show();
+        // Validar campos requeridos dentro de #paso1
+        $('#paso1 :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
           } else {
-            if (!emailValid) {
-              toastr.error("Por favor ingrese un email válido antes de continuar.");
-            } else {
-              toastr.error("Debe completar todos los campos requeridos del paso 1.");
-            }
+            $(this).removeClass('is-invalid');
           }
         });
 
-        $("#regresar").click(function() {
-          $("#paso2").hide();
-          $("#paso1").show();
-        });
-      });
-    </script>
+        const emailInput = document.getElementById('email');
+        const emailValid = validarEmail(emailInput);
 
-    <script>
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        // Validación final
+        if (valid && emailValid) {
+          $("#paso1").hide();
+          $("#paso2").show();
+        } else {
+          if (!emailValid) {
+            toastr.error("Por favor ingrese un email válido antes de continuar.");
+          } else {
+            toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          }
         }
       });
 
-      var id;
-      $(document).on('click', '.delete', function() {
-        id = $(this).attr('id');
-        $('#confirModal').modal('show');
+      $("#regresar").click(function() {
+        $("#paso2").hide();
+        $("#paso1").show();
+      });
+    });
+  </script>
+
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+
+    var id;
+    $(document).on('click', '.delete', function() {
+      id = $(this).attr('id');
+      $('#confirModal').modal('show');
+    });
+
+    $('#btnEliminar').click(function() {
+      $.ajax({
+        url: "/secretaria/" + id,
+        type: 'DELETE',
+        beforeSend: function() {
+          $('#btnEliminar').text('Eliminando...');
+        },
+        success: function(data) {
+          $('#confirModal').modal('hide');
+          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
+            timeOut: 5000
+          });
+          $('#tab-secretaria').DataTable().ajax.reload();
+        },
+        error: function(xhr, status, error) {
+          console.error('Error al eliminar el registro:', error);
+          toastr.error('No se pudo eliminar el registro', 'Error', {
+            timeOut: 5000
+          });
+        }
+      });
+    });
+  </script>
+  <script>
+    function editsecretaria(id) {
+      $.get('/secretaria/' + id + '/edit', function(secretaria) {
+        $('#id').val(secretaria.id);
+        $('#nombre2').val(secretaria.nombre);
+        $('#apellido2').val(secretaria.apellido);
+        $('#ci2').val(secretaria.ci);
+        $('#fecha_nac2').val(secretaria.fecha_nac);
+        $('#grado2').val(secretaria.grado);
+        $('#telefono2').val(secretaria.telefono);
+        $('#email2').val(secretaria.email);
+
+        if (secretaria.direccion) {
+          const estado = estados.find(e => e.id == secretaria.direccion.estado_id);
+          const municipio = municipios.find(m => m.id == secretaria.direccion.municipio_id);
+          const parroquia = parroquias.find(p => p.id == secretaria.direccion.parroquia_id);
+
+          setSelect2Preselection('#estado_id2', estado.id, estado.estado);
+          filterMunicipios(estado.id, municipio.id);
+          filterParroquias(municipio.id, parroquia.id);
+
+          $('#sector2').val(secretaria.direccion.sector);
+        }
+
+        $('#editsecretaria').modal('show');
+      });
+    }
+
+    $('#editsecretaria').on('shown.bs.modal', function() {
+      initSelect2('#estado_id2', 'Seleccione su estado');
+      initSelect2('#municipio_id2', 'Seleccione su municipio');
+      initSelect2('#parroquia_id2', 'Seleccione su parroquia');
+
+      $('#estado_id2').off('change').on('change', function() {
+        const estadoId = $(this).val();
+        clearSelect('#municipio_id2', 'Seleccione su municipio');
+        clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+        filterMunicipios(estadoId);
       });
 
-      $('#btnEliminar').click(function() {
+      $('#municipio_id2').off('change').on('change', function() {
+        const municipioId = $(this).val();
+        clearSelect('#parroquia_id2', 'Seleccione su parroquia');
+        filterParroquias(municipioId);
+      });
+    });
+
+    function initSelect2(selector, placeholder) {
+      $(selector).select2({
+        placeholder: placeholder,
+        width: '100%',
+        dropdownParent: $('#editsecretaria')
+      });
+    }
+
+    function setSelect2Preselection(selector, id, text) {
+      if ($(selector).find("option[value='" + id + "']").length === 0) {
+        $(selector).append(new Option(text, id, true, true)).trigger('change');
+      } else {
+        $(selector).val(id).trigger('change');
+      }
+    }
+
+    function clearSelect(selector, placeholder) {
+      $(selector).empty().append(`<option disabled selected>${placeholder}</option>`).val(null).trigger('change');
+    }
+
+    function filterMunicipios(estadoId, preselectedId = null) {
+      const filtered = municipios.filter(m => m.estado_id == estadoId);
+      $('#municipio_id2').empty().append('<option disabled selected>Seleccione su municipio</option>');
+      filtered.forEach(m => {
+        const option = new Option(m.municipio, m.id, false, m.id == preselectedId);
+        $('#municipio_id2').append(option);
+      });
+      $('#municipio_id2').trigger('change');
+    }
+
+    function filterParroquias(municipioId, preselectedId = null) {
+      const filtered = parroquias.filter(p => p.municipio_id == municipioId);
+      $('#parroquia_id2').empty().append('<option disabled selected>Seleccione su parroquia</option>');
+      filtered.forEach(p => {
+        const option = new Option(p.parroquia, p.id, false, p.id == preselectedId);
+        $('#parroquia_id2').append(option);
+      });
+      $('#parroquia_id2').trigger('change');
+    }
+  </script>
+
+  <script>
+    $(document).ready(function() {
+      $("#paso1_edit").show();
+      $("#paso2_edit").hide();
+
+      $("#siguiente1_edit").click(function() {
+        let valid = true;
+
+        $('#paso1_edit :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        const emailInputEdit = document.getElementById('email2');
+        const emailValidEdit = validarEmail(emailInputEdit);
+
+        if (valid && emailValidEdit) {
+          $("#paso1_edit").hide();
+          $("#paso2_edit").show();
+        } else {
+          if (!emailValidEdit) {
+            toastr.error("Por favor ingrese un email válido antes de continuar.");
+          } else {
+            toastr.error("Debe completar todos los campos requeridos del paso 1.");
+          }
+        }
+      });
+
+      $("#regresar_edit").click(function() {
+        $("#paso2_edit").hide();
+        $("#paso1_edit").show();
+      });
+
+      // Resetear fomulario en caso de volver a la vista
+      $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+        if (e.target.hash === '#list') {
+          $('#estado_id').val(null).trigger('change');
+          $('#municipio_id').val(null).trigger('change');
+          $('#parroquia_id').val(null).trigger('change');
+
+          $('#registro-secretaria')[0].reset();
+        }
+      });
+
+      $("#editar-secretaria").submit(function(event) {
+        event.preventDefault();
+
+        var id = $('#id').val();
+        var nombre = $('#nombre2').val();
+        var apellido = $('#apellido2').val();
+        var ci = $('#ci2').val();
+        var fecha_nac = $('#fecha_nac2').val();
+        var grado = $('#grado2').val();
+        var telefono = $('#telefono2').val();
+        var email = $('#email2').val();
+        var estado_id = $('#estado_id2').val();
+        var municipio_id = $('#municipio_id2').val();
+        var parroquia_id = $('#parroquia_id2').val();
+        var sector = $('#sector2').val();
+        var _token = $("input[name=_token]").val();
+
         $.ajax({
           url: "/secretaria/" + id,
-          type: 'DELETE',
-          beforeSend: function() {
-            $('#btnEliminar').text('Eliminando...');
+          type: "PUT",
+          data: {
+            id: id,
+            nombre: nombre,
+            apellido: apellido,
+            ci: ci,
+            fecha_nac: fecha_nac,
+            grado: grado,
+            telefono: telefono,
+            email: email,
+            estado_id: estado_id,
+            municipio_id: municipio_id,
+            parroquia_id: parroquia_id,
+            sector: sector,
+            _token: _token
           },
-          success: function(data) {
-            $('#confirModal').modal('hide');
-            toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-              timeOut: 5000
-            });
-            $('#tab-secretaria').DataTable().ajax.reload();
+          success: function(response) {
+            if (response.success) {
+              $('#editsecretaria').modal('hide');
+
+              $('#estado_id').val(null).trigger('change');
+              $('#municipio_id').val(null).trigger('change');
+              $('#parroquia_id').val(null).trigger('change');
+
+              toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
+                timeOut: 5000
+              });
+
+              $('#tab-secretaria').DataTable().ajax.reload();
+            } else {
+              alert('No se pudo actualizar el registro.');
+            }
           },
-          error: function(xhr, status, error) {
-            console.error('Error al eliminar el registro:', error);
-            toastr.error('No se pudo eliminar el registro', 'Error', {
-              timeOut: 5000
-            });
+          error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Error en la actualización:', textStatus, errorThrown);
+            alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
           }
         });
       });
-    </script>
-    <script>
-      function editsecretaria(id) {
-        $.get('/secretaria/' + id + '/edit', function(secretaria) {
-          $('#id').val(secretaria.id);
-          $('#nombre2').val(secretaria.nombre);
-          $('#apellido2').val(secretaria.apellido);
-          $('#ci2').val(secretaria.ci);
-          $('#fecha_nac2').val(secretaria.fecha_nac);
-          $('#grado2').val(secretaria.grado);
-          $('#telefono2').val(secretaria.telefono);
-          $('#email2').val(secretaria.email);
+    });
+  </script>
 
-          if (secretaria.direccion) {
-            const estado = estados.find(e => e.id == secretaria.direccion.estado_id);
-            const municipio = municipios.find(m => m.id == secretaria.direccion.municipio_id);
-            const parroquia = parroquias.find(p => p.id == secretaria.direccion.parroquia_id);
+  <script>
+    $(document).on('click', '.ver-secretaria', function() {
+      let secretariaId = $(this).data('id');
 
-            setSelect2Preselection('#estado_id2', estado.id, estado.estado);
-            filterMunicipios(estado.id, municipio.id);
-            filterParroquias(municipio.id, parroquia.id);
+      $.ajax({
+        url: '/secretarias/' + secretariaId,
+        type: 'GET',
+        dataType: 'json',
+        success: function(data) {
+          console.log("Datos del secretarias:", data);
 
-            $('#sector2').val(secretaria.direccion.sector);
-          }
+          let nombreApellido = data.nombre + " " + data.apellido;
+          let cedula = data.ci;
+          let fechaNacimiento = data.fecha_nac;
+          let grado = data.grado;
+          let telefono = data.telefono;
+          let email = data.email;
 
-          $('#editsecretaria').modal('show');
-        });
-      }
+          let genero = data.genero ? data.genero.genero : "No disponible";
 
-      $('#editsecretaria').on('shown.bs.modal', function() {
-        initSelect2('#estado_id2', 'Seleccione su estado');
-        initSelect2('#municipio_id2', 'Seleccione su municipio');
-        initSelect2('#parroquia_id2', 'Seleccione su parroquia');
+          let direccion =
+            `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
 
-        $('#estado_id2').off('change').on('change', function() {
-          const estadoId = $(this).val();
-          clearSelect('#municipio_id2', 'Seleccione su municipio');
-          clearSelect('#parroquia_id2', 'Seleccione su parroquia');
-          filterMunicipios(estadoId);
-        });
+          $('#secretariaModal #nombre').text(nombreApellido);
+          $('#secretariaModal #ci').text(cedula);
+          $('#secretariaModal #fecha_nac').text(fechaNacimiento);
+          $('#secretariaModal #grado').text(grado);
+          $('#secretariaModal #telefono').text(telefono);
+          $('#secretariaModal #email').text(email);
+          $('#secretariaModal #genero').text(genero);
+          $('#secretariaModal #direccion').text(direccion);
 
-        $('#municipio_id2').off('change').on('change', function() {
-          const municipioId = $(this).val();
-          clearSelect('#parroquia_id2', 'Seleccione su parroquia');
-          filterParroquias(municipioId);
-        });
-      });
-
-      function initSelect2(selector, placeholder) {
-        $(selector).select2({
-          placeholder: placeholder,
-          width: '100%',
-          dropdownParent: $('#editsecretaria')
-        });
-      }
-
-      function setSelect2Preselection(selector, id, text) {
-        if ($(selector).find("option[value='" + id + "']").length === 0) {
-          $(selector).append(new Option(text, id, true, true)).trigger('change');
-        } else {
-          $(selector).val(id).trigger('change');
+          $('#secretariaModal').modal('show');
+        },
+        error: function(xhr, status, error) {
+          console.error("Error al obtener los datos:", error);
+          alert("Hubo un problema al obtener la información del especialista.");
         }
-      }
-
-      function clearSelect(selector, placeholder) {
-        $(selector).empty().append(`<option disabled selected>${placeholder}</option>`).val(null).trigger('change');
-      }
-
-      function filterMunicipios(estadoId, preselectedId = null) {
-        const filtered = municipios.filter(m => m.estado_id == estadoId);
-        $('#municipio_id2').empty().append('<option disabled selected>Seleccione su municipio</option>');
-        filtered.forEach(m => {
-          const option = new Option(m.municipio, m.id, false, m.id == preselectedId);
-          $('#municipio_id2').append(option);
-        });
-        $('#municipio_id2').trigger('change');
-      }
-
-      function filterParroquias(municipioId, preselectedId = null) {
-        const filtered = parroquias.filter(p => p.municipio_id == municipioId);
-        $('#parroquia_id2').empty().append('<option disabled selected>Seleccione su parroquia</option>');
-        filtered.forEach(p => {
-          const option = new Option(p.parroquia, p.id, false, p.id == preselectedId);
-          $('#parroquia_id2').append(option);
-        });
-        $('#parroquia_id2').trigger('change');
-      }
-    </script>
-
-    <script>
-      $(document).ready(function() {
-        $("#paso1_edit").show();
-        $("#paso2_edit").hide();
-
-        $("#siguiente1_edit").click(function() {
-          let valid = true;
-
-          $('#paso1_edit :input[required]').each(function() {
-            if ($(this).val() === '' || $(this).val() === null) {
-              $(this).addClass('is-invalid');
-              valid = false;
-            } else {
-              $(this).removeClass('is-invalid');
-            }
-          });
-
-          const emailInputEdit = document.getElementById('email2');
-          const emailValidEdit = validarEmail(emailInputEdit);
-          
-          if (valid && emailValidEdit) {
-            $("#paso1_edit").hide();
-            $("#paso2_edit").show();
-          } else {
-            if (!emailValidEdit) {
-              toastr.error("Por favor ingrese un email válido antes de continuar.");
-            } else {
-              toastr.error("Debe completar todos los campos requeridos del paso 1.");
-            }
-          }
-        });
-
-        $("#regresar_edit").click(function() {
-          $("#paso2_edit").hide();
-          $("#paso1_edit").show();
-        });
-
-        // Resetear fomulario en caso de volver a la vista
-        $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-          if (e.target.hash === '#list') {
-            $('#estado_id').val(null).trigger('change');
-            $('#municipio_id').val(null).trigger('change');
-            $('#parroquia_id').val(null).trigger('change');
-
-            $('#registro-secretaria')[0].reset();
-          }
-        });
-
-        $("#editar-secretaria").submit(function(event) {
-          event.preventDefault();
-
-          var id = $('#id').val();
-          var nombre = $('#nombre2').val();
-          var apellido = $('#apellido2').val();
-          var ci = $('#ci2').val();
-          var fecha_nac = $('#fecha_nac2').val();
-          var grado = $('#grado2').val();
-          var telefono = $('#telefono2').val();
-          var email = $('#email2').val();
-          var estado_id = $('#estado_id2').val();
-          var municipio_id = $('#municipio_id2').val();
-          var parroquia_id = $('#parroquia_id2').val();
-          var sector = $('#sector2').val();
-          var _token = $("input[name=_token]").val();
-
-          $.ajax({
-            url: "/secretaria/" + id,
-            type: "PUT",
-            data: {
-              id: id,
-              nombre: nombre,
-              apellido: apellido,
-              ci: ci,
-              fecha_nac: fecha_nac,
-              grado: grado,
-              telefono: telefono,
-              email: email,
-              estado_id: estado_id,
-              municipio_id: municipio_id,
-              parroquia_id: parroquia_id,
-              sector: sector,
-              _token: _token
-            },
-            success: function(response) {
-              if (response.success) {
-                $('#editsecretaria').modal('hide');
-
-                $('#estado_id').val(null).trigger('change');
-                $('#municipio_id').val(null).trigger('change');
-                $('#parroquia_id').val(null).trigger('change');
-
-                toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
-                  timeOut: 5000
-                });
-
-                $('#tab-secretaria').DataTable().ajax.reload();
-              } else {
-                alert('No se pudo actualizar el registro.');
-              }
-            },
-            error: function(jqXHR, textStatus, errorThrown) {
-              console.error('Error en la actualización:', textStatus, errorThrown);
-              alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
-            }
-          });
-        });
       });
-    </script>
-
-    <script>
-      $(document).on('click', '.ver-secretaria', function() {
-        let secretariaId = $(this).data('id');
-
-        $.ajax({
-          url: '/secretarias/' + secretariaId,
-          type: 'GET',
-          dataType: 'json',
-          success: function(data) {
-            console.log("Datos del secretarias:", data);
-
-            let nombreApellido = data.nombre + " " + data.apellido;
-            let cedula = data.ci;
-            let fechaNacimiento = data.fecha_nac;
-            let grado = data.grado;
-            let telefono = data.telefono;
-            let email = data.email;
-
-            let genero = data.genero ? data.genero.genero : "No disponible";
-
-            let direccion =
-              `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
-
-            $('#secretariaModal #nombre').text(nombreApellido);
-            $('#secretariaModal #ci').text(cedula);
-            $('#secretariaModal #fecha_nac').text(fechaNacimiento);
-            $('#secretariaModal #grado').text(grado);
-            $('#secretariaModal #telefono').text(telefono);
-            $('#secretariaModal #email').text(email);
-            $('#secretariaModal #genero').text(genero);
-            $('#secretariaModal #direccion').text(direccion);
-
-            $('#secretariaModal').modal('show');
-          },
-          error: function(xhr, status, error) {
-            console.error("Error al obtener los datos:", error);
-            alert("Hubo un problema al obtener la información del especialista.");
-          }
-        });
-      });
-    </script>
-  @endsection
+    });
+  </script>
+@endsection

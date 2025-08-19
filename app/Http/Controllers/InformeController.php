@@ -33,20 +33,23 @@ class InformeController extends Controller
 		if ($request->ajax()) {
 			$informes = Informe::with(['paciente', 'especialista']);
 
-			if (!auth()->user()->hasRole(Role::ADMIN->value)) {
+			if (auth()->user()->hasRole(Role::ESPECIALISTA->value)) {
 				$informes->where('especialista_id', $especialista->id);
 			}
 
 			return DataTables::of($informes)
 				->addColumn('action', function ($informe) {
-					$acciones = '';
-
-					$acciones .= '<a href="' . route('informes.pdf', $informe->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank" title="Reporte"><i class="zmdi zmdi-file"></i></a>';
+					$acciones = '<a href="' . route('informes.pdf', $informe->id) . '" class="btn btn-primary btn-raised btn-xs" 
+													target="_blank" title="Reporte">
+												<i class="zmdi zmdi-file"></i>
+											</a>';
 
 					if (auth()->user()->can('eliminar informes')) {
-						$acciones .= '<button data-id="' . $informe->id . '" class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" title="Eliminar">
-                <i class="zmdi zmdi-delete"></i>
-            </button>';
+						$acciones .= '<button data-id="' . $informe->id . '" 
+																	class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" 
+																	title="Eliminar">
+														<i class="zmdi zmdi-delete"></i>
+													</button>';
 					}
 
 					return $acciones;
