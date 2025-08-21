@@ -93,9 +93,7 @@ class Paciente extends Model
 
   public function getTiempoTranscurridoAttribute()
   {
-    if (empty($this->fecha_nac)) {
-      return 'Fecha no disponible';
-    }
+    if (empty($this->fecha_nac)) return 'Fecha no disponible';
 
     $carbonFecha = Carbon::parse($this->fecha_nac);
     $ahora = Carbon::now();

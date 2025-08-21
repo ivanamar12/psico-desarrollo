@@ -15,7 +15,7 @@
   <link href='./css/fullcalendar/fullcalendar.min.css' rel='stylesheet' />
   <link href="./css/introjs.min.css" rel="stylesheet">
   <link href="./css/intro-custom.css" rel="stylesheet">
-   <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
+  <script src="{{ asset('js/jquery-3.1.1.min.js') }}"></script>
 </head>
 
 <body>
@@ -61,6 +61,7 @@
   <script src="./js/material.min.js"></script>
   <script src="./js/ripples.min.js"></script>
   <script src="./js/select2.min.js"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
   <script src="./js/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="./js/main.js"></script>
   <script src="./js/pruebas.js"></script>
@@ -75,7 +76,7 @@
   <script src="{{ asset('js/direccion.js') }}"></script>
   <script>
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
-</script>
+  </script>
   <script src="{{ asset('js/intro-tour.js') }}"></script>
   <script>
     /** this is the function for o'clock */

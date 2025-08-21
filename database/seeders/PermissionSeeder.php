@@ -54,6 +54,8 @@ class PermissionSeeder extends Seeder
     Permission::firstOrCreate(['name' => 'crear referencia']);
     Permission::firstOrCreate(['name' => 'eliminar referencia']);
     Permission::firstOrCreate(['name' => 'descargar referencia']);
+    // Constancia de asistencia
+    Permission::firstOrCreate(['name' => 'generar constancia-asistencia']);
 
     $admin = Role::where('name', EnumsRole::ADMIN)->first();
     $secretaria = Role::where('name', EnumsRole::SECRETARIA)->first();
@@ -146,7 +148,9 @@ class PermissionSeeder extends Seeder
         // Referencia 
         'crear referencia',
         'eliminar referencia',
-        'descargar referencia'
+        'descargar referencia',
+        // Constancias de asistencia
+        'generar constancia-asistencia'
       ]);
     }
   }

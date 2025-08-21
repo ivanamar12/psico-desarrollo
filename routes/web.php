@@ -181,6 +181,9 @@ Route::middleware('auth')->group(function () {
   Route::get('constancias-asistencia', [ConstanciaAsistenciaController::class, 'index'])
     ->name('constancias-asistencia.index');
 
+  Route::post('constancias-asistencia', [ConstanciaAsistenciaController::class, 'store'])
+    ->name('constancias-asistencia.store');
+
   /**
    * Citas
    */
