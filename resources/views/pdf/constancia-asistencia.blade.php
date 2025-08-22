@@ -31,15 +31,19 @@
       </h3>
     </section>
 
-    <section style="line-height: 1.6">
+    <section style="text-align: justify; line-height: 1.6">
       <p>
-        Se hace constar que el Niño:
-        <span style="text-decoration: underline; font-weight: bold">
-          {{ "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad," }}
-        </span> cursante de <span style="text-decoration: underline; font-weight: bold">4to
-          grado,</span> en el Colegio Privado: “Libertadores de Ribas”, en calidad de estudiante regular. Ha asistido a
-        evaluación e Intervención Psicológica los días: <span style="text-decoration: underline; font-weight: bold">03 y
-          11 de Noviembre del año 2023.</span>
+        <span>Se hace constar que el(la) Niño(a): </span><span
+          style="text-decoration: underline; font-weight: bold">{{ "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad," }}</span><span>
+          cursante de </span><span style="text-decoration: underline; font-weight: bold">
+          {{ $paciente->historiaclinicas[0]->historiaEscolar->modalidad_educacion }},</span>
+        {{ "en el {$paciente->historiaclinicas[0]->historiaEscolar->nombre_escuela}" }}, en calidad de estudiante
+        regular. Ha asistido a evaluación e Intervención Psicológica los días: <span
+          style="text-decoration: underline; font-weight: bold">
+          @foreach ($citas as $year)
+            {{ $year->map(fn($cita) => format_long_date($cita->fecha_consulta))->implode(', ', ' y ') }}
+          @endforeach
+        </span>.
       </p>
 
       <p>

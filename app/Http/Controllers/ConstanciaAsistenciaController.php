@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ConstanciaAsistencia\StoreConstanciaRequest;
 use App\Models\Cita;
 use App\Models\Especialista;
 use App\Models\Paciente;
@@ -26,31 +27,26 @@ class ConstanciaAsistenciaController extends Controller
     ]);
   }
 
-  public function store(Request $request)
+  public function store(StoreConstanciaRequest $request)
   {
-    $request->validate([
-      'paciente_id'         => 'required|exists:pacientes,id',
-      'especialista_id'     => 'required|exists:especialistas,id',
-      'citas_seleccionadas' => 'required|string',
-    ]);
-
-    $citasId = json_decode($request->input('citas_seleccionadas'));
-
-    if (json_last_error() !== JSON_ERROR_NONE) {
-      return back()->withErrors(['citas_seleccionadas' => 'Formato de JSON inválido.']);
-    }
-
     Carbon::setLocale('es');
     $now = Carbon::now();
+
+    $citasId = json_decode($request->input('citas_seleccionadas'));
+    if (json_last_error() !== JSON_ERROR_NONE) return back()->withErrors(['citas_seleccionadas' => 'Formato de JSON inválido.']);
+
+    $citas = Cita::whereIn('id', $citasId)->get();
+    $citasByYear = $citas->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->year);
 
     $pdf = Pdf::loadView('pdf.constancia-asistencia', [
       'paciente' => Paciente::find($request->paciente_id),
       'especialista' => Especialista::find($request->especialista_id),
-      'citas' => Cita::whereIn('id', $citasId)->get(),
+      'citas' => $citasByYear,
       'constancia' => [
-        'issueDate' => Carbon::parse($now)->isoFormat('DD \d\e MMMM \d\e YYYY'),
+        'issueDate' => format_long_date($now),
         'issueDateLong' => $now->day === 1
-          ? "al primer día" : "a los {$now->day} días" . " del mes de {$now->monthName} del año {$now->year}"
+          ? "al primer día"
+          : "a los {$now->day} días" . " del mes de {$now->monthName} del año {$now->year}"
       ]
     ])
       ->setPaper('letter', 'portrait');
