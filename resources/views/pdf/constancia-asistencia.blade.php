@@ -35,10 +35,14 @@
       <p>
         Se hace constar que el(la) Niño(a):
         <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['nombre_edad'] }},</span>
-        cursante de
-        <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['modalidad_educacion'] }},</span>
-        en el {{ $paciente['nombre_escuela'] }}, en calidad de estudiante regular. Ha asistido a evaluación e
-        Intervención Psicológica los días:
+        @if ($paciente['modalidad_educacion'] !== 'No especificada' && $paciente['nombre_escuela'] !== 'No especificada')
+          cursante de
+          <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['modalidad_educacion'] }},</span>
+          en el {{ $paciente['nombre_escuela'] }}, en calidad de estudiante regular.
+        @else
+          paciente de este centro.
+        @endif
+        Ha asistido a evaluación e Intervención Psicológica los días:
         <span style="text-decoration: underline; font-weight: bold;">{{ $citas }}.</span>
       </p>
 

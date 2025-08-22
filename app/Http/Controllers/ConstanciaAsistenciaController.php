@@ -53,20 +53,27 @@ class ConstanciaAsistenciaController extends Controller
             )->join(', ', ', y ') . " del año $key"
         )->join('. ');
 
+      $pacienteData = [
+        'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
+        'modalidad_educacion' => 'No especificada',
+        'nombre_escuela' => 'No especificada'
+      ];
+
+      if ($paciente->historiaclinicas->isNotEmpty() && $paciente->historiaclinicas[0]->historiaEscolar) {
+        $historiaEscolar = $paciente->historiaclinicas[0]->historiaEscolar;
+        $pacienteData['modalidad_educacion'] = $historiaEscolar->modalidad_educacion ?? 'No especificada';
+        $pacienteData['nombre_escuela'] = $historiaEscolar->nombre_escuela ?? 'No especificada';
+      }
+
       $pdf = Pdf::loadView('pdf.constancia-asistencia', [
-        'paciente' => [
-          'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
-          'modalidad_educacion' => $paciente->historiaclinicas[0]->historiaEscolar->modalidad_educacion,
-          'nombre_escuela' => $paciente->historiaclinicas[0]->historiaEscolar->nombre_escuela
-        ],
+        'paciente' => $pacienteData,
         'especialista' => Especialista::find($request->especialista_id),
         'citas' => $citasGrouped,
         'constancia' => [
           'issueDate' => format_long_date($now),
           'issueDateLong' => get_formal_date($now)
         ]
-      ])
-        ->setPaper('letter', 'portrait');
+      ])->setPaper('letter', 'portrait');
 
       return $pdf->stream();
     } catch (\Exception $e) {
