@@ -21,7 +21,7 @@
             <section class="tab-pane fade active in" id="new-constancia">
               <article class="container-fluid">
                 <form action="{{ route('constancias-asistencia.store') }}" method="POST"
-                  id="generar-constancia-asistencia-form">
+                  id="generar-constancia-asistencia-form" target="_blank">
                   @csrf
                   <section class="row">
                     <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -60,7 +60,16 @@
                   <section class="row" id="seccion-citas" style="display: none;">
                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                       <h3>II. Citas</h3>
-                      <article style="margin: 17px; display: flex; gap: 20px" id="lista-citas"></article>
+                      <article
+                        style="margin: 17px 0px; display: flex; gap: 15px; justify-content: center; flex-wrap: wrap"
+                        id="lista-citas"></article>
+
+                      <div class="alert alert-light" style="margin-top: 20px; color: inherit">
+                        <i class="zmdi zmdi-info-outline"></i>
+                        <strong>Instrucciones:</strong> Para seleccionar una cita, haga clic en la tarjeta
+                        correspondiente. La tarjeta se volverá verde cuando esté seleccionada. Para deseleccionar, haga
+                        clic nuevamente.
+                      </div>
                     </div>
                   </section>
 
@@ -125,6 +134,11 @@
         return `${d}-${m}-${y}`;
       }
 
+      function actualizarBotonGenerar() {
+        const tieneCitasSeleccionadas = citasSelected.some(cita => cita.isSelected);
+        $('#generar-constancia-asistencia').prop('disabled', !tieneCitasSeleccionadas);
+      }
+
       function renderCitas(citas) {
         const $listaCitas = $('#lista-citas');
         let html = '';
@@ -132,9 +146,10 @@
         citas.forEach(cita => {
           const panelClass = cita.isSelected ? 'panel-success' : 'panel-info';
           const itemClass = cita.isSelected ? 'cita-item-selected' : 'cita-item';
+          const shadowClass = cita.isSelected ? ' box-shadow: none; border: 1px solid #ddd;' : '';
           html += `
             <div data-id="${cita.id}" class="${itemClass} panel ${panelClass}" 
-              style="width: 170px; cursor: pointer">
+              style="width: 170px; cursor: pointer;${shadowClass}">
               <div class="panel-heading">
                 <h4 class="panel-title">
                   <i class="zmdi zmdi-calendar"></i> Cita #${cita.id}
@@ -148,6 +163,8 @@
           `;
         });
         $listaCitas.html(html);
+
+        actualizarBotonGenerar();
       }
 
       $('#lista-citas').on('click', '.cita-item, .cita-item-selected', function() {
