@@ -17,8 +17,12 @@ class ConstanciaAsistenciaController extends Controller
   public function index(): View
   {
     $especialista = Especialista::where('user_id', Auth::id())->first();
-    $pacientes = Paciente::with(['citas' => function ($q) {
+
+    $pacientes =  Paciente::with(['citas' => function ($q) use ($especialista) {
       $q->where('status', 'asistio');
+      if ($especialista) {
+        $q->where('especialista_id', $especialista->id);
+      }
     }])->get();
 
     return view('constancias-asistencia.index', [
