@@ -57,7 +57,7 @@
                     </div>
                   </section>
 
-                  <section class="row">
+                  <section class="row" id="seccion-citas" style="display: none;">
                     <div class="col-xs-12 col-md-10 col-md-offset-1">
                       <h3>II. Citas</h3>
                       <article style="margin: 17px; display: flex; gap: 20px" id="lista-citas"></article>
@@ -69,7 +69,7 @@
                   <section class="row" style="margin: 34px 0px">
                     @if (auth()->user()->can('generar constancia-asistencia'))
                       <div class="text-center">
-                        <button type="button" class="btn btn-regresar" style="color: white;"
+                        <button type="button" class="btn btn-custom" disabled style="color: white;"
                           id="generar-constancia-asistencia">
                           Generar Constancia
                         </button>
@@ -170,10 +170,13 @@
       $('#paciente_id').on('change', function() {
         const selectedOption = $(this).select2('data')[0];
         if (selectedOption && selectedOption.id) {
+          $('#seccion-citas').show();
+
           citasSelected = structuredClone(selectedOption.citas);
           renderCitas(citasSelected);
           renderHiddenInputs();
         } else {
+          $('#seccion-citas').hide();
           citasSelected = [];
           renderCitas(citasSelected);
           renderHiddenInputs();
