@@ -205,11 +205,13 @@
         allowClear: true,
         minimumInputLength: 1,
         data: pacientesFiltrados.map(paciente => {
-          const historia = paciente.historia_clinicas?.[0] || null;
+          const codigoHistoria = paciente.historiaclinicas && paciente.historiaclinicas.length > 0 ?
+            paciente.historiaclinicas[0].codigo :
+            'Sin historia clínica';
+
           return {
             id: paciente.id,
-            text: `${paciente.nombre} ${paciente.apellido} - Código: ${historia ? historia.codigo : 'Sin historia'}`,
-            historia: historia,
+            text: `${paciente.nombre} ${paciente.apellido} - Código: ${codigoHistoria}`,
             citas: paciente.citas,
             isSelected: false
           };
