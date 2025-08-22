@@ -33,17 +33,13 @@
 
     <section style="text-align: justify; line-height: 1.6">
       <p>
-        <span>Se hace constar que el(la) Niño(a): </span><span
-          style="text-decoration: underline; font-weight: bold">{{ "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad," }}</span><span>
-          cursante de </span><span style="text-decoration: underline; font-weight: bold">
-          {{ $paciente->historiaclinicas[0]->historiaEscolar->modalidad_educacion }},</span>
-        {{ "en el {$paciente->historiaclinicas[0]->historiaEscolar->nombre_escuela}" }}, en calidad de estudiante
-        regular. Ha asistido a evaluación e Intervención Psicológica los días: <span
-          style="text-decoration: underline; font-weight: bold">
-          @foreach ($citas as $year)
-            {{ $year }}
-          @endforeach
-        </span>.
+        Se hace constar que el(la) Niño(a):
+        <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['nombre_edad'] }},</span>
+        cursante de
+        <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['modalidad_educacion'] }},</span>
+        en el {{ $paciente['nombre_escuela'] }}, en calidad de estudiante regular. Ha asistido a evaluación e
+        Intervención Psicológica los días:
+        <span style="text-decoration: underline; font-weight: bold;">{{ $citas }}.</span>
       </p>
 
       <p>

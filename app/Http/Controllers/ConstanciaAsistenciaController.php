@@ -36,32 +36,30 @@ class ConstanciaAsistenciaController extends Controller
     if (json_last_error() !== JSON_ERROR_NONE) return back()->withErrors(['citas_seleccionadas' => 'Formato de JSON inválido.']);
 
     $citas = Cita::whereIn('id', $citasId)->get();
+    $paciente = Paciente::find($request->paciente_id);
 
     $citasGrouped = $citas->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->year)
       ->map(
-        fn($year) =>
+        fn($year, $key) =>
         $year->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->monthName)
           ->map(
-            fn($month) =>
+            fn($month, $key) =>
             $month->map(fn($cita) => $cita->fecha_consulta = Carbon::parse($cita->fecha_consulta)->day)
-          )
-      );
-
-    dd($citasGrouped->map(function ($year, $key) {
-      return $year->map(function ($month, $key) {
-        return "{$month->join(', ', ' y ')} de $key";
-      })->join(', ', ', y ') . " del $key";
-    }));
+              ->join(', ', ' y ') . " de $key"
+          )->join(', ', ', y ') . " del año $key"
+      )->join('. ');
 
     $pdf = Pdf::loadView('pdf.constancia-asistencia', [
-      'paciente' => Paciente::find($request->paciente_id),
+      'paciente' => [
+        'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
+        'modalidad_educacion' => $paciente->historiaclinicas[0]->historiaEscolar->modalidad_educacion,
+        'nombre_escuela' => $paciente->historiaclinicas[0]->historiaEscolar->nombre_escuela
+      ],
       'especialista' => Especialista::find($request->especialista_id),
       'citas' => $citasGrouped,
       'constancia' => [
         'issueDate' => format_long_date($now),
-        'issueDateLong' => $now->day === 1
-          ? "al primer día"
-          : "a los {$now->day} días" . " del mes de {$now->monthName} del año {$now->year}"
+        'issueDateLong' => get_formal_date($now)
       ]
     ])
       ->setPaper('letter', 'portrait');
