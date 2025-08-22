@@ -36,12 +36,27 @@ class ConstanciaAsistenciaController extends Controller
     if (json_last_error() !== JSON_ERROR_NONE) return back()->withErrors(['citas_seleccionadas' => 'Formato de JSON inválido.']);
 
     $citas = Cita::whereIn('id', $citasId)->get();
-    $citasByYear = $citas->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->year);
+
+    $citasGrouped = $citas->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->year)
+      ->map(
+        fn($year) =>
+        $year->groupBy(fn($cita) => Carbon::parse($cita->fecha_consulta)->monthName)
+          ->map(
+            fn($month) =>
+            $month->map(fn($cita) => $cita->fecha_consulta = Carbon::parse($cita->fecha_consulta)->day)
+          )
+      );
+
+    dd($citasGrouped->map(function ($year, $key) {
+      return $year->map(function ($month, $key) {
+        return "{$month->join(', ', ' y ')} de $key";
+      })->join(', ', ', y ') . " del $key";
+    }));
 
     $pdf = Pdf::loadView('pdf.constancia-asistencia', [
       'paciente' => Paciente::find($request->paciente_id),
       'especialista' => Especialista::find($request->especialista_id),
-      'citas' => $citasByYear,
+      'citas' => $citasGrouped,
       'constancia' => [
         'issueDate' => format_long_date($now),
         'issueDateLong' => $now->day === 1

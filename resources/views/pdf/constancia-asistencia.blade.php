@@ -41,7 +41,7 @@
         regular. Ha asistido a evaluación e Intervención Psicológica los días: <span
           style="text-decoration: underline; font-weight: bold">
           @foreach ($citas as $year)
-            {{ $year->map(fn($cita) => format_long_date($cita->fecha_consulta))->implode(', ', ' y ') }}
+            {{ $year }}
           @endforeach
         </span>.
       </p>
