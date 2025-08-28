@@ -192,9 +192,11 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   // FVP solo números
-  document.getElementById("fvp").addEventListener("keypress", function (e) {
-    if (e.key < "0" || e.key > "9") e.preventDefault();
-  });
+  if (document.getElementById("fvp")) {
+    document.getElementById("fvp").addEventListener("keypress", function (e) {
+      if (e.key < "0" || e.key > "9") e.preventDefault();
+    });
+  }
 });
 
 // ========== VALIDACIONES REMOTAS (GLOBALES) ==========

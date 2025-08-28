@@ -38,4 +38,22 @@ class StoreSecretariaRequest extends FormRequest
       'sector' => 'required|string|min:10|max:80',
     ];
   }
+
+  public function attributes()
+  {
+    return [
+      'nombre' => 'nombre',
+      'apellido' => 'apellido',
+      'ci' => 'cédula de identidad',
+      'fecha_nac' => 'fecha de nacimiento',
+      'grado' => 'grado',
+      'telefono' => 'teléfono',
+      'email' => 'correo electrónico',
+      'genero_id' => 'género',
+      'estado_id' => 'estado',
+      'municipio_id' => 'municipio',
+      'parroquia_id' => 'parroquia',
+      'sector' => 'sector',
+    ];
+  }
 }

@@ -1,8 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Especialidades')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -72,7 +77,7 @@
   </section>
 
   <!-- Modal editar -->
-  <div class="modal fade" id="modalEditarEspecialidad" tabindex="-1" role="dialog">
+  <section class="modal fade" id="modalEditarEspecialidad" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -100,15 +105,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
 @endsection
 
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       var tablaEspecialidad = $('#tab-especialidad').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,

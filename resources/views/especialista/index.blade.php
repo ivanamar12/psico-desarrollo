@@ -1,14 +1,22 @@
-@extends('layouts.app')
+@extends('layouts.root')
+
 @section('title', 'Especialistas')
+
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
 
-    <!-- Content page -->
     <!-- Page title -->
     <x-page-header title="Especialistas" icon="zmdi zmdi-male-female zmdi-hc-fw" />
-    <div class="container-fluid">
+
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -192,14 +200,14 @@
                 </div>
               </div>
             </section>
-
           </section>
         </div>
       </div>
+    </section>
   </section>
 
   <!-- modal eliminar -->
-  <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -218,9 +226,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
   <!-- Modal editar -->
-  <div class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+  <section class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content rounded shadow-lg">
@@ -337,10 +346,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- modal mostrar especialista -->
-  <div id="especialistaModal" class="modal fade" tabindex="-1" role="dialog">
+  <section id="especialistaModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -366,20 +375,28 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+  <script src="{{ asset('js/app/validaciones.js') }}"></script>
+  <script src="{{ asset('js/app/direccion.js') }}"></script>
+
   <script>
     const estados = @json($estados);
     const municipios = @json($municipios);
     const parroquias = @json($parroquias);
   </script>
+
   <script>
     $(document).ready(function() {
       var tablaEspecialista = $('#tab-especialista').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -506,10 +523,18 @@
             }
           },
           error: function(xhr) {
-            console.error(xhr.responseText);
-            toastr.error('Error al registrar.', 'Error', {
-              timeOut: 5000
-            });
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al guardar el especialista.', 'Error');
+            }
           }
         });
       }
@@ -552,6 +577,7 @@
       });
     });
   </script>
+
   <script>
     function editespecialista(id) {
       $.get('/especialista/' + id + '/edit', function(especialista) {
@@ -641,6 +667,7 @@
       $('#parroquia_id2').trigger('change');
     }
   </script>
+
   <script>
     $(document).ready(function() {
       $("#paso1_edit").show();
@@ -738,6 +765,7 @@
       });
     });
   </script>
+
   <script>
     $(document).on('click', '.ver-especialista', function() {
       let especialistaId = $(this).data('id');

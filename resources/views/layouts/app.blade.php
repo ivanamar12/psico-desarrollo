@@ -50,7 +50,7 @@
   <script src='./js/fullcalendar/fullcalendar.min.js'></script>
   <script src="./js/chart/chart.js"></script>
   <script src="{{ asset('js/intro.min.js') }}"></script>
-  <script src="{{ asset('js/validaciones.js') }}"></script>
+  <script src="{{ asset('js/app/validaciones.js') }}"></script>
   <script src="{{ asset('js/direccion.js') }}"></script>
   <script>
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
