@@ -151,7 +151,7 @@
             });
             tablaNotificaciones.ajax.reload();
             // Esta funcion la obtenemos de el componente de notificaciones
-            cargarNotificaciones();
+            window.cargarNotificaciones();
           }
         }).fail(function(xhr) {
           toastr.error(xhr.responseJSON.message, 'Error', {

@@ -1,6 +1,6 @@
 // Este script necesita jquery
 $(document).ready(function () {
-  function cargarNotificaciones() {
+  window.cargarNotificaciones = function () {
     $.get("/api/notificaciones", function (data) {
       let html = "";
 
@@ -51,7 +51,7 @@ $(document).ready(function () {
         </section>
       `);
     });
-  }
+  };
 
   function updateNotificationCount(count) {
     const badgeElement = $(".btn-Notifications-count .badge");
@@ -69,5 +69,5 @@ $(document).ready(function () {
     }
   }
 
-  cargarNotificaciones();
+  window.cargarNotificaciones();
 });

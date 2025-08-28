@@ -4,7 +4,7 @@
   \****************************************/
 // Este script necesita jquery
 $(document).ready(function () {
-  function cargarNotificaciones() {
+  window.cargarNotificaciones = function () {
     $.get("/api/notificaciones", function (data) {
       var html = "";
       updateNotificationCount(data.unread_count);
@@ -20,7 +20,7 @@ $(document).ready(function () {
     }).fail(function () {
       $("#notifications-container").html("\n        <section style=\"padding: 20px; text-align: center; color: #666;\">\n          <i class=\"zmdi zmdi-alert-circle\" style=\"font-size: 40px; display: block; margin-bottom: 10px;\"></i>\n          <span style=\"font-size: 16px;\">Error al cargar las notificaciones</span>\n        </section>\n      ");
     });
-  }
+  };
   function updateNotificationCount(count) {
     var badgeElement = $(".btn-Notifications-count .badge");
     if (count > 0) {
@@ -33,7 +33,7 @@ $(document).ready(function () {
       badgeElement.remove();
     }
   }
-  cargarNotificaciones();
+  window.cargarNotificaciones();
 });
 /******/ })()
 ;
