@@ -45,6 +45,9 @@
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
   </script>
   <script src="{{ asset('js/intro-tour.js') }}"></script>
+
+  {{-- Notificaciones --}}
+  <script src="{{ asset('js/app/notificaciones.js') }}"></script>
   {{-- Reloj --}}
   <script src="{{ asset('js/app/reloj.js') }}"></script>
   {{-- Nav Dropdown --}}

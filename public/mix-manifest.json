@@ -2,6 +2,7 @@
     "/js/especialistas.js": "/js/especialistas.js",
     "/js/registroespecialista.js": "/js/registroespecialista.js",
     "/js/telefonovalidacion.js": "/js/telefonovalidacion.js",
+    "/js/app/notificaciones.js": "/js/app/notificaciones.js",
     "/js/app/reloj.js": "/js/app/reloj.js",
     "/js/app/dropdown.js": "/js/app/dropdown.js",
     "/js/app.js": "/js/app.js",

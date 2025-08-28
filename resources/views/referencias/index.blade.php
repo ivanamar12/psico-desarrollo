@@ -1,8 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Referencias')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -242,6 +248,10 @@
 @endsection
 
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+
   <script>
     $(function() {
       const pacientes = @json($pacientes);
@@ -252,7 +262,6 @@
         minimumInputLength: 1,
         ajax: {
           transport: function(params, success) {
-            console.log(params)
             const term = (params.data.term || '').toLowerCase().trim();
 
             const results = pacientes.map(p => {
