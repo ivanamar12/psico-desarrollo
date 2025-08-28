@@ -1,8 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Notificaciones')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -70,9 +75,12 @@
       </div>
     </div>
   </section>
+
 @endsection
 
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       var tablaNotificaciones = $('#tab-notificaciones').DataTable({

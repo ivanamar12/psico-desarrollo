@@ -5,7 +5,7 @@
       <span>Notificaciones</span>
       <i class="zmdi zmdi-close btn-Notifications-area"></i>
     </div>
-    <div onclick="verTodasNotificaciones()"
+    <div onclick="window.location.href = `{{ route('notificaciones.index') }}`"
       style="background: lightgray; border: none; cursor: pointer; font-size: 14px; text-align: center; padding: 8px; transition: background 0.3s ease;"
       onmouseover="this.style.background='#bbb'" onmouseout="this.style.background='lightgray'">
       <span>

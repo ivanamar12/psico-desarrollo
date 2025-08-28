@@ -122,7 +122,7 @@
 
   <!-- Footer -->
   <footer>
-    <p>© {{ now()->format('Y') }} PsicoDesarrollo. Todos los derechos reservados.</p>
+    <p>© {{ now()->year }} PsicoDesarrollo. Todos los derechos reservados.</p>
   </footer>
 
   <!-- Modal de Iniciar Sesión -->
@@ -212,7 +212,7 @@
     });
   </script>
 
-  <script src="{{ asset('js/jquery.min.js') }}"></script>
+  <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
   <script>
     $(document).ready(function() {
       $('.close-btn').click(function() {

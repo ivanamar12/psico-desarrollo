@@ -20,7 +20,7 @@ $(document).ready(function () {
             : "background: #e0e0e0;";
 
           html += `
-            <section onclick="marcarLeida('${notification.id}')" style="${bgStyle} padding: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid lightgray; cursor: pointer">
+            <section onclick="window.location.href = '/notificaciones/redirigir/${notification.id}'" style="${bgStyle} padding: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid lightgray; cursor: pointer">
               <article style="width: 40px !important; height: 40px; display: flex; justify-content: center; align-items: center; border: 2px solid lightgray; border-radius: 50%; background-color: #f0f0f0; margin: 0">
                 <i class="zmdi zmdi-notifications-none" style="font-size: 20px; color: gray;"></i>
               </article>
@@ -67,14 +67,6 @@ $(document).ready(function () {
     } else {
       badgeElement.remove();
     }
-  }
-
-  function marcarLeida(id) {
-    window.location.href = `/notificaciones/redirigir/${id}`;
-  }
-
-  function verTodasNotificaciones() {
-    window.location.href = `{{ route('notificaciones.index') }}`;
   }
 
   cargarNotificaciones();

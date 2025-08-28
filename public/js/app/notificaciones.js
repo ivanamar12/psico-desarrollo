@@ -13,7 +13,7 @@ $(document).ready(function () {
       } else {
         data.notifications.forEach(function (notification) {
           var bgStyle = notification.read_at ? "background: #fff;" : "background: #e0e0e0;";
-          html += "\n            <section onclick=\"marcarLeida('".concat(notification.id, "')\" style=\"").concat(bgStyle, " padding: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid lightgray; cursor: pointer\">\n              <article style=\"width: 40px !important; height: 40px; display: flex; justify-content: center; align-items: center; border: 2px solid lightgray; border-radius: 50%; background-color: #f0f0f0; margin: 0\">\n                <i class=\"zmdi zmdi-notifications-none\" style=\"font-size: 20px; color: gray;\"></i>\n              </article>\n              <article>\n                <div style=\"display: flex; flex-direction: column\">\n                  <span style=\"font-size: 14px; font-weight: 600\">\n                    ").concat(notification.data.title, "\n                  </span>\n                  <span style=\"font-size: 12px;\">\n                    ").concat(notification.data.message, "\n                  </span>\n                  <span style=\"font-size: 12px; color: #1abc9c\">\n                    ").concat(notification.created_at, "\n                  </span>\n                </div>\n              </article>\n            </section>\n          ");
+          html += "\n            <section onclick=\"window.location.href = '/notificaciones/redirigir/".concat(notification.id, "'\" style=\"").concat(bgStyle, " padding: 10px; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid lightgray; cursor: pointer\">\n              <article style=\"width: 40px !important; height: 40px; display: flex; justify-content: center; align-items: center; border: 2px solid lightgray; border-radius: 50%; background-color: #f0f0f0; margin: 0\">\n                <i class=\"zmdi zmdi-notifications-none\" style=\"font-size: 20px; color: gray;\"></i>\n              </article>\n              <article>\n                <div style=\"display: flex; flex-direction: column\">\n                  <span style=\"font-size: 14px; font-weight: 600\">\n                    ").concat(notification.data.title, "\n                  </span>\n                  <span style=\"font-size: 12px;\">\n                    ").concat(notification.data.message, "\n                  </span>\n                  <span style=\"font-size: 12px; color: #1abc9c\">\n                    ").concat(notification.created_at, "\n                  </span>\n                </div>\n              </article>\n            </section>\n          ");
         });
       }
       $("#notifications-container").html(html);
@@ -32,12 +32,6 @@ $(document).ready(function () {
     } else {
       badgeElement.remove();
     }
-  }
-  function marcarLeida(id) {
-    window.location.href = "/notificaciones/redirigir/".concat(id);
-  }
-  function verTodasNotificaciones() {
-    window.location.href = "{{ route('notificaciones.index') }}";
   }
   cargarNotificaciones();
 });
