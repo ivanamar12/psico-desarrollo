@@ -211,41 +211,41 @@
         </section>
 
         <section class="tab-pane" data-tab="escolarizacion-modalidades">
-            <section class="container-fluid">
-                <section style="padding: 12px">
-                    <h2>Escolarización y Modalidades de Educación</h2>
-                </section>
-
-                <section class="row">
-                    <!-- Gráfico de Escolarización -->
-                    <article class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading text-titles text-center">
-                                <i class="zmdi zmdi-school"></i> &nbsp; EScolarización
-                            </div>
-                            <div class="panel-body">
-                                <div class="chart-container" style="position: relative; height:300px; width:100%">
-                                    <canvas id="graficaEscolarizacion"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-
-                    <!-- Gráfico de Modalidades de Educación -->
-                    <article class="col-md-6">
-                        <div class="panel panel-default">
-                            <div class="panel-heading text-titles text-center">
-                                <i class="zmdi zmdi-library"></i> &nbsp; Modalidades de Educación
-                            </div>
-                            <div class="panel-body">
-                                <div class="chart-container" style="position: relative; height:300px; width:100%">
-                                    <canvas id="graficaModalidades"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                </section>
+          <section class="container-fluid">
+            <section style="padding: 12px">
+              <h2>Escolarización y Modalidades de Educación</h2>
             </section>
+
+            <section class="row">
+              <!-- Gráfico de Escolarización -->
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-school"></i> &nbsp; Escolarización
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaEscolarizacion"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <!-- Gráfico de Modalidades de Educación -->
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-library"></i> &nbsp; Modalidades de Educación
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaModalidades"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </section>
+          </section>
         </section>
 
         <!-- Otra pestaña -->
@@ -264,7 +264,6 @@
         </section>
       </section>
     </section>
-
   </main>
 
 @endsection
@@ -484,89 +483,90 @@
           // Mostrar mensaje de error al usuario si lo deseas
         });
     });
-fetch("{{ route('estadisticas.escolarizacion') }}")
-    .then((response) => {
+
+    fetch("{{ route('estadisticas.escolarizacion') }}")
+      .then((response) => {
         if (!response.ok) throw new Error("Error en la respuesta del servidor");
         return response.json();
-    })
-    .then((data) => {
+      })
+      .then((data) => {
         const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
         const colorTexto = "#333";
 
         // Gráfica de Dona (Escolarización)
         new Chart(document.getElementById("graficaEscolarizacion"), {
-            type: "doughnut", 
-            data: {
-                labels: Object.keys(data.escolarizados),
-                datasets: [{
-                    label: "Cantidad de Pacientes",
-                    data: Object.values(data.escolarizados),
-                    backgroundColor: ["#4CAF50", "#FF6384"],
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: "bottom",
-                        labels: {
-                            font: {
-                                family: fontFamily,
-                                size: 12
-                            },
-                            color: colorTexto,
-                        },
-                    },
-                    tooltip: {
-                        bodyFont: {
-                            family: fontFamily
-                        }
-                    },
+          type: "doughnut",
+          data: {
+            labels: Object.keys(data.escolarizados),
+            datasets: [{
+              label: "Cantidad de Pacientes",
+              data: Object.values(data.escolarizados),
+              backgroundColor: ["#4CAF50", "#FF6384"],
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  font: {
+                    family: fontFamily,
+                    size: 12
+                  },
+                  color: colorTexto,
                 },
+              },
+              tooltip: {
+                bodyFont: {
+                  family: fontFamily
+                }
+              },
             },
+          },
         });
 
         // Gráfica de Dona (Modalidades de Educación)
         new Chart(document.getElementById("graficaModalidades"), {
-            type: "bar", 
-            data: {
-                labels: Object.keys(data.modalidades),
-                datasets: [{
-                    label: "Cantidad de Pacientes",
-                    data: Object.values(data.modalidades),
-                    backgroundColor: ["#4CAF50", "#FF6384", "#FFCE56"],
-                    borderWidth: 1,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: "bottom",
-                        labels: {
-                            font: {
-                                family: fontFamily,
-                                size: 12
-                            },
-                            color: colorTexto,
-                        },
-                    },
-                    tooltip: {
-                        bodyFont: {
-                            family: fontFamily
-                        }
-                    },
+          type: "bar",
+          data: {
+            labels: Object.keys(data.modalidades),
+            datasets: [{
+              label: "Cantidad de Pacientes",
+              data: Object.values(data.modalidades),
+              backgroundColor: ["#4CAF50", "#FF6384", "#FFCE56"],
+              borderWidth: 1,
+            }],
+          },
+          options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+              legend: {
+                position: "bottom",
+                labels: {
+                  font: {
+                    family: fontFamily,
+                    size: 12
+                  },
+                  color: colorTexto,
                 },
+              },
+              tooltip: {
+                bodyFont: {
+                  family: fontFamily
+                }
+              },
             },
+          },
         });
-    })
-    .catch((error) => {
+      })
+      .catch((error) => {
         console.error("Error al cargar datos:", error);
         // Mostrar mensaje de error al usuario si lo deseas
-    });
+      });
   </script>
   <script>
     function iniciarAyuda() {

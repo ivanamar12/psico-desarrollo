@@ -1,11 +1,16 @@
-@extends('layouts.app')
+@extends('layouts.root')
+
 @section('title', 'Bítacora')
+
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
-
-    <!-- Content page -->
 
     <!-- Page title -->
     <x-page-header title="Bítacora" icon="zmdi zmdi-male-female zmdi-hc-fw" />
@@ -40,11 +45,14 @@
   </section>
 
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+
   <script>
     var tablaAuditLogs = $('#tab-auditLogs').DataTable({
       language: {
-        url: './js/datatables/es-ES.json',
+        url: "{{ asset('js/datatables/es-ES.json') }}",
       },
       processing: true,
       serverSide: true,
@@ -72,27 +80,4 @@
       ]
     });
   </script>
-  <script>
-    $(document).ready(function() {
-      $("#paso1").show();
-
-      $("#siguiente1").click(function() {
-        $("#paso1").hide();
-        $("#paso2").show();
-      });
-
-      $("#regresar").click(function() {
-        $("#paso2").hide();
-        $("#paso1").show();
-      });
-    });
-  </script>
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-  </script>
-
 @endsection
