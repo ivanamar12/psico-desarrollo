@@ -38,7 +38,7 @@
   <script src="./js/bootstrap.min.js"></script>
   <script src="./js/material.min.js"></script>
   <script src="./js/ripples.min.js"></script>
-  <script src="./js/select2.min.js"></script>
+  <script src="./js/select2/select2.min.js"></script>
   <script src="{{ asset('js/select2/es.js') }}"></script>
   <script src="./js/jquery.mCustomScrollbar.concat.min.js"></script>
   <script src="./js/main.js"></script>
@@ -56,6 +56,9 @@
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
   </script>
   <script src="{{ asset('js/intro-tour.js') }}"></script>
+
+  {{-- Notificaciones --}}
+  <script src="{{ asset('js/app/notificaciones.js') }}"></script>
   {{-- Reloj --}}
   <script src="{{ asset('js/app/reloj.js') }}"></script>
   {{-- Nav Dropdown --}}

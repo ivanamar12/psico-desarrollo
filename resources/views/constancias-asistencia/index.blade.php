@@ -1,8 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Constancias de Asistencia')
 
+@section('css')
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -102,6 +107,9 @@
 @endsection
 
 @section('js')
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+
   <script>
     const errors = @json($errors->all())
 
