@@ -1,8 +1,13 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Perfil')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -10,7 +15,7 @@
     <!-- Page title -->
     <x-page-header title="Perfil de Usuario" icon="zmdi zmdi-account-circle zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -75,12 +80,11 @@
           </div>
         </div>
       </div>
-    </div>
-    </div>
+    </section>
   </section>
 
   <!-- Modal para Editar Usuario -->
-  <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="modalEditarLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -142,9 +146,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="modal fade" id="verUsuarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
+  <section class="modal fade" id="verUsuarioModal" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -161,9 +165,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
   <!-- Modal de Confirmación -->
-  <div class="modal fade" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel"
+  <section class="modal fade" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel"
     aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -182,10 +187,13 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       $('#btnEditarPerfil').on('click', function() {
@@ -220,9 +228,13 @@
       });
     });
   </script>
+
   <script>
     $(document).ready(function() {
       $('#tab-historias').DataTable({
+        language: {
+          url: "{{ asset('js/datatables/es-ES.json') }}",
+        },
         processing: true,
         serverSide: true,
         ajax: "{{ route('perfil.list') }}",
@@ -315,6 +327,7 @@
       });
     });
   </script>
+
   <script>
     $(document).ready(function() {
       function validarPassword(password) {
