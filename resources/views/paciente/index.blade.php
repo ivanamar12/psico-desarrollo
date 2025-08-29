@@ -1,8 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Pacientes')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -10,7 +16,7 @@
     <!-- Page title -->
     <x-page-header title="Pacientes" icon="zmdi zmdi-male-female zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -255,9 +261,10 @@
           </section>
         </div>
       </div>
-    </div>
+    </section>
   </section>
-  <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -276,9 +283,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
   <!-- modal mostrar paciente -->
-  <div id="pacienteModal" class="modal fade" tabindex="-1" role="dialog">
+  <section id="pacienteModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -301,9 +309,16 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+  <script src="{{ asset('js/app/validaciones.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       const representantes = @json($representantes);
@@ -337,7 +352,7 @@
     $(document).ready(function() {
       var tablaPaciente = $('#tab-paciente').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -520,8 +535,19 @@
               $('.nav-tabs a[href="#list"]').tab('show');
             }
           },
-          error: function(xhr, status, error) {
-            toastr.error("Error al registrar el paciente: " + xhr.responseText);
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al guardar el paciente.', 'Error');
+            }
           }
         });
       });

@@ -48,6 +48,7 @@ class PacienteController extends Controller
     $municipios = Municipio::all();
     $parroquias = Parroquia::all();
     $datosEconomicos = DatosEconomico::all();
+
     return view('paciente.index', [
       'pacientes' => $pacientes,
       'representantes' => $representantes,

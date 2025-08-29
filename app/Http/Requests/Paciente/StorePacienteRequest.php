@@ -51,4 +51,35 @@ class StorePacienteRequest extends FormRequest
       'observacion' => 'nullable|string|max:500',
     ];
   }
+
+  public function attributes()
+  {
+    return [
+      'nombre' => 'nombre',
+      'apellido' => 'apellido',
+      'fecha_nac' => 'fecha de nacimiento',
+      'representante_id' => 'representante',
+      'tipo_vivienda' => 'tipo de vivienda',
+      'cantidad_habitaciones' => 'cantidad de habitaciones',
+      'cantidad_personas' => 'cantidad de personas',
+      'servecio_agua_potable' => 'servicio de agua potable',
+      'servecio_gas' => 'servicio de gas',
+      'servecio_electricidad' => 'servicio de electricidad',
+      'servecio_drenaje' => 'servicio de drenaje',
+      'disponibilidad_internet' => 'disponibilidad de internet',
+      'tipo_conexion_internet' => 'tipo de conexión a internet',
+      'acceso_servcios_publicos' => 'acceso a servicios públicos',
+      'fuente_ingreso_familiar' => 'fuente de ingreso familiar',
+      'familiares' => 'familiares',
+      'familiares.*.nombre' => 'nombre del familiar',
+      'familiares.*.apellido' => 'apellido del familiar',
+      'familiares.*.fecha_nac' => 'fecha de nacimiento del familiar',
+      'familiares.*.parentesco' => 'parentesco del familiar',
+      'familiares.*.discapacidad' => 'discapacidad del familiar',
+      'familiares.*.tipo_discapacidad' => 'tipo de discapacidad del familiar',
+      'familiares.*.enfermedad_cronica' => 'enfermedad crónica del familiar',
+      'familiares.*.tipo_enfermedad' => 'tipo de enfermedad del familiar',
+      'observacion' => 'observación',
+    ];
+  }
 }

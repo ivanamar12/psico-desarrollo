@@ -163,19 +163,24 @@ document.addEventListener("DOMContentLoaded", function () {
   // Teléfonos
   const tel1 = document.getElementById("telefono");
   const tel2 = document.getElementById("telefono2");
-  tel1.addEventListener("input", function () {
-    validarTelefonoInput(this);
-  });
-  tel1.addEventListener("blur", function () {
-    validarTelefonoRango(this);
-  });
 
-  tel2.addEventListener("input", function () {
-    validarTelefonoInput(this);
-  });
-  tel2.addEventListener("blur", function () {
-    validarTelefonoRango(this);
-  });
+  if (tel1) {
+    tel1.addEventListener("input", function () {
+      validarTelefonoInput(this);
+    });
+    tel1.addEventListener("blur", function () {
+      validarTelefonoRango(this);
+    });
+  }
+
+  if (tel2) {
+    tel2.addEventListener("input", function () {
+      validarTelefonoInput(this);
+    });
+    tel2.addEventListener("blur", function () {
+      validarTelefonoRango(this);
+    });
+  }
 
   // Cédulas
   const cedulas = ["ci", "ci2"];

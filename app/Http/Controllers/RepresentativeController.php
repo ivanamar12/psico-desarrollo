@@ -9,7 +9,6 @@ use App\Models\Genero;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Parroquia;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -46,7 +45,7 @@ class RepresentativeController extends Controller
   {
     $validatedData = $request->validated();
 
-    \DB::transaction(function () use ($validatedData) {
+    DB::transaction(function () use ($validatedData) {
       $direccion = Direccion::create([
         'estado_id' => $validatedData['estado_id'],
         'municipio_id' => $validatedData['municipio_id'],
@@ -67,7 +66,7 @@ class RepresentativeController extends Controller
 
     return response()->json([
       'success' => true,
-      'message' => 'Representante y creado correctamente!'
+      'message' => 'Representante creado correctamente!'
     ]);
   }
 
@@ -115,7 +114,7 @@ class RepresentativeController extends Controller
       return response()->json(['message' => 'Especialista no encontrado'], 404);
     }
 
-    \DB::transaction(function () use ($validatedData, $representante) {
+    DB::transaction(function () use ($validatedData, $representante) {
       $direccion = $representante->direccion;
       if (!$direccion) {
         throw new \Exception('Dirección no encontrada');
@@ -153,7 +152,7 @@ class RepresentativeController extends Controller
       return response()->json(['message' => 'Dirección no encontrada'], 404);
     }
 
-    \DB::transaction(function () use ($representante, $direccion) {
+    DB::transaction(function () use ($representante, $direccion) {
       $representante->delete();
       $direccion->delete();
     });
