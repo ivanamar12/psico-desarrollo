@@ -1,9 +1,9 @@
 /*========= Importando hojas de estilo =========*/
 /* Bootstrap 3.3.7 */
-@import url("./bootstrap.min.css");
+@import url("./bootstrap/bootstrap.min.css");
 /* Material desing for Bootstrap */
 @import url("./bootstrap-material-design.min.css");
-@import url("./ripples.min.css");
+@import url("./ripples/ripples.min.css");
 /* Sweet Alert 2 */
 @import url("./sweetalert2.css");
 /* Malihu jQuery custom content scroller 3.1.5 */

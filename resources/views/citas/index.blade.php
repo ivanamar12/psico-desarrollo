@@ -1,6 +1,15 @@
-@extends('layouts.app')
+@extends('layouts.root')
+
 @section('title', 'Citas')
+
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/fullcalendar/fullcalendar.min.css') }}" rel="stylesheet" />
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -8,7 +17,7 @@
     <!-- Page title -->
     <x-page-header title="Citas" icon="zmdi zmdi-calendar zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -98,12 +107,12 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>
 
   <!-- modal para agendar la cita -->
   @if (auth()->user()->can('crear citas'))
-    <div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
+    <section class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -166,12 +175,12 @@
 
         </div>
       </div>
-    </div>
+    </section>
   @endif
 
   <!-- Modal para editar el estado de la cita -->
   @if (auth()->user()->can('cambiar estado citas'))
-    <div class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
+    <section class="modal fade" id="statusModal" tabindex="-1" role="dialog" aria-labelledby="statusModalLabel"
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -207,10 +216,20 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   @endif
+
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+
+  <script src="{{ asset('js/moment/moment.min.js') }}"></script>
+  <script src="{{ asset('js/fullcalendar/fullcalendar.min.js') }}"></script>
+  <script src="{{ asset('js/fullcalendar/es.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       $('#paciente_id').select2({
@@ -219,12 +238,10 @@
       $('#especialista_id').select2({
         dropdownParent: $('#eventModal')
       });
-    });
 
-    $(document).ready(function() {
       var tablaCitasHoy = $('#tab-citas_hoy').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -263,7 +280,7 @@
 
       var tablaCitas = $('#tab-citas').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -298,7 +315,23 @@
       });
     });
   </script>
+
   <script>
+    function validateHour() {
+      const hourInput = document.getElementById('hora');
+      const selectedHour = hourInput.value.split(':').map(Number);
+      const submitButton = document.getElementById('saveEvent');
+
+      if ((selectedHour[0] >= 7 && selectedHour[0] < 11) || (selectedHour[0] >= 13 && selectedHour[0] < 15)) {
+        hourInput.setCustomValidity('');
+        submitButton.disabled = false;
+      } else {
+        hourInput.setCustomValidity(
+          'Por favor, selecciona una hora entre las 7:00 AM y las 11:00 AM, o entre la 1:00 PM y las 3:00 PM.');
+        submitButton.disabled = true;
+      }
+    }
+
     $(document).ready(function() {
       $('#calendar').fullCalendar({
         lang: 'es',
@@ -332,8 +365,7 @@
           $('#eventModal').modal('show');
 
           $('#saveEvent').off('click').on('click', function() {
-            validateHour
-              (); // Asegúrate de que esta funcione para validar el rango horario (7:30–12 y 13–16)
+            validateHour(); // validar el rango horario (7:30–12 y 13–16)
 
             if (document.getElementById('hora').validity.valid) {
               const fecha = start.format('YYYY-MM-DD');
@@ -533,21 +565,6 @@
           toastr.error('Error al actualizar el estado de la cita');
         }
       });
-    }
-
-    function validateHour() {
-      const hourInput = document.getElementById('hora');
-      const selectedHour = hourInput.value.split(':').map(Number);
-      const submitButton = document.getElementById('saveEvent');
-
-      if ((selectedHour[0] >= 7 && selectedHour[0] < 11) || (selectedHour[0] >= 13 && selectedHour[0] < 15)) {
-        hourInput.setCustomValidity('');
-        submitButton.disabled = false;
-      } else {
-        hourInput.setCustomValidity(
-          'Por favor, selecciona una hora entre las 7:00 AM y las 11:00 AM, o entre la 1:00 PM y las 3:00 PM.');
-        submitButton.disabled = true;
-      }
     }
   </script>
 @endsection

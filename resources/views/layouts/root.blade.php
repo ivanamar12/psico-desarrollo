@@ -33,14 +33,15 @@
 
   <!-- JS Base -->
   <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
-  <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-  <script src="{{ asset('js/material.min.js') }}"></script>
-  <script src="{{ asset('js/ripples.min.js') }}"></script>
-  <script src="{{ asset('js/jquery.mCustomScrollbar.concat.min.js') }}"></script>
+  <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
+  <script src="{{ asset('js/material/material.min.js') }}"></script>
+  <script src="{{ asset('js/ripples/ripples.min.js') }}"></script>
+  <script src="{{ asset('js/jquery/jquery.plugins.min.js') }}"></script>
+  {{-- Alertas --}}
   <script src="{{ asset('js/toastr/toastr.min.js') }}"></script>
+  <script src="{{ asset('js/intro/intro.min.js') }}"></script>
   {{-- Funcionalidades principales de la UI --}}
-  <script src="{{ asset('js/main.js') }}"></script>
-  <script src="{{ asset('js/intro.min.js') }}"></script>
+  <script src="{{ asset('js/app/main.js') }}"></script>
   <script>
     window.mostrarAyuda = @json(session('mostrar_ayuda', false));
   </script>
