@@ -1,8 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Historias')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -10,7 +16,7 @@
     <!-- Page title -->
     <x-page-header title="Historias" icon="zmdi zmdi-file zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -702,7 +708,7 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>
 
   <!-- Modal de Confirmación -->
@@ -726,6 +732,7 @@
       </div>
     </div>
   </section>
+
   <section class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
@@ -754,9 +761,14 @@
       </div>
     </div>
   </section>
+
 @endsection
 
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+
   <script>
     $(function() {
       const pacientes = @json($pacientes);
@@ -788,9 +800,9 @@
           }
         }
       });
-
     });
   </script>
+
   <script>
     $(document).ready(function() {
       $("#paso1").show();
@@ -919,6 +931,7 @@
       });
     });
   </script>
+
   <script>
     // Definir la función toggleInput en el contexto global
     function toggleInput(radioName, inputId, defaultValue) {
@@ -1055,11 +1068,12 @@
       }
     });
   </script>
+
   <script>
     $(document).ready(function() {
       var tablaHistorias = $('#tab-historias').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -1164,20 +1178,24 @@
             $('.nav-tabs a[href="#list"]').tab('show');
           },
           error: function(xhr) {
-            if (xhr.responseJSON && xhr.responseJSON.errors) {
-              $.each(xhr.responseJSON.errors, function(k, msgs) {
-                toastr.error(msgs[0]);
-              });
-            } else if (xhr.responseJSON && xhr.responseJSON.message) {
-              toastr.error(xhr.responseJSON.message);
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
             } else {
-              toastr.error('Ocurrió un error inesperado.');
+              toastr.error('Ocurrió un error al guardar la historia', 'Error');
             }
           }
         });
       });
     });
   </script>
+
   <script>
     $.ajaxSetup({
       headers: {
@@ -1214,6 +1232,7 @@
       });
     });
   </script>
+
   <script>
     $(document).on('click', '.verHistoria', function() {
       const id = $(this).data('id');
@@ -1266,4 +1285,5 @@
       });
     });
   </script>
+
 @endsection
