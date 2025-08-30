@@ -1,16 +1,21 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Pruebas')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
 
     <!-- Page title -->
-    <x-page-header title="Pruebas" icon="zmdi zmdi-assignment zmdi-hc-fw" />
+    <x-page-header title="Catálogo de Pruebas" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -139,11 +144,11 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>
 
   <!-- Modal de ver prueba -->
-  <div class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-labelledby="modalTitulo"
+  <section class="modal fade" id="modalPrueba" tabindex="-1" role="dialog" aria-labelledby="modalTitulo"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -166,10 +171,10 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
   <!-- modal eliminar-->
-  <div class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -188,15 +193,18 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
+
 @endsection
+
 @section('js')
-  <script></script>
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       var tablaPrueba = $('#tab-prueba').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
@@ -336,6 +344,7 @@
       });
     });
   </script>
+
   <script>
     $(document).on('click', '.ver-prueba', function() {
       var pruebaId = $(this).data('id');
@@ -365,6 +374,7 @@
       });
     });
   </script>
+
   <script>
     $.ajaxSetup({
       headers: {

@@ -33,7 +33,6 @@
   <x-nav-dropdown />
 
   <!--====== Scripts -->
-  <script src="{{ asset('js/sweetalert2.min.js') }}"></script>
   <script src="{{ asset('js/jquery/jquery.min.js') }}"></script>
   <script src="{{ asset('js/bootstrap/bootstrap.min.js') }}"></script>
   <script src="{{ asset('js/material/material.min.js') }}"></script>

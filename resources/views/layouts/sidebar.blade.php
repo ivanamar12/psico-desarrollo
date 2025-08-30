@@ -35,7 +35,6 @@
         <h4 class="text-white fw-semibold">Registros Maestros</h4>
       </li>
 
-
       @if (auth()->user()->can('ver especialista') || auth()->user()->can('ver secretaria'))
         <li>
           <a href="#!" class="btn-sideBar-SubMenu"

@@ -10,20 +10,6 @@ $(document).ready(function () {
       SubMenu.addClass("show-sideBar-SubMenu");
     }
   });
-  $(".btn-exit-system").on("click", function () {
-    swal({
-      title: "Are you sure?",
-      text: "The current session will be closed",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#03A9F4",
-      cancelButtonColor: "#F44336",
-      confirmButtonText: '<i class="zmdi zmdi-run"></i> Yes, Exit!',
-      cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> No, Cancel!',
-    }).then(function () {
-      window.location.href = "index.html";
-    });
-  });
 
   $(".btn-menu-dashboard").on("click", function (e) {
     e.preventDefault();
@@ -83,27 +69,8 @@ $(document).ready(function () {
       NotificationsArea.removeClass("show-Notification-area");
     }
   });
-  $(".btn-search").on("click", function () {
-    swal({
-      title: "What are you looking for?",
-      confirmButtonText: '<i class="zmdi zmdi-search"></i>  Search',
-      confirmButtonColor: "#03A9F4",
-      showCancelButton: true,
-      cancelButtonColor: "#F44336",
-      cancelButtonText: '<i class="zmdi zmdi-close-circle"></i> Cancel',
-      html:
-        '<div class="form-group label-floating">' +
-        '<label class="control-label" for="InputSearch">write here</label>' +
-        '<input class="form-control" id="InputSearch" type="text">' +
-        "</div>",
-    }).then(function () {
-      swal("You wrote", "" + $("#InputSearch").val() + "", "success");
-    });
-  });
-  $(".btn-modal-help-inicio").on("click", function () {
-    $("#Dialog-Help-inicio").modal("show");
-  });
 });
+
 (function ($) {
   $(window).on("load", function () {
     $(".dashboard-sideBar-ct").mCustomScrollbar({
