@@ -1,8 +1,14 @@
-@extends('layouts.app')
+@extends('layouts.root')
 
 @section('title', 'Pruebas')
 
+@section('css')
+  <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+@endsection
+
 @section('content')
+
   <section class="full-box dashboard-contentPage">
     <!-- NavBar -->
     <x-navbar />
@@ -10,7 +16,7 @@
     <!-- Page title -->
     <x-page-header title="Pruebas" icon="zmdi zmdi-assignment zmdi-hc-fw" />
 
-    <div class="container-fluid">
+    <section class="container-fluid">
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
@@ -87,10 +93,10 @@
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </section>
 
-  <div id="modalPrueba" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+  <section id="modalPrueba" class="modal fade" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -115,9 +121,9 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div id="modalPruebaVer" class="modal fade" tabindex="-1" role="dialog">
+  <section id="modalPruebaVer" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -133,10 +139,19 @@
         </div>
       </div>
     </div>
-  </div>
+  </section>
 
 @endsection
+
 @section('js')
+  <script src="{{ asset('js/datatables/datatables.min.js') }}"></script>
+  <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+  <script src="{{ asset('js/select2/es.js') }}"></script>
+  <script src="{{ asset('js/moment/moment.min.js') }}"></script>
+  {{-- Especifico para aplicación de pruebas --}}
+  <script src="{{ asset('js/app/pruebas.js') }}"></script>
+  <script src="{{ asset('js/app/evaluacion-pruebas.js') }}"></script>
+
   <script>
     $(document).ready(function() {
       // Inicializar Select2 para el select de pacientes
@@ -261,6 +276,7 @@
       }
     });
   </script>
+
   <script>
     $(document).ready(function() {
       let subescalas = [];
@@ -308,6 +324,7 @@
       });
     });
   </script>
+
   <script>
     $(document).ready(function() {
       $('#tab-prueba').DataTable({
@@ -367,6 +384,7 @@
       });
     });
   </script>
+
   <script>
     $(document).on('click', '.ver-resultados', function() {
       let aplicacionId = $(this).data('id');
