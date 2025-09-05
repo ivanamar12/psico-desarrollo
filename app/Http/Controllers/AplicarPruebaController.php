@@ -27,11 +27,11 @@ class AplicarPruebaController extends Controller
           $btn = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '"><i class="zmdi zmdi-eye"></i></button>';
 
           if ($aplicacion->prueba->nombre === 'CUMANIN') {
-            $btn .= ' <a href="' . route('resultados.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
+            $btn .= ' <a href="' . route('aplicar-prueba.report.cumanin', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           } elseif ($aplicacion->prueba->nombre === 'Koppitz') {
-            $btn .= ' <a href="' . route('resultados.koppitz.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
+            $btn .= ' <a href="' . route('aplicar-prueba.report.koppitz', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           } elseif ($aplicacion->prueba->tipo === 'NO-Estandarizada') {
-            $btn .= ' <a href="' . route('resultados.no_estandarizada.pdf', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
+            $btn .= ' <a href="' . route('aplicar-prueba.report.no-estandarizada', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           }
 
           return $btn;

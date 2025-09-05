@@ -293,14 +293,14 @@ Route::middleware('auth')->group(function () {
     ->name('aplicar-prueba.show');
 
   // Pdfs de pruebas:
-  Route::get('/resultados-pdf/{id}', [PdfPruebasController::class, 'generarPDFCumanin'])
-    ->name('resultados.pdf');
+  Route::get('aplicar-prueba/report/cumanin/{id}', [PdfPruebasController::class, 'reportCumanin'])
+    ->name('aplicar-prueba.report.cumanin');
 
-  Route::get('/resultados/koppitz/{id}', [PdfPruebasController::class, 'generarPDFKoppitz'])
-    ->name('resultados.koppitz.pdf');
+  Route::get('aplicar-prueba/report/koppitz/{id}', [PdfPruebasController::class, 'reportKoppitz'])
+    ->name('aplicar-prueba.report.koppitz');
 
-  Route::get('/resultados/no-estandarizada/{id}', [PdfPruebasController::class, 'generarPDFNoEstandarizada'])
-    ->name('resultados.no_estandarizada.pdf');
+  Route::get('aplicar-prueba/report/no-estandarizada/{id}', [PdfPruebasController::class, 'reportNoEstandarizada'])
+    ->name('aplicar-prueba.report.no-estandarizada');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);

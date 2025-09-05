@@ -720,8 +720,6 @@
           let prueba = aplicacion_prueba.prueba;
           let resultados_finales = aplicacion_prueba.resultados_finales;
 
-          console.log(resultados_finales)
-
           let contenidoHTML = `
             <h5><strong>Paciente:</strong> ${paciente.nombre} ${paciente.apellido}</h5>
             <h5><strong>Prueba:</strong> ${prueba.nombre}</h5>
