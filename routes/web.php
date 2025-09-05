@@ -269,10 +269,6 @@ Route::middleware('auth')->group(function () {
   Route::post('pruebas', [PruebaController::class, 'store'])
     ->name('pruebas.store');
 
-  // Pruebas disponibles
-  Route::get('pruebas/disponibles', [AplicarPruebaController::class, 'pruebasDisponibles'])
-    ->name('pruebas.disponibles');
-
   Route::get('pruebas/{id}', [PruebaController::class, 'show'])
     ->name('pruebas.show');
 

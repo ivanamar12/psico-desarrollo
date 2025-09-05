@@ -130,7 +130,7 @@
           <h3 class="modal-title w-100 text-center" style="color: white;">Resultados de la prueba</h3>
         </div>
         <div class="modal-body">
-          <div id="contenidoPruebaVer"> <!-- Cambié el ID aquí -->
+          <div id="contenidoPruebaVer">
             <p>Cargando resultados...</p>
           </div>
         </div>
@@ -155,6 +155,46 @@
   <script>
     $(document).ready(function() {
       const pacientes = @json($pacientes);
+      const pruebas = @json($pruebas);
+
+      const rangosEdad = {
+        '0-3 meses': {
+          min: 0,
+          max: 3
+        },
+        '4-6 meses': {
+          min: 4,
+          max: 6
+        },
+        '7-12 meses': {
+          min: 7,
+          max: 12
+        },
+        '13-24 meses': {
+          min: 13,
+          max: 24
+        },
+        '25-36 meses': {
+          min: 25,
+          max: 36
+        },
+        '37-48 meses': {
+          min: 37,
+          max: 48
+        },
+        '49-72 meses': {
+          min: 49,
+          max: 72
+        },
+        '36-78 meses': {
+          min: 36,
+          max: 78
+        },
+        '60-78 meses': {
+          min: 60,
+          max: 78
+        }
+      };
 
       // Inicializar Select2 para el select de pacientes
       $('#paciente_id').select2({
@@ -211,7 +251,7 @@
         }
 
         const edadEnMeses = calcularEdadEnMeses(pacienteSeleccionado.fecha_nac);
-        cargarPruebasDisponibles(edadEnMeses);
+        filtrarPruebasDisponibles(edadEnMeses);
         $('#prueba-container').show();
       });
 
@@ -223,39 +263,31 @@
         return moment().diff(moment(fechaNacimiento), 'months');
       }
 
-      function cargarPruebasDisponibles(edadEnMeses) {
-        $('#prueba_id').empty().append('<option value="">Cargando pruebas disponibles...</option>').prop('disabled',
-          true);
+      function filtrarPruebasDisponibles(edadEnMeses) {
+        // Filtrar pruebas disponibles según la edad del paciente
+        const pruebasDisponibles = pruebas.filter(prueba => {
+          const rango = rangosEdad[prueba.rango_edad];
+          if (!rango) return false;
 
-        $.ajax({
-          url: '{{ route('pruebas.disponibles') }}',
-          method: 'GET',
-          data: {
-            edad_meses: edadEnMeses
-          },
-          success: function(data) {
-            $('#prueba_id').empty();
-
-            if (data.length > 0) {
-              $.each(data, function(index, prueba) {
-                $('#prueba_id').append(
-                  $('<option></option>').val(prueba.id).text(prueba.nombre)
-                );
-              });
-              $('#prueba_id').prop('disabled', false).trigger('change');
-            } else {
-              $('#prueba_id').append(
-                $('<option></option>').val('').text('No hay pruebas disponibles para este rango de edad')
-                .prop('disabled', true)
-              );
-            }
-          },
-          error: function() {
-            $('#prueba_id').empty().append(
-              $('<option></option>').val('').text('Error al cargar pruebas').prop('disabled', true)
-            );
-          }
+          return edadEnMeses >= rango.min && edadEnMeses <= rango.max;
         });
+
+        // Actualizar el select de pruebas
+        $('#prueba_id').empty();
+
+        if (pruebasDisponibles.length > 0) {
+          $.each(pruebasDisponibles, function(index, prueba) {
+            $('#prueba_id').append(
+              $('<option></option>').val(prueba.id).text(prueba.nombre)
+            );
+          });
+          $('#prueba_id').prop('disabled', false).trigger('change');
+        } else {
+          $('#prueba_id').append(
+            $('<option></option>').val('').text('No hay pruebas disponibles para este rango de edad')
+            .prop('disabled', true)
+          );
+        }
       }
     });
   </script>
