@@ -48,37 +48,37 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="registro-representante">@csrf
+                    <form id="registro-representante">
+                      @csrf
                       <div id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario row">
-
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>Cédula de Identidad (CI) <span class="text-danger">*</span></label>
                             <input class="form-control ci-verificar" id="ci" name="ci" type="text"
                               required>
-                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna
+                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra según
                               sea el caso V, P o E.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>Nombre <span class="text-danger">*</span></label>
                             <input class="form-control" id="nombre" name="nombre" type="text" required
                               maxlength="50" oninput="validarTexto(this)">
-                            <small class="leyenda-input">Nombre completo del representante.</small>
+                            <small class="form-text text-muted">Nombre completo del representante.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>Apellido <span class="text-danger">*</span></label>
                             <input class="form-control" id="apellido" name="apellido" type="text" required
                               maxlength="50" oninput="validarTexto(this)">
-                            <small class="leyenda-input">Apellido completo del representante.</small>
+                            <small class="form-text text-muted">Apellido completo del representante.</small>
                           </div>
 
-                          <div class="form-group  col-md-6">
-                            <label>Teléfono<span class="text-danger">*</span></label>
+                          <div class="form-group col-md-6">
+                            <label>Teléfono <span class="text-danger">*</span></label>
                             <input class="form-control" type="tel" id="telefono" name="telefono" required>
-                            <small class="leyenda-input">Número telefónico de contacto.</small>
+                            <small class="form-text text-muted">Número telefónico de contacto.</small>
                           </div>
 
                           <div class="form-group col-md-6">
@@ -92,15 +92,15 @@
                             <label>Género <span class="text-danger">*</span></label>
                             <select class="form-control select2" required style="width: 100%;" id="genero_id"
                               name="genero_id">
-                              <option selected disabled>Seleccione su género</option>
+                              <option selected disabled value="">Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
-                            <small class="leyenda-input">Seleccione el género del representante.</small>
+                            <small class="form-text text-muted">Seleccione el género del representante.</small>
                           </div>
-
                         </div>
+
                         <p class="centro-texto">
                           <button type="button" id="siguiente1" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
@@ -110,39 +110,38 @@
                       <div id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
-
                           <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="estado_id" name="estado_id">
-                              <option selected disabled>Seleccione su estado</option>
+                              <option selected disabled value="">Seleccione su estado</option>
                             </select>
-                            <small class="leyenda-input">Seleccione el estado donde reside.</small>
+                            <small class="form-text text-muted">Seleccione el estado donde reside.</small>
                           </div>
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="municipio_id" name="municipio_id">
-                              <option selected disabled>Seleccione su municipio</option>
+                              <option selected disabled value="">Seleccione su municipio</option>
                             </select>
-                            <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
+                            <small class="form-text text-muted">Seleccione el municipio correspondiente.</small>
                           </div>
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="parroquia_id" name="parroquia_id">
-                              <option selected disabled>Seleccione su parroquia</option>
+                              <option selected disabled value="">Seleccione su parroquia</option>
                             </select>
-                            <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
+                            <small class="form-text text-muted">Seleccione la parroquia dentro del municipio.</small>
                           </div>
 
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required
                               minlength="10" maxlength="80">
-                            <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
+                            <small class="form-text text-muted">Ingrese el nombre del sector donde vive.</small>
                           </div>
                         </div>
 
