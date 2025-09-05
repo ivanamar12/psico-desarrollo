@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Prueba;
 
-class PruebaTableSeeder extends Seeder
+class PruebaSeeder extends Seeder
 {
   public function run()
   {

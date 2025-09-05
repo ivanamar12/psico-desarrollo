@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Estado;
 
-class EstadoTableSeeder extends Seeder
+class EstadoSeeder extends Seeder
 {
 	public function run()
 	{

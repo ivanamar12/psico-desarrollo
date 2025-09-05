@@ -9,6 +9,7 @@ use App\Http\Controllers\DashboardController;
 use App\Models\AplicacionPrueba;
 use App\Models\Baremos;
 use App\Models\SubEscala;
+use Illuminate\Support\Facades\Log;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -49,7 +50,7 @@ Route::get('/subescalas', function () {
         $subescalas = SubEscala::all(['id', 'sub_escala']);
         return response()->json($subescalas);
     } catch (\Exception $e) {
-        \Log::error("Error obteniendo subescalas: " . $e->getMessage());
+        Log::error("Error obteniendo subescalas: " . $e->getMessage());
         return response()->json(['error' => 'Error obteniendo subescalas'], 500);
     }
 });
@@ -66,7 +67,6 @@ Route::get('/baremos', function () {
 });
 
 Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, 'obtenerRespuestasPrueba']);
-
 
 Route::get('estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])
     ->name('estadisticas.pacientes');

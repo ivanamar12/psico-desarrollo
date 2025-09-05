@@ -5,7 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use App\Models\Genero;
 
-class GeneroTableSeeder extends Seeder
+class GeneroSeeder extends Seeder
 {
   public function run()
   {

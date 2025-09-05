@@ -152,6 +152,7 @@
   <script src="{{ asset('js/app/pruebas.js') }}"></script>
   <script src="{{ asset('js/app/evaluacion-pruebas.js') }}"></script>
 
+  {{-- Script para los selects --}}
   <script>
     $(document).ready(function() {
       const pacientes = @json($pacientes);

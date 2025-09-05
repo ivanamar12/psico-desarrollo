@@ -21,6 +21,6 @@ class CreatePruebaEstandarizadasTable extends Migration
 
   public function down()
   {
-    Schema::dropIfExists('prueba_estandarizadas');
+    Schema::dropIfExists('pruebas');
   }
 }
