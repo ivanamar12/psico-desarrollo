@@ -64,25 +64,17 @@ class PdfPruebasController extends Controller
 
   public function reportKoppitz($id)
   {
-    $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'user'])
+    $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'especialista.user'])
       ->findOrFail($id);
 
-    $paciente = $aplicacion->paciente;
-    if (!$paciente) {
-      return response()->json(['error' => 'Paciente no encontrado'], 404);
-    }
-
-    $especialista = $aplicacion->especialista;
-    if (!$especialista) {
-      return response()->json(['error' => 'Especialista no encontrado'], 404);
-    }
-
+    // Decodificar resultados
     $respuestasAplicacion = json_decode($aplicacion->resultados, true);
+    $datosFinales = json_decode($aplicacion->resultados_finales, true);
+
     $respuestasItems = $respuestasAplicacion['Dibujo de Figura Humana']['respuestas'] ?? [];
+    $resultados = $datosFinales['resultados'] ?? [];
 
-    $datos = json_decode($aplicacion->resultados_finales, true);
-    $resultados = $datos['resultados'] ?? [];
-
+    // Separar items por respuesta
     $itemsSi = [];
     $itemsNo = [];
 
@@ -94,26 +86,15 @@ class PdfPruebasController extends Controller
       }
     }
 
-    // Generar el PDF
     $pdf = Pdf::loadView('pdf.report-koppitz', compact(
       'aplicacion',
-      'datos',
+      'datosFinales',
       'resultados',
-      'paciente',
-      'usuario',
       'itemsSi',
       'itemsNo'
-    ))
-      ->setPaper('a4', 'portrait');
+    ))->setPaper('a4', 'portrait');
 
-    // Definir la ruta donde se guardará el PDF
-    $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
-
-    // Guardar el PDF en el servidor
-    $pdf->save($pdfPath);
-
-    // Devolver el PDF para descarga
-    return $pdf->download("resultados_koppitz_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
+    return $pdf->stream("resultados_koppitz_{$aplicacion->paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 
   public function reportNoEstandarizada($id)
