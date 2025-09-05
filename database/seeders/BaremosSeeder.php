@@ -1267,7 +1267,7 @@ class BaremosSeeder extends Seeder
     Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Ropa:4 prendas', 'edad_meses' => '60-72', 'puntos' => 'excepcional']);
     Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Pies_2_femenino', 'edad_meses' => '60', 'puntos' => 'excepcional']);
     Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Pies_2_masculino', 'edad_meses' => '60', 'puntos' => 'excepcional']);
-    Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Cinco_Dedos_maculino', 'edad_meses' => '60', 'puntos' => 'excepcional']);
+    Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Cinco_Dedos_masculino', 'edad_meses' => '60', 'puntos' => 'excepcional']);
     Baremos::create(['sub_escala' => 'Dibujo de Figura Humana', 'p_c' => 'Pupilas_masculino', 'edad_meses' => '60', 'puntos' => 'excepcional']);
   }
 }

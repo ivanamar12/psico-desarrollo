@@ -710,19 +710,49 @@
           let aplicacion_prueba = data.aplicacion_prueba;
           let paciente = aplicacion_prueba.paciente;
           let prueba = aplicacion_prueba.prueba;
+          let resultados_finales = aplicacion_prueba.resultados_finales;
+
+          console.log(resultados_finales)
 
           let contenidoHTML = `
-            <h5><strong>Paciente:</strong> ${paciente.nombre}</h5>
+            <h5><strong>Paciente:</strong> ${paciente.nombre} ${paciente.apellido}</h5>
             <h5><strong>Prueba:</strong> ${prueba.nombre}</h5>
             <h5><strong>Fecha:</strong> ${aplicacion_prueba.created_at_formatted || 'No disponible'}</h5>
             <hr>`;
 
           if (prueba.nombre === "Koppitz") {
             contenidoHTML += `
-              <h5><strong>Puntaje Total:</strong> ${aplicacion_prueba.resultados_finales.puntajeTotal}</h5>
-              <h5><strong>Categoría:</strong> ${aplicacion_prueba.resultados_finales.categoria}</h5>
-              <h5><strong>Ítems Excepcionales:</strong> ${aplicacion_prueba.resultados_finales.itemsExcepcionales}</h5>
-            `;
+              <h5><strong>Puntaje Total:</strong> ${resultados_finales.resultados.puntajeTotal}</h5>
+              <h5><strong>Items Esperados:</strong> ${resultados_finales.resultados.itemsEsperados}</h5>
+              <h5><strong>Items Excepcionales:</strong> ${resultados_finales.resultados.itemsExcepcionales}</h5>
+              <h5><strong>Categoría:</strong> ${resultados_finales.resultados.categoria}</h5>
+              <hr>
+              <h5><strong>Detalles por Ítem:</strong></h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Ítem</th>
+                    <th>Tipo</th>
+                    <th>Respuesta</th>
+                    <th>Correcto</th>
+                    <th>Rango Edad</th>
+                  </tr>
+                </thead>
+                <tbody>`;
+
+            for (let item in resultados_finales.resultados.detallesPuntaje) {
+              let detalle = resultados_finales.resultados.detallesPuntaje[item];
+              contenidoHTML += `
+                <tr>
+                  <td>${item}</td>
+                  <td>${detalle.tipo}</td>
+                  <td>${detalle.respuesta}</td>
+                  <td>${detalle.correcto ? '✅' : '❌'}</td>
+                  <td>${detalle.edad_rango}</td>
+                </tr>`;
+            }
+
+            contenidoHTML += `</tbody></table>`;
           }
           // 📌 Verificar si la prueba es CUMANIN
           else if (prueba.nombre === "CUMANIN") {

@@ -156,14 +156,15 @@ class AplicarPruebaController extends Controller
       return ['error' => 'No se encontraron respuestas para la subescala'];
     }
 
-    $puntajeTotal = 8;
-    $detallesPuntaje = [];
+    $puntajeTotal = 0;
+    $itemsEsperados = 0;
     $itemsExcepcionales = 0;
+    $detallesPuntaje = [];
 
     $respuestasItems = $respuestas[$subescalaNombre]['respuestas'];
     $observaciones = $respuestas[$subescalaNombre]['observaciones'] ?? "Sin observaciones";
 
-    // Mapeo de respuestas a p_c según género
+    // ✅ MApeo CORREGIDO
     $mapeoItems = [
       "Cabeza" => "Cabeza",
       "Ojos" => "Ojos",
@@ -172,7 +173,7 @@ class AplicarPruebaController extends Controller
       "Cuerpo" => "Cuerpo",
       "Piernas" => "Piernas",
       "Brazos" => $generoId == 1 ? "Brazos_masculino" : "Brazos_femenino",
-      "pies" => $generoId == 1 ? "Pies_masculino" : "Pies_femenino",
+      "Pies" => $generoId == 1 ? "Pies_masculino" : "Pies_femenino",
       "Rodilla" => "Rodilla",
       "Perfil" => "Perfil",
       "Codo" => "Codo",
@@ -182,7 +183,7 @@ class AplicarPruebaController extends Controller
       "Braz. u. Homb." => "Braz. u. Homb.",
       "Ropa: 4 prendas" => "Ropa:4 prendas",
       "Pies 2" => $generoId == 1 ? "Pies_2_masculino" : "Pies_2_femenino",
-      "Cinco dedos" => $generoId == 1 ? "Cinco_Dedos_femenino" : "Cinco_Dedos_femenino", // ← Femenino para Id 2
+      "Cinco dedos" => $generoId == 1 ? "Cinco_Dedos_masculino" : "Cinco_Dedos_femenino",
       "Pupilas" => $generoId == 1 ? "Pupilas_masculino" : "Pupilas_femenino",
     ];
 
@@ -190,59 +191,62 @@ class AplicarPruebaController extends Controller
       $p_c = $mapeoItems[$itemNombre] ?? null;
       if (!$p_c) continue;
 
-      $baremo = $baremos->first(function ($b) use ($p_c, $edadMeses, $generoId) {
+      $baremo = $baremos->first(function ($b) use ($p_c, $edadMeses) {
         $parts = explode('-', $b->edad_meses);
         $min = (int) $parts[0];
         $max = isset($parts[1]) ? (int) $parts[1] : $min;
-
-        $esMasculino = str_contains($b->p_c, 'masculino');
-        $esFemenino = str_contains($b->p_c, 'femenino');
-
-        // ✅ Si el baremo no tiene género definido, ignora el filtro
-        $generoCoincide = (!$esMasculino && !$esFemenino) ||
-          ($esMasculino && $generoId == 1) ||
-          ($esFemenino && $generoId == 2);
-
-        return $b->p_c === $p_c && $edadMeses >= $min && $edadMeses <= $max && $generoCoincide;
+        return $b->p_c === $p_c && $edadMeses >= $min && $edadMeses <= $max;
       });
 
       if ($baremo) {
+        $tipoItem = $baremo->puntos;
+        $correcto = false;
+
+        if ($tipoItem === "esperado") {
+          // Items esperados deben estar presentes (respuesta "si")
+          $correcto = ($respuesta === "si");
+          if ($correcto) {
+            $puntajeTotal++;
+            $itemsEsperados++;
+          }
+        } elseif ($tipoItem === "excepcional") {
+          // Items excepcionales son bonos adicionales
+          $correcto = ($respuesta === "si");
+          if ($correcto) {
+            $puntajeTotal++;
+            $itemsExcepcionales++;
+          }
+        }
+
         $detallesPuntaje[$itemNombre] = [
           'baremo' => $baremo->p_c,
-          'tipo' => $baremo->puntos,
-          'respuesta' => $respuesta
+          'tipo' => $tipoItem,
+          'respuesta' => $respuesta,
+          'correcto' => $correcto,
+          'edad_rango' => $baremo->edad_meses
         ];
-
-        if ($baremo->puntos === "esperado" && $respuesta === "no") {
-          $puntajeTotal--;
-        } elseif ($baremo->puntos === "excepcional" && $respuesta === "si") {
-          $itemsExcepcionales++;
-        }
       }
     }
 
+    // ✅ Categorización CORRECTA para Koppitz
     $categoria = "";
-    if ($puntajeTotal >= 7) $categoria = "Normal alto a superior (CI de 110 o más)";
-    elseif ($puntajeTotal === 6) $categoria = "Normal a superior (CI 90 - 135)";
-    elseif ($puntajeTotal === 5) $categoria = "Normal a normal alto (CI 85 - 120)";
-    elseif ($puntajeTotal === 4) $categoria = "Normal a normal bajo (CI 80 - 110)";
-    elseif ($puntajeTotal === 3) $categoria = "Normal bajo (CI 70 - 90)";
-    elseif ($puntajeTotal === 2) $categoria = "Bordeline (CI 60 - 80)";
-    else $categoria = "Mentalmente deficiente por posibles problemas emocionales";
+    if ($puntajeTotal >= 15) $categoria = "Superior";
+    elseif ($puntajeTotal >= 12) $categoria = "Normal alto";
+    elseif ($puntajeTotal >= 9) $categoria = "Normal";
+    elseif ($puntajeTotal >= 6) $categoria = "Normal bajo";
+    elseif ($puntajeTotal >= 3) $categoria = "Borderline";
+    else $categoria = "Deficiente";
 
     return [
       'edad_meses' => $edadMeses,
       'resultados' => [
-        $subescalaNombre => [
-          'puntajeTotal' => $puntajeTotal,
-          'detallesPuntaje' => $detallesPuntaje,
-          'categoria' => $categoria,
-          'itemsExcepcionales' => $itemsExcepcionales
-        ]
+        'puntajeTotal' => $puntajeTotal,
+        'itemsEsperados' => $itemsEsperados,
+        'itemsExcepcionales' => $itemsExcepcionales,
+        'detallesPuntaje' => $detallesPuntaje,
+        'categoria' => $categoria
       ],
-      'observaciones' => [
-        $subescalaNombre => $observaciones
-      ]
+      'observaciones' => $observaciones
     ];
   }
 
