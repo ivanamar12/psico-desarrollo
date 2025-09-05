@@ -17,6 +17,7 @@ use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\AnalisisPruebaController;
 use App\Http\Controllers\ConstanciaAsistenciaController;
+use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
 
 Route::middleware('guest')->group(function () {
@@ -289,13 +290,14 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 
-  Route::get('/resultados-pdf/{id}', [AplicarPruebaController::class, 'generarPDF'])
+  // Pdfs de pruebas:
+  Route::get('/resultados-pdf/{id}', [PdfPruebasController::class, 'generarPDFCumanin'])
     ->name('resultados.pdf');
 
-  Route::get('/resultados/koppitz/{id}', [AplicarPruebaController::class, 'generarPDFKoppitz'])
+  Route::get('/resultados/koppitz/{id}', [PdfPruebasController::class, 'generarPDFKoppitz'])
     ->name('resultados.koppitz.pdf');
 
-  Route::get('/resultados/no-estandarizada/{id}', [AplicarPruebaController::class, 'generarPDFNoEstandarizada'])
+  Route::get('/resultados/no-estandarizada/{id}', [PdfPruebasController::class, 'generarPDFNoEstandarizada'])
     ->name('resultados.no_estandarizada.pdf');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
