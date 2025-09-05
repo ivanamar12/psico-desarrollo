@@ -108,18 +108,19 @@
     <!-- Datos del Paciente y Evaluación -->
     <table>
       <tr>
-        <th colspan="4">INFORMACIÓN GENERAL</th>
+        <th colspan="2">INFORMACIÓN GENERAL</th>
       </tr>
       <tr>
         <td><strong>Paciente:</strong> {{ $aplicacion->paciente->nombre }} {{ $aplicacion->paciente->apellido }}</td>
         <td><strong>Edad:</strong> {{ $datosFinales['edad_meses'] ?? 'N/A' }} meses</td>
+      </tr>
+      <tr>
         <td><strong>Fecha:</strong> {{ $aplicacion->created_at->format('d/m/Y') }}</td>
         <td><strong>Género:</strong> {{ $aplicacion->paciente->genero_id == 1 ? 'Masculino' : 'Femenino' }}</td>
       </tr>
       <tr>
         <td><strong>Evaluador:</strong> {{ $aplicacion->especialista->user->name }}</td>
         <td><strong>Prueba:</strong> {{ $aplicacion->prueba->nombre }}</td>
-        <td colspan="2"><strong>Centro:</strong> PsicoDesarrollo</td>
       </tr>
     </table>
 
@@ -130,9 +131,7 @@
       </tr>
       <tr>
         <td><strong>Puntaje Total:</strong></td>
-        <td>
-          {{ $resultados['puntajeTotal'] ?? 'N/A' }}/{{ $resultados['itemsEsperados'] + $resultados['itemsExcepcionales'] ?? 'N/A' }}
-        </td>
+        <td>{{ $resultados['puntajeTotal'] ?? 'N/A' }}</td>
 
         <td><strong>Categoría:</strong></td>
         <td
@@ -171,7 +170,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($itemsSi as $index => $item)
+            @forelse ($itemsSi as $index => $item)
               @php
                 $tipoItem = 'Esperado';
                 if (isset($resultados['detallesPuntaje'][$item]['tipo'])) {
@@ -183,7 +182,11 @@
                 <td>{{ $item }}</td>
                 <td>{{ ucfirst($tipoItem) }}</td>
               </tr>
-            @endforeach
+            @empty
+              <tr>
+                <td colspan="3" style="text-align: center">Ninguno</td>
+              </tr>
+            @endforelse
           </tbody>
         </table>
       </div>
@@ -200,7 +203,7 @@
             </tr>
           </thead>
           <tbody>
-            @foreach ($itemsNo as $index => $item)
+            @forelse ($itemsNo as $index => $item)
               @php
                 $edadEsperada = 'N/A';
                 if (isset($resultados['detallesPuntaje'][$item]['edad_rango'])) {
@@ -212,7 +215,11 @@
                 <td>{{ $item }}</td>
                 <td>{{ $edadEsperada }}</td>
               </tr>
-            @endforeach
+            @empty
+              <tr>
+                <td colspan="3" style="text-align: center">Ninguno</td>
+              </tr>
+            @endforelse
           </tbody>
         </table>
       </div>
