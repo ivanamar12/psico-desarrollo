@@ -10,7 +10,6 @@ use App\Models\Especialista;
 use App\Models\SubEscala;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
 class AplicarPruebaController extends Controller
@@ -49,7 +48,7 @@ class AplicarPruebaController extends Controller
     return view('aplicar-prueba.index', compact('pacientes', 'pruebas', 'baremos', 'subescalas'));
   }
 
-  public function guardarRespuestas(Request $request)
+  public function store(Request $request)
   {
     $request->validate([
       'paciente_id' => 'required|exists:pacientes,id',
@@ -57,24 +56,23 @@ class AplicarPruebaController extends Controller
       'respuestas' => 'required|array',
     ]);
 
-    $especialista = Especialista::where('user_id', Auth::id())->first();
-
-    if (!$especialista) {
-      return response()->json([
-        'success' => false,
-        'error' => 'Especialista no encontrado.',
-      ], 500);
-    }
-
-    DB::beginTransaction();
     try {
       $paciente = Paciente::find($request->paciente_id);
       $prueba = Prueba::find($request->prueba_id);
+      $especialista = Especialista::where('user_id', Auth::id())->first();
+
+      if (!$especialista) {
+        return response()->json([
+          'success' => false,
+          'error' => 'Especialista no encontrado.',
+        ], 500);
+      }
 
       $edadMeses = $this->calcularEdadEnMeses($paciente->fecha_nac);
 
+      // Determinar qué análisis usar
       if ($prueba->nombre === 'CUMANIN') {
-        $resultados = $this->analizarCumaninPHP($request->respuestas, $edadMeses);
+        $resultados = $this->analizarCumaninPHP($request->respuestas, $paciente->fecha_nac);
       } elseif ($prueba->nombre === 'Koppitz') {
         $resultados = $this->analizarKoppitzPHP($request->respuestas, $edadMeses, $paciente->genero_id);
       } else {
@@ -94,14 +92,15 @@ class AplicarPruebaController extends Controller
         'resultados_finales' => json_encode($resultados)
       ]);
 
-      DB::commit();
       return response()->json([
         'success' => true,
         'message' => '✅ Prueba procesada y resultados guardados correctamente.'
       ]);
     } catch (\Exception $e) {
-      DB::rollBack();
-      return response()->json(['error' => 'Error al guardar la prueba.'], 500);
+      return response()->json([
+        'success' => false,
+        'error' => 'Error al guardar la prueba: ' . $e->getMessage()
+      ], 500);
     }
   }
 
@@ -252,17 +251,10 @@ class AplicarPruebaController extends Controller
 
   private function analizarCumaninPHP($respuestas, $fechaNacimiento)
   {
-    // Calcular la edad en meses desde la fecha de nacimiento
     $edadMeses = $this->calcularEdadEnMeses($fechaNacimiento);
-
-    // Obtener baremos desde la base de datos
-    $baremos = Baremos::all();
-
-    // Inicializar resultados
     $resultados = [];
     $lateralidad = ['izquierda' => 0, 'derecha' => 0];
 
-    // Procesar respuestas por subescala
     foreach ($respuestas as $subescalaNombre => $datosSubescala) {
       if ($subescalaNombre === "lateralidad") {
         foreach ($datosSubescala as $respuesta) {
@@ -272,29 +264,24 @@ class AplicarPruebaController extends Controller
         continue;
       }
 
-      $puntaje = 0;
+      // Calcular puntaje bruto
+      $puntajeBruto = 0;
       foreach ($datosSubescala['respuestas'] as $itemNombre => $respuesta) {
-        // Buscar baremo correspondiente
-        $baremo = $baremos->first(function ($b) use ($subescalaNombre, $itemNombre, $edadMeses) {
-          return $b->sub_escala === $subescalaNombre && $b->item === $itemNombre && $edadMeses >= $b->edad_min && $edadMeses <= $b->edad_max;
-        });
-
-        if ($baremo) {
-          if ($baremo->puntos === "esperado" && $respuesta === "no") {
-            $puntaje--;
-          } elseif ($baremo->puntos === "excepcional" && $respuesta === "si") {
-            $puntaje++;
-          }
+        if ($respuesta === "si") {
+          $puntajeBruto++;
         }
       }
 
+      // Buscar percentil correspondiente en baremos
+      $percentil = $this->obtenerPercentilCumanin($subescalaNombre, $puntajeBruto, $edadMeses);
+
       $resultados[$subescalaNombre] = [
-        'puntaje' => $puntaje,
+        'puntaje' => $puntajeBruto,
+        'percentil' => $percentil,
         'observaciones' => $datosSubescala['observaciones'] ?? "Sin observaciones"
       ];
     }
 
-    // Determinar lateralidad
     $resultadoLateralidad = $lateralidad['izquierda'] > $lateralidad['derecha'] ? "Izquierda" : ($lateralidad['derecha'] > $lateralidad['izquierda'] ? "Derecha" : "Indefinida");
 
     return [
@@ -304,11 +291,73 @@ class AplicarPruebaController extends Controller
     ];
   }
 
+  private function obtenerPercentilCumanin($subescala, $puntaje, $edadMeses)
+  {
+    $rangoEdad = $this->obtenerRangoEdad($edadMeses);
+
+    $baremos = Baremos::where('sub_escala', $subescala)
+      ->where('edad_meses', $rangoEdad)
+      ->orderBy('puntos', 'asc')
+      ->get();
+
+    if ($baremos->isEmpty()) {
+      return 'No disponible';
+    }
+
+    foreach ($baremos as $baremo) {
+      // Manejar rangos de puntos (ej: "10-11")
+      if (strpos($baremo->puntos, '-') !== false) {
+        list($min, $max) = array_map('intval', explode('-', $baremo->puntos));
+        if ($puntaje >= $min && $puntaje <= $max) {
+          return $baremo->p_c;
+        }
+      }
+      // Manejar puntos individuales
+      elseif ((int)$baremo->puntos == $puntaje) {
+        return $baremo->p_c;
+      }
+      // Si encontramos un baremo mayor que nuestro puntaje
+      elseif ((int)$baremo->puntos > $puntaje) {
+        // Buscar el baremo anterior
+        $baremoAnterior = Baremos::where('sub_escala', $subescala)
+          ->where('edad_meses', $rangoEdad)
+          ->where('puntos', '<', $puntaje)
+          ->orderBy('puntos', 'desc')
+          ->first();
+        return $baremoAnterior ? $baremoAnterior->p_c : $baremos->first()->p_c;
+      }
+    }
+
+    // Si el puntaje es mayor que todos los baremos, usar el último
+    return $baremos->last()->p_c;
+  }
+
+  private function obtenerRangoEdad($edadMeses)
+  {
+    $rangos = [
+      '36-42' => [36, 42],
+      '43-48' => [43, 48],
+      '49-54' => [49, 54],
+      '55-60' => [55, 60],
+      '61-66' => [61, 66],
+      '67-78' => [67, 78]
+    ];
+
+    foreach ($rangos as $rango => $limites) {
+      if ($edadMeses >= $limites[0] && $edadMeses <= $limites[1]) {
+        return $rango;
+      }
+    }
+
+    return '36-42';
+  }
+
   private function calcularEdadEnMeses($fechaNacimiento)
   {
-    $fechaNacimiento = new \DateTime($fechaNacimiento);
-    $fechaActual = new \DateTime();
-    $diferencia = $fechaActual->diff($fechaNacimiento);
-    return $diferencia->y * 12 + $diferencia->m;
+    $nacimiento = new \DateTime($fechaNacimiento);
+    $hoy = new \DateTime();
+    $diferencia = $hoy->diff($nacimiento);
+
+    return ($diferencia->y * 12) + $diferencia->m;
   }
 }

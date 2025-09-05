@@ -284,7 +284,8 @@ Route::middleware('auth')->group(function () {
   Route::get('aplicar-prueba', [AplicarPruebaController::class, 'index'])
     ->name('aplicar-prueba.index');
 
-  Route::post('/aplicar-prueba/guardar', [AplicarPruebaController::class, 'guardarRespuestas']);
+  Route::post('aplicar-prueba', [AplicarPruebaController::class, 'store'])
+    ->name('aplicar-prueba.store');
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 

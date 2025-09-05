@@ -632,7 +632,7 @@
               '<i class="zmdi zmdi-spinner zmdi-hc-spin"></i> Guardando...');
 
             $.ajax({
-              url: "/aplicar-prueba/guardar",
+              url: "{{ route('aplicar-prueba.store') }}",
               method: "POST",
               data: {
                 paciente_id: $("#paciente_id").val(),
@@ -703,6 +703,14 @@
     $(document).on('click', '.ver-resultados', function() {
       let aplicacionId = $(this).data('id');
 
+      function interpretarPercentil(percentil) {
+        if (percentil === 'No disponible') return 'Sin datos';
+        const p = parseInt(percentil);
+        if (p >= 75) return 'Superior';
+        if (p >= 25) return 'Normal';
+        return 'Inferior';
+      }
+
       $.ajax({
         url: `/aplicar-prueba/${aplicacionId}`,
         method: 'GET',
@@ -753,27 +761,28 @@
             }
 
             contenidoHTML += `</tbody></table>`;
-          }
-          // 📌 Verificar si la prueba es CUMANIN
-          else if (prueba.nombre === "CUMANIN") {
+          } else if (prueba.nombre === "CUMANIN") {
             contenidoHTML += `
-              <h5><strong>Resultados:</strong></h5>
+              <h5><strong>Resultados CUMANIN - Edad: ${aplicacion_prueba.resultados_finales.edad_meses} meses</strong></h5>
+              <h5><strong>Lateralidad: ${aplicacion_prueba.resultados_finales.lateralidad || 'No definida'}</strong></h5>
               <table class="table table-bordered">
                 <thead>
                   <tr>
                     <th>Subescala</th>
-                    <th>Puntaje</th>
+                    <th>Puntaje Bruto</th>
                     <th>Percentil</th>
+                    <th>Interpretación</th>
                     <th>Observaciones</th>
                   </tr>
                 </thead>
                 <tbody>`;
 
-            if (aplicacion_prueba.resultados_finales) {
-              for (let clave in aplicacion_prueba.resultados_finales) {
-                let resultado = aplicacion_prueba.resultados_finales[clave];
+            if (aplicacion_prueba.resultados_finales.resultados) {
+              for (let clave in aplicacion_prueba.resultados_finales.resultados) {
+                let resultado = aplicacion_prueba.resultados_finales.resultados[clave];
                 let puntaje = resultado.puntaje ?? 'N/A';
                 let percentil = resultado.percentil ?? 'No disponible';
+                let interpretacion = interpretarPercentil(percentil);
                 let observaciones = resultado.observaciones ?? 'Sin observaciones';
 
                 contenidoHTML += `
@@ -781,17 +790,16 @@
                     <td><strong>${clave}</strong></td>
                     <td>${puntaje}</td>
                     <td>${percentil}</td>
+                    <td>${interpretacion}</td>
                     <td>${observaciones}</td>
                   </tr>`;
               }
             } else {
               contenidoHTML +=
-                `<tr><td colspan="4" style="text-align: center">No hay resultados disponibles</td></tr>`;
+                `<tr><td colspan="5" style="text-align: center">No hay resultados disponibles</td></tr>`;
             }
 
-            contenidoHTML += `
-                </tbody>
-              </table>`;
+            contenidoHTML += `</tbody></table>`;
           }
           // 📌 Para otras pruebas (NO estandarizadas)
           else {
