@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 
 class PdfPruebasController extends Controller
 {
-
   public function generarPDFCumanin($id)
   {
     $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'user'])
@@ -33,19 +32,18 @@ class PdfPruebasController extends Controller
     $datos = json_decode($resultado->resultados_finales, true);
     $resultados = $datos['resultados'] ?? [];
 
-    // Generar el PDF y guardarlo en el servidor
+    // Generar el PDF
     $pdf = Pdf::loadView('pdf.resultados_cumanin', compact('aplicacion', 'datos', 'resultados', 'paciente', 'usuario'))
-      ->setPaper('a4', 'portrait')
-      ->output();
+      ->setPaper('a4', 'portrait');
 
     // Definir la ruta donde se guardará el PDF
     $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
 
     // Guardar el PDF en el servidor
-    file_put_contents($pdfPath, $pdf);
+    $pdf->save($pdfPath);
 
-    // Devolver la ruta del PDF guardado
-    return $pdfPath;
+    // Devolver el PDF para descarga
+    return $pdf->download("resultados_cumanin_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 
   public function generarPDFKoppitz($id)
@@ -85,7 +83,7 @@ class PdfPruebasController extends Controller
       }
     }
 
-    // Generar el PDF y guardarlo en el servidor
+    // Generar el PDF
     $pdf = Pdf::loadView('pdf.resultados_koppitz', compact(
       'aplicacion',
       'datos',
@@ -95,17 +93,16 @@ class PdfPruebasController extends Controller
       'itemsSi',
       'itemsNo'
     ))
-      ->setPaper('a4', 'portrait')
-      ->output();
+      ->setPaper('a4', 'portrait');
 
     // Definir la ruta donde se guardará el PDF
     $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
 
     // Guardar el PDF en el servidor
-    file_put_contents($pdfPath, $pdf);
+    $pdf->save($pdfPath);
 
-    // Devolver la ruta del PDF guardado
-    return $pdfPath;
+    // Devolver el PDF para descarga
+    return $pdf->download("resultados_koppitz_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 
   public function generarPDFNoEstandarizada($id)
@@ -131,18 +128,17 @@ class PdfPruebasController extends Controller
     $datos = json_decode($resultado->resultados_finales, true);
     $resultados = $datos['resultados'] ?? [];
 
-    // Generar el PDF y guardarlo en el servidor
+    // Generar el PDF
     $pdf = Pdf::loadView('pdf.resultados_no_estandarizada', compact('aplicacion', 'datos', 'resultados', 'paciente', 'usuario'))
-      ->setPaper('a4', 'portrait')
-      ->output();
+      ->setPaper('a4', 'portrait');
 
     // Definir la ruta donde se guardará el PDF
     $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
 
     // Guardar el PDF en el servidor
-    file_put_contents($pdfPath, $pdf);
+    $pdf->save($pdfPath);
 
-    // Devolver la ruta del PDF guardado
-    return $pdfPath;
+    // Devolver el PDF para descarga
+    return $pdf->download("resultados_no_estandarizada_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 }

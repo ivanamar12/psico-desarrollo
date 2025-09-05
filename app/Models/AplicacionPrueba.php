@@ -4,35 +4,52 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class AplicacionPrueba extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['user_id', 'paciente_id', 'prueba_id', 'resultados'];
+  protected $fillable = [
+    'resultados',
+    'resultados_finales',
+    'prueba_id',
+    'especialista_id',
+    'paciente_id'
+  ];
 
-    protected $casts = [
-        'resultados' => 'array', 
-    ];
+  protected $casts = [
+    'resultados' => 'array',
+    'resultados_finales' => 'array',
+  ];
 
-    public function user()
-    {
-        return $this->belongsTo(User::class)->withDefault(); 
-    }
+  /**
+   * Define la relación BelongsTo con el modelo Especialista.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function especialista(): BelongsTo
+  {
+    return $this->belongsTo(Especialista::class);
+  }
 
-    public function paciente()
-    {
-        return $this->belongsTo(Paciente::class)->withDefault();
-    }
+  /**
+   * Define la relación BelongsTo con el modelo Paciente.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function paciente(): BelongsTo
+  {
+    return $this->belongsTo(Paciente::class);
+  }
 
-    public function prueba()
-    {
-        return $this->belongsTo(Prueba::class)->withDefault();
-    }
-
-    // Definir la relación con ResultadosPruebas
-    public function resultadosPruebas()
-    {
-        return $this->hasMany(ResultadosPruebas::class, 'aplicacion_pruebas_id');
-    }
+  /**
+   * Define la relación BelongsTo con el modelo Prueba.
+   *
+   * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+   */
+  public function prueba(): BelongsTo
+  {
+    return $this->belongsTo(Prueba::class);
+  }
 }
