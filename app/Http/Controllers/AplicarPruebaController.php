@@ -255,6 +255,7 @@ class AplicarPruebaController extends Controller
     $resultados = [];
     $lateralidad = ['izquierda' => 0, 'derecha' => 0];
 
+    // Primero procesar todas las subescalas básicas
     foreach ($respuestas as $subescalaNombre => $datosSubescala) {
       if ($subescalaNombre === "lateralidad") {
         foreach ($datosSubescala as $respuesta) {
@@ -264,7 +265,12 @@ class AplicarPruebaController extends Controller
         continue;
       }
 
-      // Calcular puntaje bruto
+      // Saltar las subescalas compuestas (se calculan después)
+      if (in_array($subescalaNombre, ['Desarrollo Verbal', 'Desarrollo no Verbal', 'Desarrollo Global'])) {
+        continue;
+      }
+
+      // Calcular puntaje bruto para subescalas básicas
       $puntajeBruto = 0;
       foreach ($datosSubescala['respuestas'] as $itemNombre => $respuesta) {
         if ($respuesta === "si") {
@@ -272,7 +278,6 @@ class AplicarPruebaController extends Controller
         }
       }
 
-      // Buscar percentil correspondiente en baremos
       $percentil = $this->obtenerPercentilCumanin($subescalaNombre, $puntajeBruto, $edadMeses);
 
       $resultados[$subescalaNombre] = [
@@ -282,6 +287,9 @@ class AplicarPruebaController extends Controller
       ];
     }
 
+    // ✅ CALCULAR SUBESCALAS COMPUESTAS
+    $resultados = $this->calcularSubescalasCompuestas($resultados, $edadMeses);
+
     $resultadoLateralidad = $lateralidad['izquierda'] > $lateralidad['derecha'] ? "Izquierda" : ($lateralidad['derecha'] > $lateralidad['izquierda'] ? "Derecha" : "Indefinida");
 
     return [
@@ -289,6 +297,64 @@ class AplicarPruebaController extends Controller
       'resultados' => $resultados,
       'lateralidad' => $resultadoLateralidad
     ];
+  }
+
+  private function calcularSubescalasCompuestas($resultados, $edadMeses)
+  {
+    // 1. DESARROLLO VERBAL (Lenguaje Articulatorio + Comprensivo + Expresivo)
+    if (
+      isset($resultados['Lenguaje Articulatorio']) &&
+      isset($resultados['Lenguaje Comprensivo']) &&
+      isset($resultados['Lenguaje Expresivo'])
+    ) {
+
+      $puntajeVerbal = $resultados['Lenguaje Articulatorio']['puntaje'] +
+        $resultados['Lenguaje Comprensivo']['puntaje'] +
+        $resultados['Lenguaje Expresivo']['puntaje'];
+
+      $resultados['Desarrollo Verbal'] = [
+        'puntaje' => $puntajeVerbal,
+        'percentil' => $this->obtenerPercentilCumanin('Desarrollo Verbal', $puntajeVerbal, $edadMeses),
+        'observaciones' => 'Calculado a partir de Lenguaje Articulatorio, Comprensivo y Expresivo'
+      ];
+    }
+
+    // 2. DESARROLLO NO VERBAL (Psicomotricidad + Estructuración Espacial + Visopercepción + Memoria Icónica + Ritmo)
+    $subescalasNoVerbal = ['Psicomotricidad', 'Estructuración Espacial', 'Visopercepción', 'Memoria Icónica', 'Ritmo'];
+    $puntajeNoVerbal = 0;
+    $todasPresentes = true;
+
+    foreach ($subescalasNoVerbal as $subescala) {
+      if (!isset($resultados[$subescala])) {
+        $todasPresentes = false;
+        break;
+      }
+      $puntajeNoVerbal += $resultados[$subescala]['puntaje'];
+    }
+
+    if ($todasPresentes) {
+      $resultados['Desarrollo no Verbal'] = [
+        'puntaje' => $puntajeNoVerbal,
+        'percentil' => $this->obtenerPercentilCumanin('Desarrollo no Verbal', $puntajeNoVerbal, $edadMeses),
+        'observaciones' => 'Calculado a partir de Psicomotricidad, Estructuración espacial, Visopercepción, Memoria icónica y Ritmo'
+      ];
+    }
+
+    // 3. DESARROLLO GLOBAL (Suma de todas las subescalas básicas)
+    $puntajeGlobal = 0;
+    $subescalasBasicas = array_diff_key($resultados, array_flip(['Desarrollo Verbal', 'Desarrollo no Verbal', 'Desarrollo Global']));
+
+    foreach ($subescalasBasicas as $subescala) {
+      $puntajeGlobal += $subescala['puntaje'];
+    }
+
+    $resultados['Desarrollo Global'] = [
+      'puntaje' => $puntajeGlobal,
+      'percentil' => $this->obtenerPercentilCumanin('Desarrollo Global', $puntajeGlobal, $edadMeses),
+      'observaciones' => 'Puntuación total de los 83 elementos'
+    ];
+
+    return $resultados;
   }
 
   private function obtenerPercentilCumanin($subescala, $puntaje, $edadMeses)
