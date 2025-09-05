@@ -62,7 +62,7 @@ class InformeController extends Controller
 		}
 
 		$pacientesConPruebas = AplicacionPrueba::select('paciente_id', DB::raw('COUNT(*) as total'))
-			->where('user_id', $userId)
+			->where('especialista_id', $userId)
 			->groupBy('paciente_id')
 			->havingRaw('total BETWEEN 3 AND 4')
 			->pluck('paciente_id')

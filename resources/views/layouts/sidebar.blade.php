@@ -113,7 +113,7 @@
               </a>
             </li>
             <li>
-              <a href="{{ route('aplicar_prueba.index') }}">
+              <a href="{{ route('aplicar-prueba.index') }}">
                 <i class="zmdi zmdi-playlist-plus" style="margin: 0px 8px"></i>Aplicación de Pruebas
               </a>
             </li>

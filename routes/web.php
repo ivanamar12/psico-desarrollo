@@ -281,14 +281,15 @@ Route::middleware('auth')->group(function () {
    */
 
   // Ruta para aplicar prueba
-  Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])
-    ->name('aplicar_prueba.index');
+  Route::get('aplicar-prueba', [AplicarPruebaController::class, 'index'])
+    ->name('aplicar-prueba.index');
 
   Route::post('/aplicar-prueba/guardar', [AplicarPruebaController::class, 'guardarRespuestas']);
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 
-  Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
+  Route::get('aplicar-prueba/{id}', [AplicarPruebaController::class, 'show'])
+    ->name('aplicar-prueba.show');
 
   // Pdfs de pruebas:
   Route::get('/resultados-pdf/{id}', [PdfPruebasController::class, 'generarPDFCumanin'])
