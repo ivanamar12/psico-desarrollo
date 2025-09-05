@@ -283,8 +283,6 @@ Route::middleware('auth')->group(function () {
   Route::get('aplicar_prueba', [AplicarPruebaController::class, 'index'])
     ->name('aplicar_prueba.index');
 
-  Route::get('aplicar-prueba/{id}', [AplicarPruebaController::class, 'obtenerPrueba']);
-
   Route::post('/aplicar-prueba/guardar', [AplicarPruebaController::class, 'guardarRespuestas']);
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);

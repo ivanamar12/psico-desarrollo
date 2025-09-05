@@ -152,12 +152,14 @@
   <script src="{{ asset('js/app/pruebas.js') }}"></script>
   <script src="{{ asset('js/app/evaluacion-pruebas.js') }}"></script>
 
+  <script>
+    const pacientes = @json($pacientes);
+    const pruebas = @json($pruebas);
+  </script>
+
   {{-- Script para los selects --}}
   <script>
     $(document).ready(function() {
-      const pacientes = @json($pacientes);
-      const pruebas = @json($pruebas);
-
       const rangosEdad = {
         '0-3 meses': {
           min: 0,
@@ -301,8 +303,6 @@
       $("#btnIniciarPrueba").click(function() {
         let pruebaId = $("#prueba_id").val();
         let pacienteId = $("#paciente_id").val();
-        let tipoPrueba = $("#prueba_id option:selected").data("tipo");
-        let pruebaNombre = $("#prueba_id option:selected").text();
 
         if (!pacienteId) {
           toastr.warning('Seleccione un paciente.', {
@@ -318,25 +318,25 @@
           return;
         }
 
-        $.ajax({
-          url: "/aplicar-prueba/" + pruebaId,
-          method: "GET",
-          success: function(data) {
-            console.log(data);
-            subescalas = data.subescalas;
-            if (subescalas.length > 0) {
-              $("#modalPrueba").modal("show");
-              $("#elementoDelModal").text(subescalas.join(", "));
+        // Buscar la prueba en los datos que ya estan en la vista
+        const pruebaSeleccionada = pruebas.find(p => p.id == pruebaId);
 
-              iniciarPruebaCumanin(subescalas);
-            } else {
-              alert("Esta prueba no tiene ítems registrados.");
-            }
-          },
-          error: function(xhr, status, error) {
-            console.error("Error en la solicitud AJAX:", status, error);
-          }
-        });
+        if (!pruebaSeleccionada) {
+          toastr.error('Prueba no encontrada.');
+          return;
+        }
+
+        // Acceder directamente a las subescalas
+        const subescalas = pruebaSeleccionada.subescalas;
+
+        if (subescalas && subescalas.length > 0) {
+          $("#modalPrueba").modal("show");
+          iniciarPruebaCumanin(subescalas);
+        } else {
+          toastr.warning('Esta prueba no tiene ítems registrados.', {
+            timeOut: 5000
+          });
+        }
       });
     });
   </script>

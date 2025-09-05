@@ -40,15 +40,9 @@ class AplicarPruebaController extends Controller
     }
 
     $pacientes = Paciente::has('historiaclinicas')->get();
-    $pruebas = Prueba::all();
+    $pruebas = Prueba::with('subescalas.items')->get();
 
     return view('aplicar-prueba.index', compact('pacientes', 'pruebas'));
-  }
-
-  public function obtenerPrueba($id)
-  {
-    $prueba = Prueba::with('subescalas.items')->findOrFail($id);
-    return response()->json($prueba);
   }
 
   public function guardarRespuestas(Request $request)
