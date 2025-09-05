@@ -154,36 +154,28 @@
 
   <script>
     $(document).ready(function() {
+      const pacientes = @json($pacientes);
+
       // Inicializar Select2 para el select de pacientes
-      const pacienteSelect = $('#paciente_id').select2({
+      $('#paciente_id').select2({
         placeholder: 'Seleccione un paciente con historia clínica',
         allowClear: true,
+        data: pacientes.map(paciente => {
+          const codigo = paciente.historiaclinicas && paciente.historiaclinicas.length > 0 ?
+            paciente.historiaclinicas[0].codigo :
+            'Sin código';
+
+          return {
+            id: paciente.id,
+            text: `${paciente.nombre} ${paciente.apellido} - Código: ${codigo}`,
+            fecha_nac: paciente.fecha_nac
+          };
+        }),
         language: {
           noResults: function() {
             return "Paciente no encontrado";
           }
-        },
-        ajax: {
-          url: '{{ route('pacientes.buscar') }}',
-          dataType: 'json',
-          delay: 250,
-          data: function(params) {
-            return {
-              q: params.term
-            };
-          },
-          processResults: function(data) {
-            return {
-              results: data.map((item) => ({
-                id: item.id,
-                text: item.nombre + ' ' + item.apellido,
-                fecha_nac: item.fecha_nac
-              }))
-            };
-          },
-          cache: true
-        },
-        minimumInputLength: 2
+        }
       });
 
       // Inicializar Select2 para el select de pruebas
@@ -201,7 +193,7 @@
       $('#prueba-container').hide();
       $('#prueba_id').prop('disabled', true);
 
-      pacienteSelect.on('change', function() {
+      $('#paciente_id').on('change', function() {
         const pacienteId = $(this).val();
 
         if (!pacienteId) {
@@ -210,26 +202,17 @@
           return;
         }
 
-        const selectedData = $(this).select2('data')[0];
+        // Buscar el paciente seleccionado en la lista de pacientes
+        const pacienteSeleccionado = pacientes.find(p => p.id == pacienteId);
 
-        // Verificar si tenemos fecha de nacimiento
-        if (!selectedData.fecha_nac) {
-          $.ajax({
-            url: '/obtener-fecha-nacimiento/' + pacienteId,
-            method: 'GET',
-            success: function(data) {
-              cargarPruebasDisponibles(calcularEdadEnMeses(data.fecha_nacimiento));
-              $('#prueba-container').show();
-            },
-            error: function() {
-              toastr.error('Error al obtener fecha de nacimiento del paciente');
-            }
-          });
-        } else {
-          const edadEnMeses = calcularEdadEnMeses(selectedData.fecha_nac);
-          cargarPruebasDisponibles(edadEnMeses);
-          $('#prueba-container').show();
+        if (!pacienteSeleccionado || !pacienteSeleccionado.fecha_nac) {
+          toastr.error('No se pudo obtener la fecha de nacimiento del paciente');
+          return;
         }
+
+        const edadEnMeses = calcularEdadEnMeses(pacienteSeleccionado.fecha_nac);
+        cargarPruebasDisponibles(edadEnMeses);
+        $('#prueba-container').show();
       });
 
       function calcularEdadEnMeses(fechaNacimiento) {
@@ -329,7 +312,7 @@
     $(document).ready(function() {
       $('#tab-prueba').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,

@@ -293,16 +293,6 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
 
-  Route::get('/obtener-fecha-nacimiento/{paciente_id}', function ($paciente_id) {
-    $paciente = \App\Models\Paciente::find($paciente_id);
-
-    if (!$paciente) {
-      return response()->json(['error' => 'Paciente no encontrado'], 404);
-    }
-
-    return response()->json(['fecha_nacimiento' => $paciente->fecha_nac]);
-  });
-
   Route::get('/aplicar-prueba/ver-respuestas/{prueba_id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 
   Route::get('/resultados-pdf/{id}', [AplicarPruebaController::class, 'generarPDF'])
@@ -313,9 +303,6 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/resultados/no-estandarizada/{id}', [AplicarPruebaController::class, 'generarPDFNoEstandarizada'])
     ->name('resultados.no_estandarizada.pdf');
-
-  Route::get('/pacientes/buscar', [AplicarPruebaController::class, 'buscarPacientes'])
-    ->name('pacientes.buscar');
 
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);

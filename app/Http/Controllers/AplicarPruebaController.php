@@ -6,10 +6,10 @@ use App\Models\Prueba;
 use App\Models\Paciente;
 use App\Models\AplicacionPrueba;
 use App\Models\ResultadosPruebas;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
-use PDF;
 
 class AplicarPruebaController extends Controller
 {
@@ -39,23 +39,10 @@ class AplicarPruebaController extends Controller
         ->make(true);
     }
 
-    // Filtrar pacientes que tienen al menos una historia clínica
-    $pacientes = Paciente::has('historiaclinicas')->get(); // Utiliza la relación 'historiaclinicas'
+    $pacientes = Paciente::has('historiaclinicas')->get();
     $pruebas = Prueba::all();
 
     return view('aplicar-prueba.index', compact('pacientes', 'pruebas'));
-  }
-
-  public function buscarPacientes(Request $request)
-  {
-    $searchTerm = $request->get('q');
-    $pacientes = Paciente::whereHas('historiaclinicas')
-      ->where(function ($query) use ($searchTerm) {
-        $query->where('nombre', 'like', "%$searchTerm%")
-          ->orWhere('apellido', 'like', "%$searchTerm%");
-      })
-      ->get(['id', 'nombre', 'apellido', 'fecha_nac']);
-    return response()->json($pacientes);
   }
 
   public function pruebasDisponibles(Request $request)
