@@ -18,11 +18,11 @@ use Yajra\DataTables\Facades\DataTables;
 
 class InformeController extends Controller
 {
-	protected $aplicarPruebaController;
+	protected $pdfPruebasController;
 
-	public function __construct(AplicarPruebaController $aplicarPruebaController)
+	public function __construct(PdfPruebasController $pdfPruebasController)
 	{
-		$this->aplicarPruebaController = $aplicarPruebaController;
+		$this->pdfPruebasController = $pdfPruebasController;
 	}
 
 	public function index(Request $request)
@@ -169,7 +169,6 @@ class InformeController extends Controller
 			'antecedenteMedico',
 			'historiaEscolar',
 			'paciente.aplicacionPruebas.prueba',
-			'paciente.aplicacionPruebas.resultadosPruebas'
 		])->findOrFail($pacienteId);
 
 		// Generar el PDF de la historia clínica
@@ -192,28 +191,26 @@ class InformeController extends Controller
 
 		// Agregar los resultados de las pruebas al PDF combinado
 		foreach ($historia->paciente->aplicacionPruebas as $aplicacion) {
-			if ($aplicacion->resultadosPruebas) {
-				$pruebaNombre = $aplicacion->prueba->nombre;
+			$pruebaNombre = $aplicacion->prueba->nombre;
 
-				if ($pruebaNombre === 'CUMANIN') {
-					$tempPdfPath = $this->aplicarPruebaController->generarPDF($aplicacion->id);
-				} elseif ($pruebaNombre === 'Koppitz') {
-					$tempPdfPath = $this->aplicarPruebaController->generarPDFKoppitz($aplicacion->id);
-				} elseif ($pruebaNombre === 'NO-Estandarizada') {
-					$tempPdfPath = $this->aplicarPruebaController->generarPDFNoEstandarizada($aplicacion->id);
-				} else {
-					continue;
-				}
+			if ($pruebaNombre === 'CUMANIN') {
+				$tempPdfPath = $this->pdfPruebasController->reportCumanin($aplicacion->id);
+			} elseif ($pruebaNombre === 'Koppitz') {
+				$tempPdfPath = $this->pdfPruebasController->reportKoppitz($aplicacion->id);
+			} elseif ($pruebaNombre === 'NO-Estandarizada') {
+				$tempPdfPath = $this->pdfPruebasController->reportNoEstandarizada($aplicacion->id);
+			} else {
+				continue;
+			}
 
-				if (file_exists($tempPdfPath)) {
-					$pageCount = $pdf->setSourceFile($tempPdfPath);
-					for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-						$tplIdx = $pdf->importPage($pageNo);
-						$pdf->addPage();
-						$pdf->useTemplate($tplIdx);
-					}
-					unlink($tempPdfPath);
+			if (file_exists($tempPdfPath)) {
+				$pageCount = $pdf->setSourceFile($tempPdfPath);
+				for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+					$tplIdx = $pdf->importPage($pageNo);
+					$pdf->addPage();
+					$pdf->useTemplate($tplIdx);
 				}
+				unlink($tempPdfPath);
 			}
 		}
 

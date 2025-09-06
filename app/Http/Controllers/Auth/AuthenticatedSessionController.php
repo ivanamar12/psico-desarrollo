@@ -12,15 +12,9 @@ use Illuminate\Support\Facades\Cache;
 
 class AuthenticatedSessionController extends Controller
 {
-
   protected $limit = 3; // Número máximo de intentos permitidos
   protected $initCounter = 1; // Contador inicial
   protected $duration = 5; // Duración en minutos del bloqueo en cache
-
-  public function create()
-  {
-    return view('auth.login');
-  }
 
   public function store(LoginRequest $request)
   {

@@ -6,11 +6,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PsicoDesarrollo</title>
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo.png') }}" />
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 
 <body>
-
   <x-auth-messages />
 
   <!-- Header -->
@@ -151,27 +151,6 @@
         </div>
 
         <button type="submit" class="btn">Entrar</button>
-      </form>
-    </div>
-  </div>
-
-  <!-- Modal de Registro -->
-  <div id="register-modal" class="modal">
-    <div class="modal-content">
-      <span class="close-btn" id="close-register-modal">&times;</span>
-      <h2>Registro</h2>
-      <form method="POST" action="{{ route('register') }}">
-        @csrf
-        <label for="name-register">Nombre Completo:</label>
-        <input type="text" id="name-register" name="name" placeholder="Ingrese su nombre" required>
-        <label for="email-register">Correo Electrónico:</label>
-        <input type="email" id="email-register" name="email" placeholder="Ingrese su correo" required>
-        <label for="password-register">Contraseña:</label>
-        <input type="password" id="password-register" name="password" placeholder="Cree una contraseña" required>
-        <label for="password-confirm">Confirmar Contraseña:</label>
-        <input type="password" id="password-confirm" name="password_confirmation"
-          placeholder="Confirme su contraseña" required>
-        <button type="submit" class="btn">Registrarse</button>
       </form>
     </div>
   </div>

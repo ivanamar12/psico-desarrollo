@@ -15,7 +15,6 @@ use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\InformeController;
-use App\Http\Controllers\AnalisisPruebaController;
 use App\Http\Controllers\ConstanciaAsistenciaController;
 use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
@@ -64,12 +63,15 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/perfil', [PerfilController::class, 'index'])
     ->name('perfil.index');
+
   Route::post('/perfil/update', [PerfilController::class, 'update'])
     ->name('perfil.update');
 
   Route::get('/perfil/list', [PerfilController::class, 'list'])
     ->name('perfil.list');
+
   Route::get('/perfil/show/{id}', [PerfilController::class, 'show']);
+
   Route::get('/perfil/edit/{id}', [PerfilController::class, 'edit']);
 
   Route::delete('perfil/delete/{id}', [PerfilController::class, 'destroy'])
