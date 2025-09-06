@@ -20,7 +20,9 @@ como repuesta y se vea en un modal con un boton que diga generar constancia
 
 # Correcciones
 
-Mejorar el sidebar, dividirlo en secciones
+<!-- Mejorar el sidebar, dividirlo en secciones -->
+
+Poner required en las pruebas
 
 LA AYUDA EN TODAS LAS VISTAS
 

@@ -51,7 +51,7 @@
       max-width: 900px;
       margin: 0 auto;
       background: white;
-      padding: 20px;
+      padding: 16px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -89,10 +89,17 @@
 
   <!-- Contenido principal -->
   <div class="content-container">
+    <div style="text-align: center;margin-top: 30px;font-size: 12px;color: #666;">
+      Fecha: {{ date('d/m/Y g:i A') }}
+    </div>
     <h1>PERFIL DE DESARROLLO CUMANIN</h1>
+    <h2>Resultados de la Aplicación</h2>
 
     <!-- Datos del Paciente -->
     <table>
+      <tr>
+        <th colspan="3">INFORMACIÓN GENERAL</th>
+      </tr>
       <tr>
         <td><strong>Paciente:</strong> {{ $aplicacion->paciente->nombre }} {{ $aplicacion->paciente->apellido }}</td>
         <td><strong>Edad:</strong> {{ $datos['edad_meses'] }} meses</td>

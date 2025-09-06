@@ -151,8 +151,6 @@
   <script>
     const pacientes = @json($pacientes);
     const pruebas = @json($pruebas);
-    // const baremos = @json($baremos);
-    // const subEscalas = @json($subescalas);
   </script>
 
   {{-- Script para los selects --}}
@@ -330,7 +328,7 @@
 
         if (subescalas && subescalas.length > 0) {
           $("#modalPrueba").modal("show");
-          iniciarPruebaCumanin(subescalas);
+          iniciarPrueba(subescalas);
         } else {
           toastr.warning('Esta prueba no tiene ítems registrados.', {
             timeOut: 5000
@@ -391,7 +389,7 @@
         return nombre.replace(/[^a-zA-Z0-9]/g, "_").toLowerCase();
       }
 
-      function iniciarPruebaCumanin(subescalasData, tipo, nombre) {
+      function iniciarPrueba(subescalasData, tipo, nombre) {
         subescalas = subescalasData.filter(
           (subescala) => subescala.items && subescala.items.length > 0
         );
@@ -399,7 +397,9 @@
         nombrePrueba = nombre;
 
         if (subescalas.length === 0) {
-          alert("No hay subescalas con ítems disponibles.");
+          toastr.error('No hay subescalas con ítems disponibles.', "Error", {
+            timeOut: 5000,
+          });
           return;
         }
 
@@ -420,74 +420,42 @@
         contenido += `<thead><tr><th>Ítem</th>`;
 
         if (
-          [
-            "Psicomotricidad",
-            "Escritura",
-            "Estructuración espacial",
-            "Ritmo",
-          ].includes(subescala.sub_escala)
+          ["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo", ].includes(subescala.sub_escala)
         ) {
           contenido += `<th>Lateralidad</th>`;
         }
 
-        if (
-          subescala.sub_escala === "Atencion" ||
-          subescala.sub_escala === "Fluidez Verbal"
-        ) {
+        if (subescala.sub_escala === "Atencion" || subescala.sub_escala === "Fluidez Verbal") {
           contenido += `<th>Valor</th>`;
         }
 
         contenido += `<th>Respuesta</th></tr></thead><tbody>`;
 
         subescala.items.forEach((item) => {
-          let respuestaGuardada =
-            respuestasTotales[subescala.sub_escala]?.respuestas?.[item.item] || "";
-          let lateralidadGuardada =
-            respuestasTotales[subescala.sub_escala]?.lateralidad?.[item.item] || [];
+          let respuestaGuardada = respuestasTotales[subescala.sub_escala]?.respuestas?.[item.item] || "";
+          let lateralidadGuardada = respuestasTotales[subescala.sub_escala]?.lateralidad?.[item.item] || [];
 
           contenido += `<tr><td>${item.item}</td>`;
 
           if (
-            [
-              "Psicomotricidad",
-              "Escritura",
-              "Estructuración espacial",
-              "Ritmo",
-            ].includes(subescala.sub_escala)
+            ["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo"].includes(subescala.sub_escala)
           ) {
             contenido += `<td>
-                    <label>Derecha <input type="checkbox" name="lateralidad_${
-                      item.id
-                    }" value="derecha" ${
-          lateralidadGuardada.includes("derecha") ? "checked" : ""
-        }></label>
-                    <label>Izquierda <input type="checkbox" name="lateralidad_${
-                      item.id
-                    }" value="izquierda" ${
-          lateralidadGuardada.includes("izquierda") ? "checked" : ""
-        }></label>
-                </td>`;
+                <label>Derecha <input type="checkbox" name="lateralidad_${item.id}" 
+                  value="derecha" ${lateralidadGuardada.includes("derecha") ? "checked" : ""}></label>
+                <label>Izquierda <input type="checkbox" name="lateralidad_${item.id}" 
+                  value="izquierda" ${lateralidadGuardada.includes("izquierda") ? "checked" : ""}></label>
+              </td>`;
           }
 
-          if (
-            subescala.sub_escala === "Atencion" ||
-            subescala.sub_escala === "Fluidez Verbal"
-          ) {
+          if (subescala.sub_escala === "Atencion" || subescala.sub_escala === "Fluidez Verbal") {
             contenido +=
               `<td><input class="form-control input-numerico" type="number" name="respuesta_${item.id}" min="0" value="${respuestaGuardada}"></td>`;
           } else {
             contenido += `<td>
-                    <label>Sí <input type="radio" name="respuesta_${
-                      item.id
-                    }" value="si" ${
-          respuestaGuardada === "si" ? "checked" : ""
-        }></label>
-                    <label>No <input type="radio" name="respuesta_${
-                      item.id
-                    }" value="no" ${
-          respuestaGuardada === "no" ? "checked" : ""
-        }></label>
-                </td>`;
+                <label>Sí <input type="radio" name="respuesta_${item.id}" value="si" ${respuestaGuardada === "si" ? "checked" : ""}></label>
+                <label>No <input type="radio" name="respuesta_${item.id}" value="no" ${respuestaGuardada === "no" ? "checked" : ""}></label>
+              </td>`;
           }
 
           contenido += `</tr>`;
@@ -496,12 +464,11 @@
         contenido += `</tbody></table>`;
 
         // Agregar campo de observaciones con ID sanitizado
-        let observacionesGuardadas =
-          respuestasTotales[subescala.sub_escala]?.observaciones || "";
+        let observacionesGuardadas = respuestasTotales[subescala.sub_escala]?.observaciones || "";
         contenido += `<div class="form-group">
             <label for="observaciones_${idSanitizado}">Observaciones: <span class="text-danger">*</span></label>
             <textarea class="form-control observaciones" id="observaciones_${idSanitizado}" name="observaciones_${idSanitizado}" rows="3" required>${observacionesGuardadas}</textarea>
-        </div>`;
+          </div>`;
 
         $("#contenidoPrueba").html(contenido);
         actualizarBotones(step);
@@ -602,8 +569,6 @@
           lateralidad: lateralidad,
           observaciones: observaciones,
         };
-
-        console.log("✅ Respuestas y observaciones guardadas:", respuestasTotales);
       }
 
       $("#btnSiguiente").click(function() {
@@ -695,7 +660,7 @@
           }
         });
 
-      window.iniciarPruebaCumanin = iniciarPruebaCumanin;
+      window.iniciarPrueba = iniciarPrueba;
     });
   </script>
 
@@ -798,9 +763,7 @@
             }
 
             contenidoHTML += `</tbody></table>`;
-          }
-          // 📌 Para otras pruebas (NO estandarizadas)
-          else {
+          } else {
             contenidoHTML += `
               <h5><strong>Resultados:</strong></h5>
               <table class="table table-bordered">

@@ -18,7 +18,7 @@
       max-width: 900px;
       margin: 0 auto;
       background: white;
-      padding: 20px;
+      padding: 16px;
       box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     }
 
@@ -70,13 +70,6 @@
       margin-bottom: 20px;
     }
 
-    .footer-content {
-      text-align: center;
-      margin-top: 30px;
-      font-size: 12px;
-      color: #666;
-    }
-
     /* Estilos específicos para PDF */
     @media print {
       .container {
@@ -101,6 +94,9 @@
   <!-- Contenido principal -->
   <div class="content-wrapper">
     <div class="header-content">
+      <div style="text-align: center;margin-top: 30px;font-size: 12px;color: #666;">
+        Fecha: {{ date('d/m/Y g:i A') }}
+      </div>
       <h1>EVALUACIÓN KOPPITZ - FIGURA HUMANA</h1>
       <h2>Resultados de la Aplicación</h2>
     </div>
@@ -249,12 +245,14 @@
             @endif
           </td>
         </tr>
+        <tr>
+          <td>
+            <strong>Observaciones:</strong>
+            {{ $datosFinales['observaciones'] }}
+          </td>
+        </tr>
       </table>
     @endif
-
-    <div class="footer-content">
-      Fecha de impresión: {{ date('d/m/Y g:i A') }}
-    </div>
   </div>
 
   <!-- Footer -->

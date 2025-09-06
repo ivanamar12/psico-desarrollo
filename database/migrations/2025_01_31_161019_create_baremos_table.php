@@ -6,30 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateBaremosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('baremos', function (Blueprint $table) {
-            $table->id();
-            $table->string('sub_escala',30);
-            $table->string('p_c',30);
-            $table->string('edad_meses',11);
-            $table->string('puntos',11);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('baremos', function (Blueprint $table) {
+      $table->id();
+      $table->string('sub_escala', 30);
+      $table->string('p_c', 30);
+      $table->string('edad_meses', 11);
+      $table->string('puntos', 11);
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('baremos');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('baremos');
+  }
 }

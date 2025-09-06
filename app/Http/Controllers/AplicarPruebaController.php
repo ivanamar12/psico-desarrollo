@@ -70,18 +70,12 @@ class AplicarPruebaController extends Controller
 
       $edadMeses = $this->calcularEdadEnMeses($paciente->fecha_nac);
 
-      // Determinar qué análisis usar
       if ($prueba->nombre === 'CUMANIN') {
         $resultados = $this->analizarCumaninPHP($request->respuestas, $paciente->fecha_nac);
       } elseif ($prueba->nombre === 'Koppitz') {
         $resultados = $this->analizarKoppitzPHP($request->respuestas, $edadMeses, $paciente->genero_id);
       } else {
-        $resultados = [
-          'edad_meses' => $edadMeses,
-          'resultados' => $request->respuestas,
-          'lateralidad' => null,
-          'observaciones' => null
-        ];
+        $resultados = $this->analizarNoEstandarizada($request->respuestas, $edadMeses);
       }
 
       AplicacionPrueba::create([
@@ -245,6 +239,24 @@ class AplicarPruebaController extends Controller
         'detallesPuntaje' => $detallesPuntaje,
         'categoria' => $categoria
       ],
+      'observaciones' => $observaciones
+    ];
+  }
+
+  private function analizarNoEstandarizada($respuestas, $edadMeses)
+  {
+    $observaciones = null;
+
+    foreach ($respuestas as $area) {
+      foreach ($area as $key => $data) {
+        if ($key == 'observaciones')
+          $observaciones = $data;
+      }
+    }
+
+    return [
+      'edad_meses' => $edadMeses,
+      'resultados' => $respuestas,
       'observaciones' => $observaciones
     ];
   }

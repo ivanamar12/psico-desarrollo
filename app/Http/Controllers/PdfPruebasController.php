@@ -30,38 +30,6 @@ class PdfPruebasController extends Controller
     return $pdf->stream("resultados_cumanin_{$aplicacion->paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 
-  // public function reportCumanin($id)
-  // {
-  //   $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'user'])
-  //     ->findOrFail($id);
-
-  //   $paciente = $aplicacion->paciente;
-  //   if (!$paciente) {
-  //     return response()->json(['error' => 'Paciente no encontrado'], 404);
-  //   }
-
-  //   $especialista = $aplicacion->especialista;
-  //   if (!$especialista) {
-  //     return response()->json(['error' => 'Especialista no encontrado'], 404);
-  //   }
-
-  //   $datos = json_decode($aplicacion->resultados_finales, true);
-  //   $resultados = $datos['resultados'] ?? [];
-
-  //   // Generar el PDF
-  //   $pdf = Pdf::loadView('pdf.report-cumanin', compact('aplicacion', 'datos', 'resultados', 'paciente', 'usuario'))
-  //     ->setPaper('a4', 'portrait');
-
-  //   // Definir la ruta donde se guardará el PDF
-  //   $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
-
-  //   // Guardar el PDF en el servidor
-  //   $pdf->save($pdfPath);
-
-  //   // Devolver el PDF para descarga
-  //   return $pdf->download("resultados_cumanin_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
-  // }
-
   public function reportKoppitz($id)
   {
     $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'especialista.user'])
@@ -99,33 +67,31 @@ class PdfPruebasController extends Controller
 
   public function reportNoEstandarizada($id)
   {
-    $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'user'])
+    $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'especialista.user'])
       ->findOrFail($id);
 
-    $paciente = $aplicacion->paciente;
-    if (!$paciente) {
-      return response()->json(['error' => 'Paciente no encontrado'], 404);
-    }
+    $datosFinales = json_decode($aplicacion->resultados_finales, true);
+    $resultados = $datosFinales['resultados'] ?? [];
 
-    $especialista = $aplicacion->especialista;
-    if (!$especialista) {
-      return response()->json(['error' => 'Especialista no encontrado'], 404);
-    }
-
-    $datos = json_decode($aplicacion->resultados_finales, true);
-    $resultados = $datos['resultados'] ?? [];
-
-    // Generar el PDF
-    $pdf = Pdf::loadView('pdf.report-no-estandarizada', compact('aplicacion', 'datos', 'resultados', 'paciente', 'usuario'))
+    $pdf = Pdf::loadView('pdf.report-no-estandarizada', compact('aplicacion', 'datosFinales', 'resultados'))
       ->setPaper('a4', 'portrait');
 
-    // Definir la ruta donde se guardará el PDF
-    $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
-
-    // Guardar el PDF en el servidor
-    $pdf->save($pdfPath);
-
-    // Devolver el PDF para descarga
-    return $pdf->download("resultados_no_estandarizada_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
+    return $pdf->stream("resultados_no_estandarizada_{$aplicacion->paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
+
+  // public function reportCumanin($id)
+  // {
+  //   // Generar el PDF
+  //   $pdf = Pdf::loadView('pdf.report-cumanin', compact('aplicacion', 'datos', 'resultados', 'paciente', 'usuario'))
+  //     ->setPaper('a4', 'portrait');
+
+  //   // Definir la ruta donde se guardará el PDF
+  //   $pdfPath = storage_path("app/public/resultados/resultados_{$id}.pdf");
+
+  //   // Guardar el PDF en el servidor
+  //   $pdf->save($pdfPath);
+
+  //   // Devolver el PDF para descarga
+  //   return $pdf->download("resultados_cumanin_{$paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
+  // }
 }

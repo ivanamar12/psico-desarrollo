@@ -54,7 +54,7 @@
                           <div class="form-group col-md-6">
                             <label class="control-label">Nombre<span class="text-danger">*</span></label>
                             <input class="form-control" id="nombre" name="nombre" type="text" maxlength="60"
-                              required>
+                              required pattern="[A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9 ]+">
                             <small class="form-text text-muted">Máximo 60 caracteres. Solo letras, números y
                               espacios.</small>
                           </div>
@@ -71,7 +71,7 @@
                           <div class="form-group col-md-6">
                             <label class="control-label">Rango de Edad<span class="text-danger">*</span></label>
                             <select class="form-control select2" required id="rango_edad" name="rango_edad">
-                              <option selected disabled>Seleccione el rango de edad</option>
+                              <option value="" selected disabled>Seleccione el rango de edad</option>
                               <option value="0-3 meses">0-3 Meses</option>
                               <option value="4-6 meses">4-6 Meses</option>
                               <option value="7-12 meses">7-12 Meses</option>
@@ -90,7 +90,7 @@
                           <div class="form-group col-md-6">
                             <label class="control-label">Área de Desarrollo<span class="text-danger">*</span></label>
                             <select class="form-control select2" required id="area_desarrollo" name="area_desarrollo">
-                              <option selected disabled>Seleccione el área de Desarrollo</option>
+                              <option value="" selected disabled>Seleccione el área de Desarrollo</option>
                               <option value="Cognitiva">Cognitiva</option>
                               <option value="Motora">Motora</option>
                               <option value="Lenguaje">Lenguaje</option>
@@ -132,7 +132,7 @@
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
-                            <i class="zmdi zmdi-floppy"></i>Registrar
+                            <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
                         </p>
                       </section>
@@ -210,6 +210,9 @@
         serverSide: true,
         ajax: {
           url: "{{ route('pruebas.index') }}",
+          error: function(xhr, error, thrown) {
+            toastr.error('Error al cargar los datos de pruebas', 'Error');
+          }
         },
         columns: [{
             data: 'id'
@@ -281,23 +284,26 @@
 
       $("#addItem").click(function() {
         const nuevoItemFormulario = `
-            <div class="fila-formulario" id="formulario-item-${contadorItems}">
-                <div class="form-group">
-                    <label class="control-label">Item</label>
-                    <input class="form-control" name="items[${contadorItems}][nombre]" type="text" required>
-                </div>
-                <button type="button" class="eliminar btn btn-danger" onclick="eliminarItem(this)">Eliminar</button>
-            </div>`;
+          <div class="fila-formulario" id="formulario-item-${contadorItems}">
+            <div class="form-group">
+              <label class="control-label">Item<span class="text-danger">*</span></label>
+              <input class="form-control" name="items[${contadorItems}][nombre]" type="text" required>
+            </div>
+            <button type="button" class="eliminar btn btn-eliminar" style="color: white;" onclick="eliminarItem(this)">Eliminar</button>
+          </div>`;
         $("#itemsContainer").append(nuevoItemFormulario);
         contadorItems++;
       });
 
-      function eliminarItem(button) {
-        $(button).closest('.fila-formulario').remove();
-      }
-
+      // Envío del formulario
       $('#registro-prueba').submit(function(e) {
         e.preventDefault();
+
+        // Validar que haya al menos un item
+        if ($('#itemsContainer .fila-formulario').length === 0) {
+          toastr.error("Debe agregar al menos un item a la prueba.");
+          return false;
+        }
 
         const submitButton = $(this).find('button[type="submit"]');
         const originalText = submitButton.html();
@@ -310,12 +316,22 @@
           success: function(response) {
             if (response.success) {
               $('#registro-prueba')[0].reset();
+              $("#itemsContainer").empty().append(`
+                <div class="fila-formulario" id="formulario-item-0">
+                  <div class="form-group">
+                    <label class="control-label">Item<span class="text-danger">*</span></label>
+                    <input class="form-control" name="items[0][nombre]" type="text" required>
+                  </div>
+                  <button type="button" class="eliminar btn btn-eliminar" style="color: white;" onclick="eliminarItem(this)">Eliminar</button>
+                </div>
+              `);
+              contadorItems = 1;
 
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
 
-              tablaPrueba.ajax.reload();
+              tablaPrueba.ajax.reload(null, false);
 
               $('.nav-tabs a[href="#list"]').tab('show');
 
@@ -343,9 +359,17 @@
         });
       });
     });
-  </script>
 
-  <script>
+    // Función para eliminar items
+    function eliminarItem(button) {
+      if ($('#itemsContainer .fila-formulario').length > 1) {
+        $(button).closest('.fila-formulario').remove();
+      } else {
+        toastr.warning("Debe haber al menos un item en la prueba.");
+      }
+    }
+
+    // Ver detalles de prueba
     $(document).on('click', '.ver-prueba', function() {
       var pruebaId = $(this).data('id');
 
@@ -353,58 +377,69 @@
         url: '/pruebas/' + pruebaId,
         method: 'GET',
         success: function(data) {
-          $('#modalTitulo').text(data[0].prueba_nombre);
-          $('#modalDescripcion').text(data[0].prueba_descripcion);
-          $('#modalareaDesarrollo').text(data[0].area_desarrollo);
-          $('#modalrangoEdad').text(data[0].rango_edad);
-          $('#modalTipo').text(data[0].tipo);
+          if (data && data.length > 0) {
+            $('#modalTitulo').text(data[0].prueba_nombre);
+            $('#modalDescripcion').text(data[0].prueba_descripcion);
+            $('#modalareaDesarrollo').text(data[0].area_desarrollo);
+            $('#modalrangoEdad').text(data[0].rango_edad);
+            $('#modalTipo').text(data[0].tipo);
 
-          $('#modalItems').empty();
+            $('#modalItems').empty();
 
-          $.each(data, function(index, item) {
-            $('#modalItems').append('<li>' + item.item_nombre + '</li>');
-          });
+            $.each(data, function(index, item) {
+              $('#modalItems').append('<li>' + item.item_nombre + '</li>');
+            });
 
-          $('#modalPrueba').modal('show');
+            $('#modalPrueba').modal('show');
+          } else {
+            toastr.error('No se encontraron datos para esta prueba');
+          }
         },
         error: function(xhr) {
-          console.error(xhr);
-          alert('Error al cargar los datos.');
+          toastr.error('Error al cargar los datos de la prueba');
         }
       });
     });
-  </script>
 
-  <script>
+    // Configuración CSRF para AJAX
     $.ajaxSetup({
       headers: {
         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
       }
     });
+
+    // Eliminar prueba
+    let idEliminar = null;
+
     $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
+      idEliminar = $(this).attr('id');
       $('#confirModal').modal('show');
     });
 
     $('#btnEliminar').click(function() {
+      if (!idEliminar) return;
+
       $.ajax({
-        url: "/pruebas/" + id,
+        url: "/pruebas/" + idEliminar,
         type: 'DELETE',
         beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
+          $('#btnEliminar').prop('disabled', true).text('Eliminando...');
         },
         success: function(data) {
           $('#confirModal').modal('hide');
-          toastr.warning('La prueba se eliminó correctamente', 'Eliminar Prueba', {
+          toastr.success('La prueba se eliminó correctamente', 'Eliminar Prueba', {
             timeOut: 5000
           });
-          $('#tab-prueba').DataTable().ajax.reload();
+          $('#tab-prueba').DataTable().ajax.reload(null, false);
         },
         error: function(xhr, status, error) {
-          console.error('Error al eliminar la prueba:', error);
           toastr.error('No se pudo eliminar la prueba', 'Error', {
             timeOut: 5000
           });
+        },
+        complete: function() {
+          $('#btnEliminar').prop('disabled', false).text('Eliminar');
+          idEliminar = null;
         }
       });
     });
