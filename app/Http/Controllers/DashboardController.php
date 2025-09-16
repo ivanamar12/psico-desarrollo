@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Paciente;
 use App\Models\Representante;
 use App\Models\Especialista;
+use App\Models\HistoriaEscolar;
 use App\Models\Secretaria;
 use App\Models\RiesgoPaciente;
 use Illuminate\Support\Facades\DB;
@@ -92,33 +92,27 @@ class DashboardController extends Controller
 
   public function estadisticasEscolarizacion()
   {
-      try {
-          // === Datos de escolarización ===
-          $escolarizados = DB::table('historia_escolars')
-              ->select('escolarizado', DB::raw('count(*) as total'))
-              ->groupBy('escolarizado')
-              ->get()
-              ->mapWithKeys(function ($item) {
-                  return [$item->escolarizado => $item->total];
-              })
-              ->toArray();
+    try {
+      // === Datos de escolarización ===
+      $escolarizados = HistoriaEscolar::select('escolarizado', DB::raw('count(*) as total'))
+        ->groupBy('escolarizado')
+        ->get()
+        ->mapWithKeys(fn($item) => [$item->escolarizado => $item->total])
+        ->toArray();
 
-          // === Datos de modalidad de educación ===
-          $modalidades = DB::table('historia_escolars')
-              ->select('modalidad_educacion', DB::raw('count(*) as total'))
-              ->groupBy('modalidad_educacion')
-              ->get()
-              ->mapWithKeys(function ($item) {
-                  return [$item->modalidad_educacion => $item->total];
-              })
-              ->toArray();
+      // === Datos de modalidad de educación ===
+      $modalidades = HistoriaEscolar::select('modalidad_educacion', DB::raw('count(*) as total'))
+        ->groupBy('modalidad_educacion')
+        ->get()
+        ->mapWithKeys(fn($item) => [$item->modalidad_educacion => $item->total])
+        ->toArray();
 
-          return response()->json([
-              'escolarizados' => $escolarizados,
-              'modalidades' => $modalidades,
-          ]);
-      } catch (\Exception $e) {
-          return response()->json(['error' => $e->getMessage()], 500);
-      }
+      return response()->json([
+        'escolarizados' => $escolarizados,
+        'modalidades' => $modalidades,
+      ]);
+    } catch (\Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 500);
+    }
   }
 }

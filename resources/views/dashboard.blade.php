@@ -479,95 +479,102 @@
           });
         })
         .catch((error) => {
-          console.error("Error al cargar datos:", error);
-          // Mostrar mensaje de error al usuario si lo deseas
+          toastr.error(
+            "Error al cargar las estadísticas de pacientes. Intenta recargar la página para ver los datos más recientes.",
+            'Error', {
+              timeOut: 5000
+            });
+        });
+
+      fetch("{{ route('estadisticas.escolarizacion') }}")
+        .then((response) => {
+          if (!response.ok) throw new Error("Error en la respuesta del servidor");
+          return response.json();
+        })
+        .then((data) => {
+          const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+          const colorTexto = "#333";
+
+          // Gráfica de Dona (Escolarización)
+          new Chart(document.getElementById("graficaEscolarizacion"), {
+            type: "doughnut",
+            data: {
+              labels: Object.keys(data.escolarizados),
+              datasets: [{
+                label: "Cantidad de Pacientes",
+                data: Object.values(data.escolarizados),
+                backgroundColor: ["#4CAF50", "#FF6384"],
+                borderWidth: 1,
+              }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: {
+                    font: {
+                      family: fontFamily,
+                      size: 12
+                    },
+                    color: colorTexto,
+                  },
+                },
+                tooltip: {
+                  bodyFont: {
+                    family: fontFamily
+                  }
+                },
+              },
+            },
+          });
+
+          // Gráfica de Dona (Modalidades de Educación)
+          new Chart(document.getElementById("graficaModalidades"), {
+            type: "bar",
+            data: {
+              labels: Object.keys(data.modalidades),
+              datasets: [{
+                label: "Cantidad de Pacientes",
+                data: Object.values(data.modalidades),
+                backgroundColor: ["#4CAF50", "#FF6384", "#FFCE56"],
+                borderWidth: 1,
+              }],
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              plugins: {
+                legend: {
+                  position: "bottom",
+                  labels: {
+                    font: {
+                      family: fontFamily,
+                      size: 12
+                    },
+                    color: colorTexto,
+                  },
+                },
+                tooltip: {
+                  bodyFont: {
+                    family: fontFamily
+                  }
+                },
+              },
+            },
+          });
+        })
+        .catch((error) => {
+          toastr.error(
+            "Error al cargar la información de escolarización y modalidades. Intenta recargar la página para ver los datos más recientes.",
+            'Error', {
+              timeOut: 5000
+            });
         });
     });
-
-    fetch("{{ route('estadisticas.escolarizacion') }}")
-      .then((response) => {
-        if (!response.ok) throw new Error("Error en la respuesta del servidor");
-        return response.json();
-      })
-      .then((data) => {
-        const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
-        const colorTexto = "#333";
-
-        // Gráfica de Dona (Escolarización)
-        new Chart(document.getElementById("graficaEscolarizacion"), {
-          type: "doughnut",
-          data: {
-            labels: Object.keys(data.escolarizados),
-            datasets: [{
-              label: "Cantidad de Pacientes",
-              data: Object.values(data.escolarizados),
-              backgroundColor: ["#4CAF50", "#FF6384"],
-              borderWidth: 1,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: {
-                  font: {
-                    family: fontFamily,
-                    size: 12
-                  },
-                  color: colorTexto,
-                },
-              },
-              tooltip: {
-                bodyFont: {
-                  family: fontFamily
-                }
-              },
-            },
-          },
-        });
-
-        // Gráfica de Dona (Modalidades de Educación)
-        new Chart(document.getElementById("graficaModalidades"), {
-          type: "bar",
-          data: {
-            labels: Object.keys(data.modalidades),
-            datasets: [{
-              label: "Cantidad de Pacientes",
-              data: Object.values(data.modalidades),
-              backgroundColor: ["#4CAF50", "#FF6384", "#FFCE56"],
-              borderWidth: 1,
-            }],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: {
-                  font: {
-                    family: fontFamily,
-                    size: 12
-                  },
-                  color: colorTexto,
-                },
-              },
-              tooltip: {
-                bodyFont: {
-                  family: fontFamily
-                }
-              },
-            },
-          },
-        });
-      })
-      .catch((error) => {
-        console.error("Error al cargar datos:", error);
-        // Mostrar mensaje de error al usuario si lo deseas
-      });
   </script>
+
   <script>
     function iniciarAyuda() {
       introJs().setOptions({
