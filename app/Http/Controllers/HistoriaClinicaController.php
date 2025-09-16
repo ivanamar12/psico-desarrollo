@@ -39,7 +39,6 @@ class HistoriaClinicaController extends Controller
         ->addColumn('action', function ($historia) {
           // Cambiar la ruta para generar el PDF completo
           $acciones = '<a href="' . route('pdf.generarPdfCompleto', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF Completo</a>';
-          $acciones .= '<button type="button" class="verHistoria btn btn-info btn-raised btn-xs" data-id="' . $historia->id . '"><i class="zmdi zmdi-eye"></i></button>';
           $acciones .= '<button type="button" name="delete" id="' . $historia->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
           return $acciones;
         })
@@ -280,45 +279,5 @@ class HistoriaClinicaController extends Controller
 
     // Enviar el PDF combinado al usuario
     $pdf->Output("historia-clinica-{$id}.pdf", 'D');
-  }
-
-  public function verHistoria($id, $tipo)
-  {
-    $historia = HistoriaClinica::obtenerHistoriaCompleta($id);
-
-    if (!$historia) {
-      if ($tipo === 'api') {
-        return response()->json(['error' => 'Historia clínica no encontrada.'], 404);
-      }
-      return redirect()->back()->with('error', 'La historia clínica no fue encontrada.');
-    }
-
-    $paciente = $historia->paciente;
-
-    if (!$paciente) {
-      if ($tipo === 'api') {
-        return response()->json(['error' => 'Paciente no encontrado.'], 404);
-      }
-      return redirect()->back()->with('error', 'El paciente no fue encontrado.');
-    }
-
-    // ✅ Leer riesgos desde la base de datos
-    $riesgo = \App\Models\RiesgoPaciente::where('historia_clinica_id', $historia->id)->first();
-
-    $riesgoSocial = $riesgo->riesgo_social ?? 0;
-    $riesgoBiologico = $riesgo->riesgo_biologico ?? 0;
-    $riesgoGlobal = $riesgo->riesgo_global ?? 'bajo';
-
-    // Respuesta según el tipo
-    if ($tipo === 'api') {
-      return response()->json([
-        'historia' => $historia,
-        'riesgoSocial' => $riesgoSocial,
-        'riesgoBiologico' => $riesgoBiologico,
-        'riesgoGlobal' => $riesgoGlobal,
-      ]);
-    }
-
-    return view('historia.ver', compact('historia', 'riesgoSocial', 'riesgoBiologico', 'riesgoGlobal'));
   }
 }

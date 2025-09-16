@@ -742,35 +742,6 @@
     </div>
   </section>
 
-  <section class="modal fade" id="modalVerHistoria" tabindex="-1" aria-labelledby="modalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Detalles de la Historia</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p><strong>Código:</strong> <span id="codigoV"></span></p>
-          <p><strong>Referencia:</strong> <span id="referenciaV"></span></p>
-          <p><strong>Motivo:</strong> <span id="motivoV"></span></p>
-          <p><strong>Paciente:</strong> <span id="pacienteV"></span></p>
-          <p><strong>Fecha de Nacimiento:</strong> <span id="fechaNacimiento"></span></p>
-          <p><strong>Representante:</strong> <span id="representanteV"></span></p>
-          <p><strong>Dirección:</strong> <span id="direccion"></span></p>
-          <p><strong>Riesgo Social:</strong> <span id="riesgoSocial"></span>Pts.</p>
-          <p><strong>Riesgo Biológico:</strong> <span id="riesgoBiologico"></span>Pts.</p>
-          <p><strong>Riesgo Global:</strong> <span id="riesgoGlobal"></span></p>
-          <p><strong>Peso al Nacer:</strong> <span id="peso"></span>.Kg</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
 @endsection
 
 @section('js')
@@ -778,6 +749,7 @@
   <script src="{{ asset('js/select2/select2.min.js') }}"></script>
   <script src="{{ asset('js/select2/es.js') }}"></script>
 
+  {{-- Select de pacientes --}}
   <script>
     $(function() {
       const pacientes = @json($pacientes);
@@ -812,6 +784,7 @@
     });
   </script>
 
+  {{-- Validaciones de formularios --}}
   <script>
     $(document).ready(function() {
       $("#paso1").show();
@@ -828,6 +801,7 @@
           }
         });
       }
+
       setupRealTimeValidation("#paso1");
       setupRealTimeValidation("#paso2");
       setupRealTimeValidation("#paso3");
@@ -1166,11 +1140,6 @@
         var formStr = $(this).serialize();
         var formArr = $(this).serializeArray();
 
-        console.groupCollapsed('📤 Enviando a historias.store');
-        console.log('Serializado:', formStr);
-        console.table(formArr);
-        console.groupEnd();
-
         $.ajax({
           url: "{{ route('historias.store') }}",
           type: 'POST',
@@ -1205,6 +1174,7 @@
     });
   </script>
 
+  {{-- Eliminar historia --}}
   <script>
     $.ajaxSetup({
       headers: {
@@ -1237,59 +1207,6 @@
           toastr.error('No se pudo eliminar el registro', 'Error', {
             timeOut: 5000
           });
-        }
-      });
-    });
-  </script>
-
-  <script>
-    $(document).on('click', '.verHistoria', function() {
-      const id = $(this).data('id');
-      if (!id) {
-        alert('No se encontró el ID de la historia.');
-        return;
-      }
-
-      $('#modalVerHistoria').modal('show');
-
-      $.ajax({
-        url: `/api/historia/${id}`,
-        type: 'GET',
-        success: function(data) {
-          console.log(data);
-
-          if (!data.historia) {
-            $('#modalVerHistoria .modal-body').html(
-              '<p>No se encontraron datos para esta historia.</p>');
-            return;
-          }
-
-          const historia = data.historia;
-          const paciente = historia.paciente || {};
-          const representante = paciente.representante || {};
-          const direccion = representante.direccion || {};
-          const historiaDesarrollo = historia.historia_desarrollo || {};
-
-          $('#codigoV').text(historia.codigo || 'N/A');
-          $('#referenciaV').text(historia.referencia || 'N/A');
-          $('#motivoV').text(historia.motivo || 'N/A');
-          $('#pacienteV').text(`${paciente.nombre || 'N/A'} ${paciente.apellido || 'N/A'}`);
-          $('#fechaNacimiento').text(paciente.fecha_nac || 'N/A');
-          $('#representanteV').text(
-            `${representante.nombre || 'N/A'} ${representante.apellido || 'N/A'}`);
-          $('#direccion').text(
-            `${direccion.estado?.estado || 'N/A'}, ${direccion.municipio?.municipio || 'N/A'}, ${direccion.parroquia?.parroquia || 'N/A'}, ${direccion.sector || 'N/A'}`
-          );
-          $('#riesgoSocial').text(data.riesgoSocial ?? 'N/A');
-          $('#riesgoBiologico').text(data.riesgoBiologico ?? 'N/A');
-          $('#riesgoGlobal').text(data.riesgoGlobal ?? 'N/A');
-          $('#peso').text(historiaDesarrollo.peso_nacer_niño ?? 'N/A');
-        },
-        error: function(xhr) {
-          const errorMessage = xhr.status === 404 ? 'Historia no encontrada.' :
-            'Error al cargar los datos.';
-          $('#modalVerHistoria .modal-body').html(`<p>${errorMessage}</p>`);
-          console.error('Error en la solicitud:', xhr);
         }
       });
     });
