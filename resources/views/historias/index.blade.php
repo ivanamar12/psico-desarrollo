@@ -48,8 +48,8 @@
                       @csrf
                       <section id="paso1">
                         <h3>Datos del paciente</h3>
-                        <div class="form-row">
 
+                        <div class="form-row">
                           <!-- Paciente -->
                           <div class="form-group col-md-6">
                             <label>Paciente <span class="text-danger">*</span></label>
@@ -113,8 +113,10 @@
 
                       <section id="paso2">
                         <h3>Antecedentes Médicos</h3>
-                        <p class="text-muted mb-4">Aquí se recopila información sobre enfermedades infecciosas, crónicas,
-                          discapacidades u otras condiciones relevantes que el niño haya padecido.</p>
+                        <p class="text-muted mb-4">
+                          Aquí se recopila información sobre enfermedades infecciosas, crónicas,
+                          discapacidades u otras condiciones relevantes que el niño haya padecido.
+                        </p>
 
                         <div class="row">
                           <!-- Enfermedad Infecciosa -->
@@ -222,8 +224,10 @@
                       <section id="paso3">
                         <h3>Historia de desarrollo</h3>
                         <h4>Embarazo</h4>
-                        <p class="text-muted mb-4">Se refiere a las condiciones que rodearon el embarazo de la madre.
-                          Esta información es clave para comprender el desarrollo del niño.</p>
+                        <p class="text-muted mb-4">
+                          Se refiere a las condiciones que rodearon el embarazo de la madre.
+                          Esta información es clave para comprender el desarrollo del niño.
+                        </p>
 
                         <div class="row">
                           <!-- Medicamentos en el embarazo -->
@@ -312,8 +316,10 @@
                       <section id="paso4">
                         <h3>Historia de desarrollo</h3>
                         <h4>Parto</h4>
-                        <p class="text-muted mb-4">Esta sección recopila información sobre el nacimiento del niño,
-                          incluyendo condiciones médicas y tipo de parto.</p>
+                        <p class="text-muted mb-4">
+                          Esta sección recopila información sobre el nacimiento del niño,
+                          incluyendo condiciones médicas y tipo de parto.
+                        </p>
 
                         <div class="row">
                           <!-- Fórceps -->
@@ -559,7 +565,7 @@
                                 <span>No</span>
                               </label>
                               <select class="form-control ml-3 mt-2" name="tipo_educacion" id="tipo_educacion">
-                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="" disabled selected>Seleccione el tipo de educación</option>
                                 <option value="pública">Pública</option>
                                 <option value="privada">Privada</option>
                                 <option value="semi_privada">Semi Privada</option>
@@ -568,16 +574,17 @@
                               <!-- Modalidad de educación -->
                               <select class="form-control ml-3 mt-2" name="modalidad_educacion"
                                 id="modalidad_educacion">
-                                <option value="" disabled selected>Seleccione una opción</option>
+                                <option value="" disabled selected>Seleccione la modalidad de educación</option>
                                 <option value="educacion_inicial">Educación Inicial</option>
                                 <option value="educacion_primaria">Educación Primaria</option>
                                 <option value="educacion_especial">Educación Especial</option>
                               </select>
+
                               <input class="form-control ml-3 mt-2" name="nombre_escuela" id="nombre_escuela"
                                 type="text" placeholder="Nombre de la escuela">
                             </div>
                             <small class="form-text text-muted">
-                              Indique si el niño asiste a preescolar, primaria u otra modalidad ueducativa.
+                              Indique si el niño asiste a preescolar, primaria u otra modalidad educativa.
                             </small>
                           </div>
 
@@ -653,8 +660,9 @@
                                 <span>No</span>
                               </label>
                             </div>
-                            <small class="form-text text-muted">Puede tratarse de letra ilegible, errores ortográficos o
-                              dificultad para copiar.</small>
+                            <small class="form-text text-muted">
+                              Puede tratarse de letra ilegible, errores ortográficos o dificultad para copiar.
+                            </small>
                           </div>
 
                           <!-- ¿Le agrada el ambiente escolar? -->
@@ -670,8 +678,9 @@
                                 <span>No</span>
                               </label>
                             </div>
-                            <small class="form-text text-muted">Responda si el niño asiste con entusiasmo, se siente
-                              cómodo o expresa agrado por su escuela.</small>
+                            <small class="form-text text-muted">
+                              Responda si el niño asiste con entusiasmo, se siente cómodo o expresa agrado por su escuela.
+                            </small>
                           </div>
 
                           <!-- Otro servicio al que asiste -->
@@ -696,7 +705,7 @@
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
-                            <i class="zmdi zmdi-floppy"></i>Registrar
+                            <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
                         </p>
                       </section>

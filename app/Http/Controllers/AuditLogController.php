@@ -1,10 +1,11 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\AuditLog;
 use Illuminate\Http\Request;
-use DataTables;
 use Carbon\Carbon;
+use Yajra\DataTables\Facades\DataTables;
 
 class AuditLogController extends Controller
 {
@@ -26,4 +27,3 @@ class AuditLogController extends Controller
     return view('auditlogs.index');
   }
 }
-

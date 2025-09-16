@@ -17,7 +17,7 @@
   </div>
 
   <!-- Contenido principal -->
-  <div
+  <section
     style="max-width: 900px; margin: 0 auto; background: white; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
 
     <section style="text-align: right;">
@@ -25,11 +25,11 @@
     </section>
 
     <h2
-      style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+      style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
       Historia Clinica
     </h2>
 
-    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+    <table style="width: 100%; border-collapse: collapse; font-size: 12px; margin-bottom: 20px;">
       <tr>
         <td style="padding: 8px; border: 1px solid #ddd;">
           <strong>Código:</strong> {{ $historia->codigo }}
@@ -58,10 +58,11 @@
     <!-- Sección I: Información del Paciente -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         I. Información del Paciente
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Nombre:</strong> {{ $historia->paciente->nombre }} {{ $historia->paciente->apellido }}
@@ -108,10 +109,11 @@
     <!-- Sección II: Datos Económicos -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         II. Datos Económicos
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Tipo de Vivienda:</strong> {{ $historia->paciente->datosEconomico->tipo_vivienda }}
@@ -172,10 +174,11 @@
     <!-- Sección III: Parentescos -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         III. Parentescos
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <thead>
           <tr>
             <th style="padding: 8px; border: 1px solid #ddd; background-color: #f4f4f4;">Nombre</th>
@@ -191,8 +194,9 @@
         <tbody>
           @if ($historia->paciente->parentescos->isEmpty())
             <tr>
-              <td colspan="8" style="padding: 8px; border: 1px solid #ddd; text-align: center;">No hay familiares
-                registrados.</td>
+              <td colspan="8" style="padding: 8px; border: 1px solid #ddd; text-align: center;">
+                No hay familiares registrados.
+              </td>
             </tr>
           @else
             @foreach ($historia->paciente->parentescos as $parentesco)
@@ -215,10 +219,11 @@
     <!-- Sección IV: Antecedentes Médicos -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         IV. Antecedentes Médicos
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Enfermedad Infecciosa:</strong> {{ $historia->antecedenteMedico->enfermedad_infecciosa }}
@@ -267,10 +272,11 @@
     <!-- Sección V: Historia de Desarrollo -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         V. Historia de Desarrollo
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Medicamentos durante el embarazo:</strong>
@@ -393,10 +399,11 @@
     <!-- Sección VI: Historia Escolar -->
     <div style="margin-bottom: 25px;">
       <h2
-        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 18px; margin-bottom: 15px;">
+        style="color: #00869b; border-bottom: 2px solid #00869b; padding-bottom: 5px; font-size: 14px; margin-bottom: 15px;">
         VI. Historia Escolar
       </h2>
-      <table style="width: 100%; border-collapse: collapse;">
+
+      <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
           <td style="padding: 8px; border: 1px solid #ddd;">
             <strong>Escolarizado:</strong> {{ $historia->historiaEscolar->escolarizado }}
@@ -450,8 +457,7 @@
         </tr>
       </table>
     </div>
-
-  </div>
+  </section>
 
   <!-- Footer -->
   <div style="background-color: #00869b; color: white; text-align: center; padding: 10px 0;">

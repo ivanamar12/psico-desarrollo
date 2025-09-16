@@ -10,20 +10,8 @@ use App\Models\HistoriaDesarrollo;
 use App\Models\HistoriaEscolar;
 use App\Models\Parentesco;
 use App\Models\Paciente;
-use App\Models\AplicacionPrueba;
-use App\Models\ResultadosPruebas;
-use App\Models\Representante;
-use App\Models\DatosEconomico;
-use App\Models\Direccion;
-use App\Models\Especialista;
-use App\Models\Estado;
-use App\Models\Genero;
-use App\Models\Municipio;
-use App\Models\Parroquia;
-use App\Models\Prueba;
-use App\Http\Controllers\AplicarPruebaController;
-// use Barryvdh\DomPDF\Facade\Pdf;
-use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
+use Barryvdh\DomPDF\Facade\Pdf;
+// use Barryvdh\Snappy\Facades\SnappyPdf as Pdf;
 use setasign\Fpdi\Fpdi;
 use App\Models\RiesgoPaciente;
 use Illuminate\Http\Request;
@@ -32,6 +20,13 @@ use Yajra\DataTables\Facades\DataTables;
 
 class HistoriaClinicaController extends Controller
 {
+  protected $pdfPruebasController;
+
+  public function __construct(PdfPruebasController $pdfPruebasController)
+  {
+    $this->pdfPruebasController = $pdfPruebasController;
+  }
+
   public function index(Request $request)
   {
     if ($request->ajax()) {
@@ -124,9 +119,9 @@ class HistoriaClinicaController extends Controller
       // Crear Historia Escolar
       $historiaEscolar = HistoriaEscolar::create([
         'escolarizado' => $validatedData['escolarizado'],
-        'tipo_educacion' => $validatedData['tipo_educacion'] ?? null,
-        'modalidad_educacion' => $validatedData['modalidad_educacion'] ?? null,
-        'nombre_escuela' => $validatedData['nombre_escuela'] ?? null,
+        'tipo_educacion' => $validatedData['tipo_educacion'] ?? 'no aplica',
+        'modalidad_educacion' => $validatedData['modalidad_educacion'] ?? 'no aplica',
+        'nombre_escuela' => $validatedData['nombre_escuela'] ?? 'no aplica',
         'tutoria_terapias' => $validatedData['tutoria_terapias'],
         'tutoria_terapias_cuales' => $validatedData['tutoria_terapias_cuales'] ?? null,
         'dificultad_lectura' => $validatedData['dificultad_lectura'],
@@ -215,13 +210,6 @@ class HistoriaClinicaController extends Controller
     return $pdf->download('historia_clinica_' . $id . '.pdf');
   }
 
-  protected $aplicarPruebaController;
-
-  public function __construct(AplicarPruebaController $aplicarPruebaController)
-  {
-    $this->aplicarPruebaController = $aplicarPruebaController;
-  }
-
   public function generarPdfCompleto($id)
   {
     // Cargar historia con TODAS las relaciones necesarias
@@ -237,7 +225,6 @@ class HistoriaClinicaController extends Controller
       'antecedenteMedico',
       'historiaEscolar',
       'paciente.aplicacionPruebas.prueba',
-      'paciente.aplicacionPruebas.resultadosPruebas'
     ])->findOrFail($id);
 
     // Generar el PDF de la historia clínica
@@ -260,33 +247,31 @@ class HistoriaClinicaController extends Controller
 
     // Agregar los resultados de las pruebas al PDF combinado
     foreach ($historia->paciente->aplicacionPruebas as $aplicacion) {
-      if ($aplicacion->resultadosPruebas) {
-        // Determinar el nombre de la prueba
-        $pruebaNombre = $aplicacion->prueba->nombre;
+      // Determinar el nombre de la prueba
+      $pruebaNombre = $aplicacion->prueba->nombre;
 
-        // Llamar al método correspondiente según el nombre de la prueba
-        if ($pruebaNombre === 'CUMANIN') {
-          $tempPdfPath = $this->aplicarPruebaController->generarPDF($aplicacion->id);
-        } elseif ($pruebaNombre === 'Koppitz') {
-          $tempPdfPath = $this->aplicarPruebaController->generarPDFKoppitz($aplicacion->id);
-        } elseif ($pruebaNombre === 'NO-Estandarizada') {
-          $tempPdfPath = $this->aplicarPruebaController->generarPDFNoEstandarizada($aplicacion->id);
-        } else {
-          // Si no se reconoce el nombre de la prueba, puedes manejarlo aquí
-          continue;
-        }
+      // Llamar al método correspondiente según el nombre de la prueba
+      if ($pruebaNombre === 'CUMANIN') {
+        $tempPdfPath = $this->pdfPruebasController->reportCumanin($aplicacion->id);
+      } elseif ($pruebaNombre === 'Koppitz') {
+        $tempPdfPath = $this->pdfPruebasController->reportKoppitz($aplicacion->id);
+      } elseif ($pruebaNombre === 'NO-Estandarizada') {
+        $tempPdfPath = $this->pdfPruebasController->reportNoEstandarizada($aplicacion->id);
+      } else {
+        // Si no se reconoce el nombre de la prueba, puedes manejarlo aquí
+        continue;
+      }
 
-        // Agregar el PDF del resultado de la prueba al PDF combinado
-        if (file_exists($tempPdfPath)) {
-          $pageCount = $pdf->setSourceFile($tempPdfPath);
-          for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
-            $tplIdx = $pdf->importPage($pageNo);
-            $pdf->addPage();
-            $pdf->useTemplate($tplIdx);
-          }
-          // Eliminar el archivo temporal del resultado de la prueba
-          unlink($tempPdfPath);
+      // Agregar el PDF del resultado de la prueba al PDF combinado
+      if (file_exists($tempPdfPath)) {
+        $pageCount = $pdf->setSourceFile($tempPdfPath);
+        for ($pageNo = 1; $pageNo <= $pageCount; $pageNo++) {
+          $tplIdx = $pdf->importPage($pageNo);
+          $pdf->addPage();
+          $pdf->useTemplate($tplIdx);
         }
+        // Eliminar el archivo temporal del resultado de la prueba
+        unlink($tempPdfPath);
       }
     }
 
@@ -294,7 +279,7 @@ class HistoriaClinicaController extends Controller
     unlink($tempHistoriaPath);
 
     // Enviar el PDF combinado al usuario
-    $pdf->Output("historia_clinica_{$id}.pdf", 'D');
+    $pdf->Output("historia-clinica-{$id}.pdf", 'D');
   }
 
   public function verHistoria($id, $tipo)

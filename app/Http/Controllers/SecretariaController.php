@@ -51,11 +51,12 @@ class SecretariaController extends Controller
       'parroquias' => Parroquia::all()
     ]);
   }
+
   public function store(StoreSecretariaRequest $request)
   {
     $validatedData = $request->validated();
 
-    \DB::transaction(function () use ($validatedData) {
+    DB::transaction(function () use ($validatedData) {
       $direccion = Direccion::create([
         'estado_id' => $validatedData['estado_id'],
         'municipio_id' => $validatedData['municipio_id'],
@@ -98,14 +99,13 @@ class SecretariaController extends Controller
       return response()->json(['message' => 'Dirección no encontrada'], 404);
     }
 
-    \DB::transaction(function () use ($secretaria, $direccion) {
+    DB::transaction(function () use ($secretaria, $direccion) {
       $secretaria->delete();
       $direccion->delete();
     });
 
     return response()->json(['success' => true]);
   }
-
 
   public function show($id)
   {
@@ -148,13 +148,12 @@ class SecretariaController extends Controller
       'sector' => 'required|string|max:255',
     ]);
 
-
     $secretaria = Secretaria::with('direccion')->find($id);
     if (!$secretaria) {
       return response()->json(['message' => 'Especialista no encontrado'], 404);
     }
 
-    \DB::transaction(function () use ($validatedData, $secretaria) {
+    DB::transaction(function () use ($validatedData, $secretaria) {
       $direccion = $secretaria->direccion;
       if (!$direccion) {
         throw new \Exception('Dirección no encontrada');

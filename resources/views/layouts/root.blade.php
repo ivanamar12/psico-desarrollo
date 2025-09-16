@@ -55,6 +55,11 @@
   {{-- Nav Dropdown --}}
   <script src="{{ asset('js/app/dropdown.js') }}"></script>
 
+  {{-- important --}}
+  <script>
+    $.material.init();
+  </script>
+
   <!-- JS Específico por vista -->
   @yield('js')
 </body>
