@@ -50,17 +50,18 @@ Route::middleware('auth')->group(function () {
   /**
    * Dashboard
    */
-
   Route::get('/dashboard', [DashboardController::class, 'index'])
     ->name('dashboard');
 
   Route::get('/estadisticas/escolarizacion', [DashboardController::class, 'estadisticasEscolarizacion'])
     ->name('estadisticas.escolarizacion');
 
+  Route::get('/estadisticas/pacientes', [DashboardController::class, 'estadisticasPacientes'])
+    ->name('estadisticas.pacientes');
+
   /**
    * Profile
    */
-
   Route::get('/perfil', [PerfilController::class, 'index'])
     ->name('perfil.index');
 
@@ -121,6 +122,10 @@ Route::middleware('auth')->group(function () {
   // Ruta para obtener una secretaria específico en formato JSON
   Route::get('representantes/{id}', [RepresentativeController::class, 'show'])
     ->name('representantes.show');
+
+  /**
+   * Pacientes
+   */
 
   // Ruta para la lista de paciente
   Route::get('paciente', [PacienteController::class, 'index'])
@@ -245,20 +250,19 @@ Route::middleware('auth')->group(function () {
   Route::post('historias', [HistoriaClinicaController::class, 'store'])
     ->name('historias.store');
 
-  /**
-   * Rutas para especialidad
-   */
-
-  Route::resource('especialidad', EspecialidadController::class)
-    ->except(['destroy', 'show']);
-
   // Ruta para eliminar una historia
   Route::delete('historias/{id}', [HistoriaClinicaController::class, 'destroy'])
     ->name('historias.destroy');
 
   // Ruta para descargar reporte de una historia clínica
-  Route::get('pdf/generarPdfHistoria/{id}', [HistoriaClinicaController::class, 'generarPdfHistoria'])
-    ->name('pdf.generarPdfHistoria');
+  Route::get('historias/report/{id}', [HistoriaClinicaController::class, 'report'])
+    ->name('historias.report');
+
+  /**
+   * Rutas para especialidad
+   */
+  Route::resource('especialidad', EspecialidadController::class)
+    ->except(['destroy', 'show']);
 
   /**
    * Pruebas
@@ -289,8 +293,6 @@ Route::middleware('auth')->group(function () {
   Route::post('aplicar-prueba', [AplicarPruebaController::class, 'store'])
     ->name('aplicar-prueba.store');
 
-  Route::get('/calcular-edad/{id}', [AplicarPruebaController::class, 'calcularEdadPaciente']);
-
   Route::get('aplicar-prueba/{id}', [AplicarPruebaController::class, 'show'])
     ->name('aplicar-prueba.show');
 
@@ -304,10 +306,10 @@ Route::middleware('auth')->group(function () {
   Route::get('aplicar-prueba/report/no-estandarizada/{id}', [PdfPruebasController::class, 'reportNoEstandarizada'])
     ->name('aplicar-prueba.report.no-estandarizada');
 
+  /**
+   * Para validaciones en formularios
+   */
   Route::get('/verificar-email', [ValidacionController::class, 'verificarEmail']);
   Route::get('/verificar-telefono', [ValidacionController::class, 'verificarTelefono']);
   Route::get('/verificar-cedula', [ValidacionController::class, 'verificarCedula']);
-
-  Route::get('/pdf/completo/{id}', [HistoriaClinicaController::class, 'generarPdfCompleto'])
-    ->name('pdf.generarPdfCompleto');
 });

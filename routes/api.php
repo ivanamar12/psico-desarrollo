@@ -2,12 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AplicarPruebaController;
-use App\Http\Controllers\DashboardController;
 
 //API para obtener las respuestas de una prueba aplicada
 Route::get('/ver-respuestas-prueba/{id}', [AplicarPruebaController::class, 'verRespuestasPrueba']);
 
 Route::get('/obtener-respuestas-prueba/{id}', [AplicarPruebaController::class, 'obtenerRespuestasPrueba']);
-
-Route::get('estadisticas-pacientes', [DashboardController::class, 'estadisticasPacientes'])
-    ->name('estadisticas.pacientes');

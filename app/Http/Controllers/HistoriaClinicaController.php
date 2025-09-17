@@ -37,8 +37,7 @@ class HistoriaClinicaController extends Controller
 
       return DataTables::of($historias)
         ->addColumn('action', function ($historia) {
-          // Cambiar la ruta para generar el PDF completo
-          $acciones = '<a href="' . route('pdf.generarPdfCompleto', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF Completo</a>';
+          $acciones = '<a href="' . route('historias.report', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF Completo</a>';
           $acciones .= '<button type="button" name="delete" id="' . $historia->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
           return $acciones;
         })
@@ -183,33 +182,7 @@ class HistoriaClinicaController extends Controller
     return response()->json(['success' => true]);
   }
 
-  public function generarPdfHistoria($id)
-  {
-    $historia = HistoriaClinica::with([
-      'paciente',
-      'paciente.representante',
-      'paciente.genero',
-      'paciente.representante.direccion',
-      'paciente.representante.direccion.estado',
-      'paciente.representante.direccion.municipio',
-      'paciente.representante.direccion.parroquia',
-      'historiaDesarrollo',
-      'antecedenteMedico',
-      'historiaEscolar'
-    ])->find($id);
-
-    if (!$historia) {
-      return response()->json(['error' => 'Historia clínica no encontrada'], 404);
-    }
-
-    $datos = $historia->getDatosPdf();
-
-    $pdf = Pdf::loadView('pdf.generarPdfHistoria', compact('datos'));
-
-    return $pdf->download('historia_clinica_' . $id . '.pdf');
-  }
-
-  public function generarPdfCompleto($id)
+  public function report($id)
   {
     // Cargar historia con TODAS las relaciones necesarias
     $historia = HistoriaClinica::with([
