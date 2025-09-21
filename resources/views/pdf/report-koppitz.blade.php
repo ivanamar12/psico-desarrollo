@@ -245,9 +245,17 @@
             @endif
           </td>
         </tr>
+      </table>
+    @endif
+
+    <!-- Interpretación de Resultados -->
+    @if (isset($datosFinales['observaciones']))
+      <table class="summary-table">
+        <tr>
+          <th>OBSERVACIONES</th>
+        </tr>
         <tr>
           <td>
-            <strong>Observaciones:</strong>
             {{ $datosFinales['observaciones'] }}
           </td>
         </tr>

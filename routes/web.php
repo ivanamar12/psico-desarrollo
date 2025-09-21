@@ -215,28 +215,28 @@ Route::middleware('auth')->group(function () {
   Route::put('citas/{id}', [CitaController::class, 'update'])
     ->name('citas.update');
 
+  // Pdfs
+
   // Ruta para descargar reporte de todas las citas
-  Route::get('pdf/citas', [CitaController::class, 'generarPdfTodasLasCitas'])
-    ->name('pdf.citas');
+  Route::get('citas/report', [CitaController::class, 'reportAll'])
+    ->name('citas.report.all');
 
   // Ruta para descargar reporte de todas las citas del dia
-  Route::get('pdf/citas-hoy', [CitaController::class, 'citasDeHoy'])
-    ->name('pdf.citas-hoy');
+  Route::get('citas/report/today', [CitaController::class, 'reportAllToday'])
+    ->name('citas.report.today');
 
   // Rutas para PDFs de especialistas
   Route::middleware(['role:' . Role::ESPECIALISTA->value])->group(function () {
-    // Citas del día del especialista autenticado
-    Route::get('pdf/citas-hoy-especialista', [CitaController::class, 'citasDeHoyEspecialista'])
-      ->name('pdf.citas-hoy-especialista');
+    Route::get('citas/report/specialist', [CitaController::class, 'reportAllSpecialist'])
+      ->name('citas.report.all.specialist');
 
-    // Todas las citas del especialista autenticado
-    Route::get('pdf/citas-especialista', [CitaController::class, 'citasEspecialista'])
-      ->name('pdf.citas-especialista');
+    Route::get('citas/report/specialist/today', [CitaController::class, 'reportAllTodaySpecialist'])
+      ->name('citas.report.today.specialist');
   });
 
   // Ruta para descargar reporte de una cita
-  Route::get('pdf/generar-pdf-cita/{id}', [CitaController::class, 'generarPdfCita'])
-    ->name('pdf.generar-pdf-cita');
+  Route::get('citas/report/{id}', [CitaController::class, 'report'])
+    ->name('citas.report');
 
   /**
    * Historias

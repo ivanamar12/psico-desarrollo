@@ -41,7 +41,7 @@ class CitaController extends Controller
           return $cita->paciente->nombre . ' ' . $cita->paciente->apellido;
         })
         ->addColumn('action', function ($cita) {
-          $acciones = '<a href="' . route('pdf.generar-pdf-cita', $cita->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
+          $acciones = '<a href="' . route('citas.report', $cita->id) . '" target="_blank" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF</a>';
           return $acciones;
         })
         ->rawColumns(['action'])
@@ -145,10 +145,28 @@ class CitaController extends Controller
   }
 
   /**
+   * Generar reporte de una cita
+   */
+  public function report($id)
+  {
+    try {
+      $cita = Cita::with(['paciente.representante', 'especialista'])->find($id);
+
+      if (!$cita) return response()->json(['error' => 'Cita no encontrada.'], 404);
+
+      $pdf = Pdf::loadView('pdf.citas.report', compact('cita'));
+
+      return $pdf->stream("{$id}-cita-" . now()->format('Y-m-d') . ".pdf");
+    } catch (\Exception $e) {
+      return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
+    }
+  }
+
+  /**
    * Admin and secretary PDFs
    */
 
-  public function generarPdfTodasLasCitas(Request $request)
+  public function reportAll()
   {
     try {
       $citas = Cita::with(['paciente', 'especialista'])
@@ -156,19 +174,18 @@ class CitaController extends Controller
         ->orderBy('hora', 'desc')
         ->get();
 
-      if ($citas->isEmpty()) {
-        return redirect()->back()->with('error', 'No hay citas disponibles para generar PDF');
-      }
+      $pdf = Pdf::loadView('pdf.citas.report-all', [
+        'citas' => $citas,
+        'title' => 'LISTADO DE CITAS - TODAS'
+      ]);
 
-      $pdf = Pdf::loadView('pdf.citas', ['citas' => $citas]);
-
-      return $pdf->download('citas-generales-' . now()->format('Y-m-d') . '.pdf');
+      return $pdf->stream('citas-generales-' . now()->format('Y-m-d') . '.pdf');
     } catch (\Exception $e) {
       return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
     }
   }
 
-  public function citasDeHoy(Request $request)
+  public function reportAllToday()
   {
     try {
       $fechaHoy = now()->format('Y-m-d');
@@ -178,13 +195,12 @@ class CitaController extends Controller
         ->orderBy('hora', 'asc')
         ->get();
 
-      if ($citas->isEmpty()) {
-        return redirect()->back()->with('error', 'No hay citas disponibles para hoy');
-      }
+      $pdf = Pdf::loadView('pdf.citas.report-all', [
+        'citas' => $citas,
+        'title' => 'LISTADO DE CITAS - HOY'
+      ]);
 
-      $pdf = Pdf::loadView('pdf.citas', ['citas' => $citas]);
-
-      return $pdf->download('citas-hoy-' . $fechaHoy . '.pdf');
+      return $pdf->stream("citas-hoy-{$fechaHoy}.pdf");
     } catch (\Exception $e) {
       return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
     }
@@ -194,42 +210,13 @@ class CitaController extends Controller
    * Specialist PDFs
    */
 
-  public function citasDeHoyEspecialista()
-  {
-    try {
-      $especialista = Especialista::where('user_id', auth()->id())->first();
-      $fechaHoy = now()->format('Y-m-d');
-
-      if (!$especialista) {
-        return redirect()->back()->with('error', 'Especialista no encontrado');
-      }
-
-      $citas = Cita::with(['paciente', 'especialista'])
-        ->where('especialista_id', $especialista->id)
-        ->whereDate('fecha_consulta', $fechaHoy)
-        ->orderBy('hora', 'asc')
-        ->get();
-
-      $pdf = Pdf::loadView('pdf.citas-especialista', [
-        'citas' => $citas,
-        'nombreEspecialista' => $especialista->nombre . ' ' . $especialista->apellido,
-        'fechaEspecifica' => 'Citas de hoy - ' . now()->format('d/m/Y')
-      ]);
-
-      return $pdf->download('mis-citas-hoy-' . $fechaHoy . '.pdf');
-    } catch (\Exception $e) {
-      return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
-    }
-  }
-
-  public function citasEspecialista()
+  public function reportAllSpecialist()
   {
     try {
       $especialista = Especialista::where('user_id', auth()->id())->first();
 
-      if (!$especialista) {
-        return redirect()->back()->with('error', 'Especialista no encontrado');
-      }
+      if (!$especialista)
+        return redirect()->back()->with('error', 'Especialista no encontrado.');
 
       $citas = Cita::with(['paciente', 'especialista'])
         ->where('especialista_id', $especialista->id)
@@ -237,30 +224,40 @@ class CitaController extends Controller
         ->orderBy('hora', 'desc')
         ->get();
 
-      $pdf = Pdf::loadView('pdf.citas-especialista', [
+      $pdf = Pdf::loadView('pdf.citas.report-all-specialist', [
         'citas' => $citas,
-        'nombreEspecialista' => $especialista->nombre . ' ' . $especialista->apellido,
-        'fechaEspecifica' => 'Historial completo - ' . now()->format('d/m/Y')
+        'especialista' => $especialista,
+        'title' => 'MIS CITAS - TODAS'
       ]);
 
-      return $pdf->download('mis-citas-' . now()->format('Y-m-d') . '.pdf');
+      return $pdf->stream('mis-citas-' . now()->format('Y-m-d') . '.pdf');
     } catch (\Exception $e) {
       return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
     }
   }
 
-  public function generarPdfCita($id)
+  public function reportAllTodaySpecialist()
   {
     try {
-      $cita = Cita::with(['paciente.representante', 'especialista'])->find($id);
+      $especialista = Especialista::where('user_id', auth()->id())->first();
+      $fechaHoy = now()->format('Y-m-d');
 
-      if (!$cita) {
-        return response()->json(['error' => 'Cita no encontrada'], 404);
-      }
+      if (!$especialista)
+        return redirect()->back()->with('error', 'Especialista no encontrado.');
 
-      $pdf = Pdf::loadView('pdf.generarPdfCita', compact('cita'));
+      $citas = Cita::with(['paciente', 'especialista'])
+        ->where('especialista_id', $especialista->id)
+        ->whereDate('fecha_consulta', $fechaHoy)
+        ->orderBy('hora', 'asc')
+        ->get();
 
-      return $pdf->download('cita-' . $id . '.pdf');
+      $pdf = Pdf::loadView('pdf.citas.report-all-specialist', [
+        'citas' => $citas,
+        'especialista' => $especialista,
+        'title' => 'MIS CITAS - HOY'
+      ]);
+
+      return $pdf->stream('mis-citas-hoy-' . $fechaHoy . '.pdf');
     } catch (\Exception $e) {
       return redirect()->back()->with('error', 'Error al generar PDF: ' . $e->getMessage());
     }

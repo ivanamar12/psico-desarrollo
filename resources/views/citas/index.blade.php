@@ -36,15 +36,16 @@
                     <!-- Citas del día -->
                     <div class="data-table-header">
                       @if (auth()->user()->hasRole(App\Enums\Role::ADMIN->value) || auth()->user()->hasRole(App\Enums\Role::SECRETARIA->value))
-                        <button onclick="window.open('{{ url('/pdf/citas-hoy') }}', '_blank');" class="btn btn-custom"
-                          @if ($citasHoyCount == 0) disabled title="No hay citas para hoy" @endif>
-                          <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas del día
-                        </button>
-                      @elseif(auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
-                        <button onclick="window.open('{{ url('/pdf/citas-hoy-especialista') }}', '_blank');"
+                        <button onclick="window.open('{{ route('citas.report.today') }}', '_blank');"
                           class="btn btn-custom"
                           @if ($citasHoyCount == 0) disabled title="No hay citas para hoy" @endif>
-                          <i class="zmdi zmdi-file-text"></i> Generar PDF Mis Citas del día
+                          <i class="zmdi zmdi-file-text"></i> PDF Todas las Citas del día
+                        </button>
+                      @elseif(auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
+                        <button onclick="window.open('{{ route('citas.report.today.specialist') }}', '_blank');"
+                          class="btn btn-custom"
+                          @if ($citasHoyCount == 0) disabled title="No hay citas para hoy" @endif>
+                          <i class="zmdi zmdi-file-text"></i> PDF Mis Citas del día
                         </button>
                       @endif
 
@@ -74,15 +75,15 @@
                     <!-- Todas las citas -->
                     <div class="data-table-header">
                       @if (auth()->user()->hasRole(App\Enums\Role::ADMIN->value) || auth()->user()->hasRole(App\Enums\Role::SECRETARIA->value))
-                        <button onclick="window.open('{{ url('/pdf/citas') }}', '_blank');" class="btn btn-custom"
+                        <button onclick="window.open('{{ route('citas.report.all') }}', '_blank');" class="btn btn-custom"
                           @if ($citasCount == 0) disabled title="No hay citas registradas" @endif>
-                          <i class="zmdi zmdi-file-text"></i> Generar PDF Todas las Citas
+                          <i class="zmdi zmdi-file-text"></i> PDF Todas las Citas
                         </button>
                       @elseif(auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
-                        <button onclick="window.open('{{ url('/pdf/citas-especialista') }}', '_blank');"
+                        <button onclick="window.open('{{ route('citas.report.all.specialist') }}', '_blank');"
                           class="btn btn-custom"
                           @if ($citasCount == 0) disabled title="No hay citas registradas" @endif>
-                          <i class="zmdi zmdi-file-text"></i> Generar PDF Mis Citas
+                          <i class="zmdi zmdi-file-text"></i> PDF Mis Citas
                         </button>
                       @endif
 

@@ -43,6 +43,7 @@ cp .env.example .env
 ```
 
 ## REM Windows (CMD)
+
 ```bash
 copy .env.example .env
 ```
@@ -79,8 +80,7 @@ php artisan serve
 - ADMIN:
 
 - Email: ivana@gmail.com
-- Password: Ivana123. 
-
+- Password: Admin123.
 
 ## Despliegue 📦
 
