@@ -35,7 +35,7 @@
       <p>
         Se hace constar que el(la) Niño(a):
         <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['nombre_edad'] }},</span>
-        @if ($paciente['modalidad_educacion'] !== 'No especificada' && $paciente['nombre_escuela'] !== 'No especificada')
+        @if ($paciente['modalidad_educacion'] !== 'no aplica' && $paciente['nombre_escuela'] !== 'no aplica')
           cursante de
           <span style="text-decoration: underline; font-weight: bold;">{{ $paciente['modalidad_educacion'] }},</span>
           en el {{ $paciente['nombre_escuela'] }}, en calidad de estudiante regular.

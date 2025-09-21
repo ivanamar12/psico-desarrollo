@@ -55,15 +55,15 @@ class ConstanciaAsistenciaController extends Controller
 
       $pacienteData = [
         'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
-        'modalidad_educacion' => 'No especificada',
-        'nombre_escuela' => 'No especificada',
+        $pacienteData['modalidad_educacion'] = 'no aplica',
+        $pacienteData['nombre_escuela'] = 'no aplica',
         'representante' => "{$paciente->representante->nombre} {$paciente->representante->apellido} {$paciente->representante->ci}"
       ];
 
       if ($paciente->historiaclinicas->isNotEmpty() && $paciente->historiaclinicas[0]->historiaEscolar) {
         $historiaEscolar = $paciente->historiaclinicas[0]->historiaEscolar;
-        $pacienteData['modalidad_educacion'] = $historiaEscolar->modalidad_educacion ?? 'No especificada';
-        $pacienteData['nombre_escuela'] = $historiaEscolar->nombre_escuela ?? 'No especificada';
+        $pacienteData['modalidad_educacion'] = $historiaEscolar->modalidad_educacion;
+        $pacienteData['nombre_escuela'] = $historiaEscolar->nombre_escuela;
       }
 
       $pdf = Pdf::loadView('pdf.constancia-asistencia', [
