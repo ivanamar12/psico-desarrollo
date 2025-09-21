@@ -56,7 +56,8 @@ class ConstanciaAsistenciaController extends Controller
       $pacienteData = [
         'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
         'modalidad_educacion' => 'No especificada',
-        'nombre_escuela' => 'No especificada'
+        'nombre_escuela' => 'No especificada',
+        'representante' => "{$paciente->representante->nombre} {$paciente->representante->apellido} {$paciente->representante->ci}"
       ];
 
       if ($paciente->historiaclinicas->isNotEmpty() && $paciente->historiaclinicas[0]->historiaEscolar) {

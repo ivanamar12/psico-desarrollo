@@ -42,7 +42,9 @@
         @else
           paciente de este centro.
         @endif
-        Ha asistido a evaluación e Intervención Psicológica los días:
+        En compañía de <span
+          style="text-decoration: underline; font-weight: bold;">{{ $paciente['representante'] }}.</span> Ha asistido a
+        evaluación e Intervención Psicológica los días:
         <span style="text-decoration: underline; font-weight: bold;">{{ $citas }}.</span>
       </p>
 
