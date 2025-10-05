@@ -30,10 +30,6 @@
         <li>
           <button class="tab-trigger" data-tab="escolarizacion-modalidades">Escolarización y Modalidades</button>
         </li>
-        <!-- Agregar más pestañas según necesites -->
-        <li>
-          <button class="tab-trigger" data-tab="otra">Otra Pestaña</button>
-        </li>
       </ul>
 
       <section class="tabs-content">
@@ -246,21 +242,6 @@
               </article>
             </section>
           </section>
-        </section>
-
-        <!-- Otra pestaña -->
-        <section class="tab-pane" data-tab="otra">
-          <div class="container-fluid">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="panel panel-default">
-                  <div class="panel-body">
-                    <h4>Contenido de otra pestaña</h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
         </section>
       </section>
     </section>
@@ -573,16 +554,5 @@
             });
         });
     });
-  </script>
-
-  <script>
-    function iniciarAyuda() {
-      introJs().setOptions({
-        nextLabel: 'Siguiente',
-        prevLabel: 'Anterior',
-        skipLabel: 'Saltar',
-        doneLabel: 'Finalizar',
-      }).start();
-    }
   </script>
 @endsection

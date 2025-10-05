@@ -43,10 +43,12 @@
   <script src="{{ asset('js/intro/intro.min.js') }}"></script>
   {{-- Funcionalidades principales de la UI --}}
   <script src="{{ asset('js/app/main.js') }}"></script>
+
   <script>
-    window.mostrarAyuda = @json(session('mostrar_ayuda', false));
+    window.show_guide = @json(session('show_guide', false));
   </script>
-  <script src="{{ asset('js/intro-tour.js') }}"></script>
+
+  <script src="{{ asset('js/intro/intro-tour.js') }}"></script>
 
   {{-- Notificaciones --}}
   <script src="{{ asset('js/app/notificaciones.js') }}"></script>

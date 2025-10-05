@@ -15,7 +15,7 @@
       </a>
     </li>
     <li>
-      <a href="#!" class="btn-ayuda-interactiva" onclick="iniciarAyuda()">
+      <a href="#!" class="btn-ayuda-interactiva">
         <i class="zmdi zmdi-help-outline"></i>
       </a>
     </li>
