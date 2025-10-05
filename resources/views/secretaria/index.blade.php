@@ -20,13 +20,13 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+            <li class="active"><a href="#list-secretaria" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('registrar secretaria'))
               <li><a href="#new-secretaria" data-toggle="tab">Nuevo</a></li>
             @endif
           </ul>
           <section id="myTabContent" class="tab-content">
-            <section class="tab-pane fade active in" id="list">
+            <section class="tab-pane fade active in" id="list-secretaria">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-secretaria">
                   <thead>
@@ -453,7 +453,7 @@
 
               tablaSecretaria.ajax.reload();
 
-              $('.nav-tabs a[href="#list"]').tab('show');
+              $('.nav-tabs a[href="#list-secretaria"]').tab('show');
             }
           },
           error: function(xhr) {
@@ -676,7 +676,7 @@
 
       // Resetear fomulario en caso de volver a la vista
       $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-        if (e.target.hash === '#list') {
+        if (e.target.hash === '#list-secretaria') {
           $('#estado_id').val(null).trigger('change');
           $('#municipio_id').val(null).trigger('change');
           $('#parroquia_id').val(null).trigger('change');

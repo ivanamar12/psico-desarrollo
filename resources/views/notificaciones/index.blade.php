@@ -19,12 +19,11 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+            <li class="active"><a href="#list-notificaciones" data-toggle="tab">Lista</a></li>
           </ul>
 
           <section id="myTabContent" class="tab-content">
-            <!-- Pestaña Lista -->
-            <div class="tab-pane fade active in" id="list">
+            <div class="tab-pane fade active in" id="list-notificaciones">
               <div class="table-responsive">
                 <div class="text-right mb-3">
                   <button id="btn-marcar-todas" class="btn btn-custom" style="color: white;">

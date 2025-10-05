@@ -20,13 +20,13 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+            <li class="active"><a href="#list-paciente" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('registrar paciente'))
               <li><a href="#new-paciente" data-toggle="tab"> Nuevo</a></li>
             @endif
           </ul>
           <section id="myTabContent" class="tab-content">
-            <section class="tab-pane fade active in" id="list">
+            <section class="tab-pane fade active in" id="list-paciente">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-paciente">
                   <thead>
@@ -532,7 +532,7 @@
               $("#paso1").show();
 
               // Cambiar a la pestaña de lista
-              $('.nav-tabs a[href="#list"]').tab('show');
+              $('.nav-tabs a[href="#list-paciente"]').tab('show');
             }
           },
           error: function(xhr) {

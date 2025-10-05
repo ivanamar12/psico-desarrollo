@@ -3,12 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const steps = [
       {
         title: "Bienvenido",
-        intro: "Esta es una ayuda interactiva para entender el sistema.",
+        intro: "Esta es una guía interactiva para entender el sistema.",
       },
       {
         element: document.querySelector(".btn-menu-dashboard"),
         title: "Menú lateral",
-        intro: "Haz clic aquí para abrir el menú de navegación.",
+        intro: "Haz clic aquí para Abrir/Cerrar el menú de navegación.",
       },
       {
         element: document.querySelector(".btn-Notifications-area"),
@@ -22,65 +22,160 @@ document.addEventListener("DOMContentLoaded", function () {
       },
       {
         element: document.querySelector(".btn-ayuda-interactiva"),
-        title: "Ayuda interactiva",
+        title: "Guía interactiva",
         intro: "Vuelve a iniciar esta guía cuando quieras.",
       },
     ];
 
-    // Agrega pasos opcionales si existen los elementos
-    const especialidadBtn = document.querySelector(".btn-especialidad");
-    if (especialidadBtn) {
+    // Perfil
+    const btnEditProfile = document.querySelector(".editar-perfil");
+    if (btnEditProfile) {
       steps.push({
-        element: especialidadBtn,
+        element: btnEditProfile,
+        title: "Editar Perfil",
+        intro:
+          "Haz clic aquí para cambiar contraseña y registrar/cambiar pregunta de seguridad.",
+      });
+    }
+
+    const btnUsersList = document.querySelector('a[href="#list-usuarios"]');
+    if (btnUsersList) {
+      steps.push({
+        element: btnUsersList,
+        title: "Listado Usuarios",
+        intro: "Haz clic aquí para ver el listado de los usuarios y su estado.",
+      });
+    }
+
+    const btnProfile = document.querySelector('a[href="#new-perfil"]');
+    if (btnProfile) {
+      steps.push({
+        element: btnProfile,
+        title: "Perfil de Usuario",
+        intro: "Información del perfil.",
+      });
+    }
+
+    // Notificaciones
+    const btnNotificationsList = document.querySelector(
+      'a[href="#list-notificaciones"]'
+    );
+    if (btnNotificationsList) {
+      steps.push({
+        element: btnNotificationsList,
+        title: "Listado Notificaciones",
+        intro: "Haz clic aquí para ver el listado de las notificaciones.",
+      });
+    }
+
+    // Especialidad
+    const btnListEspecialidad = document.querySelector(
+      'a[href="#list-especialidad"]'
+    );
+    if (btnListEspecialidad) {
+      steps.push({
+        element: btnListEspecialidad,
+        title: "Listado de Especialidades",
+        intro: "Haz clic aquí para ver el listado de las especialidades.",
+      });
+    }
+
+    const btnNewEspecialidad = document.querySelector(
+      'a[href="#new-especialidad"]'
+    );
+    if (btnNewEspecialidad) {
+      steps.push({
+        element: btnNewEspecialidad,
         title: "Nueva Especialidad",
         intro: "Haz clic aquí para registrar una nueva especialidad.",
       });
     }
 
-    const editarperfilBtn = document.querySelector(".editar-perfil");
-    if (editarperfilBtn) {
+    // Especialista
+    const btnListEspecialista = document.querySelector(
+      'a[href="#list-especialista"]'
+    );
+    if (btnListEspecialista) {
       steps.push({
-        element: editarperfilBtn,
-        title: "Editar Perfil",
-        intro:
-          "Haz clic aquí para cambiar contraseña e ingresar preguntas de seguridad.",
+        element: btnListEspecialista,
+        title: "Listado de Especialistas",
+        intro: "Haz clic aquí para ver el listado de los especialistas.",
       });
     }
 
-    const nuevoBtn = document.querySelector('a[href="#new"]');
-    if (nuevoBtn) {
+    const btnNewEspecialista = document.querySelector(
+      'a[href="#new-especialista"]'
+    );
+    if (btnNewEspecialista) {
       steps.push({
-        element: nuevoBtn,
-        title: "Nuevo registro de Especialista",
+        element: btnNewEspecialista,
+        title: "Nuevo Especialista",
         intro: "Haz clic aquí para registrar un nuevo especialista.",
       });
     }
 
-    const pacienteBtn = document.querySelector('a[href="#new-paciente"]');
-    if (pacienteBtn) {
+    // Secretaria
+    const btnListSecretaria = document.querySelector(
+      'a[href="#list-secretaria"]'
+    );
+    if (btnListSecretaria) {
       steps.push({
-        element: pacienteBtn,
-        title: "Nuevo registro",
+        element: btnListSecretaria,
+        title: "Listado Secretarias",
+        intro: "Haz clic aquí para ver el listado de las secretarias.",
+      });
+    }
+
+    const btnNewSecretaria = document.querySelector(
+      'a[href="#new-secretaria"]'
+    );
+    if (btnNewSecretaria) {
+      steps.push({
+        element: btnNewSecretaria,
+        title: "Nueva Secretaria",
+        intro: "Haz clic aquí para registrar una nueva secretaria.",
+      });
+    }
+
+    // Representante
+    const btnListRepresentante = document.querySelector(
+      'a[href="#list-representante"]'
+    );
+    if (btnListRepresentante) {
+      steps.push({
+        element: btnListRepresentante,
+        title: "Listado Representantes",
+        intro: "Haz clic aquí para ver el listado de los representantes.",
+      });
+    }
+
+    const btnNewRepresentante = document.querySelector(
+      'a[href="#new-representante"]'
+    );
+    if (btnNewRepresentante) {
+      steps.push({
+        element: btnNewRepresentante,
+        title: "Nuevo Representante",
+        intro: "Haz clic aquí para registrar un nuevo representante.",
+      });
+    }
+
+    // Paciente
+    const btnListPaciente = document.querySelector('a[href="#list-paciente"]');
+    if (btnListPaciente) {
+      steps.push({
+        element: btnListPaciente,
+        title: "Listado Pacientes",
+        intro: "Haz clic aquí para ver el listado de los pacientes.",
+      });
+    }
+
+    const btnNewPaciente = document.querySelector('a[href="#new-paciente"]');
+    if (btnNewPaciente) {
+      steps.push({
+        element: btnNewPaciente,
+        title: "Nuevo Paciente",
         intro: "Haz clic aquí para registrar un nuevo paciente.",
-      });
-    }
-
-    const listusuariosBtn = document.querySelector('a[href="#list-usuarios"]');
-    if (listusuariosBtn) {
-      steps.push({
-        element: listusuariosBtn,
-        title: "Lista de usuarios del sistema",
-        intro:
-          "Haz clic aquí para ver la lista de los usuarios del sistema y su estado.",
-      });
-    }
-
-    const perfilBtn = document.querySelector('a[href="#new-perfil"]');
-    if (perfilBtn) {
-      steps.push({
-        element: perfilBtn,
-        title: "Perfil",
-        intro: "Información del perfil",
       });
     }
 
@@ -90,15 +185,6 @@ document.addEventListener("DOMContentLoaded", function () {
         element: pruebaBtn,
         title: "Registrar Pruebas",
         intro: "Haz clic aquí para registrar una nueva prueba no estructurada.",
-      });
-    }
-
-    const secretariaBtn = document.querySelector('a[href="#new-secretaria"]');
-    if (secretariaBtn) {
-      steps.push({
-        element: secretariaBtn,
-        title: "Registrar Secretaria",
-        intro: "Haz clic aquí para registrar una nueva secretaria.",
       });
     }
 

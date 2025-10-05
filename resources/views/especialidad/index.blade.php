@@ -19,13 +19,13 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
-            <li><a href="#new" data-toggle="tab">Nuevo</a></li>
+            <li class="active"><a href="#list-especialidad" data-toggle="tab">Lista</a></li>
+            <li><a href="#new-especialidad" data-toggle="tab">Nuevo</a></li>
           </ul>
 
           <section id="myTabContent" class="tab-content">
             <!-- Pestaña Lista -->
-            <div class="tab-pane fade active in" id="list">
+            <div class="tab-pane fade active in" id="list-especialidad">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-especialidad">
                   <thead>
@@ -40,7 +40,7 @@
             </div>
 
             <!-- Pestaña Nuevo -->
-            <div class="tab-pane fade" id="new">
+            <div class="tab-pane fade" id="new-especialidad">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -156,7 +156,7 @@
               tablaEspecialidad.ajax.reload();
 
               // Cambiar a la pestaña de lista
-              $('.nav-tabs a[href="#list"]').tab('show');
+              $('.nav-tabs a[href="#list-especialidad"]').tab('show');
             }
           },
           error: function(xhr) {

@@ -20,13 +20,13 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list" data-toggle="tab">Lista</a></li>
+            <li class="active"><a href="#list-especialista" data-toggle="tab">Lista</a></li>
             @if (auth()->user()->can('registrar especialista'))
-              <li><a href="#new" data-toggle="tab">Nuevo</a></li>
+              <li><a href="#new-especialista" data-toggle="tab">Nuevo</a></li>
             @endif
           </ul>
           <section id="myTabContent" class="tab-content">
-            <div class="tab-pane fade active in" id="list">
+            <div class="tab-pane fade active in" id="list-especialista">
               <div class="table-responsive">
                 <table class="table table-hover text-center" id="tab-especialista">
                   <thead>
@@ -45,7 +45,7 @@
               </div>
             </div>
 
-            <section class="tab-pane fade in" id="new">
+            <section class="tab-pane fade in" id="new-especialista">
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
@@ -519,7 +519,7 @@
               tablaEspecialista.ajax.reload();
 
               // Cambiar a la pestaña de lista
-              $('.nav-tabs a[href="#list"]').tab('show');
+              $('.nav-tabs a[href="#list-especialista"]').tab('show');
             }
           },
           error: function(xhr) {
