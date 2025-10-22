@@ -27,8 +27,8 @@ class CreateUsersTable extends Migration
       $table->string('security_answer')->nullable();
 
       $table->boolean('primera_vez')->default(true);
-      $table->json('interactive_help')->default(json_encode([]));
-      
+      $table->json('interactive_help')->nullable();
+
       $table->rememberToken();
       $table->timestamps();
     });
