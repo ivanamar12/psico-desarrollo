@@ -65,6 +65,8 @@ class EspecialistaController extends Controller
       'direccion.parroquia'
     ]);
 
+    $especialista->fecha_nac_formatted = format_date_with_age($especialista->fecha_nac);
+
     return response()->json($especialista);
   }
 

@@ -328,28 +328,34 @@
 
   <!-- modal mostrar especialista -->
   <section id="especialistaModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Especialista</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <div class="modal-header bg-primary text-white rounded-top">
+          <h3 class="modal-title w-100 text-center">Información del Especialista</h3>
+          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
 
         <div class="modal-body">
-          <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
-          <p><strong>Cédula de Identidad:</strong> <span id="ci"></span></p>
-          <p><strong>Fecha de Nacimiento:</strong> <span id="fecha_nac"></span></p>
-          <p><strong>Especialidad:</strong> <span id="especialidad"></span></p>
-          <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
-          <p><strong>Email:</strong> <span id="email"></span></p>
-          <p><strong>Género:</strong> <span id="genero"></span></p>
-          <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nombre completo:</strong><br><span id="nombre"></span></p>
+              <p><strong>Cédula de Identidad:</strong><br><span id="ci"></span></p>
+              <p><strong>Fecha de Nacimiento:</strong><br><span id="fecha_nac"></span></p>
+              <p><strong>Especialidad:</strong><br><span id="especialidad"></span></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Teléfono:</strong><br><span id="telefono"></span></p>
+              <p><strong>Email:</strong><br><span id="email"></span></p>
+              <p><strong>Género:</strong><br><span id="genero"></span></p>
+              <p><strong>Dirección:</strong><br><span id="direccion" class="small"></span></p>
+            </div>
+          </div>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -679,37 +685,45 @@
   <script>
     $(document).on('click', '.ver-especialista', function() {
       let especialistaId = $(this).data('id');
+      let $modal = $('#especialistaModal');
 
       $.ajax({
         url: '/especialistas/' + especialistaId,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-          let nombreApellido = data.nombre + " " + data.apellido;
-          let cedula = data.ci;
-          let fechaNacimiento = data.fecha_nac;
-          let telefono = data.telefono;
-          let email = data.email;
+          const formatValue = (value, defaultValue = 'No disponible') =>
+            value && value !== '' ? value : defaultValue;
 
-          let especialidad = data.especialidad ? data.especialidad.especialidad : "No disponible";
-          let genero = data.genero ? data.genero.genero : "No disponible";
+          const nombreApellido = `${formatValue(data.nombre)} ${formatValue(data.apellido)}`;
 
-          let direccion =
-            `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
+          const fechaNac = data.fecha_nac_formatted || formatValue(data.fecha_nac);
 
-          $('#especialistaModal #nombre').text(nombreApellido);
-          $('#especialistaModal #ci').text(cedula);
-          $('#especialistaModal #fecha_nac').text(fechaNacimiento);
-          $('#especialistaModal #especialidad').text(especialidad);
-          $('#especialistaModal #telefono').text(telefono);
-          $('#especialistaModal #email').text(email);
-          $('#especialistaModal #genero').text(genero);
-          $('#especialistaModal #direccion').text(direccion);
+          let direccionParts = [];
+          if (data.direccion) {
+            if (data.direccion.sector) direccionParts.push(data.direccion.sector);
+            if (data.direccion.parroquia) direccionParts.push(data.direccion.parroquia.parroquia);
+            if (data.direccion.municipio) direccionParts.push(data.direccion.municipio.municipio);
+            if (data.direccion.estado) direccionParts.push(data.direccion.estado.estado);
+          }
+          const direccion = direccionParts.length > 0 ? direccionParts.join(', ') : 'No disponible';
 
-          $('#especialistaModal').modal('show');
+          $modal.find('#nombre').text(nombreApellido);
+          $modal.find('#ci').text(formatValue(data.ci));
+          $modal.find('#fecha_nac').text(fechaNac);
+          $modal.find('#especialidad').text(formatValue(data.especialidad?.especialidad));
+          $modal.find('#telefono').text(formatValue(data.telefono));
+          $modal.find('#email').text(formatValue(data.email));
+          $modal.find('#genero').text(formatValue(data.genero?.genero));
+          $modal.find('#direccion').text(direccion);
+
+          $modal.modal('show');
         },
         error: function(xhr, status, error) {
-          alert("Hubo un problema al obtener la información del especialista.");
+          $modal.find('.modal-body').html(
+            '<div class="alert alert-danger text-center">Error al cargar la información del especialista.</div>'
+          );
+          toastr.error('Error al cargar la información del especialista.');
         }
       });
     });

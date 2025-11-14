@@ -66,3 +66,59 @@ if (!function_exists('get_formal_date')) {
       : "a los {$date->day} días" . " del mes de {$date->monthName} del año {$date->year}";
   }
 }
+
+/*
+* For birth
+*/
+if (!function_exists('format_date')) {
+  /**
+   * Formatea una fecha a un formato legible
+   */
+  function format_date($date, $format = 'd/m/Y')
+  {
+    if (!$date) {
+      return 'No disponible';
+    }
+
+    try {
+      return Carbon::parse($date)->format($format);
+    } catch (Exception $e) {
+      return 'Fecha inválida';
+    }
+  }
+}
+
+if (!function_exists('calculate_age')) {
+  /**
+   * Calcula la edad a partir de una fecha de nacimiento
+   */
+  function calculate_age($birthDate)
+  {
+    if (!$birthDate) {
+      return null;
+    }
+
+    try {
+      return Carbon::parse($birthDate)->age;
+    } catch (Exception $e) {
+      return null;
+    }
+  }
+}
+
+if (!function_exists('format_date_with_age')) {
+  /**
+   * Formatea la fecha y añade la edad entre paréntesis
+   */
+  function format_date_with_age($birthDate, $dateFormat = 'd/m/Y')
+  {
+    $formattedDate = format_date($birthDate, $dateFormat);
+    $age = calculate_age($birthDate);
+
+    if ($age) {
+      return "{$formattedDate} ({$age} años)";
+    }
+
+    return $formattedDate;
+  }
+}
