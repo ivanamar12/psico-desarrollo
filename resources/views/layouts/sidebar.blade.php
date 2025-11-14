@@ -52,7 +52,7 @@
                 </a>
               </li>
               <li>
-                <a href="{{ route('especialista.index') }}">
+                <a href="{{ route('especialistas.index') }}">
                   <i class="zmdi zmdi-accounts" style="margin: 0px 8px"></i>Especialistas
                 </a>
               </li>

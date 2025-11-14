@@ -37,7 +37,6 @@
                       <th style="text-align: center">Nombre</th>
                       <th style="text-align: center">Apellido</th>
                       <th style="text-align: center">Correo</th>
-                      <th style="text-align: center">Teléfono</th>
                       <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
@@ -53,7 +52,7 @@
                       @csrf
 
                       <!-- Paso 1 -->
-                      <div id="paso1">
+                      <section id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="row">
 
@@ -145,9 +144,10 @@
                           <button type="button" id="siguiente1" class="btn btn-regresar"
                             style="color: white;">Siguiente</button>
                         </p>
-                      </div>
+                      </section>
+
                       <!-- Paso 2 -->
-                      <div id="paso2" style="display: none;">
+                      <section id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
 
@@ -194,7 +194,7 @@
                             <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
@@ -204,28 +204,6 @@
         </div>
       </div>
     </section>
-  </section>
-
-  <!-- modal eliminar -->
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmar </h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
   </section>
 
   <!-- Modal editar -->
@@ -401,7 +379,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-          url: "{{ route('especialista.index') }}",
+          url: "{{ route('especialistas.index') }}",
         },
         columns: [{
             data: 'id'
@@ -420,9 +398,6 @@
           },
           {
             data: 'email'
-          },
-          {
-            data: 'telefono'
           },
           {
             data: 'action',
@@ -468,35 +443,14 @@
         $("#paso1").show();
       });
 
-      $("#registro-especialista").submit(function(event) {
-        event.preventDefault();
+      $("#registro-especialista").submit(function(e) {
+        e.preventDefault();
         toastr.clear();
 
-        registerEspecialista();
-      });
-
-      function registerEspecialista() {
-        var formData = {
-          nombre: $('#nombre').val(),
-          apellido: $('#apellido').val(),
-          ci: $('#ci').val(),
-          fecha_nac: $('#fecha_nac').val(),
-          especialidad_id: $('#especialidad_id').val(),
-          telefono: $('#telefono').val(),
-          email: $('#email').val(),
-          fvp: $('#fvp').val(),
-          genero_id: $('#genero_id').val(),
-          estado_id: $('#estado_id').val(),
-          municipio_id: $('#municipio_id').val(),
-          parroquia_id: $('#parroquia_id').val(),
-          sector: $('#sector').val(),
-          _token: $("input[name=_token]").val()
-        };
-
         $.ajax({
-          url: "{{ route('especialista.store') }}",
+          url: "{{ route('especialistas.store') }}",
           type: "POST",
-          data: formData,
+          data: $(this).serialize(),
           success: function(response) {
             if (response.success) {
               $('#registro-especialista')[0].reset();
@@ -510,15 +464,10 @@
               $("#paso2").hide();
               $("#paso1").show();
 
-              // Mostrar mensaje
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
-
-              // Recargar tabla
               tablaEspecialista.ajax.reload();
-
-              // Cambiar a la pestaña de lista
               $('.nav-tabs a[href="#list-especialista"]').tab('show');
             }
           },
@@ -537,50 +486,13 @@
             }
           }
         });
-      }
-    });
-  </script>
-
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    var id;
-    $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      $.ajax({
-        url: "/especialista/" + id,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-            timeOut: 5000
-          });
-          $('#tab-especialista').DataTable().ajax.reload();
-        },
-        error: function(xhr, status, error) {
-          console.error('Error al eliminar el registro:', error);
-          toastr.error('No se pudo eliminar el registro', 'Error', {
-            timeOut: 5000
-          });
-        }
       });
     });
   </script>
 
   <script>
     function editespecialista(id) {
-      $.get('/especialista/' + id + '/edit', function(especialista) {
+      $.get('/especialistas/' + id + '/edit', function(especialista) {
         $('#id').val(especialista.id);
         $('#ci2').val(especialista.ci);
         $('#fvp2').val(especialista.fvp);
@@ -725,7 +637,7 @@
         var _token = $("input[name=_token]").val();
 
         $.ajax({
-          url: "/especialista/" + id,
+          url: "/especialistas/" + id,
           type: "PUT",
           data: {
             id: id,
@@ -745,9 +657,7 @@
             _token: _token
           },
           success: function(response) {
-            console.log("Respuesta del servidor:", response);
             if (response.success) {
-              console.log("Cerrando el modal...");
               $('#editespecialista').modal('hide');
               toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
                 timeOut: 5000
@@ -775,8 +685,6 @@
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-          console.log("Datos del especialista:", data);
-
           let nombreApellido = data.nombre + " " + data.apellido;
           let cedula = data.ci;
           let fechaNacimiento = data.fecha_nac;
@@ -801,7 +709,6 @@
           $('#especialistaModal').modal('show');
         },
         error: function(xhr, status, error) {
-          console.error("Error al obtener los datos:", error);
           alert("Hubo un problema al obtener la información del especialista.");
         }
       });

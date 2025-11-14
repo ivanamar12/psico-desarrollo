@@ -16,6 +16,7 @@ use App\Http\Controllers\NotificacionController;
 use App\Http\Controllers\ValidacionController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ConstanciaAsistenciaController;
+use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
 
@@ -27,11 +28,6 @@ Route::middleware('guest')->group(function () {
  * Auth Routes 
  */
 require __DIR__ . '/auth.php';
-
-/**
- * Specialist Routes 
- */
-require __DIR__ . '/specialist.php';
 
 /**
  * Secretary Routes 
@@ -261,6 +257,12 @@ Route::middleware('auth')->group(function () {
    */
   Route::resource('especialidad', EspecialidadController::class)
     ->except(['create', 'destroy', 'show']);
+
+  /**
+   * Rutas para especialista
+   */
+  Route::resource('especialistas', EspecialistaController::class)
+    ->except(['create', 'destroy']);
 
   /**
    * Pruebas
