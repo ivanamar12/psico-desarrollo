@@ -347,7 +347,7 @@ form button:hover {
   background: none;
   border: none;
   color: white;
-  padding: 0px 40px;
+  padding: 0px 10px;
   font-size: 28px;
   cursor: pointer;
   transition: opacity 0.3s;

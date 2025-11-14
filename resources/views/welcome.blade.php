@@ -8,6 +8,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
   <link rel="icon" type="image/svg+xml" href="{{ asset('img/logo.png') }}" />
   <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/material-design-iconic-font.min.css') }}">
 </head>
 
 <body>
@@ -126,7 +127,7 @@
   </footer>
 
   <!-- Modal de Iniciar Sesión -->
-  <div id="login-modal" class="modal">
+  <section id="login-modal" class="modal">
     <div class="modal-content">
       <span class="close-btn" id="close-login-modal">&times;</span>
       <h2>Iniciar Sesión</h2>
@@ -142,7 +143,12 @@
         </div>
 
         <label for="password-login">Contraseña:</label>
-        <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
+        <div style="position: relative">
+          <input type="password" id="password-login" name="password" placeholder="Ingrese su contraseña" required>
+
+          <i class="zmdi zmdi-eye-off toggle-password" id="eye"
+            style="position: absolute; top: 20px; right: 22px; cursor: pointer" data-target="password-login"></i>
+        </div>
 
         <div style="width: 100%; display: flex; justify-content: end; margin-bottom: 20px">
           <a href={{ route('password.request') }}>
@@ -153,13 +159,15 @@
         <button type="submit" class="btn">Entrar</button>
       </form>
     </div>
-  </div>
+  </section>
 
   <script>
     document.addEventListener('DOMContentLoaded', function() {
       const loginModal = document.getElementById('login-modal');
       const openLoginBtn = document.getElementById('open-login-modal');
       const closeLoginBtn = document.getElementById('close-login-modal');
+      const togglePassword = document.querySelector('.toggle-password');
+      const passwordInput = document.getElementById('password-login');
 
       function openLoginModal() {
         loginModal.style.display = 'flex';
@@ -188,6 +196,16 @@
           closeLoginModal();
         }
       });
+
+      if (togglePassword && passwordInput) {
+        togglePassword.addEventListener('click', function() {
+          const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+          passwordInput.setAttribute('type', type);
+
+          this.classList.toggle('zmdi-eye');
+          this.classList.toggle('zmdi-eye-off');
+        });
+      }
     });
   </script>
 
@@ -195,7 +213,7 @@
   <script>
     $(document).ready(function() {
       $('.close-btn').click(function() {
-        $('.notification').fadeOut(300); // Desvanecimiento más suave
+        $('.notification').fadeOut(300);
       });
 
       setTimeout(function() {

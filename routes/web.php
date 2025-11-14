@@ -20,9 +20,7 @@ use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
 
 Route::middleware('guest')->group(function () {
-  Route::get('/', function () {
-    return view('welcome');
-  })->name('index');
+  Route::get('/', fn() => view('welcome'))->name('index');
 });
 
 /**
