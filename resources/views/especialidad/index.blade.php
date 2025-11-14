@@ -146,16 +146,10 @@
           success: function(response) {
             if (response.success) {
               $('#registro-especialidad')[0].reset();
-
-              // Mostrar mensaje
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
-
-              // Recargar tabla
               tablaEspecialidad.ajax.reload();
-
-              // Cambiar a la pestaña de lista
               $('.nav-tabs a[href="#list-especialidad"]').tab('show');
             }
           },

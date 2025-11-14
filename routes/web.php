@@ -260,7 +260,7 @@ Route::middleware('auth')->group(function () {
    * Rutas para especialidad
    */
   Route::resource('especialidad', EspecialidadController::class)
-    ->except(['destroy', 'show']);
+    ->except(['create', 'destroy', 'show']);
 
   /**
    * Pruebas

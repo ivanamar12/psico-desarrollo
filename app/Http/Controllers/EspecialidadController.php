@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Especialidad\StoreEspecialidadRequest;
+use App\Http\Requests\Especialidad\UpdateEspecialidadRequest;
 use App\Models\Especialidad;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
@@ -11,7 +13,7 @@ class EspecialidadController extends Controller
   public function index(Request $request)
   {
     if ($request->ajax()) {
-      $especialidades = Especialidad::select('*');
+      $especialidades = Especialidad::all();
 
       return DataTables::of($especialidades)
         ->addColumn('action', function ($especialidad) {
@@ -30,39 +32,28 @@ class EspecialidadController extends Controller
     return view('especialidad.index');
   }
 
-  public function store(Request $request)
+  public function store(StoreEspecialidadRequest $request)
   {
-    $validatedData = $request->validate([
-      'especialidad' => 'required|string|max:30|unique:especialidads',
-    ]);
-
-    Especialidad::create([
-      'especialidad' => $validatedData['especialidad'],
-    ]);
-
-    return response()->json(['success' => true, 'message' => 'Especialidad registrada con éxito']);
-  }
-
-  public function edit($id)
-  {
-    $especialidad = Especialidad::findOrFail($id);
-    return response()->json($especialidad);
-  }
-
-  public function update(Request $request, $id)
-  {
-    $validatedData = $request->validate([
-      'especialidad' => 'required|string|max:30|unique:especialidads,especialidad,' . $id
-    ]);
-
-    $especialidad = Especialidad::findOrFail($id);
-    $especialidad->update([
-      'especialidad' => $validatedData['especialidad'],
-    ]);
+    Especialidad::create($request->safe()->all());
 
     return response()->json([
       'success' => true,
-      'message' => 'Especialidad actualizada correctamente'
+      'message' => 'Especialidad registrada con éxito!'
+    ]);
+  }
+
+  public function edit(Especialidad $especialidad)
+  {
+    return response()->json($especialidad);
+  }
+
+  public function update(UpdateEspecialidadRequest $request, Especialidad $especialidad)
+  {
+    $especialidad->update($request->safe()->all());
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Especialidad actualizada correctamente!'
     ]);
   }
 }
