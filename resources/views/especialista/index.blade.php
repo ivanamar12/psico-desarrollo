@@ -330,11 +330,16 @@
   <section id="especialistaModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
-        <div class="modal-header bg-primary text-white rounded-top">
-          <h3 class="modal-title w-100 text-center">Información del Especialista</h3>
-          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-header">
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Información del Especialista
+          </h3>
         </div>
 
         <div class="modal-body">
@@ -682,6 +687,7 @@
     });
   </script>
 
+  {{-- Ver especialista --}}
   <script>
     $(document).on('click', '.ver-especialista', function() {
       let especialistaId = $(this).data('id');

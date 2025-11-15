@@ -31,7 +31,7 @@ class EspecialistaController extends Controller
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-especialista" data-id="' . $especialista->id . '"><i class="zmdi zmdi-eye"></i></button>';
 
           if (auth()->user()->can('editar especialista')) {
-            $acciones .= '<a href="javascript:void(0)" onclick="editespecialista(' . $especialista->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
+            $acciones .= '<a href="javascript:void(0)" onclick="editEspecialista(' . $especialista->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
           }
 
           // if (auth()->user()->can('eliminar especialista')) {
@@ -141,6 +141,9 @@ class EspecialistaController extends Controller
       ]));
     });
 
-    return response()->json(['success' => true]);
+    return response()->json([
+      'success' => true,
+      'message' => 'Especialista actualizado correctamente!'
+    ]);
   }
 }

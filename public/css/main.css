@@ -652,10 +652,6 @@ html {
   opacity: 0.8 !important;
 }
 
-.close {
-  color: gray; /* Color gris para el botón de cerrar */
-}
-
 .btn-regresar {
   background-color: #14abb0;
   color: #1cd3dd;
