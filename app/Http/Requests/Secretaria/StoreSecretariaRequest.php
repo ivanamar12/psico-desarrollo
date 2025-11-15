@@ -24,18 +24,35 @@ class StoreSecretariaRequest extends FormRequest
   public function rules()
   {
     return [
-      'nombre' => 'required|string|max:255',
-      'apellido' => 'required|string|max:255',
-      'ci' => 'required|string|max:255|unique:secretarias,ci',
-      'fecha_nac' => 'required|date|max:10',
-      'grado' => 'required|string|max:255',
-      'telefono' => 'required|string|max:255|unique:secretarias,telefono',
-      'email' => 'required|string|email|max:255|unique:secretarias,email|unique:users,email',
-      'genero_id' => 'required|exists:generos,id',
-      'estado_id' => 'required|exists:estados,id',
-      'municipio_id' => 'required|exists:municipios,id',
-      'parroquia_id' => 'required|exists:parroquias,id',
-      'sector' => 'required|string|min:10|max:80',
+      'nombre' => ['required', 'string', 'max:120'],
+      'apellido' => ['required', 'string', 'max:120'],
+      'ci' => [
+        'required',
+        'string',
+        'max:30',
+        'unique:secretarias,ci'
+      ],
+      'fecha_nac' => ['required', 'date', 'max:10'],
+      'grado' => ['required', 'string', 'max:120'],
+      'telefono' => [
+        'required',
+        'string',
+        'max:12',
+        'unique:secretarias,telefono'
+      ],
+      'email' => [
+        'required',
+        'string',
+        'email',
+        'max:255',
+        'unique:secretarias,email',
+        'unique:users,email'
+      ],
+      'genero_id' => ['required', 'exists:generos,id'],
+      'estado_id' => ['required', 'exists:estados,id'],
+      'municipio_id' => ['required', 'exists:municipios,id'],
+      'parroquia_id' => ['required', 'exists:parroquias,id'],
+      'sector' => ['required', 'string', 'min:10', 'max:150'],
     ];
   }
 

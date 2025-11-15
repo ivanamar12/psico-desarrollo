@@ -59,7 +59,7 @@
             @endif
             @if (auth()->user()->can('ver secretaria'))
               <li>
-                <a href="{{ route('secretaria.index') }}">
+                <a href="{{ route('secretarias.index') }}">
                   <i class="zmdi zmdi-accounts-alt" style="margin: 0px 8px"></i>Secretarias
                 </a>
               </li>

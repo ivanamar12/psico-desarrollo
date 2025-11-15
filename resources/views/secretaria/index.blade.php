@@ -36,7 +36,6 @@
                       <th style="text-align: center">Nombre</th>
                       <th style="text-align: center">Apellido</th>
                       <th style="text-align: center">Correo</th>
-                      <th style="text-align: center">Telefono</th>
                       <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
@@ -309,50 +308,41 @@
     </div>
   </section>
 
-  <!-- modal eliminar -->
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- modal mostrar secretaria -->
   <section id="secretariaModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Secretaria</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
-          <p><strong>Cédula de Identidad:</strong> <span id="ci"></span></p>
-          <p><strong>Fecha de Nacimiento:</strong> <span id="fecha_nac"></span></p>
-          <p><strong>Grado:</strong> <span id="grado"></span></p>
-          <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
-          <p><strong>Email:</strong> <span id="email"></span></p>
-          <p><strong>Género:</strong> <span id="genero"></span></p>
-          <p><strong>Estado:</strong> <span id="direccion"></span></p>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Información de la Secretaria
+          </h3>
+        </div>
+
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nombre completo:</strong><br><span id="nombre_show"></span></p>
+              <p><strong>Cédula de Identidad:</strong><br><span id="ci_show"></span></p>
+              <p><strong>Fecha de Nacimiento:</strong><br><span id="fecha_nac_show"></span></p>
+              <p><strong>Grado:</strong><br><span id="grado_show"></span></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Teléfono:</strong><br><span id="telefono_show"></span></p>
+              <p><strong>Email:</strong><br><span id="email_show"></span></p>
+              <p><strong>Género:</strong><br><span id="genero_show"></span></p>
+              <p><strong>Dirección:</strong><br><span id="direccion_show" class="small"></span></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -377,12 +367,12 @@
     $(document).ready(function() {
       var tablaSecretaria = $('#tab-secretaria').DataTable({
         language: {
-          url: './js/datatables/es-ES.json',
+          url: "{{ asset('js/datatables/es-ES.json') }}",
         },
         processing: true,
         serverSide: true,
         ajax: {
-          url: "{{ route('secretaria.index') }}",
+          url: "{{ route('secretarias.index') }}",
         },
         columns: [{
             data: 'id'
@@ -398,9 +388,6 @@
           },
           {
             data: 'email'
-          },
-          {
-            data: 'telefono'
           },
           {
             data: 'action',
@@ -434,7 +421,7 @@
         };
 
         $.ajax({
-          url: "{{ route('secretaria.store') }}",
+          url: "{{ route('secretarias.store') }}",
           type: "POST",
           data: formData,
           success: function(response) {
@@ -513,45 +500,8 @@
   </script>
 
   <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    var id;
-    $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      $.ajax({
-        url: "/secretaria/" + id,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-            timeOut: 5000
-          });
-          $('#tab-secretaria').DataTable().ajax.reload();
-        },
-        error: function(xhr, status, error) {
-          console.error('Error al eliminar el registro:', error);
-          toastr.error('No se pudo eliminar el registro', 'Error', {
-            timeOut: 5000
-          });
-        }
-      });
-    });
-  </script>
-
-  <script>
     function editsecretaria(id) {
-      $.get('/secretaria/' + id + '/edit', function(secretaria) {
+      $.get('/secretarias/' + id + '/edit', function(secretaria) {
         $('#id').val(secretaria.id);
         $('#nombre2').val(secretaria.nombre);
         $('#apellido2').val(secretaria.apellido);
@@ -703,7 +653,7 @@
         var _token = $("input[name=_token]").val();
 
         $.ajax({
-          url: "/secretaria/" + id,
+          url: "/secretarias/" + id,
           type: "PUT",
           data: {
             id: id,
@@ -746,43 +696,49 @@
     });
   </script>
 
+  {{-- Ver secretaria --}}
   <script>
     $(document).on('click', '.ver-secretaria', function() {
       let secretariaId = $(this).data('id');
+      let $modal = $('#secretariaModal');
 
       $.ajax({
         url: '/secretarias/' + secretariaId,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-          console.log("Datos del secretarias:", data);
+          const formatValue = (value, defaultValue = 'No disponible') =>
+            value && value !== '' ? value : defaultValue;
 
-          let nombreApellido = data.nombre + " " + data.apellido;
-          let cedula = data.ci;
-          let fechaNacimiento = data.fecha_nac;
-          let grado = data.grado;
-          let telefono = data.telefono;
-          let email = data.email;
+          const nombreApellido = `${formatValue(data.nombre)} ${formatValue(data.apellido)}`;
 
-          let genero = data.genero ? data.genero.genero : "No disponible";
+          const fechaNac = data.fecha_nac_formatted || formatValue(data.fecha_nac);
 
-          let direccion =
-            `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
+          let direccionParts = [];
+          if (data.direccion) {
+            if (data.direccion.sector) direccionParts.push(data.direccion.sector);
+            if (data.direccion.parroquia) direccionParts.push(data.direccion.parroquia.parroquia);
+            if (data.direccion.municipio) direccionParts.push(data.direccion.municipio.municipio);
+            if (data.direccion.estado) direccionParts.push(data.direccion.estado.estado);
+          }
+          const direccion = direccionParts.length > 0 ? direccionParts.join(', ') : 'No disponible';
 
-          $('#secretariaModal #nombre').text(nombreApellido);
-          $('#secretariaModal #ci').text(cedula);
-          $('#secretariaModal #fecha_nac').text(fechaNacimiento);
-          $('#secretariaModal #grado').text(grado);
-          $('#secretariaModal #telefono').text(telefono);
-          $('#secretariaModal #email').text(email);
-          $('#secretariaModal #genero').text(genero);
-          $('#secretariaModal #direccion').text(direccion);
+          $modal.find('#nombre_show').text(nombreApellido);
+          $modal.find('#ci_show').text(formatValue(data.ci));
+          $modal.find('#fecha_nac_show').text(fechaNac);
+          $modal.find('#grado_show').text(formatValue(data.grado));
+          $modal.find('#telefono_show').text(formatValue(data.telefono));
+          $modal.find('#email_show').text(formatValue(data.email));
+          $modal.find('#genero_show').text(formatValue(data.genero?.genero));
+          $modal.find('#direccion_show').text(direccion);
 
-          $('#secretariaModal').modal('show');
+          $modal.modal('show');
         },
         error: function(xhr, status, error) {
-          console.error("Error al obtener los datos:", error);
-          alert("Hubo un problema al obtener la información del especialista.");
+          $modal.find('.modal-body').html(
+            '<div class="alert alert-danger text-center">Error al cargar la información de la secretaria.</div>'
+          );
+          toastr.error('Error al cargar la información de la secretaria.');
         }
       });
     });

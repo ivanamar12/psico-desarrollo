@@ -11,7 +11,6 @@ use App\Models\Genero;
 use App\Models\Estado;
 use App\Models\Municipio;
 use App\Models\Parroquia;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
@@ -21,22 +20,22 @@ class SecretariaController extends Controller
 {
   public function index(Request $request)
   {
+    $secretarias = Secretaria::all();
     if ($request->ajax()) {
-      $secretarias = Secretaria::all();
-
       return DataTables::of($secretarias)
         ->addColumn('action', function ($secretaria) {
           $acciones = '';
 
-          if (auth()->user()->can('editar secretaria')) {
-            $acciones .= '<a href="javascript:void(0)" onclick="editsecretaria(' . $secretaria->id . ')" class="btn btn-success btn-raised btn-xs"><i class="zmdi zmdi-refresh"></i></a>';
-          }
-
-          if (auth()->user()->can('eliminar secretaria')) {
-            $acciones .= '<button type="button" name="delete" id="' . $secretaria->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-          }
-
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-secretaria" data-id="' . $secretaria->id . '"><i class="zmdi zmdi-eye"></i></button>';
+
+          if (auth()->user()->can('editar secretaria')) {
+            $acciones .= '<a href="javascript:void(0)" onclick="editsecretaria(' . $secretaria->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
+          }
+
+          // if (auth()->user()->can('eliminar secretaria')) {
+          //   $acciones .= '<button type="button" name="delete" id="' . $secretaria->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
+          // }
+
           return $acciones;
         })
         ->rawColumns(['action'])
@@ -44,7 +43,7 @@ class SecretariaController extends Controller
     }
 
     return view('secretaria.index', [
-      'secretarias' => Secretaria::all(),
+      'secretarias' => $secretarias,
       'generos' => Genero::all(),
       'estados' => Estado::all(),
       'municipios' => Municipio::all(),
@@ -56,13 +55,13 @@ class SecretariaController extends Controller
   {
     $validatedData = $request->validated();
 
-    DB::transaction(function () use ($validatedData) {
-      $direccion = Direccion::create([
-        'estado_id' => $validatedData['estado_id'],
-        'municipio_id' => $validatedData['municipio_id'],
-        'parroquia_id' => $validatedData['parroquia_id'],
-        'sector' => $validatedData['sector'],
-      ]);
+    DB::transaction(function () use ($request, $validatedData) {
+      $direccion = Direccion::create($request->safe()->only([
+        'estado_id',
+        'municipio_id',
+        'parroquia_id',
+        'sector',
+      ]));
 
       $user = User::create([
         'name' => $validatedData['nombre'] . ' ' . $validatedData['apellido'],
@@ -70,65 +69,48 @@ class SecretariaController extends Controller
         'password' => Hash::make('password123'),
       ])->assignRole(Role::SECRETARIA);
 
-      Secretaria::create([
-        'nombre' => $validatedData['nombre'],
-        'apellido' => $validatedData['apellido'],
-        'ci' => $validatedData['ci'],
-        'fecha_nac' => $validatedData['fecha_nac'],
-        'grado' => $validatedData['grado'],
-        'telefono' => $validatedData['telefono'],
-        'email' => $validatedData['email'],
+      Secretaria::create($request->safe()->merge([
         'user_id' => $user->id,
-        'genero_id' => $validatedData['genero_id'],
         'direccion_id' => $direccion->id,
-      ]);
+      ])->only([
+        'nombre',
+        'apellido',
+        'ci',
+        'fecha_nac',
+        'grado',
+        'telefono',
+        'email',
+        'user_id',
+        'genero_id',
+        'direccion_id',
+      ]));
     });
 
-    return response()->json(['success' => true, 'message' => 'Secretaria y usuario creados correctamente!']);
+    return response()->json([
+      'success' => true,
+      'message' => 'Secretaria registrada con éxito!'
+    ]);
   }
 
-  public function destroy($id)
+  public function show(Secretaria $secretaria)
   {
-    $secretaria = Secretaria::with('direccion')->find($id);
-    if (!$secretaria) {
-      return response()->json(['message' => 'secretaria no encontrado'], 404);
-    }
+    $secretaria->load([
+      'genero',
+      'direccion.estado',
+      'direccion.municipio',
+      'direccion.parroquia'
+    ]);
 
-    $direccion = $secretaria->direccion;
-    if (!$direccion) {
-      return response()->json(['message' => 'Dirección no encontrada'], 404);
-    }
-
-    DB::transaction(function () use ($secretaria, $direccion) {
-      $secretaria->delete();
-      $direccion->delete();
-    });
-
-    return response()->json(['success' => true]);
-  }
-
-  public function show($id)
-  {
-    $secretaria = Secretaria::obtenerSecretaria($id);
-
-    if (!$secretaria) {
-      return response()->json(['error' => 'Secretaria no encontrado'], 404);
-    }
+    $secretaria->fecha_nac_formatted = format_date_with_age($secretaria->fecha_nac);
 
     return response()->json($secretaria);
   }
 
-  public function edit($id)
+  public function edit(Secretaria $secretaria)
   {
-    try {
-      $secretaria = Secretaria::with('direccion')->find($id);
-      if (!$secretaria) {
-        return response()->json(['error' => 'Secretaria no encontrado'], 404);
-      }
-      return response()->json($secretaria);
-    } catch (\Exception $e) {
-      return response()->json(['error' => 'Error interno del servidor: ' . $e->getMessage()], 500);
-    }
+    $secretaria->load('direccion');
+
+    return response()->json($secretaria);
   }
 
   public function update(Request $request, $id)

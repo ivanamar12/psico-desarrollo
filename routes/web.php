@@ -19,6 +19,7 @@ use App\Http\Controllers\ConstanciaAsistenciaController;
 use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
+use App\Http\Controllers\SecretariaController;
 
 Route::middleware('guest')->group(function () {
   Route::get('/', fn() => view('welcome'))->name('index');
@@ -28,11 +29,6 @@ Route::middleware('guest')->group(function () {
  * Auth Routes 
  */
 require __DIR__ . '/auth.php';
-
-/**
- * Secretary Routes 
- */
-require __DIR__ . '/secretary.php';
 
 Route::middleware(['auth', 'role:ADMIN'])->group(function () {
   // Audit Logs
@@ -113,7 +109,7 @@ Route::middleware('auth')->group(function () {
   Route::put('representantes/{id}', [RepresentativeController::class, 'update'])
     ->name('representantes.update');
 
-  // Ruta para obtener una secretaria específico en formato JSON
+  // Ruta para obtener un representante específico en formato JSON
   Route::get('representantes/{id}', [RepresentativeController::class, 'show'])
     ->name('representantes.show');
 
@@ -262,6 +258,12 @@ Route::middleware('auth')->group(function () {
    * Rutas para especialista
    */
   Route::resource('especialistas', EspecialistaController::class)
+    ->except(['create', 'destroy']);
+
+  /**
+   * Rutas para secretaria
+   */
+  Route::resource('secretarias', SecretariaController::class)
     ->except(['create', 'destroy']);
 
   /**
