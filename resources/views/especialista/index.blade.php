@@ -59,34 +59,38 @@
                           <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control ci-verificar" id="ci" name="ci"
-                              required>
-                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna
-                              sea el caso V, P o E.</small>
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required
+                              maxlength="11">
+                            <small class="form-text text-muted">
+                              Ingrese la letra según sea el caso V, P o E y luego su número de cédula sin puntos. Máximo
+                              11 caracteres.
+                            </small>
                           </div>
 
                           <!-- FVP -->
                           <div class="form-group col-md-6">
                             <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="fvp" name="fvp" required
-                              oninput="this.value = this.value.replace(/[^0-9]/g, '')">
-                            <small class="form-text text-muted">Número de la federación venezolana de psicólogos</small>
+                              oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="120">
+                            <small class="form-text text-muted">
+                              Número de la federación venezolana de psicólogos. Máximo 120 caracteres.
+                            </small>
                           </div>
 
                           <!-- Nombre -->
                           <div class="form-group col-md-6">
                             <label for="nombre">Nombre <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Solo letras. Máximo 50 caracteres.</small>
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
                           <!-- Apellido -->
                           <div class="form-group col-md-6">
                             <label for="apellido">Apellido <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="apellido" name="apellido" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Solo letras. Máximo 50 caracteres.</small>
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
                           <!-- Fecha de nacimiento -->
@@ -112,9 +116,10 @@
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono"
-                              required>
-                            <small class="form-text text-muted">Debe comenzar con 0412, 0424, etc. Máximo 11
-                              dígitos.</small>
+                              required maxlength="12">
+                            <small class="form-text text-muted">
+                              Debe comenzar con 0412, 0424, etc. Máximo 12 caracteres.
+                            </small>
                           </div>
 
                           <!-- Email -->
@@ -181,8 +186,10 @@
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required
-                              minlength="10" maxlength="80">
-                            <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
+                              minlength="10" maxlength="150">
+                            <small class="leyenda-input">
+                              Ingrese el nombre del sector donde vive. Máximo 150 caracteres.
+                            </small>
                           </div>
                         </div>
 
@@ -207,19 +214,27 @@
   </section>
 
   <!-- Modal editar -->
-  <section class="modal fade" id="editespecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+  <section class="modal fade" id="modalEditarEspecialista" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
       <div class="modal-content rounded shadow-lg">
-        <div class="modal-header bg-primary text-white rounded-top">
-          <h3 class="modal-title w-100 text-center">Editar Especialista</h3>
-          <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+        <div class="modal-header">
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Editar Especialista
+          </h3>
         </div>
+
         <div class="modal-body">
-          <form id="editar-especialista">@csrf
-            <input type="hidden" id="id" name="id">
+          <form id="formEditarEspecialista">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="especialista_id">
 
             <!-- Paso 1 -->
             <div id="paso1_edit">
@@ -345,16 +360,17 @@
         <div class="modal-body">
           <div class="row">
             <div class="col-md-6">
-              <p><strong>Nombre completo:</strong><br><span id="nombre"></span></p>
-              <p><strong>Cédula de Identidad:</strong><br><span id="ci"></span></p>
-              <p><strong>Fecha de Nacimiento:</strong><br><span id="fecha_nac"></span></p>
-              <p><strong>Especialidad:</strong><br><span id="especialidad"></span></p>
+              <p><strong>Nombre completo:</strong><br><span id="nombre_show"></span></p>
+              <p><strong>Cédula de Identidad:</strong><br><span id="ci_show"></span></p>
+              <p><strong>F.V.P:</strong><br><span id="fvp_show"></span></p>
+              <p><strong>Fecha de Nacimiento:</strong><br><span id="fecha_nac_show"></span></p>
+              <p><strong>Especialidad:</strong><br><span id="especialidad_show"></span></p>
             </div>
             <div class="col-md-6">
-              <p><strong>Teléfono:</strong><br><span id="telefono"></span></p>
-              <p><strong>Email:</strong><br><span id="email"></span></p>
-              <p><strong>Género:</strong><br><span id="genero"></span></p>
-              <p><strong>Dirección:</strong><br><span id="direccion" class="small"></span></p>
+              <p><strong>Teléfono:</strong><br><span id="telefono_show"></span></p>
+              <p><strong>Email:</strong><br><span id="email_show"></span></p>
+              <p><strong>Género:</strong><br><span id="genero_show"></span></p>
+              <p><strong>Dirección:</strong><br><span id="direccion_show" class="small"></span></p>
             </div>
           </div>
         </div>
@@ -493,7 +509,7 @@
                 });
               }
             } else {
-              toastr.error('Ocurrió un error al guardar el especialista.', 'Error');
+              toastr.error('Ocurrió un error al crear el especialista.', 'Error');
             }
           }
         });
@@ -502,9 +518,9 @@
   </script>
 
   <script>
-    function editespecialista(id) {
+    window.editEspecialista = function(id) {
       $.get('/especialistas/' + id + '/edit', function(especialista) {
-        $('#id').val(especialista.id);
+        $('#especialista_id').val(especialista.id);
         $('#ci2').val(especialista.ci);
         $('#fvp2').val(especialista.fvp);
         $('#nombre2').val(especialista.nombre);
@@ -527,11 +543,11 @@
           $('#sector2').val(especialista.direccion.sector);
         }
 
-        $('#editespecialista').modal('show');
+        $('#modalEditarEspecialista').modal('show');
       });
     }
 
-    $('#editespecialista').on('shown.bs.modal', function() {
+    $('#modalEditarEspecialista').on('shown.bs.modal', function() {
       initSelect2('#estado_id2', 'Seleccione su estado');
       initSelect2('#municipio_id2', 'Seleccione su municipio');
       initSelect2('#parroquia_id2', 'Seleccione su parroquia');
@@ -554,7 +570,7 @@
       $(selector).select2({
         placeholder: placeholder,
         width: '100%',
-        dropdownParent: $('#editespecialista')
+        dropdownParent: $('#modalEditarEspecialista')
       });
     }
 
@@ -628,59 +644,51 @@
         $("#paso1_edit").show();
       });
 
-      $("#editar-especialista").submit(function(event) {
-        event.preventDefault();
-
-        var id = $('#id').val();
-        var ci = $('#ci2').val();
-        var fvp = $('#fvp2').val();
-        var nombre = $('#nombre2').val();
-        var apellido = $('#apellido2').val();
-        var fecha_nac = $('#fecha_nac2').val();
-        var especialidad_id = $('#especialidad_id2').val();
-        var telefono = $('#telefono2').val();
-        var email = $('#email2').val();
-        var genero_id = $('#genero_id2').val();
-        var estado_id = $('#estado_id2').val();
-        var municipio_id = $('#municipio_id2').val();
-        var parroquia_id = $('#parroquia_id2').val();
-        var sector = $('#sector2').val();
-        var _token = $("input[name=_token]").val();
+      $("#formEditarEspecialista").submit(function(e) {
+        e.preventDefault();
+        var id = $('#especialista_id').val();
 
         $.ajax({
           url: "/especialistas/" + id,
           type: "PUT",
           data: {
-            id: id,
-            ci: ci,
-            fvp: fvp,
-            nombre: nombre,
-            apellido: apellido,
-            fecha_nac: fecha_nac,
-            especialidad_id: especialidad_id,
-            telefono: telefono,
-            email: email,
-            genero_id: genero_id,
-            estado_id: estado_id,
-            municipio_id: municipio_id,
-            parroquia_id: parroquia_id,
-            sector: sector,
-            _token: _token
+            ci: $('#ci2').val(),
+            fvp: $('#fvp2').val(),
+            nombre: $('#nombre2').val(),
+            apellido: $('#apellido2').val(),
+            fecha_nac: $('#fecha_nac2').val(),
+            especialidad_id: $('#especialidad_id2').val(),
+            telefono: $('#telefono2').val(),
+            email: $('#email2').val(),
+            genero_id: $('#genero_id2').val(),
+            estado_id: $('#estado_id2').val(),
+            municipio_id: $('#municipio_id2').val(),
+            parroquia_id: $('#parroquia_id2').val(),
+            sector: $('#sector2').val(),
+            _token: $("input[name=_token]").val(),
           },
           success: function(response) {
             if (response.success) {
-              $('#editespecialista').modal('hide');
-              toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
+              $('#modalEditarEspecialista').modal('hide');
+              toastr.info(response.message, 'Éxito', {
                 timeOut: 5000
               });
               $('#tab-especialista').DataTable().ajax.reload();
-            } else {
-              console.log("No se pudo actualizar el registro.");
             }
           },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error en la actualización:', textStatus, errorThrown);
-            alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al actualizar el especialista.', 'Error');
+            }
           }
         });
       });
@@ -714,14 +722,15 @@
           }
           const direccion = direccionParts.length > 0 ? direccionParts.join(', ') : 'No disponible';
 
-          $modal.find('#nombre').text(nombreApellido);
-          $modal.find('#ci').text(formatValue(data.ci));
-          $modal.find('#fecha_nac').text(fechaNac);
-          $modal.find('#especialidad').text(formatValue(data.especialidad?.especialidad));
-          $modal.find('#telefono').text(formatValue(data.telefono));
-          $modal.find('#email').text(formatValue(data.email));
-          $modal.find('#genero').text(formatValue(data.genero?.genero));
-          $modal.find('#direccion').text(direccion);
+          $modal.find('#nombre_show').text(nombreApellido);
+          $modal.find('#ci_show').text(formatValue(data.ci));
+          $modal.find('#fvp_show').text(formatValue(data.fvp));
+          $modal.find('#fecha_nac_show').text(fechaNac);
+          $modal.find('#especialidad_show').text(formatValue(data.especialidad?.especialidad));
+          $modal.find('#telefono_show').text(formatValue(data.telefono));
+          $modal.find('#email_show').text(formatValue(data.email));
+          $modal.find('#genero_show').text(formatValue(data.genero?.genero));
+          $modal.find('#direccion_show').text(direccion);
 
           $modal.modal('show');
         },

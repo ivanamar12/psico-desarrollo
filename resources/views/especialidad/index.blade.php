@@ -157,15 +157,18 @@
             }
           },
           error: function(xhr) {
-            const {
-              especialidad
-            } = xhr.responseJSON.errors;
-
-            especialidad.forEach(e => {
-              toastr.error(e, 'Error', {
-                timeOut: 5000
-              });
-            });
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al crear la especialidad.', 'Error');
+            }
           }
         });
       });
@@ -186,27 +189,30 @@
 
         $.ajax({
           url: '/especialidad/' + id,
-          type: 'POST',
-          data: $(this).serialize() + '&_method=PUT',
+          type: 'PUT',
+          data: $(this).serialize(),
           success: function(response) {
             if (response.success) {
               $('#modalEditarEspecialidad').modal('hide');
-              toastr.success(response.message, 'Éxito', {
+              toastr.info(response.message, 'Éxito', {
                 timeOut: 5000
               });
               tablaEspecialidad.ajax.reload();
             }
           },
           error: function(xhr) {
-            const {
-              especialidad
-            } = xhr.responseJSON.errors;
-
-            especialidad.forEach(e => {
-              toastr.error(e, 'Error', {
-                timeOut: 5000
-              });
-            });
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al actualizar la especialidad.', 'Error');
+            }
           }
         });
       });

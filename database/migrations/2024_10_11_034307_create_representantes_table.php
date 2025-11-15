@@ -18,7 +18,7 @@ class CreateRepresentantesTable extends Migration
       $table->string('nombre', 120);
       $table->string('apellido', 120);
       $table->string('ci', 30)->unique();
-      $table->string('telefono', 30)->unique();
+      $table->string('telefono', 12)->unique();
       $table->string('email');
       $table->unsignedBigInteger('genero_id')->nullable();
       $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');

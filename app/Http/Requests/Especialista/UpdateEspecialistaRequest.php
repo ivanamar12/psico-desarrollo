@@ -24,12 +24,12 @@ class UpdateEspecialistaRequest extends FormRequest
   public function rules()
   {
     return [
-      'nombre' => ['required', 'string', 'max:255'],
-      'apellido' => ['required', 'string', 'max:255'],
+      'nombre' => ['required', 'string', 'max:120'],
+      'apellido' => ['required', 'string', 'max:120'],
       'ci' => [
         'required',
         'string',
-        'max:255',
+        'max:30',
         'unique:especialistas,ci,' . $this->route('especialista')->id
       ],
       'fecha_nac' => ['required', 'date', 'max:10'],
@@ -37,7 +37,7 @@ class UpdateEspecialistaRequest extends FormRequest
       'telefono' => [
         'required',
         'string',
-        'max:255',
+        'max:12',
         'unique:especialistas,telefono,' . $this->route('especialista')->id
       ],
       'email' => [
@@ -48,12 +48,12 @@ class UpdateEspecialistaRequest extends FormRequest
         'unique:especialistas,email,' . $this->route('especialista')->id,
         'unique:users,email,' . $this->route('especialista')->user_id
       ],
-      'fvp' => ['required', 'string', 'max:255'],
+      'fvp' => ['required', 'string', 'max:120'],
       'genero_id' => ['required', 'exists:generos,id'],
       'estado_id' => ['required', 'exists:estados,id'],
       'municipio_id' => ['required', 'exists:municipios,id'],
       'parroquia_id' => ['required', 'exists:parroquias,id'],
-      'sector' => ['required', 'string', 'min:10', 'max:80'],
+      'sector' => ['required', 'string', 'min:10', 'max:150'],
     ];
   }
 

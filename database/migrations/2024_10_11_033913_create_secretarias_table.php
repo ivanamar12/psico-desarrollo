@@ -20,7 +20,7 @@ class CreateSecretariasTable extends Migration
       $table->string('ci', 30)->unique();
       $table->date('fecha_nac');
       $table->string('grado', 120);
-      $table->string('telefono', 30)->unique();
+      $table->string('telefono', 12)->unique();
       $table->string('email');
       $table->foreignId('user_id')
         ->constrained();

@@ -123,9 +123,10 @@ class EspecialistaController extends Controller
   {
     DB::transaction(function () use ($request, $especialista) {
       $especialista->update($request->safe()->only([
+        'ci',
         'nombre',
         'apellido',
-        'ci',
+        'fvp',
         'fecha_nac',
         'especialidad_id',
         'telefono',

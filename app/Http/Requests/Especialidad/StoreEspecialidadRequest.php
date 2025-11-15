@@ -27,6 +27,7 @@ class StoreEspecialidadRequest extends FormRequest
       'especialidad' =>  [
         'required',
         'string',
+        'min:2',
         'max:30',
         'unique:especialidads'
       ],

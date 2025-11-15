@@ -19,7 +19,7 @@ class CreateEspecialistasTable extends Migration
       $table->string('apellido', 120);
       $table->string('ci', 30)->unique();
       $table->date('fecha_nac');
-      $table->string('telefono', 30)->unique();
+      $table->string('telefono', 12)->unique();
       $table->string('email');
       $table->string('fvp', 120);
       $table->foreignId('user_id')

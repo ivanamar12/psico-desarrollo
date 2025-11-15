@@ -21,7 +21,7 @@ class CreateDireccionsTable extends Migration
       $table->foreign('municipio_id')->references('id')->on('municipios')->onDelete('cascade');
       $table->unsignedBigInteger('parroquia_id')->nullable();
       $table->foreign('parroquia_id')->references('id')->on('parroquias')->onDelete('cascade');
-      $table->string('sector', 80);
+      $table->string('sector', 150);
       $table->timestamps();
     });
   }
