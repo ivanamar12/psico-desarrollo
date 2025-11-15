@@ -303,24 +303,37 @@
 
   <!-- modal mostrar representante -->
   <section id="representanteModal" class="modal fade" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Representante</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Información del Representante
+          </h3>
         </div>
+
         <div class="modal-body">
-          <p><strong>Nombre y Apellido:</strong> <span id="nombre"></span></p>
-          <p><strong>Cédula de Identidad:</strong> <span id="ci"></span></p>
-          <p><strong>Teléfono:</strong> <span id="telefono"></span></p>
-          <p><strong>Email:</strong> <span id="email"></span></p>
-          <p><strong>Género:</strong> <span id="genero"></span></p>
-          <p><strong>Dirección:</strong> <span id="direccion"></span></p>
+          <div class="row">
+            <div class="col-md-6">
+              <p><strong>Nombre completo:</strong><br><span id="nombre_show"></span></p>
+              <p><strong>Cédula de Identidad:</strong><br><span id="ci_show"></span></p>
+              <p><strong>Teléfono:</strong><br><span id="telefono_show"></span></p>
+            </div>
+            <div class="col-md-6">
+              <p><strong>Email:</strong><br><span id="email_show"></span></p>
+              <p><strong>Género:</strong><br><span id="genero_show"></span></p>
+              <p><strong>Dirección:</strong><br><span id="direccion_show" class="small"></span></p>
+            </div>
+          </div>
         </div>
+
         <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
         </div>
       </div>
     </div>
@@ -636,39 +649,45 @@
     });
   </script>
 
+  {{-- Ver representante --}}
   <script>
     $(document).on('click', '.ver-representante', function() {
       let representanteId = $(this).data('id');
+      let $modal = $('#representanteModal');
 
       $.ajax({
         url: '/representantes/' + representanteId,
         type: 'GET',
         dataType: 'json',
         success: function(data) {
-          console.log("Datos del representante:", data);
+          const formatValue = (value, defaultValue = 'No disponible') =>
+            value && value !== '' ? value : defaultValue;
 
-          let nombreApellido = data.nombre + " " + data.apellido;
-          let cedula = data.ci;
-          let telefono = data.telefono;
-          let email = data.email;
+          const nombreApellido = `${formatValue(data.nombre)} ${formatValue(data.apellido)}`;
 
-          let genero = data.genero ? data.genero.genero : "No disponible";
+          let direccionParts = [];
+          if (data.direccion) {
+            if (data.direccion.sector) direccionParts.push(data.direccion.sector);
+            if (data.direccion.parroquia) direccionParts.push(data.direccion.parroquia.parroquia);
+            if (data.direccion.municipio) direccionParts.push(data.direccion.municipio.municipio);
+            if (data.direccion.estado) direccionParts.push(data.direccion.estado.estado);
+          }
+          const direccion = direccionParts.length > 0 ? direccionParts.join(', ') : 'No disponible';
 
-          let direccion =
-            `${data.direccion.sector}, ${data.direccion.parroquia.parroquia}, ${data.direccion.municipio.municipio}, ${data.direccion.estado.estado}`;
+          $modal.find('#nombre_show').text(nombreApellido);
+          $modal.find('#ci_show').text(formatValue(data.ci));
+          $modal.find('#telefono_show').text(formatValue(data.telefono));
+          $modal.find('#email_show').text(formatValue(data.email));
+          $modal.find('#genero_show').text(formatValue(data.genero?.genero));
+          $modal.find('#direccion_show').text(direccion);
 
-          $('#representanteModal #nombre').text(nombreApellido);
-          $('#representanteModal #ci').text(cedula);
-          $('#representanteModal #telefono').text(telefono);
-          $('#representanteModal #email').text(email);
-          $('#representanteModal #genero').text(genero);
-          $('#representanteModal #direccion').text(direccion);
-
-          $('#representanteModal').modal('show');
+          $modal.modal('show');
         },
         error: function(xhr, status, error) {
-          console.error("Error al obtener los datos:", error);
-          alert("Hubo un problema al obtener la información del especialista.");
+          $modal.find('.modal-body').html(
+            '<div class="alert alert-danger text-center">Error al cargar la información del representante.</div>'
+          );
+          toastr.error('Error al cargar la información del representante.');
         }
       });
     });
