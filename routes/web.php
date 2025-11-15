@@ -3,7 +3,6 @@
 use App\Enums\Role;
 use App\Http\Controllers\AuditLogController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\RepresentativeController;
 use App\Http\Controllers\PacienteController;
 use App\Http\Controllers\CitaController;
 use App\Http\Controllers\HistoriaClinicaController;
@@ -19,6 +18,7 @@ use App\Http\Controllers\ConstanciaAsistenciaController;
 use App\Http\Controllers\EspecialistaController;
 use App\Http\Controllers\PdfPruebasController;
 use App\Http\Controllers\ReferenciaController;
+use App\Http\Controllers\RepresentanteController;
 use App\Http\Controllers\SecretariaController;
 
 Route::middleware('guest')->group(function () {
@@ -48,6 +48,30 @@ Route::middleware('auth')->group(function () {
 
   Route::get('/estadisticas/pacientes', [DashboardController::class, 'estadisticasPacientes'])
     ->name('estadisticas.pacientes');
+
+  /**
+   * Rutas para especialidad
+   */
+  Route::resource('especialidad', EspecialidadController::class)
+    ->except(['create', 'destroy', 'show']);
+
+  /**
+   * Rutas para especialista
+   */
+  Route::resource('especialistas', EspecialistaController::class)
+    ->except(['create', 'destroy']);
+
+  /**
+   * Rutas para secretaria
+   */
+  Route::resource('secretarias', SecretariaController::class)
+    ->except(['create', 'destroy']);
+
+  /**
+   * Rutas para representante
+   */
+  Route::resource('representantes', RepresentanteController::class)
+    ->except(['create', 'destroy']);
 
   /**
    * Profile
@@ -86,32 +110,6 @@ Route::middleware('auth')->group(function () {
 
   Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy'])
     ->name('notificaciones.destroy');
-
-  /**
-   * Representantes routes
-   */
-  Route::get('representantes', [RepresentativeController::class, 'index'])
-    ->name('representantes.index');
-
-  // Ruta para almacenar un nuevo representantes
-  Route::post('representantes', [RepresentativeController::class, 'store'])
-    ->name('representantes.store');
-
-  // Ruta para eliminar un representante
-  Route::delete('representantes/{id}', [RepresentativeController::class, 'destroy'])
-    ->name('representantes.destroy');
-
-  // Ruta para mostrar el formulario de edición de un representante
-  Route::get('representantes/{id}/edit', [RepresentativeController::class, 'edit'])
-    ->name('representantes.edit');
-
-  // Ruta para actualizar un representante
-  Route::put('representantes/{id}', [RepresentativeController::class, 'update'])
-    ->name('representantes.update');
-
-  // Ruta para obtener un representante específico en formato JSON
-  Route::get('representantes/{id}', [RepresentativeController::class, 'show'])
-    ->name('representantes.show');
 
   /**
    * Pacientes
@@ -247,24 +245,6 @@ Route::middleware('auth')->group(function () {
   // Ruta para descargar reporte de una historia clínica
   Route::get('historias/report/{id}', [HistoriaClinicaController::class, 'report'])
     ->name('historias.report');
-
-  /**
-   * Rutas para especialidad
-   */
-  Route::resource('especialidad', EspecialidadController::class)
-    ->except(['create', 'destroy', 'show']);
-
-  /**
-   * Rutas para especialista
-   */
-  Route::resource('especialistas', EspecialistaController::class)
-    ->except(['create', 'destroy']);
-
-  /**
-   * Rutas para secretaria
-   */
-  Route::resource('secretarias', SecretariaController::class)
-    ->except(['create', 'destroy']);
 
   /**
    * Pruebas

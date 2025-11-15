@@ -154,6 +154,7 @@
                       <!-- Paso 2 -->
                       <section id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
+
                         <div class="fila-formulario row">
                           <!-- Estado -->
                           <div class="form-group col-md-6">

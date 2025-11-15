@@ -36,7 +36,6 @@
                       <th style="text-align: center">Nombre</th>
                       <th style="text-align: center">Apellido</th>
                       <th style="text-align: center">Correo</th>
-                      <th style="text-align: center">Teléfono</th>
                       <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
@@ -50,37 +49,49 @@
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-representante">
                       @csrf
-                      <div id="paso1">
+
+                      <section id="paso1">
                         <h3>Datos Personales</h3>
+
                         <div class="fila-formulario row">
+                          <!-- CI -->
                           <div class="form-group col-md-6">
-                            <label>Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input class="form-control ci-verificar" id="ci" name="ci" type="text"
-                              required>
-                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra según
-                              sea el caso V, P o E.</small>
+                            <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required
+                              maxlength="11">
+                            <small class="form-text text-muted">
+                              Ingrese la letra según sea el caso V, P o E y luego su número de cédula sin puntos. Máximo
+                              11 caracteres.
+                            </small>
                           </div>
 
+                          <!-- Nombre -->
                           <div class="form-group col-md-6">
-                            <label>Nombre <span class="text-danger">*</span></label>
-                            <input class="form-control" id="nombre" name="nombre" type="text" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Nombre completo del representante.</small>
+                            <label for="nombre">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" required
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
+                          <!-- Apellido -->
                           <div class="form-group col-md-6">
-                            <label>Apellido <span class="text-danger">*</span></label>
-                            <input class="form-control" id="apellido" name="apellido" type="text" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Apellido completo del representante.</small>
+                            <label for="apellido">Apellido <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="apellido" name="apellido" required
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
+                          <!-- Teléfono -->
                           <div class="form-group col-md-6">
-                            <label>Teléfono <span class="text-danger">*</span></label>
-                            <input class="form-control" type="tel" id="telefono" name="telefono" required>
-                            <small class="form-text text-muted">Número telefónico de contacto.</small>
+                            <label for="telefono">Teléfono <span class="text-danger">*</span></label>
+                            <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono"
+                              required maxlength="12">
+                            <small class="form-text text-muted">
+                              Debe comenzar con 0412, 0424, etc. Máximo 12 caracteres.
+                            </small>
                           </div>
 
+                          <!-- Email -->
                           <div class="form-group col-md-6">
                             <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
                             <input type="email" class="form-control email-verificar" id="email" name="email"
@@ -88,60 +99,68 @@
                             <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
                           </div>
 
+                          <!-- Género -->
                           <div class="form-group col-md-6">
-                            <label>Género <span class="text-danger">*</span></label>
-                            <select class="form-control select2" required style="width: 100%;" id="genero_id"
-                              name="genero_id">
-                              <option selected disabled value="">Seleccione su género</option>
+                            <label for="genero_id">Género <span class="text-danger">*</span></label>
+                            <select class="form-control select2" id="genero_id" name="genero_id" required>
+                              <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
-                            <small class="form-text text-muted">Seleccione el género del representante.</small>
+                            <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
                           </div>
                         </div>
 
-                        <p class="centro-texto">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                        <!-- Botón -->
+                        <p class="text-center mt-3">
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
-                      </div>
+                      </section>
 
-                      <div id="paso2" style="display: none;">
+                      <section id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
+                          <!-- Estado -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="estado_id" name="estado_id">
-                              <option selected disabled value="">Seleccione su estado</option>
+                              <option selected disabled>Seleccione su estado</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione el estado donde reside.</small>
+                            <small class="leyenda-input">Seleccione el estado donde reside.</small>
                           </div>
 
+                          <!-- Municipio -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="municipio_id" name="municipio_id">
-                              <option selected disabled value="">Seleccione su municipio</option>
+                              <option selected disabled>Seleccione su municipio</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione el municipio correspondiente.</small>
+                            <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                           </div>
 
+                          <!-- Parroquia -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="parroquia_id" name="parroquia_id">
-                              <option selected disabled value="">Seleccione su parroquia</option>
+                              <option selected disabled>Seleccione su parroquia</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione la parroquia dentro del municipio.</small>
+                            <small class="leyenda-input">Seleccione la parroquia del municipio.</small>
                           </div>
 
+                          <!-- Sector -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required
-                              minlength="10" maxlength="80">
-                            <small class="form-text text-muted">Ingrese el nombre del sector donde vive.</small>
+                              minlength="10" maxlength="150">
+                            <small class="leyenda-input">
+                              Ingrese el nombre del sector donde vive. Máximo 150 caracteres.
+                            </small>
                           </div>
                         </div>
 
@@ -149,11 +168,12 @@
                           <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
+
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
                             <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
@@ -281,28 +301,6 @@
     </div>
   </section>
 
-  <!-- modal eliminar -->
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- modal mostrar representante -->
   <section id="representanteModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -370,9 +368,6 @@
             data: 'email'
           },
           {
-            data: 'telefono'
-          },
-          {
             data: 'action',
             orderable: false
           }
@@ -416,32 +411,14 @@
         $("#paso1").show();
       });
 
-      $("#registro-representante").submit(function(event) {
-        event.preventDefault();
+      $("#registro-representante").submit(function(e) {
+        e.preventDefault();
         toastr.clear();
-
-        registerRepresentante();
-      });
-
-      function registerRepresentante() {
-        var formData = {
-          nombre: $('#nombre').val(),
-          apellido: $('#apellido').val(),
-          ci: $('#ci').val(),
-          telefono: $('#telefono').val(),
-          email: $('#email').val(),
-          genero_id: $('#genero_id').val(),
-          estado_id: $('#estado_id').val(),
-          municipio_id: $('#municipio_id').val(),
-          parroquia_id: $('#parroquia_id').val(),
-          sector: $('#sector').val(),
-          _token: $("input[name=_token]").val(),
-        };
 
         $.ajax({
           url: "{{ route('representantes.store') }}",
           type: "POST",
-          data: formData,
+          data: $(this).serialize(),
           success: function(response) {
             if (response.success) {
               $('#registro-representante')[0].reset();
@@ -455,15 +432,10 @@
               $("#paso2").hide();
               $("#paso1").show();
 
-              // Mostrar mensaje
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
-
-              // Recargar tabla
               tablaRepresentante.ajax.reload();
-
-              // Cambiar a la pestaña de lista
               $('.nav-tabs a[href="#list-representante"]').tab('show');
             }
           },
@@ -478,11 +450,11 @@
                 });
               }
             } else {
-              toastr.error('Ocurrió un error al guardar el representante.', 'Error');
+              toastr.error('Ocurrió un error al crear el representante.', 'Error');
             }
           }
         });
-      };
+      });
     });
   </script>
 
