@@ -44,7 +44,6 @@ class StoreRepresentanteRequest extends FormRequest
         'email',
         'max:255',
         'unique:representantes,email',
-        'unique:users,email'
       ],
       'genero_id' => ['required', 'exists:generos,id'],
       'estado_id' => ['required', 'exists:estados,id'],
