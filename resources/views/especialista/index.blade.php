@@ -145,8 +145,9 @@
 
                         <!-- Botón -->
                         <p class="text-center mt-3">
-                          <button type="button" id="siguiente1" class="btn btn-regresar"
-                            style="color: white;">Siguiente</button>
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
                       </section>
 

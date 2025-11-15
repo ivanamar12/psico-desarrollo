@@ -49,46 +49,50 @@
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
                     <form id="registro-secretaria">
                       @csrf
-                      <div id="paso1">
+
+                      <section id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="row">
-                          <!-- Cédula -->
+
+                          <!-- CI -->
                           <div class="form-group col-md-6">
                             <label for="ci">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control ci-verificar" id="ci" name="ci"
-                              required>
-                            <small class="form-text text-muted">Ingrese su número de cédula sin puntos y la letra seguna
-                              sea el caso V, P o E.</small>
+                            <input type="text" class="form-control ci-verificar" id="ci" name="ci" required
+                              maxlength="11">
+                            <small class="form-text text-muted">
+                              Ingrese la letra según sea el caso V, P o E y luego su número de cédula sin puntos. Máximo
+                              11 caracteres.
+                            </small>
                           </div>
 
                           <!-- Nombre -->
                           <div class="form-group col-md-6">
                             <label for="nombre">Nombre <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="nombre" name="nombre" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Ej: María</small>
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
                           <!-- Apellido -->
                           <div class="form-group col-md-6">
                             <label for="apellido">Apellido <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="apellido" name="apellido" required
-                              maxlength="50" oninput="validarTexto(this)">
-                            <small class="form-text text-muted">Ej: González</small>
+                              oninput="validarTexto(this)" maxlength="120">
+                            <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                           </div>
 
-                          <!-- Fecha Nacimiento -->
+                          <!-- Fecha de nacimiento -->
                           <div class="form-group col-md-6">
                             <label for="fecha_nac">Fecha de Nacimiento <span class="text-danger">*</span></label>
                             <input type="date" class="form-control" id="fecha_nac" name="fecha_nac" required>
-                            <small class="form-text text-muted">Seleccione su fecha de nacimiento.</small>
+                            <small class="form-text text-muted">Seleccione la fecha en el calendario.</small>
                           </div>
 
                           <!-- Grado -->
                           <div class="form-group col-md-6">
                             <label for="grado">Grado <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="grado" name="grado" required
-                              oninput="validarTexto(this)">
+                              oninput="validarTexto(this)" maxlength="120">
                             <small class="form-text text-muted">Ej: TSU, Licenciada, etc.</small>
                           </div>
 
@@ -96,11 +100,13 @@
                           <div class="form-group col-md-6">
                             <label for="telefono">Teléfono <span class="text-danger">*</span></label>
                             <input type="tel" class="form-control telefono-verificar" id="telefono" name="telefono"
-                              required>
-                            <small class="form-text text-muted">Ej: 04141234567</small>
+                              required maxlength="12">
+                            <small class="form-text text-muted">
+                              Debe comenzar con 0412, 0424, etc. Máximo 12 caracteres.
+                            </small>
                           </div>
 
-                          <!-- Correo -->
+                          <!-- Email -->
                           <div class="form-group col-md-6">
                             <label for="email">Correo Electrónico <span class="text-danger">*</span></label>
                             <input type="email" class="form-control email-verificar" id="email" name="email"
@@ -111,26 +117,28 @@
                           <!-- Género -->
                           <div class="form-group col-md-6">
                             <label for="genero_id">Género <span class="text-danger">*</span></label>
-                            <select class="form-control select2" id="genero_id" name="genero_id" required
-                              style="width: 100%;">
-                              <option disabled selected>Seleccione su género</option>
+                            <select class="form-control select2" id="genero_id" name="genero_id" required>
+                              <option selected disabled>Seleccione su género</option>
                               @foreach ($generos as $genero)
                                 <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                               @endforeach
                             </select>
-                            <small class="form-text text-muted">Seleccione una opción de la lista.</small>
+                            <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
                           </div>
                         </div>
 
-                        <p class="centro-texto mt-3">
-                          <button type="button" id="siguiente1" class="btn btn-regresar text-white">Siguiente</button>
+                        <p class="text-center mt-3">
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
                         </p>
-                      </div>
+                      </section>
 
-                      <div id="paso2" style="display: none;">
+                      <section id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
 
+                          <!-- Estado -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
@@ -140,6 +148,7 @@
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
                           </div>
 
+                          <!-- Municipio -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
@@ -149,20 +158,24 @@
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                           </div>
 
+                          <!-- Parroquia -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
-                            <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
+                            <small class="leyenda-input">Seleccione la parroquia del municipio.</small>
                           </div>
 
+                          <!-- Sector -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required
-                              minlength="10" maxlength="80">
-                            <small class="leyenda-input">Ingrese el nombre del sector donde vive.</small>
+                              minlength="10" maxlength="150">
+                            <small class="leyenda-input">
+                              Ingrese el nombre del sector donde vive. Máximo 150 caracteres.
+                            </small>
                           </div>
                         </div>
 
@@ -170,11 +183,12 @@
                           <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
+
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
                             <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
                         </p>
-                      </div>
+                      </section>
                     </form>
                   </div>
                 </div>
@@ -396,70 +410,6 @@
         ]
       });
 
-      $("#registro-secretaria").submit(function(event) {
-        event.preventDefault();
-        toastr.clear();
-
-        registerSecretaria();
-      });
-
-      function registerSecretaria() {
-        var formData = {
-          nombre: $('#nombre').val(),
-          apellido: $('#apellido').val(),
-          ci: $('#ci').val(),
-          fecha_nac: $('#fecha_nac').val(),
-          grado: $('#grado').val(),
-          telefono: $('#telefono').val(),
-          email: $('#email').val(),
-          genero_id: $('#genero_id').val(),
-          estado_id: $('#estado_id').val(),
-          municipio_id: $('#municipio_id').val(),
-          parroquia_id: $('#parroquia_id').val(),
-          sector: $('#sector').val(),
-          _token: $("input[name=_token]").val()
-        };
-
-        $.ajax({
-          url: "{{ route('secretarias.store') }}",
-          type: "POST",
-          data: formData,
-          success: function(response) {
-            if (response.success) {
-              $('#registro-secretaria')[0].reset();
-
-              $('#estado_id').val(null).trigger('change');
-              $('#municipio_id').val(null).trigger('change');
-              $('#parroquia_id').val(null).trigger('change');
-
-              $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
-
-              toastr.success(response.message, 'Éxito', {
-                timeOut: 3000
-              });
-
-              tablaSecretaria.ajax.reload();
-
-              $('.nav-tabs a[href="#list-secretaria"]').tab('show');
-            }
-          },
-          error: function(xhr) {
-            if (xhr.status === 422) {
-              const errors = xhr.responseJSON.errors;
-              for (const field in errors) {
-                errors[field].forEach(error => {
-                  toastr.error(error, 'Error', {
-                    timeOut: 5000
-                  });
-                });
-              }
-            } else {
-              toastr.error('Ocurrió un error al guardar la secretaria.', 'Error');
-            }
-          }
-        });
-      }
-
       $("#paso1").show();
       $("#paso2").hide();
 
@@ -495,6 +445,51 @@
       $("#regresar").click(function() {
         $("#paso2").hide();
         $("#paso1").show();
+      });
+
+      $("#registro-secretaria").submit(function(e) {
+        e.preventDefault();
+        toastr.clear();
+
+        $.ajax({
+          url: "{{ route('secretarias.store') }}",
+          type: "POST",
+          data: $(this).serialize(),
+          success: function(response) {
+            if (response.success) {
+              $('#registro-secretaria')[0].reset();
+
+              $('#estado_id').val(null).trigger('change');
+              $('#municipio_id').val(null).trigger('change');
+              $('#parroquia_id').val(null).trigger('change');
+
+              $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
+
+              $("#paso2").hide();
+              $("#paso1").show();
+
+              toastr.success(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+              tablaSecretaria.ajax.reload();
+              $('.nav-tabs a[href="#list-secretaria"]').tab('show');
+            }
+          },
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al crear la secretaria.', 'Error');
+            }
+          }
+        });
       });
     });
   </script>
