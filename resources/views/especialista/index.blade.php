@@ -69,7 +69,7 @@
 
                           <!-- FVP -->
                           <div class="form-group col-md-6">
-                            <label for="ci">N° F.V.P <span class="text-danger">*</span></label>
+                            <label for="fvp">N° F.V.P <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" id="fvp" name="fvp" required
                               oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="120">
                             <small class="form-text text-muted">
@@ -141,7 +141,6 @@
                             </select>
                             <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
                           </div>
-
                         </div>
 
                         <!-- Botón -->
@@ -155,7 +154,7 @@
                       <section id="paso2" style="display: none;">
                         <h3>Datos de Dirección</h3>
                         <div class="fila-formulario row">
-
+                          <!-- Estado -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Estado <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
@@ -165,6 +164,7 @@
                             <small class="leyenda-input">Seleccione el estado donde reside.</small>
                           </div>
 
+                          <!-- Municipio -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Municipio <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
@@ -174,15 +174,17 @@
                             <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                           </div>
 
+                          <!-- Parroquia -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Parroquia <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="parroquia_id" name="parroquia_id">
                               <option selected disabled>Seleccione su parroquia</option>
                             </select>
-                            <small class="leyenda-input">Seleccione la parroquia dentro del municipio.</small>
+                            <small class="leyenda-input">Seleccione la parroquia del municipio.</small>
                           </div>
 
+                          <!-- Sector -->
                           <div class="form-group col-md-6">
                             <label class="control-label">Sector <span class="text-danger">*</span></label>
                             <input class="form-control" type="text" id="sector" name="sector" required
@@ -197,6 +199,7 @@
                           <button type="button" id="regresar" class="btn btn-regresar" style="color: white;">
                             <i class="zmdi zmdi-arrow-back"></i> Regresar
                           </button>
+
                           <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
                             <i class="zmdi zmdi-floppy"></i> Registrar
                           </button>
@@ -237,104 +240,156 @@
             <input type="hidden" name="id" id="especialista_id">
 
             <!-- Paso 1 -->
-            <div id="paso1_edit">
+            <section id="paso1_edit">
               <h4 class="text-center mb-3">Datos Personales</h4>
               <div class="row">
+
+                <!-- CI -->
                 <div class="form-group col-md-6">
-                  <label>CI</label>
-                  <input class="form-control" id="ci2" name="ci2" type="text" required max="34000000"
-                    oninput="validateInput(this)">
+                  <label for="ci2">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
+                  <input class="form-control" id="ci2" name="ci2" required maxlength="11">
+                  <small class="form-text text-muted">
+                    Ingrese la letra según sea el caso V, P o E y luego su número de cédula sin puntos. Máximo
+                    11 caracteres.
+                  </small>
                 </div>
+
+                <!-- FVP -->
                 <div class="form-group col-md-6">
-                  <label>FVP</label>
-                  <input class="form-control" id="fvp2" name="fvp2" type="number" required max="34000000"
-                    oninput="validateInput(this)">
+                  <label for="fvp2">N° F.V.P <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="fvp2" name="fvp2" required
+                    oninput="this.value = this.value.replace(/[^0-9]/g, '')" maxlength="120">
+                  <small class="form-text text-muted">
+                    Número de la federación venezolana de psicólogos. Máximo 120 caracteres.
+                  </small>
                 </div>
+
+                <!-- Nombre -->
                 <div class="form-group col-md-6">
-                  <label>Nombre</label>
-                  <input class="form-control" id="nombre2" name="nombre2" type="text" required
-                    oninput="validarTexto(this)">
+                  <label for="nombre2">Nombre <span class="text-danger">*</span></label>
+                  <input class="form-control" id="nombre2" name="nombre2" required oninput="validarTexto(this)"
+                    maxlength="120">
+                  <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                 </div>
+
+                <!-- Apellido -->
                 <div class="form-group col-md-6">
-                  <label>Apellido</label>
-                  <input class="form-control" id="apellido2" name="apellido2" type="text" required
-                    oninput="validarTexto(this)">
+                  <label for="apellido2">Apellido <span class="text-danger">*</span></label>
+                  <input class="form-control" id="apellido2" name="apellido2" required oninput="validarTexto(this)"
+                    maxlength="120">
+                  <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
                 </div>
+
+                <!-- Fecha de nacimiento -->
                 <div class="form-group col-md-6">
-                  <label>Fecha de Nacimiento</label>
-                  <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
+                  <label for="fecha_nac2">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="fecha_nac2" name="fecha_nac2" required>
+                  <small class="form-text text-muted">Seleccione la fecha en el calendario.</small>
                 </div>
+
+                <!-- Especialidad -->
                 <div class="form-group col-md-6">
-                  <label>Especialidad</label>
-                  <select class="form-control select2" required id="especialidad_id2" name="especialidad_id2">
+                  <label for="especialidad_id2">Especialidad <span class="text-danger">*</span></label>
+                  <select class="form-control select2" id="especialidad_id2" name="especialidad_id2" required>
                     <option selected disabled>Seleccione su especialidad</option>
                     @foreach ($especialidades as $especialidad)
                       <option value="{{ $especialidad->id }}">{{ $especialidad->especialidad }}</option>
                     @endforeach
                   </select>
+                  <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
                 </div>
+
+                <!-- Teléfono -->
                 <div class="form-group col-md-6">
-                  <label>Teléfono</label>
-                  <input class="form-control" type="tel" id="telefono2" name="telefono2" required>
+                  <label for="telefono2">Teléfono <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control" id="telefono2" name="telefono2" required maxlength="12">
+                  <small class="form-text text-muted">
+                    Debe comenzar con 0412, 0424, etc. Máximo 12 caracteres.
+                  </small>
                 </div>
+
+                <!-- Email -->
                 <div class="form-group col-md-6">
-                  <label>Correo electrónico</label>
-                  <input class="form-control email-verificar" type="email" id="email2" name="email2" required
-                    maxlength="255">
+                  <label for="email2">Correo Electrónico <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="email2" name="email2" required maxlength="255">
+                  <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
                 </div>
+
+                <!-- Género -->
                 <div class="form-group col-md-6">
-                  <label>Género</label>
-                  <select class="form-control select2" required id="genero_id2" name="genero_id2">
+                  <label for="genero_id2">Género <span class="text-danger">*</span></label>
+                  <select class="form-control select2" id="genero_id2" name="genero_id2" required>
                     <option selected disabled>Seleccione su género</option>
                     @foreach ($generos as $genero)
                       <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
                     @endforeach
                   </select>
+                  <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
                 </div>
               </div>
+
               <div class="text-center mt-3">
-                <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4"
-                  style="color: white;">Siguiente</button>
+                <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4" style="color: white;">
+                  Siguiente
+                </button>
               </div>
-            </div>
+            </section>
 
             <!-- Paso 2 -->
-            <div id="paso2_edit" style="display: none;">
+            <section id="paso2_edit" style="display: none;">
               <h4 class="text-center mb-3">Datos de Dirección</h4>
               <div class="row">
+                <!-- Estado -->
                 <div class="form-group col-md-6">
-                  <label>Estado</label>
-                  <select class="form-control select2" required id="estado_id2" name="estado_id2"
-                    style="width: 100%;">
-                    <option></option>
+                  <label class="control-label">Estado <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id2"
+                    name="estado_id2">
+                    <option selected disabled>Seleccione su estado</option>
                   </select>
+                  <small class="leyenda-input">Seleccione el estado donde reside.</small>
                 </div>
+
+                <!-- Municipio -->
                 <div class="form-group col-md-6">
-                  <label>Municipio</label>
-                  <select class="form-control select2" required id="municipio_id2" name="municipio_id2"
-                    style="width: 100%;">
-                    <option></option>
+                  <label class="control-label">Municipio <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;"
+                    id="municipio_id2" name="municipio_id2">
+                    <option selected disabled>Seleccione su municipio</option>
                   </select>
+                  <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
                 </div>
+
+                <!-- Parroquia -->
                 <div class="form-group col-md-6">
-                  <label>Parroquia</label>
-                  <select class="form-control select2" required id="parroquia_id2" name="parroquia_id2"
-                    style="width: 100%;">
-                    <option></option>
+                  <label class="control-label">Parroquia <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;"
+                    id="parroquia_id2" name="parroquia_id2">
+                    <option selected disabled>Seleccione su parroquia</option>
                   </select>
+                  <small class="leyenda-input">Seleccione la parroquia del municipio.</small>
                 </div>
+
+                <!-- Sector -->
                 <div class="form-group col-md-6">
-                  <label>Sector</label>
-                  <input class="form-control" type="text" id="sector2" name="sector2" required>
+                  <label class="control-label">Sector <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" id="sector2" name="sector2" required minlength="10"
+                    maxlength="150">
+                  <small class="leyenda-input">
+                    Ingrese el nombre del sector donde vive. Máximo 150 caracteres.
+                  </small>
                 </div>
               </div>
+
               <div class="text-center mt-3">
-                <button type="button" id="regresar_edit" class="btn btn-regresar px-4 mr-2"><i
-                    class="zmdi zmdi-arrow-back" style="color: white;"></i> Regresar</button>
-                <button type="submit" name="registrar" class="btn btn-custom px-4" style="color: white;">Guardar
-                  Cambios</button>
+                <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;">
+                  <i class="zmdi zmdi-arrow-back"></i> Regresar
+                </button>
+
+                <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                  Guardar Cambios
+                </button>
               </div>
-            </div>
+            </section>
           </form>
         </div>
       </div>
@@ -517,7 +572,9 @@
     });
   </script>
 
+  {{-- Editar especialista --}}
   <script>
+    // Mostrar especialista a actualizar
     window.editEspecialista = function(id) {
       $.get('/especialistas/' + id + '/edit', function(especialista) {
         $('#especialista_id').val(especialista.id);
@@ -566,6 +623,7 @@
       });
     });
 
+    // Para inicializar la librería en cada select
     function initSelect2(selector, placeholder) {
       $(selector).select2({
         placeholder: placeholder,
@@ -605,9 +663,8 @@
       });
       $('#parroquia_id2').trigger('change');
     }
-  </script>
 
-  <script>
+    // Actualizar especialista
     $(document).ready(function() {
       $("#paso1_edit").show();
       $("#paso2_edit").hide();
@@ -665,7 +722,7 @@
             municipio_id: $('#municipio_id2').val(),
             parroquia_id: $('#parroquia_id2').val(),
             sector: $('#sector2').val(),
-            _token: $("input[name=_token]").val(),
+            _token: $("input[name=_token]").val(), // Importante
           },
           success: function(response) {
             if (response.success) {
