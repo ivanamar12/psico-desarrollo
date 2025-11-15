@@ -201,122 +201,166 @@
   </section>
 
   <!-- Modal editar -->
-  <section class="modal fade" id="editsecretaria" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+  <section class="modal fade" id="modalEditarSecretaria" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
-      <div class="modal-content">
+      <div class="modal-content rounded shadow-lg">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Actualizar secretaria</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-              aria-hidden="true">&times;</span></button>
-        </div>
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-xs-12 col-md-10 col-md-offset-1">
-              <form id="editar-secretaria">@csrf
-                <input type="hidden" id="id" name="id">
-                <div id="paso1_edit">
-                  <h3>Datos Personales</h3>
-                  <div class="row">
-
-                    <div class="form-group col-md-6">
-                      <label>CI</label>
-                      <input class="form-control" id="ci2" name="ci2" type="text" required
-                        max="34000000" oninput="validateInput(this)">
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label>Nombre</label>
-                      <input class="form-control" id="nombre2" name="nombre2" type="text" required
-                        oninput="validarTexto(this)">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label>Apellido</label>
-                      <input class="form-control" id="apellido2" name="apellido2" type="text" required
-                        oninput="validarTexto(this)">
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label>Fecha de Nacimiento</label>
-                      <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label for="grado2">Grado</label>
-                      <input class="form-control" id="grado2" name="grado2" type="text" required>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label>Teléfono</label>
-                      <input class="form-control" type="tel" id="telefono2" name="telefono2" required>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <label>Correo electrónico</label>
-                      <input class="form-control email-verificar" type="email" id="email2" name="email2"
-                        required maxlength="255">
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label for="genero_id2">Género</label>
-                      <select class="form-control select2" required style="width: 100%;" id="genero_id2"
-                        name="genero_id2">
-                        @foreach ($generos as $genero)
-                          <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                  </div>
-
-                  <p class="centro-texto">
-                    <button type="button" id="siguiente1_edit" class="btn btn-regresar" style="color: white;">
-                      Siguiente
-                    </button>
-                  </p>
-                </div>
-
-                <div id="paso2_edit" style="display: none;">
-                  <h3>Datos de Dirección</h3>
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <label for="estado_id2">Estado</label>
-                      <select class="form-control select2" required style="width: 100%;" id="estado_id2"
-                        name="estado_id2">
-                        <option></option>
-                      </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label for="municipio_id2">Municipio</label>
-                      <select class="form-control select2" required style="width: 100%;" id="municipio_id2"
-                        name="municipio_id2">
-                        <option></option>
-                      </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label for="parroquia_id2">Parroquia</label>
-                      <select class="form-control select2" required style="width: 100%;" id="parroquia_id2"
-                        name="parroquia_id2">
-                        <option></option>
-                      </select>
-                    </div>
-
-                    <div class="form-group col-md-6">
-                      <label for="sector2">Sector</label>
-                      <input class="form-control" type="text" id="sector2" name="sector2" required>
-                    </div>
-                  </div>
-
-                  <p class="centro-texto">
-                    <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;"><i
-                        class="zmdi zmdi-arrow-back"></i> Regresar</button>
-                    <button type="submit" name="registrar" class="btn btn-custom" style="color: white;"><i
-                        class="zmdi zmdi-floppy"></i>Guardar cambios</button>
-                  </p>
-                </div>
-
-              </form>
-            </div>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
           </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Editar Secretaria
+          </h3>
+        </div>
+
+        <div class="modal-body">
+          <form id="formEditarSecretaria">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="secretaria_id">
+
+            <!-- Paso 1 -->
+            <section id="paso1_edit">
+              <h4 class="text-center mb-3">Datos Personales</h4>
+              <div class="row">
+
+                <!-- CI -->
+                <div class="form-group col-md-6">
+                  <label for="ci2">Cédula de Identidad (CI) <span class="text-danger">*</span></label>
+                  <input class="form-control" id="ci2" name="ci2" required maxlength="11">
+                  <small class="form-text text-muted">
+                    Ingrese la letra según sea el caso V, P o E y luego su número de cédula sin puntos. Máximo
+                    11 caracteres.
+                  </small>
+                </div>
+
+                <!-- Nombre -->
+                <div class="form-group col-md-6">
+                  <label for="nombre2">Nombre <span class="text-danger">*</span></label>
+                  <input class="form-control" id="nombre2" name="nombre2" required oninput="validarTexto(this)"
+                    maxlength="120">
+                  <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-group col-md-6">
+                  <label for="apellido2">Apellido <span class="text-danger">*</span></label>
+                  <input class="form-control" id="apellido2" name="apellido2" required oninput="validarTexto(this)"
+                    maxlength="120">
+                  <small class="form-text text-muted">Solo letras. Máximo 120 caracteres.</small>
+                </div>
+
+                <!-- Fecha de nacimiento -->
+                <div class="form-group col-md-6">
+                  <label for="fecha_nac2">Fecha de Nacimiento <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="fecha_nac2" name="fecha_nac2" required>
+                  <small class="form-text text-muted">Seleccione la fecha en el calendario.</small>
+                </div>
+
+                <!-- Grado -->
+                <div class="form-group col-md-6">
+                  <label for="grado2">Grado <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" id="grado2" name="grado2" required
+                    oninput="validarTexto(this)" maxlength="120">
+                  <small class="form-text text-muted">Ej: TSU, Licenciada, etc.</small>
+                </div>
+
+                <!-- Teléfono -->
+                <div class="form-group col-md-6">
+                  <label for="telefono2">Teléfono <span class="text-danger">*</span></label>
+                  <input type="tel" class="form-control" id="telefono2" name="telefono2" required maxlength="12">
+                  <small class="form-text text-muted">
+                    Debe comenzar con 0412, 0424, etc. Máximo 12 caracteres.
+                  </small>
+                </div>
+
+                <!-- Email -->
+                <div class="form-group col-md-6">
+                  <label for="email2">Correo Electrónico <span class="text-danger">*</span></label>
+                  <input type="email" class="form-control" id="email2" name="email2" required maxlength="255">
+                  <small class="form-text text-muted">Ej: ejemplo@correo.com</small>
+                </div>
+
+                <!-- Género -->
+                <div class="form-group col-md-6">
+                  <label for="genero_id2">Género <span class="text-danger">*</span></label>
+                  <select class="form-control select2" id="genero_id2" name="genero_id2" required>
+                    <option selected disabled>Seleccione su género</option>
+                    @foreach ($generos as $genero)
+                      <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+                    @endforeach
+                  </select>
+                  <small class="form-text text-muted">Seleccione de la lista desplegable.</small>
+                </div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4" style="color: white;">
+                  Siguiente
+                </button>
+              </div>
+            </section>
+
+            <!-- Paso 2 -->
+            <section id="paso2_edit" style="display: none;">
+              <h4 class="text-center mb-3">Datos de Dirección</h4>
+              <div class="row">
+                <!-- Estado -->
+                <div class="form-group col-md-6">
+                  <label class="control-label">Estado <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;" id="estado_id2"
+                    name="estado_id2">
+                    <option selected disabled>Seleccione su estado</option>
+                  </select>
+                  <small class="leyenda-input">Seleccione el estado donde reside.</small>
+                </div>
+
+                <!-- Municipio -->
+                <div class="form-group col-md-6">
+                  <label class="control-label">Municipio <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;"
+                    id="municipio_id2" name="municipio_id2">
+                    <option selected disabled>Seleccione su municipio</option>
+                  </select>
+                  <small class="leyenda-input">Seleccione el municipio correspondiente.</small>
+                </div>
+
+                <!-- Parroquia -->
+                <div class="form-group col-md-6">
+                  <label class="control-label">Parroquia <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;"
+                    id="parroquia_id2" name="parroquia_id2">
+                    <option selected disabled>Seleccione su parroquia</option>
+                  </select>
+                  <small class="leyenda-input">Seleccione la parroquia del municipio.</small>
+                </div>
+
+                <!-- Sector -->
+                <div class="form-group col-md-6">
+                  <label class="control-label">Sector <span class="text-danger">*</span></label>
+                  <input class="form-control" type="text" id="sector2" name="sector2" required minlength="10"
+                    maxlength="150">
+                  <small class="leyenda-input">
+                    Ingrese el nombre del sector donde vive. Máximo 150 caracteres.
+                  </small>
+                </div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button type="button" id="regresar_edit" class="btn btn-regresar" style="color: white;">
+                  <i class="zmdi zmdi-arrow-back"></i> Regresar
+                </button>
+
+                <button type="submit" name="registrar" class="btn btn-custom" style="color: white;">
+                  Guardar Cambios
+                </button>
+              </div>
+            </section>
+          </form>
         </div>
       </div>
     </div>
@@ -494,17 +538,20 @@
     });
   </script>
 
+  {{-- Editar secretaria --}}
   <script>
-    function editsecretaria(id) {
+    // Mostrar secretaria a actualizar
+    window.editSecretaria = function(id) {
       $.get('/secretarias/' + id + '/edit', function(secretaria) {
-        $('#id').val(secretaria.id);
+        $('#secretaria_id').val(secretaria.id);
+        $('#ci2').val(secretaria.ci);
         $('#nombre2').val(secretaria.nombre);
         $('#apellido2').val(secretaria.apellido);
-        $('#ci2').val(secretaria.ci);
         $('#fecha_nac2').val(secretaria.fecha_nac);
         $('#grado2').val(secretaria.grado);
         $('#telefono2').val(secretaria.telefono);
         $('#email2').val(secretaria.email);
+        $('#genero_id2').val(secretaria.genero_id).trigger('change');
 
         if (secretaria.direccion) {
           const estado = estados.find(e => e.id == secretaria.direccion.estado_id);
@@ -518,11 +565,11 @@
           $('#sector2').val(secretaria.direccion.sector);
         }
 
-        $('#editsecretaria').modal('show');
+        $('#modalEditarSecretaria').modal('show');
       });
     }
 
-    $('#editsecretaria').on('shown.bs.modal', function() {
+    $('#modalEditarSecretaria').on('shown.bs.modal', function() {
       initSelect2('#estado_id2', 'Seleccione su estado');
       initSelect2('#municipio_id2', 'Seleccione su municipio');
       initSelect2('#parroquia_id2', 'Seleccione su parroquia');
@@ -541,11 +588,12 @@
       });
     });
 
+    // Para inicializar la librería en cada select
     function initSelect2(selector, placeholder) {
       $(selector).select2({
         placeholder: placeholder,
         width: '100%',
-        dropdownParent: $('#editsecretaria')
+        dropdownParent: $('#modalEditarSecretaria')
       });
     }
 
@@ -580,9 +628,8 @@
       });
       $('#parroquia_id2').trigger('change');
     }
-  </script>
 
-  <script>
+    // Actualizar secretaria
     $(document).ready(function() {
       $("#paso1_edit").show();
       $("#paso2_edit").hide();
@@ -619,72 +666,50 @@
         $("#paso1_edit").show();
       });
 
-      // Resetear fomulario en caso de volver a la vista
-      $('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
-        if (e.target.hash === '#list-secretaria') {
-          $('#estado_id').val(null).trigger('change');
-          $('#municipio_id').val(null).trigger('change');
-          $('#parroquia_id').val(null).trigger('change');
-
-          $('#registro-secretaria')[0].reset();
-        }
-      });
-
-      $("#editar-secretaria").submit(function(event) {
-        event.preventDefault();
-
-        var id = $('#id').val();
-        var nombre = $('#nombre2').val();
-        var apellido = $('#apellido2').val();
-        var ci = $('#ci2').val();
-        var fecha_nac = $('#fecha_nac2').val();
-        var grado = $('#grado2').val();
-        var telefono = $('#telefono2').val();
-        var email = $('#email2').val();
-        var estado_id = $('#estado_id2').val();
-        var municipio_id = $('#municipio_id2').val();
-        var parroquia_id = $('#parroquia_id2').val();
-        var sector = $('#sector2').val();
-        var _token = $("input[name=_token]").val();
+      $("#formEditarSecretaria").submit(function(e) {
+        e.preventDefault();
+        var id = $('#secretaria_id').val();
 
         $.ajax({
           url: "/secretarias/" + id,
           type: "PUT",
           data: {
-            id: id,
-            nombre: nombre,
-            apellido: apellido,
-            ci: ci,
-            fecha_nac: fecha_nac,
-            grado: grado,
-            telefono: telefono,
-            email: email,
-            estado_id: estado_id,
-            municipio_id: municipio_id,
-            parroquia_id: parroquia_id,
-            sector: sector,
-            _token: _token
+            ci: $('#ci2').val(),
+            nombre: $('#nombre2').val(),
+            apellido: $('#apellido2').val(),
+            fecha_nac: $('#fecha_nac2').val(),
+            grado: $('#grado2').val(),
+            telefono: $('#telefono2').val(),
+            email: $('#email2').val(),
+            genero_id: $('#genero_id2').val(),
+            estado_id: $('#estado_id2').val(),
+            municipio_id: $('#municipio_id2').val(),
+            parroquia_id: $('#parroquia_id2').val(),
+            sector: $('#sector2').val(),
+            _token: $("input[name=_token]").val(),
           },
           success: function(response) {
             if (response.success) {
-              $('#editsecretaria').modal('hide');
-
-              $('#estado_id').val(null).trigger('change');
-              $('#municipio_id').val(null).trigger('change');
-              $('#parroquia_id').val(null).trigger('change');
-
-              toastr.info('El registro se actualizó correctamente', 'Actualizar registro', {
+              $('#modalEditarSecretaria').modal('hide');
+              toastr.info(response.message, 'Éxito', {
                 timeOut: 5000
               });
-
               $('#tab-secretaria').DataTable().ajax.reload();
-            } else {
-              alert('No se pudo actualizar el registro.');
             }
           },
-          error: function(jqXHR, textStatus, errorThrown) {
-            console.error('Error en la actualización:', textStatus, errorThrown);
-            alert('Ocurrió un error al actualizar el registro. Intenta nuevamente.');
+          error: function(xhr) {
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al actualizar la secretaria.', 'Error');
+            }
           }
         });
       });

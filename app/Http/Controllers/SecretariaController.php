@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enums\Role;
 use App\Http\Requests\Secretaria\StoreSecretariaRequest;
+use App\Http\Requests\Secretaria\UpdateSecretariaRequest;
 use App\Models\User;
 use App\Models\Secretaria;
 use App\Models\Direccion;
@@ -29,7 +30,7 @@ class SecretariaController extends Controller
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-secretaria" data-id="' . $secretaria->id . '"><i class="zmdi zmdi-eye"></i></button>';
 
           if (auth()->user()->can('editar secretaria')) {
-            $acciones .= '<a href="javascript:void(0)" onclick="editsecretaria(' . $secretaria->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
+            $acciones .= '<a href="javascript:void(0)" onclick="editSecretaria(' . $secretaria->id . ')" class="btn btn-warning btn-raised btn-xs"><i class="zmdi zmdi-edit"></i></a>';
           }
 
           // if (auth()->user()->can('eliminar secretaria')) {
@@ -113,53 +114,31 @@ class SecretariaController extends Controller
     return response()->json($secretaria);
   }
 
-  public function update(Request $request, $id)
+  public function update(UpdateSecretariaRequest $request, Secretaria $secretaria)
   {
-    $validatedData = $request->validate([
-      'nombre' => 'required|string|max:255',
-      'apellido' => 'required|string|max:255',
-      'ci' => 'required|string|max:255',
-      'fecha_nac' => 'required|date|max:10',
-      'grado' => 'required|string|max:255',
-      'telefono' => 'required|string|max:255',
-      'email' => 'required|string|email|max:255',
-      'genero_id' => 'required|exists:generos,id',
-      'estado_id' => 'required|exists:estados,id',
-      'municipio_id' => 'required|exists:municipios,id',
-      'parroquia_id' => 'required|exists:parroquias,id',
-      'sector' => 'required|string|max:255',
-    ]);
+    DB::transaction(function () use ($request, $secretaria) {
+      $secretaria->update($request->safe()->only([
+        'ci',
+        'nombre',
+        'apellido',
+        'fecha_nac',
+        'grado',
+        'telefono',
+        'email',
+        'genero_id',
+      ]));
 
-    $secretaria = Secretaria::with('direccion')->find($id);
-    if (!$secretaria) {
-      return response()->json(['message' => 'Especialista no encontrado'], 404);
-    }
-
-    DB::transaction(function () use ($validatedData, $secretaria) {
-      $direccion = $secretaria->direccion;
-      if (!$direccion) {
-        throw new \Exception('Dirección no encontrada');
-      }
-
-      $direccion->update([
-        'estado_id' => $validatedData['estado_id'],
-        'municipio_id' => $validatedData['municipio_id'],
-        'parroquia_id' => $validatedData['parroquia_id'],
-        'sector' => $validatedData['sector'],
-      ]);
-
-      $secretaria->update([
-        'nombre' => $validatedData['nombre'],
-        'apellido' => $validatedData['apellido'],
-        'ci' => $validatedData['ci'],
-        'fecha_nac' => $validatedData['fecha_nac'],
-        'grado' => $validatedData['grado'],
-        'telefono' => $validatedData['telefono'],
-        'email' => $validatedData['email'],
-        'genero_id' => $validatedData['genero_id'],
-      ]);
+      $secretaria->direccion()->update($request->safe()->only([
+        'estado_id',
+        'municipio_id',
+        'parroquia_id',
+        'sector',
+      ]));
     });
 
-    return response()->json(['success' => true]);
+    return response()->json([
+      'success' => true,
+      'message' => 'Secretaria actualizada correctamente!'
+    ]);
   }
 }
