@@ -155,13 +155,11 @@ class PacienteController extends Controller
         'observacion' => $request->observacion ?? null,
       ]);
 
-      // Manejo de familiares
-      if (!empty($request->familiares)) {
-        $existentes = $paciente->parentescos->pluck('id')->toArray();
-        $actualizados = [];
+      $actualizados = [];
 
+      if (!empty($request->familiares)) {
         foreach ($request->familiares as $familiar) {
-          if (isset($familiar['id']) && in_array($familiar['id'], $existentes)) {
+          if (isset($familiar['id']) && $paciente->parentescos->contains('id', $familiar['id'])) {
             // Actualizar familiar existente
             Parentesco::where('id', $familiar['id'])->update([
               'nombre' => $familiar['nombre'],
@@ -192,12 +190,12 @@ class PacienteController extends Controller
             $actualizados[] = $nuevoFamiliar->id;
           }
         }
-
-        // Eliminar familiares que ya no están en la lista
-        Parentesco::where('paciente_id', $paciente->id)
-          ->whereNotIn('id', $actualizados)
-          ->delete();
       }
+
+      // Eliminar familiares que ya no están en la lista
+      Parentesco::where('paciente_id', $paciente->id)
+        ->whereNotIn('id', $actualizados)
+        ->delete();
     });
 
     return response()->json([
