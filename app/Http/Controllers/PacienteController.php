@@ -131,29 +131,33 @@ class PacienteController extends Controller
   {
     DB::transaction(function () use ($request, $paciente) {
       // Actualizar paciente
-      $paciente->update([
-        'nombre' => $request->nombre,
-        'apellido' => $request->apellido,
-        'fecha_nac' => $request->fecha_nac,
-        'representante_id' => $request->representante_id,
-        'genero_id' => $request->genero_id,
-      ]);
+      $paciente->update($request->safe()->only([
+        'nombre',
+        'apellido',
+        'fecha_nac',
+        'representante_id',
+        'genero_id',
+      ]));
 
       // Actualizar datos económicos
-      $paciente->datosEconomico->update([
-        'tipo_vivienda' => $request->tipo_vivienda,
-        'cantidad_habitaciones' => $request->cantidad_habitaciones,
-        'cantidad_personas' => $request->cantidad_personas,
-        'servecio_agua_potable' => $request->servecio_agua_potable,
-        'servecio_gas' => $request->servecio_gas,
-        'servecio_electricidad' => $request->servecio_electricidad,
-        'servecio_drenaje' => $request->servecio_drenaje,
-        'disponibilidad_internet' => $request->disponibilidad_internet,
-        'tipo_conexion_internet' => $request->tipo_conexion_internet,
-        'acceso_servcios_publicos' => $request->acceso_servcios_publicos,
-        'fuente_ingreso_familiar' => $request->fuente_ingreso_familiar,
-        'observacion' => $request->observacion ?? null,
-      ]);
+      $paciente->datosEconomico->update($request->safe()
+        ->merge([
+          'observacion' => $request->observacion ?? null,
+        ])
+        ->only([
+          'tipo_vivienda',
+          'cantidad_habitaciones',
+          'cantidad_personas',
+          'servecio_agua_potable',
+          'servecio_gas',
+          'servecio_electricidad',
+          'servecio_drenaje',
+          'disponibilidad_internet',
+          'tipo_conexion_internet',
+          'acceso_servcios_publicos',
+          'fuente_ingreso_familiar',
+          'observacion',
+        ]));
 
       $actualizados = [];
 
@@ -166,10 +170,10 @@ class PacienteController extends Controller
               'apellido' => $familiar['apellido'],
               'fecha_nac' => $familiar['fecha_nac'],
               'parentesco' => $familiar['parentesco'],
-              'discapacidad' => $familiar['discapacidad'],
-              'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? null,
-              'enfermedad_cronica' => $familiar['enfermedad_cronica'],
-              'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? null,
+              'discapacidad' => $familiar['discapacidad'] ?? 'no aplica',
+              'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? 'no aplica',
+              'enfermedad_cronica' => $familiar['enfermedad_cronica'] ?? 'no aplica',
+              'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? 'no aplica',
               'genero_id' => $familiar['genero_id'],
             ]);
             $actualizados[] = $familiar['id'];
@@ -181,10 +185,10 @@ class PacienteController extends Controller
               'apellido' => $familiar['apellido'],
               'fecha_nac' => $familiar['fecha_nac'],
               'parentesco' => $familiar['parentesco'],
-              'discapacidad' => $familiar['discapacidad'],
-              'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? null,
-              'enfermedad_cronica' => $familiar['enfermedad_cronica'],
-              'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? null,
+              'discapacidad' => $familiar['discapacidad'] ?? 'no aplica',
+              'tipo_discapacidad' => $familiar['tipo_discapacidad'] ?? 'no aplica',
+              'enfermedad_cronica' => $familiar['enfermedad_cronica'] ?? 'no aplica',
+              'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? 'no aplica',
               'genero_id' => $familiar['genero_id'],
             ]);
             $actualizados[] = $nuevoFamiliar->id;
