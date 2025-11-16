@@ -46,6 +46,8 @@ class StorePacienteRequest extends FormRequest
       ],
       'representante_id' => ['required', 'exists:representantes,id'],
       'genero_id' => ['required', 'exists:generos,id'],
+
+      // Datos económicos
       'tipo_vivienda' => ['required', 'string', 'max:50'],
       'cantidad_habitaciones' => ['required', 'integer', 'min:1', 'max:20'],
       'cantidad_personas' => ['required', 'integer', 'min:1', 'max:50'],

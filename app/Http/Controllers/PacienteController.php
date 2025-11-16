@@ -120,7 +120,8 @@ class PacienteController extends Controller
     $paciente->load([
       'datosEconomico',
       'parentescos',
-      'genero'
+      'genero',
+      'representante'
     ]);
 
     return response()->json($paciente);
@@ -148,7 +149,7 @@ class PacienteController extends Controller
         'servecio_electricidad' => $request->servecio_electricidad,
         'servecio_drenaje' => $request->servecio_drenaje,
         'disponibilidad_internet' => $request->disponibilidad_internet,
-        'tipo_conexion_internet' => $request->tipo_conexion_internet ?? null,
+        'tipo_conexion_internet' => $request->tipo_conexion_internet,
         'acceso_servcios_publicos' => $request->acceso_servcios_publicos,
         'fuente_ingreso_familiar' => $request->fuente_ingreso_familiar,
         'observacion' => $request->observacion ?? null,

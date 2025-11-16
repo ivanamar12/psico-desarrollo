@@ -280,6 +280,256 @@
     </section>
   </section>
 
+  <!-- Modal editar paciente -->
+  <section class="modal fade" id="modalEditarPaciente" tabindex="-1" role="dialog" aria-labelledby="modalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content rounded shadow-lg">
+        <div class="modal-header">
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Editar Paciente
+          </h3>
+        </div>
+
+        <div class="modal-body">
+          <form id="formEditarPaciente">
+            @csrf
+            @method('PUT')
+            <input type="hidden" name="id" id="paciente_id">
+
+            <!-- Paso 1 -->
+            <section id="paso1_edit">
+              <h4 class="text-center mb-3">Datos Personales</h4>
+              <div class="fila-formulario row">
+
+                <!-- Representante -->
+                <div class="form-group col-md-6">
+                  <label>Representante <span class="text-danger">*</span></label>
+                  <select class="form-control form-control-solid select2" required style="width: 100%;"
+                    id="representante_id2" name="representante_id2">
+                    <option selected disabled>Seleccione el representante</option>
+                  </select>
+                  <small class="form-text text-muted">
+                    Escriba el número de cédula, nombre o apellido del representante.
+                  </small>
+                </div>
+
+                <!-- Nombre -->
+                <div class="form-group col-md-6">
+                  <label>Nombre <span class="text-danger">*</span></label>
+                  <input class="form-control" id="nombre2" name="nombre2" type="text" required
+                    oninput="validarTexto(this)" maxlength="120">
+                  <small class="form-text text-muted">
+                    Ingrese el nombre. Solo letras. Máximo 120 caracteres.
+                  </small>
+                </div>
+
+                <!-- Apellido -->
+                <div class="form-group col-md-6">
+                  <label>Apellido <span class="text-danger">*</span></label>
+                  <input class="form-control" id="apellido2" name="apellido2" type="text" required
+                    oninput="validarTexto(this)" maxlength="120">
+                  <small class="form-text text-muted">
+                    Ingrese el apellido. Solo letras. Máximo 120 caracteres.
+                  </small>
+                </div>
+
+                <!-- Fecha de Nacimiento -->
+                <div class="form-group col-md-6">
+                  <label>Fecha de Nacimiento <span class="text-danger">*</span></label>
+                  <input class="form-control" type="date" name="fecha_nac2" id="fecha_nac2" required>
+                  <small class="form-text text-muted">Ingrese la fecha de nacimiento, máximo 6 años y medio,
+                    mínimo 3 meses.</small>
+                </div>
+
+                <!-- Género -->
+                <div class="form-group col-md-6">
+                  <label>Género <span class="text-danger">*</span></label>
+                  <select class="form-control select2" required style="width: 100%;" id="genero_id2"
+                    name="genero_id2">
+                    <option selected disabled>Seleccione su género</option>
+                    @foreach ($generos as $genero)
+                      <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+                    @endforeach
+                  </select>
+                  <small class="form-text text-muted">Seleccione el género del paciente.</small>
+                </div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button type="button" id="siguiente1_edit" class="btn btn-regresar px-4" style="color: white;">
+                  Siguiente
+                </button>
+              </div>
+            </section>
+
+            <!-- Paso 2 -->
+            <section id="paso2_edit" style="display: none;">
+              <h4 class="text-center mb-3">Datos Familiares</h4>
+              <h5>Familiares que vivan en el hogar</h5>
+              <div id="miembrosContainerEdit"></div>
+
+              <div class="text-center mt-3">
+                <button type="button" id="agregarFamiliarEdit" class="btn btn-custom" style="color: white;">
+                  Agregar Familiar
+                </button>
+                <button type="button" id="siguiente2_edit" class="btn btn-regresar" style="color: white;">
+                  Siguiente
+                </button>
+              </div>
+            </section>
+
+            <!-- Paso 3 -->
+            <section id="paso3_edit" style="display: none;">
+              <h4 class="text-center mb-3">Datos Socioeconómicos</h4>
+              <div class="fila-formulario row">
+
+                <!-- Tipo de Vivienda -->
+                <div class="form-group col-md-6">
+                  <label>Tipo de Vivienda <span class="text-danger">*</span></label>
+                  <select name="tipo_vivienda2" id="tipo_vivienda2" class="form-control select2" required
+                    style="width: 100%;">
+                    <option value="" disabled selected>Seleccione un tipo</option>
+                    <option value="casa_unifamiliar">Casa Unifamiliar</option>
+                    <option value="apartamento">Apartamento</option>
+                    <option value="vivienda_social">Vivienda Social</option>
+                    <option value="vivienda_precaria">Vivienda Precaria</option>
+                  </select>
+                  <small class="form-text text-muted">
+                    Seleccione el tipo de vivienda que habita la familia.
+                  </small>
+                </div>
+
+                <!-- Cantidad de Habitaciones -->
+                <div class="form-group col-md-6">
+                  <label>Cantidad de Habitaciones <span class="text-danger">*</span></label>
+                  <input class="form-control" type="number" id="cantidad_habitaciones2" name="cantidad_habitaciones2"
+                    required min="1" max="20" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                  <small class="form-text text-muted">Ingrese solo números. Número total de habitaciones en la
+                    vivienda.</small>
+                </div>
+
+                <!-- Cantidad de Personas -->
+                <div class="form-group col-md-6">
+                  <label>Cantidad de Personas en la Vivienda <span class="text-danger">*</span></label>
+                  <input class="form-control" type="number" id="cantidad_personas2" name="cantidad_personas2"
+                    required min="1" max="50" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                  <small class="form-text text-muted">
+                    Ingrese solo números. Total de personas que viven en la vivienda.
+                  </small>
+                </div>
+
+                <!-- Servicios Básicos -->
+                <div class="form-group col-md-6">
+                  <label>¿Servicio de Agua Potable? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="servecio_agua_potable2" value="si" required>
+                      Sí</label>
+                    <label><input type="radio" name="servecio_agua_potable2" value="no"> No</label>
+                  </div>
+                  <small class="form-text text-muted">Indique si la vivienda cuenta con acceso a agua
+                    potable.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>¿Servicio de Gas? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="servecio_gas2" value="si" required> Sí</label>
+                    <label><input type="radio" name="servecio_gas2" value="no"> No</label>
+                  </div>
+                  <small class="form-text text-muted">Seleccione si dispone de servicio de gas en la
+                    vivienda.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>¿Servicio de Electricidad? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="servecio_electricidad2" value="si" required>
+                      Sí</label>
+                    <label><input type="radio" name="servecio_electricidad2" value="no"> No</label>
+                  </div>
+                  <small class="form-text text-muted">Seleccione si cuenta con servicio eléctrico.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>¿Servicio de Drenaje? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="servecio_drenaje2" value="si" required> Sí</label>
+                    <label><input type="radio" name="servecio_drenaje2" value="no"> No</label>
+                  </div>
+                  <small class="form-text text-muted">Seleccione si tiene sistema de drenaje sanitario.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>¿Acceso a Servicios Públicos? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="acceso_servcios_publicos2" value="si" required>
+                      Sí</label>
+                    <label><input type="radio" name="acceso_servcios_publicos2" value="no"> No</label>
+                  </div>
+                  <small class="form-text text-muted">
+                    Indique si la vivienda está conectada a servicios básicos.
+                  </small>
+                </div>
+
+                <!-- Internet -->
+                <div class="form-group col-md-6">
+                  <label>¿Tiene servicio de Internet en casa? <span class="text-danger">*</span></label>
+                  <div>
+                    <label><input type="radio" name="disponibilidad_internet2" value="si" required
+                        onclick="toggleInterInputEdit()"> Sí</label>
+                    <label><input type="radio" name="disponibilidad_internet2" value="no"
+                        onclick="toggleInterInputEdit()"> No</label>
+                  </div>
+                  <small class="form-text text-muted">Seleccione si tiene acceso a Internet en el
+                    hogar.</small>
+                </div>
+
+                <div class="form-group col-md-6" id="tipo_conexion_internet2" style="display: none;">
+                  <label>Tipo de conexión de Internet</label>
+                  <input class="form-control" name="tipo_conexion_internet_input2" type="text"
+                    placeholder="Especifique si aplica" maxlength="100" id="tipo_conexion_internet_input2">
+                  <small class="form-text text-muted">Ejemplo: Fibra óptica, datos móviles, ADSL, etc.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>Fuente de Ingreso Familiar <span class="text-danger">*</span></label>
+                  <input class="form-control" id="fuente_ingreso_familiar2" name="fuente_ingreso_familiar2"
+                    type="text" required maxlength="255">
+                  <small class="form-text text-muted">Indique la principal fuente de ingreso económico del
+                    hogar.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                  <label>Observaciones (Opcional)</label>
+                  <textarea class="form-control" name="observacion2" id="observacion2" rows="3" maxlength="500"></textarea>
+                  <small class="form-text text-muted">
+                    Ingrese cualquier observación adicional sobre el paciente.
+                  </small>
+                </div>
+              </div>
+
+              <div class="text-center mt-3">
+                <button type="button" id="regresar2_edit" class="btn btn-regresar" style="color: white;">
+                  <i class="zmdi zmdi-arrow-back"></i> Regresar
+                </button>
+                <button type="submit" name="actualizar" class="btn btn-custom" style="color: white;">
+                  Guardar Cambios
+                </button>
+              </div>
+            </section>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Modal mostrar paciente -->
   <section id="pacienteModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
@@ -734,6 +984,530 @@
 
     function establecerFechaMaximaFamiliares() {
       const fechaNacFamiliarInputs = document.querySelectorAll('input[type="date"][name*="[fecha_nac]"]');
+      const fechaActual = new Date();
+      fechaActual.setDate(fechaActual.getDate() - 1);
+
+      const anio = fechaActual.getFullYear();
+      const mes = String(fechaActual.getMonth() + 1).padStart(2, '0');
+      const dia = String(fechaActual.getDate()).padStart(2, '0');
+      const maxFecha = `${anio}-${mes}-${dia}`;
+
+      fechaNacFamiliarInputs.forEach(input => {
+        input.max = maxFecha;
+      });
+    }
+  </script>
+
+  {{-- Editar paciente --}}
+  <script>
+    const representantes = @json($representantes);
+    let contadorFamiliaresEdit = 0;
+    let familiaresEdit = [];
+
+    // Mostrar paciente a actualizar
+    window.editPaciente = function(id) {
+      $.get('/pacientes/' + id + '/edit', function(paciente) {
+        $('#paciente_id').val(paciente.id);
+        $('#nombre2').val(paciente.nombre);
+        $('#apellido2').val(paciente.apellido);
+        $('#fecha_nac2').val(paciente.fecha_nac);
+        $('#genero_id2').val(paciente.genero_id).trigger('change');
+        $('#representante_id2').val(paciente.representante_id).trigger('change');
+
+        establecerRangoFechasEdit();
+        // Para inicializar el input de tipo_conexion
+        toggleInterInputEdit();
+
+        // Inicializar selects
+        $('#genero_id2').select2({
+          placeholder: "Seleccione su género",
+          allowClear: false,
+          minimumResultsForSearch: -1,
+          width: '100%',
+          dropdownParent: $('#modalEditarPaciente')
+        });
+
+        // Configurar representantes
+        const representantesData = representantes.map(representante => ({
+          id: representante.id,
+          text: `${representante.nombre} ${representante.apellido} (CI: ${representante.ci})`
+        }));
+
+        $('#representante_id2').select2({
+          placeholder: "Seleccione el representante",
+          allowClear: true,
+          data: representantesData,
+          dropdownParent: $('#modalEditarPaciente')
+        });
+
+        // Cargar datos económicos
+        if (paciente.datos_economico) {
+          $('#tipo_vivienda2').val(paciente.datos_economico.tipo_vivienda).trigger('change');
+          $('#cantidad_habitaciones2').val(paciente.datos_economico.cantidad_habitaciones);
+          $('#cantidad_personas2').val(paciente.datos_economico.cantidad_personas);
+          $(`input[name="servecio_agua_potable2"][value="${paciente.datos_economico.servecio_agua_potable}"]`).prop(
+            'checked', true);
+          $(`input[name="servecio_gas2"][value="${paciente.datos_economico.servecio_gas}"]`).prop('checked', true);
+          $(`input[name="servecio_electricidad2"][value="${paciente.datos_economico.servecio_electricidad}"]`).prop(
+            'checked', true);
+          $(`input[name="servecio_drenaje2"][value="${paciente.datos_economico.servecio_drenaje}"]`).prop('checked',
+            true);
+          $(`input[name="acceso_servcios_publicos2"][value="${paciente.datos_economico.acceso_servcios_publicos}"]`)
+            .prop('checked', true);
+          $(`input[name="disponibilidad_internet2"][value="${paciente.datos_economico.disponibilidad_internet}"]`)
+            .prop('checked', true);
+
+          if (paciente.datos_economico.disponibilidad_internet === 'si') {
+            $('#tipo_conexion_internet2').show();
+            $('#tipo_conexion_internet_input2').val(paciente.datos_economico.tipo_conexion_internet);
+          }
+
+          $('#fuente_ingreso_familiar2').val(paciente.datos_economico.fuente_ingreso_familiar);
+          $('#observacion2').val(paciente.datos_economico.observacion);
+        }
+
+        // Cargar familiares
+        $('#miembrosContainerEdit').empty();
+        contadorFamiliaresEdit = 0;
+        familiaresEdit = [];
+
+        if (paciente.parentescos && paciente.parentescos.length > 0) {
+          paciente.parentescos.forEach((familiar, index) => {
+            agregarFamiliarEdit(familiar);
+          });
+        }
+
+        // Inicializar selects de paso 3
+        $('#tipo_vivienda2').select2({
+          placeholder: "Seleccione un tipo",
+          allowClear: false,
+          minimumResultsForSearch: -1,
+          dropdownParent: $('#modalEditarPaciente')
+        });
+
+        // Mostrar paso 1
+        $("#paso1_edit").show();
+        $("#paso2_edit").hide();
+        $("#paso3_edit").hide();
+
+        $('#modalEditarPaciente').modal('show');
+      });
+    }
+
+    // Función para agregar familiar en edición
+    function agregarFamiliarEdit(familiar = null) {
+      const id = contadorFamiliaresEdit;
+      const familiarId = familiar ? familiar.id : '';
+      const nombre = familiar ? familiar.nombre : '';
+      const apellido = familiar ? familiar.apellido : '';
+      const fechaNac = familiar ? familiar.fecha_nac : '';
+      const parentesco = familiar ? familiar.parentesco : '';
+      const generoId = familiar ? familiar.genero_id : '';
+      const discapacidad = familiar ? familiar.discapacidad : 'no';
+      const tipoDiscapacidad = familiar ? familiar.tipo_discapacidad : '';
+      const enfermedadCronica = familiar ? familiar.enfermedad_cronica : 'no';
+      const tipoEnfermedad = familiar ? familiar.tipo_enfermedad : '';
+
+      const nuevoFormulario = `
+            <div class="fila-formulario row mb-3 p-3 border rounded" id="formulario-familiar-edit-${id}">
+                <input type="hidden" name="familiares[${id}][id]" value="${familiarId}">
+                
+                <div class="form-group col-md-6">
+                    <label>Nombre <span class="text-danger">*</span></label>
+                    <input class="form-control" name="familiares[${id}][nombre]" type="text" required maxlength="120" 
+                        oninput="validarTexto(this)" value="${nombre}">
+                    <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Apellido <span class="text-danger">*</span></label>
+                    <input class="form-control" name="familiares[${id}][apellido]" type="text" required maxlength="120" 
+                        oninput="validarTexto(this)" value="${apellido}">
+                    <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Fecha de Nacimiento <span class="text-danger">*</span></label>
+                    <input class="form-control" type="date" name="familiares[${id}][fecha_nac]" required value="${fechaNac}">
+                    <small class="form-text text-muted">Ingrese la fecha de nacimiento.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Parentesco <span class="text-danger">*</span></label>
+                    <input class="form-control" name="familiares[${id}][parentesco]" type="text" required maxlength="120" 
+                        oninput="validarTexto(this)" value="${parentesco}">
+                    <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>Género <span class="text-danger">*</span></label>
+                    <select class="form-control select2" required style="width: 100%;" name="familiares[${id}][genero_id]">
+                        <option selected disabled>Seleccione su género</option>
+                        @foreach ($generos as $genero)
+                            <option value="{{ $genero->id }}">{{ $genero->genero }}</option>
+                        @endforeach
+                    </select>
+                    <small class="form-text text-muted">Seleccione el género del familiar.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>¿Tiene alguna discapacidad? <span class="text-danger">*</span></label>
+                    <div>
+                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="si" 
+                            ${discapacidad === 'si' ? 'checked' : ''} 
+                            onclick="toggleTipoDiscapacidadEdit(${id})"> Sí</label>
+                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="no" 
+                            ${discapacidad === 'no' ? 'checked' : ''} 
+                            onclick="toggleTipoDiscapacidadEdit(${id})"> No</label>
+                    </div>
+                    <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
+                </div>
+
+                <div class="form-group col-md-6" id="tipo-discapacidad-container-edit-${id}" 
+                    style="${discapacidad === 'si' ? '' : 'display: none;'}">
+                    <label>Tipo de discapacidad</label>
+                    <input class="form-control" id="tipo-discapacidad-edit-${id}" 
+                        name="familiares[${id}][tipo_discapacidad]" type="text" 
+                        placeholder="Describa el tipo de discapacidad" maxlength="120" value="${tipoDiscapacidad}">
+                    <small class="form-text text-muted">Describa la discapacidad si aplica.</small>
+                </div>
+
+                <div class="form-group col-md-6">
+                    <label>¿Tiene alguna enfermedad crónica? <span class="text-danger">*</span></label>
+                    <div>
+                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="si" 
+                            ${enfermedadCronica === 'si' ? 'checked' : ''} 
+                            onclick="toggleTipoEnfermedadEdit(${id})"> Sí</label>
+                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="no" 
+                            ${enfermedadCronica === 'no' ? 'checked' : ''} 
+                            onclick="toggleTipoEnfermedadEdit(${id})"> No</label>
+                    </div>
+                    <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
+                </div>
+
+                <div class="form-group col-md-6" id="tipo-enfermedad-container-edit-${id}" 
+                    style="${enfermedadCronica === 'si' ? '' : 'display: none;'}">
+                    <label>Tipo de enfermedad</label>
+                    <input class="form-control" id="tipo-enfermedad-edit-${id}" 
+                        name="familiares[${id}][tipo_enfermedad]" type="text" 
+                        placeholder="Describa el tipo de Enfermedad" maxlength="120" value="${tipoEnfermedad}">
+                    <small class="form-text text-muted">Describa la enfermedad si aplica.</small>
+                </div>
+
+                <div class="col-md-12 text-right">
+                    <button type="button" class="btn btn-danger btn-sm" onclick="eliminarMiembroEdit(${id})">
+                        <i class="zmdi zmdi-delete"></i> Eliminar
+                    </button>
+                </div>
+            </div>
+        `;
+
+      $("#miembrosContainerEdit").append(nuevoFormulario);
+
+      // Inicializar Select2 y establecer valor
+      $(`select[name="familiares[${id}][genero_id]"]`).select2({
+        placeholder: "Seleccione su género",
+        allowClear: false,
+        minimumResultsForSearch: -1,
+        dropdownParent: $('#modalEditarPaciente')
+      });
+
+      if (generoId) {
+        $(`select[name="familiares[${id}][genero_id]"]`).val(generoId).trigger('change');
+      }
+
+      // Establecer el rango de fechas
+      establecerFechaMaximaFamiliaresEdit();
+
+      // Guardar referencia
+      familiaresEdit.push(id);
+      contadorFamiliaresEdit++;
+    }
+
+    // Control de pasos en edición
+    $(document).ready(function() {
+      $("#paso1_edit").show();
+      $("#paso2_edit").hide();
+      $("#paso3_edit").hide();
+
+      $("#siguiente1_edit").click(function() {
+        let valid = true;
+
+        $('#paso1_edit :input[required]').each(function() {
+          if ($(this).val() === '' || $(this).val() === null) {
+            $(this).addClass('is-invalid');
+            valid = false;
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        // Validar fecha de nacimiento
+        const fechaNac = new Date($('#fecha_nac2').val());
+        const fechaActual = new Date();
+        const edadMinima = new Date(fechaActual);
+        edadMinima.setMonth(edadMinima.getMonth() - 78); // 6.5 años
+        const edadMaxima = new Date(fechaActual);
+        edadMaxima.setMonth(edadMaxima.getMonth() - 3); // 3 meses
+
+        if (fechaNac < edadMinima || fechaNac > edadMaxima) {
+          $('#fecha_nac2').addClass('is-invalid');
+          toastr.error("La fecha de nacimiento debe estar entre 3 meses y 6 años y medio.");
+          valid = false;
+        } else {
+          $('#fecha_nac2').removeClass('is-invalid');
+        }
+
+        if (valid) {
+          $("#paso1_edit").hide();
+          $("#paso2_edit").show();
+        } else {
+          toastr.error("Debe completar todos los campos requeridos del paso 1.");
+        }
+      });
+
+      $("#siguiente2_edit").click(function() {
+        let valid = true;
+
+        if ($('#miembrosContainerEdit').children().length === 0) {
+          toastr.warning("Se recomienda agregar al menos un familiar que viva en el hogar.");
+        }
+
+        // Validar cada formulario de familiar
+        $('#miembrosContainerEdit .fila-formulario').each(function(index) {
+          const $form = $(this);
+
+          // Validar campos básicos requeridos
+          $form.find('input[type="text"][required], input[type="date"][required], select[required]').each(
+            function() {
+              if ($(this).val() === '' || $(this).val() === null) {
+                $(this).addClass('is-invalid');
+                valid = false;
+              }
+            });
+
+          // Validar campos de radio (discapacidad)
+          const discapacidadSeleccionada = $form.find(
+            `input[name="familiares[${index}][discapacidad]"]:checked`).length > 0;
+          if (!discapacidadSeleccionada) {
+            valid = false;
+          }
+
+          // Validar campos de radio (enfermedad crónica)
+          const enfermedadSeleccionada = $form.find(
+            `input[name="familiares[${index}][enfermedad_cronica]"]:checked`).length > 0;
+          if (!enfermedadSeleccionada) {
+            valid = false;
+          }
+
+          // Validaciones condicionales
+          if (discapacidadSeleccionada) {
+            const discapacidadSi = $form.find(`input[name="familiares[${index}][discapacidad]"][value="si"]`)
+              .is(':checked');
+            if (discapacidadSi) {
+              const tipoDiscapacidad = $form.find(`input[name="familiares[${index}][tipo_discapacidad]"]`)
+                .val();
+              if (!tipoDiscapacidad || tipoDiscapacidad.trim() === '') {
+                $form.find(`input[name="familiares[${index}][tipo_discapacidad]"]`).addClass('is-invalid');
+                toastr.error(
+                  `Debe describir el tipo de discapacidad del familiar en el índice ${index + 1}.`);
+                valid = false;
+              }
+            }
+          }
+
+          if (enfermedadSeleccionada) {
+            const enfermedadSi = $form.find(
+              `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+            if (enfermedadSi) {
+              const tipoEnfermedad = $form.find(`input[name="familiares[${index}][tipo_enfermedad]"]`).val();
+              if (!tipoEnfermedad || tipoEnfermedad.trim() === '') {
+                $form.find(`input[name="familiares[${index}][tipo_enfermedad]"]`).addClass('is-invalid');
+                toastr.error(`Debe describir el tipo de enfermedad del familiar en el índice ${index + 1}.`);
+                valid = false;
+              }
+            }
+          }
+        });
+
+        if (valid) {
+          $("#paso2_edit").hide();
+          $("#paso3_edit").show();
+        } else {
+          toastr.error("Debe completar todos los campos requeridos de los familiares antes de continuar.");
+        }
+      });
+
+      $("#regresar2_edit").click(function() {
+        $("#paso3_edit").hide();
+        $("#paso2_edit").show();
+      });
+
+      // Agregar familiar en edición
+      $("#agregarFamiliarEdit").click(function() {
+        agregarFamiliarEdit();
+      });
+
+      $("#formEditarPaciente").submit(function(e) {
+        e.preventDefault();
+        var id = $('#paciente_id').val();
+
+        const formData = {
+          nombre: $('#nombre2').val(),
+          apellido: $('#apellido2').val(),
+          fecha_nac: $('#fecha_nac2').val(),
+          representante_id: $('#representante_id2').val(),
+          genero_id: $('#genero_id2').val(),
+          tipo_vivienda: $('#tipo_vivienda2').val(),
+          cantidad_habitaciones: $('#cantidad_habitaciones2').val(),
+          cantidad_personas: $('#cantidad_personas2').val(),
+          servecio_agua_potable: $('input[name="servecio_agua_potable2"]:checked').val(),
+          servecio_gas: $('input[name="servecio_gas2"]:checked').val(),
+          servecio_electricidad: $('input[name="servecio_electricidad2"]:checked').val(),
+          servecio_drenaje: $('input[name="servecio_drenaje2"]:checked').val(),
+          disponibilidad_internet: $('input[name="disponibilidad_internet2"]:checked').val(),
+          tipo_conexion_internet: $('#tipo_conexion_internet_input2').val(),
+          acceso_servcios_publicos: $('input[name="acceso_servcios_publicos2"]:checked').val(),
+          fuente_ingreso_familiar: $('#fuente_ingreso_familiar2').val(),
+          observacion: $('#observacion2').val(),
+          _token: $("input[name=_token]").val(),
+        };
+
+        // Agregar familiares al formData
+        const familiares = [];
+        $('#miembrosContainerEdit .fila-formulario').each(function(index) {
+          const $form = $(this);
+          const familiar = {
+            id: $form.find(`input[name="familiares[${index}][id]"]`).val() || null,
+            nombre: $form.find(`input[name="familiares[${index}][nombre]"]`).val(),
+            apellido: $form.find(`input[name="familiares[${index}][apellido]"]`).val(),
+            fecha_nac: $form.find(`input[name="familiares[${index}][fecha_nac]"]`).val(),
+            parentesco: $form.find(`input[name="familiares[${index}][parentesco]"]`).val(),
+            discapacidad: $form.find(`input[name="familiares[${index}][discapacidad]"]:checked`).val(),
+            tipo_discapacidad: $form.find(`input[name="familiares[${index}][tipo_discapacidad]"]`).val() ||
+              null,
+            enfermedad_cronica: $form.find(`input[name="familiares[${index}][enfermedad_cronica]"]:checked`)
+              .val(),
+            tipo_enfermedad: $form.find(`input[name="familiares[${index}][tipo_enfermedad]"]`).val() ||
+              null,
+            genero_id: $form.find(`select[name="familiares[${index}][genero_id]"]`).val()
+          };
+          familiares.push(familiar);
+        });
+
+        if (familiares.length > 0) {
+          formData.familiares = familiares;
+        }
+
+        $.ajax({
+          url: "/pacientes/" + id,
+          type: "PUT",
+          data: formData,
+          success: function(response) {
+            if (response.success) {
+              $('#modalEditarPaciente').modal('hide');
+              toastr.info(response.message, 'Éxito', {
+                timeOut: 5000
+              });
+              $('#tab-paciente').DataTable().ajax.reload();
+            }
+          },
+          error: function(xhr) {
+            console.log(xhr)
+            if (xhr.status === 422) {
+              const errors = xhr.responseJSON.errors;
+              for (const field in errors) {
+                errors[field].forEach(error => {
+                  toastr.error(error, 'Error', {
+                    timeOut: 5000
+                  });
+                });
+              }
+            } else {
+              toastr.error('Ocurrió un error al actualizar el paciente.', 'Error');
+            }
+          }
+        });
+      });
+    });
+
+    // Funciones auxiliares para edición
+    window.eliminarMiembroEdit = function(id) {
+      $(`#formulario-familiar-edit-${id}`).remove();
+      familiaresEdit = familiaresEdit.filter(item => item !== id);
+    };
+
+    window.toggleTipoDiscapacidadEdit = function(index) {
+      const discapacidadSi = $(`input[name="familiares[${index}][discapacidad]"][value="si"]`).is(':checked');
+      const tipoDiscapacidadInput = $(`#tipo-discapacidad-edit-${index}`);
+      const tipoDiscapacidadContainer = $(`#tipo-discapacidad-container-edit-${index}`);
+
+      if (discapacidadSi) {
+        tipoDiscapacidadContainer.show();
+        tipoDiscapacidadInput.prop('required', true);
+      } else {
+        tipoDiscapacidadContainer.hide();
+        tipoDiscapacidadInput.prop('required', false);
+        tipoDiscapacidadInput.val('').removeClass('is-invalid');
+      }
+    };
+
+    window.toggleTipoEnfermedadEdit = function(index) {
+      const enfermedadSi = $(`input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+      const tipoEnfermedadInput = $(`#tipo-enfermedad-edit-${index}`);
+      const tipoEnfermedadContainer = $(`#tipo-enfermedad-container-edit-${index}`);
+
+      if (enfermedadSi) {
+        tipoEnfermedadContainer.show();
+        tipoEnfermedadInput.prop('required', true);
+      } else {
+        tipoEnfermedadContainer.hide();
+        tipoEnfermedadInput.prop('required', false);
+        tipoEnfermedadInput.val('').removeClass('is-invalid');
+      }
+    };
+
+    function toggleInterInputEdit() {
+      const disponibilidadInternetSi = document.querySelector(
+        '#modalEditarPaciente input[name="disponibilidad_internet2"][value="si"]');
+      const tipoConexionContainer = document.getElementById('tipo_conexion_internet2');
+      const tipoConexionInput = document.querySelector('#tipo_conexion_internet_input2');
+
+      if (disponibilidadInternetSi.checked) {
+        tipoConexionContainer.style.display = 'block';
+        if (!tipoConexionInput.value || tipoConexionInput.value === 'no') {
+          tipoConexionInput.value = '';
+        }
+      } else {
+        tipoConexionContainer.style.display = 'none';
+        tipoConexionInput.value = 'no';
+      }
+    }
+
+    function establecerRangoFechasEdit() {
+      const fechaNacInput = document.getElementById('fecha_nac2');
+      const fechaActual = new Date();
+
+      const fechaMinima = new Date(fechaActual);
+      fechaMinima.setMonth(fechaMinima.getMonth() - 78); // 6.5 años
+
+      const fechaMaxima = new Date(fechaActual);
+      fechaMaxima.setMonth(fechaMaxima.getMonth() - 3); // 3 meses
+
+      const formatoFecha = (fecha) => {
+        const anio = fecha.getFullYear();
+        const mes = String(fecha.getMonth() + 1).padStart(2, '0');
+        const dia = String(fecha.getDate()).padStart(2, '0');
+        return `${anio}-${mes}-${dia}`;
+      };
+
+      fechaNacInput.min = formatoFecha(fechaMinima);
+      fechaNacInput.max = formatoFecha(fechaMaxima);
+    }
+
+    function establecerFechaMaximaFamiliaresEdit() {
+      const fechaNacFamiliarInputs = document.querySelectorAll(
+        '#modalEditarPaciente input[type="date"][name*="[fecha_nac]"]');
       const fechaActual = new Date();
       fechaActual.setDate(fechaActual.getDate() - 1);
 
