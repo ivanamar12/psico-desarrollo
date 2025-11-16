@@ -45,19 +45,23 @@
               <div class="container-fluid">
                 <div class="row">
                   <div class="col-xs-12 col-md-10 col-md-offset-1">
-                    <form id="registro-paciente">@csrf
+                    <form id="registro-paciente">
+                      @csrf
                       <!-- paso 1 -->
                       <section id="paso1">
                         <h3>Datos Personales</h3>
                         <div class="fila-formulario row">
                           <!-- Fila 1 -->
-                          <div class="form-group  col-md-6">
+                          <div class="form-group col-md-6">
                             <label>Representante <span style="color: red;">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="representante_id" name="representante_id">
                               <option selected disabled>Seleccione el representante</option>
                             </select>
-                            <small class="form-text text-muted">Busque al representante por su cedula.</small>
+                            <small class="form-text text-muted">
+                              Escriba el número de cédula, nombre o apellido del representante. Se mostrarán todos los
+                              representantes disponibles.
+                            </small>
                           </div>
 
                           <div class="form-group col-md-6">
@@ -264,27 +268,6 @@
     </section>
   </section>
 
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
   <!-- modal mostrar paciente -->
   <section id="pacienteModal" class="modal fade" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
@@ -323,27 +306,15 @@
     $(document).ready(function() {
       const representantes = @json($representantes);
 
+      const representantesData = representantes.map(representante => ({
+        id: representante.id,
+        text: `${representante.nombre} ${representante.apellido} (CI: ${representante.ci})`
+      }));
+
       $('#representante_id').select2({
         placeholder: "Seleccione el representante",
         allowClear: true,
-        minimumInputLength: 1,
-        ajax: {
-          transport: function(params, success, failure) {
-            const searchTerm = params.data.term.toLowerCase().trim();
-            const filteredRepresentantes = representantes.filter(representante =>
-              representante.ci.toLowerCase().includes(searchTerm)
-            );
-
-            const results = filteredRepresentantes.map(representante => ({
-              id: representante.id,
-              text: `${representante.nombre} ${representante.apellido} (CI: ${representante.ci})`
-            }));
-
-            success({
-              results: results
-            });
-          }
-        }
+        data: representantesData,
       });
     });
   </script>
@@ -357,7 +328,7 @@
         processing: true,
         serverSide: true,
         ajax: {
-          url: "{{ route('paciente.index') }}",
+          url: "{{ route('pacientes.index') }}",
         },
         columns: [{
             data: 'id'
@@ -514,7 +485,7 @@
         event.preventDefault();
 
         $.ajax({
-          url: "{{ route('paciente.store') }}",
+          url: "{{ route('pacientes.store') }}",
           type: 'POST',
           data: $(this).serialize(),
           success: function(response) {
@@ -525,13 +496,11 @@
                 timeOut: 5000
               });
 
-              // Recargar tabla
               tablaPaciente.ajax.reload();
 
               $("#paso3").hide();
               $("#paso1").show();
 
-              // Cambiar a la pestaña de lista
               $('.nav-tabs a[href="#list-paciente"]').tab('show');
             }
           },
@@ -628,46 +597,11 @@
   </script>
 
   <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    var id;
-    $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      $.ajax({
-        url: "/paciente/" + id,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-            timeOut: 5000
-          });
-          $('#tab-paciente').DataTable().ajax.reload();
-        },
-        error: function(xhr, status, error) {
-          toastr.error('No se pudo eliminar el registro', 'Error', {
-            timeOut: 5000
-          });
-        }
-      });
-    });
-  </script>
-  <script>
     $(document).on('click', '.ver-paciente', function() {
       let pacienteId = $(this).data('id');
 
       $.ajax({
-        url: '/paciente/' + pacienteId,
+        url: '/pacientes/' + pacienteId,
         type: 'GET',
         dataType: 'json',
         success: function(data) {

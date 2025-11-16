@@ -75,7 +75,7 @@
       </li>
 
       <li>
-        <a href="{{ route('paciente.index') }}">
+        <a href="{{ route('pacientes.index') }}">
           <i class="zmdi zmdi-face zmdi-hc-fw"></i> Pacientes
         </a>
       </li>

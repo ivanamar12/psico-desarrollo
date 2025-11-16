@@ -6,13 +6,9 @@ use App\Http\Requests\Paciente\StorePacienteRequest;
 use App\Http\Requests\Paciente\UpdatePacienteRequest;
 use App\Models\Paciente;
 use App\Models\Genero;
-use App\Models\Estado;
-use App\Models\Municipio;
-use App\Models\Parroquia;
 use App\Models\DatosEconomico;
 use App\Models\Parentesco;
 use App\Models\Representante;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -21,51 +17,27 @@ class PacienteController extends Controller
 {
   public function index(Request $request)
   {
+    $pacientes = Paciente::all();
     if ($request->ajax()) {
-      $pacientes = DB::select('
-                SELECT pacientes.*, representantes.nombre AS representante_nombre, representantes.apellido AS representante_apellido 
-                FROM pacientes 
-                LEFT JOIN representantes ON pacientes.representante_id = representantes.id
-            ');
-
       return DataTables::of($pacientes)
-        ->addColumn('representante', function ($paciente) {
-          return $paciente->representante_nombre . ' ' . $paciente->representante_apellido;
-        })
         ->addColumn('action', function ($paciente) {
-          $acciones = '<button type="button" name="delete" id="' . $paciente->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-          $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-paciente" data-id="' . $paciente->id . '"><i class="zmdi zmdi-eye"></i></button>';
+          $acciones = '<button type="button" class="btn btn-info btn-raised btn-xs ver-paciente" data-id="' . $paciente->id . '"><i class="zmdi zmdi-eye"></i></button>';
           return $acciones;
         })
         ->rawColumns(['action'])
         ->make(true);
     }
 
-    $pacientes = Paciente::all();
-    $representantes = Representante::all();
-    $generos = Genero::all();
-    $estados = Estado::all();
-    $municipios = Municipio::all();
-    $parroquias = Parroquia::all();
-    $datosEconomicos = DatosEconomico::all();
-
     return view('paciente.index', [
       'pacientes' => $pacientes,
-      'representantes' => $representantes,
-      'generos' => $generos,
-      'estados' => $estados,
-      'municipios' => $municipios,
-      'parroquias' => $parroquias,
-      'datosEconomicos' => $datosEconomicos
+      'representantes' => Representante::all(),
+      'generos' => Genero::all(),
     ]);
   }
 
   public function store(StorePacienteRequest $request)
   {
-    DB::beginTransaction();
-
-    try {
-      // Crear los datos económicos
+    DB::transaction(function () use ($request) {
       $datosEconomicos = DatosEconomico::create([
         'tipo_vivienda' => $request->tipo_vivienda,
         'cantidad_habitaciones' => $request->cantidad_habitaciones,
@@ -81,7 +53,6 @@ class PacienteController extends Controller
         'observacion' => $request->observacion ?? null,
       ]);
 
-      // Crear el paciente
       $paciente = Paciente::create([
         'nombre' => $request->nombre,
         'apellido' => $request->apellido,
@@ -92,8 +63,8 @@ class PacienteController extends Controller
       ]);
 
       if (!empty($request->familiares)) {
-        foreach ($request->familiares as $familiar) {
-          Parentesco::create([
+        $familiaresData = collect($request->familiares)->map(function ($familiar) use ($paciente) {
+          return [
             'paciente_id' => $paciente->id,
             'nombre' => $familiar['nombre'],
             'apellido' => $familiar['apellido'],
@@ -104,44 +75,48 @@ class PacienteController extends Controller
             'enfermedad_cronica' => $familiar['enfermedad_cronica'] ?? 'no aplica',
             'tipo_enfermedad' => $familiar['tipo_enfermedad'] ?? 'no aplica',
             'genero_id' => $familiar['genero_id'] ?? null,
-          ]);
-        }
-      }
+            'created_at' => now(),
+            'updated_at' => now(),
+          ];
+        })->toArray();
 
-      DB::commit();
-      return response()->json(['success' => true, 'message' => 'Paciente registrado exitosamente.'], 201);
-    } catch (\Exception $e) {
-      DB::rollBack();
-      return response()->json(['error' => 'Error al registrar el paciente: ' . $e->getMessage()], 500);
-    }
+        Parentesco::insert($familiaresData);
+      }
+    });
+
+    return response()->json([
+      'success' => true,
+      'message' => 'Paciente registrado con éxito!'
+    ], 201);
   }
 
-  public function show($id)
+  public function show(Paciente $paciente)
   {
-    $paciente = Paciente::obtenerPaciente($id);
-
-    if (!$paciente) return response()->json(['error' => 'paciente no encontrado'], 404);
+    $paciente->load([
+      'genero',
+      'representante',
+      'datosEconomico',
+      'parentescos'
+    ]);
 
     return response()->json($paciente);
   }
 
-
-  public function edit($id)
+  public function edit(Paciente $paciente)
   {
-    $paciente = Paciente::with(['datoseconomico', 'parentescos'])->findOrFail($id);
+    $paciente->load([
+      'datoseconomico',
+      'parentescos'
+    ]);
 
     return response()->json($paciente);
   }
 
   public function update(UpdatePacienteRequest $request, $id)
   {
-    DB::beginTransaction();
-
-    try {
-      // Buscar el paciente
+    DB::transaction(function () use ($request, $id) {
       $paciente = Paciente::findOrFail($id);
 
-      // Actualizar los datos del paciente
       $paciente->update([
         'nombre' => $request->nombre,
         'apellido' => $request->apellido,
@@ -150,7 +125,6 @@ class PacienteController extends Controller
         'genero_id' => $request->genero_id,
       ]);
 
-      // Actualizar los datos económicos
       $paciente->datoseconomico->update([
         'tipo_vivienda' => $request->tipo_vivienda,
         'cantidad_habitaciones' => $request->cantidad_habitaciones,
@@ -205,28 +179,11 @@ class PacienteController extends Controller
 
       // Eliminar familiares que ya no están en la lista
       Parentesco::where('paciente_id', $id)->whereNotIn('id', $actualizados)->delete();
+    });
 
-      DB::commit();
-      return response()->json(['message' => 'Paciente actualizado exitosamente.'], 200);
-    } catch (\Exception $e) {
-      DB::rollBack();
-      return response()->json(['error' => 'Error al actualizar el paciente: ' . $e->getMessage()], 500);
-    }
-  }
-
-
-  public function destroy($id)
-  {
-    try {
-      $paciente = Paciente::find($id);
-
-      if (!$paciente) return response()->json(['message' => 'Paciente no encontrado'], 404);
-
-      $paciente->delete();
-
-      return response()->json(['success' => true]);
-    } catch (\Exception $e) {
-      return response()->json(['message' => 'Error al eliminar el paciente: ' . $e->getMessage()], 500);
-    }
+    return response()->json([
+      'success' => true,
+      'message' => 'Paciente actualizado correctamente!'
+    ]);
   }
 }

@@ -74,6 +74,12 @@ Route::middleware('auth')->group(function () {
     ->except(['create', 'destroy']);
 
   /**
+   * Rutas para pacientes
+   */
+  Route::resource('pacientes', PacienteController::class)
+    ->except(['create', 'destroy']);
+
+  /**
    * Profile
    */
   Route::get('/perfil', [PerfilController::class, 'index'])
@@ -110,30 +116,6 @@ Route::middleware('auth')->group(function () {
 
   Route::delete('/notificaciones/{id}', [NotificacionController::class, 'destroy'])
     ->name('notificaciones.destroy');
-
-  /**
-   * Pacientes
-   */
-
-  // Ruta para la lista de paciente
-  Route::get('paciente', [PacienteController::class, 'index'])
-    ->name('paciente.index');
-
-  // Ruta para almacenar un nuevo paciente
-  Route::post('paciente', [PacienteController::class, 'store'])
-    ->name('paciente.store');
-
-  // Ruta para eliminar un paciente
-  Route::delete('paciente/{id}', [PacienteController::class, 'destroy'])
-    ->name('paciente.destroy');
-
-  // Ruta para mostrar el formulario de edición de un paciente
-  Route::get('pacientes/{id}/edit', [PacienteController::class, 'edit'])
-    ->name('paciente.edit');
-
-  // Ruta para obtener un paciente específico en formato JSON
-  Route::get('paciente/{id}', [PacienteController::class, 'show'])
-    ->name('paciente.show');
 
   /**
    * Informes
