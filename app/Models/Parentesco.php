@@ -7,14 +7,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Parentesco extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $fillable = ['paciente_id', 'nombre', 'apellido', 'fecha_nac','parentesco', 'discapacidad', 'tipo_discapacidad', 'enfermedad_cronica', 'tipo_enfermedad'];
+  protected $fillable = [
+    'paciente_id',
+    'nombre',
+    'apellido',
+    'fecha_nac',
+    'parentesco',
+    'discapacidad',
+    'tipo_discapacidad',
+    'enfermedad_cronica',
+    'tipo_enfermedad',
+    'genero_id'
+  ];
 
-    public function paciente(){
-
-        return $this->belongsTo(Paciente::class);
-        
-    }
-
+  public function paciente()
+  {
+    return $this->belongsTo(Paciente::class);
+  }
 }
