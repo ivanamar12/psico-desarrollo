@@ -29,17 +29,10 @@ class ReferenciaController extends Controller
 
         return DataTables::of($referencias)
           ->addColumn('action', function ($referencia) {
-            $acciones = '<a href="' . route('referencias.pdf', $referencia->id) . '" class="btn btn-primary btn-raised btn-xs" 
-                            target="_blank" title="Reporte">
-                          <i class="zmdi zmdi-file"></i>
-                        </a>';
+            $acciones = '<a href="' . route('referencias.pdf', $referencia->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank" title="Reporte"><i class="zmdi zmdi-file"></i></a>';
 
             if (auth()->user()->can('eliminar referencia')) {
-              $acciones .= '<button data-id="' . $referencia->id . '" 
-                                    class="btn-eliminar-referencia btn btn-danger btn-raised btn-xs" 
-                                    title="Eliminar">
-                              <i class="zmdi zmdi-delete"></i>
-                            </button>';
+              $acciones .= '<button data-id="' . $referencia->id . '" class="btn-eliminar-referencia btn btn-danger btn-raised btn-xs" title="Eliminar"><i class="zmdi zmdi-delete"></i></button>';
             }
 
             return $acciones;

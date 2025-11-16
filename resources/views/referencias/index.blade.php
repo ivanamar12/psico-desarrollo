@@ -62,8 +62,9 @@
                               id="paciente_id" name="paciente_id">
                               <option selected disabled>Seleccione el paciente</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione al paciente
-                              registrado previamente en el sistema.</small>
+                            <small class="form-text text-muted">
+                              Este listado incluye únicamente pacientes con historia clínica.
+                            </small>
                           </div>
 
                           <!-- Especialista -->
@@ -257,14 +258,13 @@
       const pacientes = @json($pacientes);
 
       $('#paciente_id').select2({
-        placeholder: 'Seleccione paciente',
+        placeholder: 'Escriba para buscar paciente...',
         allowClear: true,
         data: pacientes.map(p => {
           const historia = p.historia_clinicas?.[0] || null;
           return {
             id: p.id,
-            text: `${p.nombre} ${p.apellido} - Código: ${historia ? historia.codigo : 'Sin historia'}`,
-            historia: historia
+            text: `${p.nombre} ${p.apellido} | Código: ${historia ? historia.codigo : 'N/A'}`,
           };
         })
       });

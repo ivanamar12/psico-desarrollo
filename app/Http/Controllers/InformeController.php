@@ -33,23 +33,16 @@ class InformeController extends Controller
 		if ($request->ajax()) {
 			$informes = Informe::with(['paciente', 'especialista']);
 
-			if (auth()->user()->hasRole(Role::ESPECIALISTA->value)) {
+			if (auth()->user()->hasRole(Role::ESPECIALISTA->value) && $especialista) {
 				$informes->where('especialista_id', $especialista->id);
 			}
 
 			return DataTables::of($informes)
 				->addColumn('action', function ($informe) {
-					$acciones = '<a href="' . route('informes.pdf', $informe->id) . '" class="btn btn-primary btn-raised btn-xs" 
-													target="_blank" title="Reporte">
-												<i class="zmdi zmdi-file"></i>
-											</a>';
+					$acciones = '<a href="' . route('informes.pdf', $informe->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank" title="Reporte"><i class="zmdi zmdi-file"></i></a>';
 
 					if (auth()->user()->can('eliminar informes')) {
-						$acciones .= '<button data-id="' . $informe->id . '" 
-																	class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" 
-																	title="Eliminar">
-														<i class="zmdi zmdi-delete"></i>
-													</button>';
+						$acciones .= '<button data-id="' . $informe->id . '" class="btn-eliminar-informe btn btn-danger btn-raised btn-xs" title="Eliminar"><i class="zmdi zmdi-delete"></i></button>';
 					}
 
 					return $acciones;
@@ -61,26 +54,40 @@ class InformeController extends Controller
 				->make(true);
 		}
 
-		$pacientesConPruebas = AplicacionPrueba::select('paciente_id', DB::raw('COUNT(*) as total'))
-			->where('especialista_id', $userId)
-			->groupBy('paciente_id')
-			->havingRaw('total BETWEEN 3 AND 4')
-			->pluck('paciente_id')
-			->toArray();
+		$pacientesConPruebas = [];
+		$pacientes = collect();
+		$aplicaciones = collect();
 
-		$pacientes = Paciente::with([
-			'historiaClinicas' => function ($q) {
-				$q->orderByDesc('created_at')->limit(1);
-			}
-		])
-			->whereIn('id', $pacientesConPruebas)
-			->whereHas('historiaClinicas')
-			->get();
+		if (auth()->user()->hasRole(Role::ADMIN->value)) {
+			$pacientesConPruebas = AplicacionPrueba::select('paciente_id', DB::raw('COUNT(*) as total'))
+				->groupBy('paciente_id')
+				->having('total', '>=', 3)
+				->pluck('paciente_id')
+				->toArray();
+		} elseif (auth()->user()->hasRole(Role::ESPECIALISTA->value) && $especialista) {
+			$pacientesConPruebas = AplicacionPrueba::select('paciente_id', DB::raw('COUNT(*) as total'))
+				->where('especialista_id', $especialista->id)
+				->groupBy('paciente_id')
+				->having('total', '>=', 3)
+				->pluck('paciente_id')
+				->toArray();
+		}
 
-		$aplicaciones = AplicacionPrueba::with('prueba')
-			->whereIn('paciente_id', $pacientesConPruebas)
-			->get()
-			->groupBy('paciente_id');
+		if (!empty($pacientesConPruebas)) {
+			$pacientes = Paciente::with([
+				'historiaClinicas' => function ($q) {
+					$q->orderByDesc('created_at')->limit(1);
+				}
+			])
+				->whereIn('id', $pacientesConPruebas)
+				->whereHas('historiaClinicas')
+				->get();
+
+			$aplicaciones = AplicacionPrueba::with('prueba')
+				->whereIn('paciente_id', $pacientesConPruebas)
+				->get()
+				->groupBy('paciente_id');
+		}
 
 		return view('informes.index', [
 			'especialista_actual' => $especialista,
@@ -169,10 +176,13 @@ class InformeController extends Controller
 			'antecedenteMedico',
 			'historiaEscolar',
 			'paciente.aplicacionPruebas.prueba',
-		])->findOrFail($pacienteId);
+		])
+			->where('paciente_id', $pacienteId)
+			->orderBy('created_at', 'desc')
+			->firstOrFail();
 
 		// Generar el PDF de la historia clínica
-		$pdfHistoria = Pdf::loadView('pdf.historia-completa', compact('historia'))->output();
+		$pdfHistoria = Pdf::loadView('pdf.historia', compact('historia'))->output();
 
 		// Guardar el PDF de la historia clínica temporalmente
 		$tempHistoriaPath = storage_path("temp_historia_clinica_{$pacienteId}.pdf");
@@ -221,7 +231,6 @@ class InformeController extends Controller
 		$combinedPdfPath = storage_path("combined_historia_{$pacienteId}.pdf");
 		$pdf->Output($combinedPdfPath, 'F');
 
-		// Crear una respuesta de stream
 		return response()->stream(
 			function () use ($combinedPdfPath) {
 				readfile($combinedPdfPath);
@@ -233,7 +242,7 @@ class InformeController extends Controller
 			200,
 			[
 				'Content-Type' => 'application/pdf',
-				'Content-Disposition' => 'inline; filename="historia_clinica_' . $pacienteId . '.pdf"'
+				'Content-Disposition' => 'inline; filename="historia_clinica_' . $historia->paciente->id . '.pdf"'
 			]
 		);
 	}

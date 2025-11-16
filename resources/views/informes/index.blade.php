@@ -53,17 +53,19 @@
                       @csrf
                       <section id="paso1">
                         <h3>I. Datos de identificación</h3>
-                        <div class="form-row">
+                        <div class="fila-formulario row">
 
                           <!-- Paciente -->
                           <div class="form-group col-md-6">
                             <label>Paciente <span class="text-danger">*</span></label>
                             <select class="form-control form-control-solid select2" required style="width: 100%;"
                               id="paciente_id" name="paciente_id">
-                              <option selected disabled>Seleccione el paciente</option>
+                              <option selected disabled>Buscar paciente - Nombre + Código de historia</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione al paciente
-                              registrado previamente en el sistema.</small>
+                            <small class="form-text text-muted">
+                              Este listado incluye únicamente pacientes que han completado mínimo 3 pruebas aplicadas y
+                              registro de historia clínica.
+                            </small>
                           </div>
 
                           <!-- Especialista -->
@@ -78,12 +80,13 @@
                               Este especialista ha sido asignado automáticamente por el sistema.
                             </small>
                           </div>
+                        </div>
 
-                          <p class="text-center mt-3">
-                            <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
-                              Siguiente
-                            </button>
-                          </p>
+                        <p class="text-center mt-3">
+                          <button type="button" id="siguiente1" class="btn btn-regresar" style="color: white;">
+                            Siguiente
+                          </button>
+                        </p>
                       </section>
 
                       <section id="paso2">
@@ -336,14 +339,15 @@
       const aplicaciones = @json($aplicaciones);
 
       $('#paciente_id').select2({
-        placeholder: 'Seleccione paciente',
+        placeholder: 'Escriba para buscar paciente...',
         allowClear: true,
         data: pacientes.map(p => {
           const historia = p.historia_clinicas?.[0] || null;
+          const pruebasCount = aplicaciones[p.id] ? aplicaciones[p.id].length : 0;
+
           return {
             id: p.id,
-            text: `${p.nombre} ${p.apellido} - Código: ${historia ? historia.codigo : 'Sin historia'}`,
-            historia: historia
+            text: `${p.nombre} ${p.apellido} | Código: ${historia ? historia.codigo : 'N/A'} | Pruebas: ${pruebasCount}`,
           };
         })
       });
@@ -711,4 +715,5 @@
       });
     });
   </script>
+
 @endsection

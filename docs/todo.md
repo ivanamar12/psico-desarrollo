@@ -4,8 +4,6 @@
 
 - Poner required en las pruebas
 
-- LA AYUDA EN TODAS LAS VISTAS
-
 - Desploqueo de usuario no funciona
 
 - Estandarizar los CRUDS de los registros maestros

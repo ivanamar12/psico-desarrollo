@@ -194,7 +194,6 @@ class HistoriaClinicaController extends Controller
 
   public function report($id)
   {
-    // Cargar historia con TODAS las relaciones necesarias
     $historia = HistoriaClinica::with([
       'paciente.genero',
       'paciente.representante.genero',
@@ -210,7 +209,7 @@ class HistoriaClinicaController extends Controller
     ])->findOrFail($id);
 
     // Generar el PDF de la historia clínica
-    $pdfHistoria = Pdf::loadView('pdf.historia-completa', compact('historia'))->output();
+    $pdfHistoria = Pdf::loadView('pdf.historia', compact('historia'))->output();
 
     // Guardar el PDF de la historia clínica temporalmente
     $tempHistoriaPath = storage_path("temp_historia_clinica_{$id}.pdf");

@@ -218,7 +218,7 @@
 
           return {
             id: paciente.id,
-            text: `${paciente.nombre} ${paciente.apellido} - Código: ${codigoHistoria}`,
+            text: `${paciente.nombre} ${paciente.apellido} | Código: ${codigoHistoria}`,
             citas: paciente.citas,
             isSelected: false
           };
