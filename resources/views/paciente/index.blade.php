@@ -138,15 +138,17 @@
                           <!-- Tipo de Vivienda -->
                           <div class="form-group col-md-6">
                             <label>Tipo de Vivienda <span class="text-danger">*</span></label>
-                            <select name="tipo_vivienda" class="form-control" required>
+                            <select name="tipo_vivienda" id="tipo_vivienda" class="form-control select2" required
+                              style="width: 100%;">
                               <option value="" disabled selected>Seleccione un tipo</option>
                               <option value="casa_unifamiliar">Casa Unifamiliar</option>
                               <option value="apartamento">Apartamento</option>
                               <option value="vivienda_social">Vivienda Social</option>
                               <option value="vivienda_precaria">Vivienda Precaria</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione el tipo de vivienda que habita la
-                              familia.</small>
+                            <small class="form-text text-muted">
+                              Seleccione el tipo de vivienda que habita la familia.
+                            </small>
                           </div>
 
                           <!-- Cantidad de Habitaciones -->
@@ -332,14 +334,23 @@
         text: `${representante.nombre} ${representante.apellido} (CI: ${representante.ci})`
       }));
 
+      // Select de representante
       $('#representante_id').select2({
         placeholder: "Seleccione el representante",
         allowClear: true,
         data: representantesData,
       });
 
+      // Select de genero del paciente
       $('#genero_id').select2({
         placeholder: "Seleccione su género",
+        allowClear: false,
+        minimumResultsForSearch: -1
+      });
+
+      // Select de tipo de vivienda del paciente
+      $('#tipo_vivienda').select2({
+        placeholder: "Seleccione un tipo",
         allowClear: false,
         minimumResultsForSearch: -1
       });
@@ -601,6 +612,7 @@
               $('#registro-paciente')[0].reset();
               $('#representante_id').val(null).trigger('change');
               $('#genero_id').val(null).trigger('change');
+              $('#tipo_vivienda').val(null).trigger('change');
 
               // Limpiar contenedor de familiares
               $('#miembrosContainer').empty();
