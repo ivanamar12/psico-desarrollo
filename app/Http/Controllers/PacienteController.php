@@ -112,8 +112,6 @@ class PacienteController extends Controller
       'parentescos.genero'
     ]);
 
-    $paciente->fecha_nac_formatted = format_date_with_age($paciente->fecha_nac);
-
     return response()->json($paciente);
   }
 

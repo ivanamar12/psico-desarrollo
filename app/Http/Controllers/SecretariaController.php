@@ -102,8 +102,6 @@ class SecretariaController extends Controller
       'direccion.parroquia'
     ]);
 
-    $secretaria->fecha_nac_formatted = format_date_with_age($secretaria->fecha_nac);
-
     return response()->json($secretaria);
   }
 

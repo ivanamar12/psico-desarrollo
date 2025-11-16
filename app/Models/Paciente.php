@@ -23,6 +23,8 @@ class Paciente extends Model
     'genero_id'
   ];
 
+  protected $appends = ['fecha_nac_formatted'];
+
   public function datosEconomico(): HasOne
   {
     return $this->hasOne(DatosEconomico::class, 'id', 'datoseconomico_id');
@@ -73,6 +75,11 @@ class Paciente extends Model
     ])
       ->where('id', $id)
       ->first();
+  }
+
+  public function getFechaNacFormattedAttribute()
+  {
+    return format_date_with_age($this->fecha_nac);
   }
 
   /**

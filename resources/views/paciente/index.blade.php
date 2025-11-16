@@ -309,6 +309,16 @@
               <p><strong>Correo Electrónico:</strong><br><span id="representante_email_show"></span></p>
             </div>
           </div>
+
+          <!-- Sección de Parentescos -->
+          <div class="row mt-4" id="parentescos-section" style="display: none;">
+            <div class="col-md-12">
+              <h4 style="border-bottom: 1px solid #ddd; padding-bottom: 10px; margin-bottom: 15px;">
+                Familiares que viven en el hogar
+              </h4>
+              <div id="parentescos-container"></div>
+            </div>
+          </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
@@ -766,6 +776,41 @@
           $modal.find('#representante_ci_show').text(formatValue(data.representante?.ci));
           $modal.find('#representante_telefono_show').text(formatValue(data.representante?.telefono));
           $modal.find('#representante_email_show').text(formatValue(data.representante?.email));
+
+          const $parentescosSection = $modal.find('#parentescos-section');
+          const $parentescosContainer = $modal.find('#parentescos-container');
+
+          if (data.parentescos && data.parentescos.length > 0) {
+            $parentescosSection.show();
+            $parentescosContainer.empty();
+
+            data.parentescos.forEach((parentesco, index) => {
+              const fechaNac = parentesco.fecha_nac_formatted || formatValue(parentesco.fecha_nac);
+              const parentescoHtml = `
+                <div class="mb-3 p-3 border rounded" style="background: rgba(255,255,255,0.1); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 5px;">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Nombre:</strong> ${formatValue(parentesco.nombre)} ${formatValue(parentesco.apellido)}</p>
+                      <p><strong>Fecha Nacimiento:</strong> ${formatValue(fechaNac)}</p>
+                      <p><strong>Parentesco:</strong> ${formatValue(parentesco.parentesco)}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>Género:</strong> ${formatValue(parentesco.genero?.genero)}</p>
+                      <p><strong>Discapacidad:</strong> ${formatValue(parentesco.discapacidad)}</p>
+                      ${parentesco.discapacidad === 'si' ? 
+                        `<p><strong>Tipo Discapacidad:</strong> ${formatValue(parentesco.tipo_discapacidad)}</p>` : ''}
+                      <p><strong>Enfermedad Crónica:</strong> ${formatValue(parentesco.enfermedad_cronica)}</p>
+                      ${parentesco.enfermedad_cronica === 'si' ? 
+                        `<p><strong>Tipo Enfermedad:</strong> ${formatValue(parentesco.tipo_enfermedad)}</p>` : ''}
+                    </div>
+                  </div>
+                </div>
+              `;
+              $parentescosContainer.append(parentescoHtml);
+            });
+          } else {
+            $parentescosSection.hide();
+          }
 
           $modal.modal('show');
         },

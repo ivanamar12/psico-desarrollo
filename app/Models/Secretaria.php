@@ -23,6 +23,8 @@ class Secretaria extends Model
     'direccion_id'
   ];
 
+  protected $appends = ['fecha_nac_formatted'];
+
   public function direccion(): BelongsTo
   {
     return $this->belongsTo(Direccion::class);
@@ -43,5 +45,10 @@ class Secretaria extends Model
     ])
       ->where('id', $id)
       ->first();
+  }
+
+  public function getFechaNacFormattedAttribute()
+  {
+    return format_date_with_age($this->fecha_nac);
   }
 }
