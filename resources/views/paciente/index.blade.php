@@ -419,46 +419,58 @@
         }
 
         // Validar cada formulario de familiar
-        $('#miembrosContainer .fila-formulario').each(function() {
-          // Validar campos requeridos básicos
-          $(this).find(':input[required]').each(function() {
-            if ($(this).val() === '' || $(this).val() === null) {
-              $(this).addClass('is-invalid');
-              valid = false;
-            } else {
-              $(this).removeClass('is-invalid');
-            }
-          });
+        $('#miembrosContainer .fila-formulario').each(function(index) {
+          const $form = $(this);
 
-          // Obtener el índice real del formulario
-          const formId = $(this).attr('id');
-          const index = formId.replace('formulario-familiar-', '');
+          // Validar campos básicos requeridos
+          $form.find('input[type="text"][required], input[type="date"][required], select[required]').each(
+            function() {
+              if ($(this).val() === '' || $(this).val() === null) {
+                $(this).addClass('is-invalid');
+                valid = false;
+              }
+            });
 
-          // Validaciones específicas para campos condicionales
-          const discapacidadSi = $(this).find(`input[name="familiares[${index}][discapacidad]"][value="si"]`)
-            .is(':checked');
-          if (discapacidadSi) {
-            const tipoDiscapacidad = $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`)
-              .val();
-            if (!tipoDiscapacidad || tipoDiscapacidad.trim() === '') {
-              $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`).addClass('is-invalid');
-              toastr.error(`Debe describir el tipo de discapacidad del familiar.`);
-              valid = false;
-            } else {
-              $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`).removeClass('is-invalid');
+          // Validar campos de radio (discapacidad)
+          const discapacidadSeleccionada = $form.find(
+            `input[name="familiares[${index}][discapacidad]"]:checked`).length > 0;
+          if (!discapacidadSeleccionada) {
+            valid = false;
+          }
+
+          // Validar campos de radio (enfermedad crónica)
+          const enfermedadSeleccionada = $form.find(
+            `input[name="familiares[${index}][enfermedad_cronica]"]:checked`).length > 0;
+          if (!enfermedadSeleccionada) {
+            valid = false;
+          }
+
+          // Validaciones condicionales
+          if (discapacidadSeleccionada) {
+            const discapacidadSi = $form.find(`input[name="familiares[${index}][discapacidad]"][value="si"]`)
+              .is(':checked');
+            if (discapacidadSi) {
+              const tipoDiscapacidad = $form.find(`input[name="familiares[${index}][tipo_discapacidad]"]`)
+                .val();
+              if (!tipoDiscapacidad || tipoDiscapacidad.trim() === '') {
+                $form.find(`input[name="familiares[${index}][tipo_discapacidad]"]`).addClass('is-invalid');
+                toastr.error(
+                  `Debe describir el tipo de discapacidad del familiar en el índice ${index + 1}.`);
+                valid = false;
+              }
             }
           }
 
-          const enfermedadSi = $(this).find(
-            `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
-          if (enfermedadSi) {
-            const tipoEnfermedad = $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).val();
-            if (!tipoEnfermedad || tipoEnfermedad.trim() === '') {
-              $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).addClass('is-invalid');
-              toastr.error(`Debe describir el tipo de enfermedad del familiar.`);
-              valid = false;
-            } else {
-              $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).removeClass('is-invalid');
+          if (enfermedadSeleccionada) {
+            const enfermedadSi = $form.find(
+              `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+            if (enfermedadSi) {
+              const tipoEnfermedad = $form.find(`input[name="familiares[${index}][tipo_enfermedad]"]`).val();
+              if (!tipoEnfermedad || tipoEnfermedad.trim() === '') {
+                $form.find(`input[name="familiares[${index}][tipo_enfermedad]"]`).addClass('is-invalid');
+                toastr.error(`Debe describir el tipo de enfermedad del familiar en el índice ${index + 1}.`);
+                valid = false;
+              }
             }
           }
         });
@@ -520,7 +532,7 @@
             <div class="form-group col-md-6">
               <label>¿Tiene alguna discapacidad? <span class="text-danger">*</span></label>
               <div>
-                <label><input type="radio" name="familiares[${contadorFamiliares}][discapacidad]" value="si" required onclick="toggleTipoDiscapacidad(${contadorFamiliares})"> Sí</label>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][discapacidad]" value="si" onclick="toggleTipoDiscapacidad(${contadorFamiliares})"> Sí</label>
                 <label><input type="radio" name="familiares[${contadorFamiliares}][discapacidad]" value="no" onclick="toggleTipoDiscapacidad(${contadorFamiliares})"> No</label>
               </div>
               <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
@@ -535,7 +547,7 @@
             <div class="form-group col-md-6">
               <label>¿Tiene alguna enfermedad crónica? <span class="text-danger">*</span></label>
               <div>
-                <label><input type="radio" name="familiares[${contadorFamiliares}][enfermedad_cronica]" value="si" required onclick="toggleTipoEnfermedad(${contadorFamiliares})"> Sí</label>
+                <label><input type="radio" name="familiares[${contadorFamiliares}][enfermedad_cronica]" value="si" onclick="toggleTipoEnfermedad(${contadorFamiliares})"> Sí</label>
                 <label><input type="radio" name="familiares[${contadorFamiliares}][enfermedad_cronica]" value="no" onclick="toggleTipoEnfermedad(${contadorFamiliares})"> No</label>
               </div>
               <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
@@ -632,6 +644,9 @@
       const tipoDiscapacidadInput = $(`#tipo-discapacidad-${index}`);
       const tipoDiscapacidadContainer = $(`#tipo-discapacidad-container-${index}`);
 
+      // Limpiar error
+      $(`#discapacidad-error-${index}`).hide().text('');
+
       if (discapacidadSi) {
         tipoDiscapacidadContainer.show();
         tipoDiscapacidadInput.prop('required', true);
@@ -646,6 +661,9 @@
       const enfermedadSi = $(`input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
       const tipoEnfermedadInput = $(`#tipo-enfermedad-${index}`);
       const tipoEnfermedadContainer = $(`#tipo-enfermedad-container-${index}`);
+
+      // Limpiar error
+      $(`#enfermedad-error-${index}`).hide().text('');
 
       if (enfermedadSi) {
         tipoEnfermedadContainer.show();

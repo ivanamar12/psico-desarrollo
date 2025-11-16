@@ -841,3 +841,13 @@ html {
     transition: left 0.3s ease-in-out;
   }
 }
+
+/* Para validaciones de formularios */
+.error-message {
+  font-size: 0.875em;
+  margin-top: 5px;
+}
+
+.is-invalid {
+  border-color: #dc3545 !important;
+}
