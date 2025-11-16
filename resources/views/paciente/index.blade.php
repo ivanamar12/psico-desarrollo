@@ -528,7 +528,7 @@
 
             <div class="form-group col-md-6" id="tipo-discapacidad-container-${contadorFamiliares}" style="display: none;">
               <label>Tipo de discapacidad</label>
-              <input class="form-control" id="tipo-discapacidad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_discapacidad]" type="text" placeholder="Describa el tipo de discapacidad" maxlength="255">
+              <input class="form-control" id="tipo-discapacidad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_discapacidad]" type="text" placeholder="Describa el tipo de discapacidad" maxlength="120">
               <small class="form-text text-muted">Describa la discapacidad si aplica.</small>
             </div>
 
@@ -543,7 +543,7 @@
 
             <div class="form-group col-md-6" id="tipo-enfermedad-container-${contadorFamiliares}" style="display: none;">
               <label>Tipo de enfermedad</label>
-              <input class="form-control" id="tipo-enfermedad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_enfermedad]" type="text" placeholder="Describa el tipo de Enfermedad" maxlength="255">
+              <input class="form-control" id="tipo-enfermedad-${contadorFamiliares}" name="familiares[${contadorFamiliares}][tipo_enfermedad]" type="text" placeholder="Describa el tipo de Enfermedad" maxlength="120">
               <small class="form-text text-muted">Describa la enfermedad si aplica.</small>
             </div>
 

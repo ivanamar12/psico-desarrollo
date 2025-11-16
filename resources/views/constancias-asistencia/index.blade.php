@@ -211,7 +211,6 @@
       $('#paciente_id').select2({
         placeholder: 'Seleccione paciente',
         allowClear: true,
-        minimumInputLength: 1,
         data: pacientesFiltrados.map(paciente => {
           const codigoHistoria = paciente.historiaclinicas && paciente.historiaclinicas.length > 0 ?
             paciente.historiaclinicas[0].codigo :

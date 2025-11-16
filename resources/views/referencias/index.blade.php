@@ -259,25 +259,14 @@
       $('#paciente_id').select2({
         placeholder: 'Seleccione paciente',
         allowClear: true,
-        minimumInputLength: 1,
-        ajax: {
-          transport: function(params, success) {
-            const term = (params.data.term || '').toLowerCase().trim();
-
-            const results = pacientes.map(p => {
-              const historia = p.historia_clinicas?.[0] || null;
-              return {
-                id: p.id,
-                text: `${p.nombre} ${p.apellido} - Código: ${historia ? historia.codigo : 'Sin historia'}`,
-                historia: historia
-              };
-            });
-
-            success({
-              results
-            });
-          }
-        }
+        data: pacientes.map(p => {
+          const historia = p.historia_clinicas?.[0] || null;
+          return {
+            id: p.id,
+            text: `${p.nombre} ${p.apellido} - Código: ${historia ? historia.codigo : 'Sin historia'}`,
+            historia: historia
+          };
+        })
       });
     });
   </script>

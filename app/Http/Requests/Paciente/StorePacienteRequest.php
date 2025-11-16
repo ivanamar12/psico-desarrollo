@@ -65,9 +65,9 @@ class StorePacienteRequest extends FormRequest
       'familiares.*.fecha_nac' => ['required', 'date'],
       'familiares.*.parentesco' => ['required', 'string', 'max:120'],
       'familiares.*.discapacidad' => ['required', 'in:si,no'],
-      'familiares.*.tipo_discapacidad' => ['nullable', 'required_if:familiares.*.discapacidad,si', 'string', 'max:255'],
+      'familiares.*.tipo_discapacidad' => ['nullable', 'required_if:familiares.*.discapacidad,si', 'string', 'max:120'],
       'familiares.*.enfermedad_cronica' => ['required', 'in:si,no'],
-      'familiares.*.tipo_enfermedad' => ['nullable', 'required_if:familiares.*.enfermedad_cronica,si', 'string', 'max:255'],
+      'familiares.*.tipo_enfermedad' => ['nullable', 'required_if:familiares.*.enfermedad_cronica,si', 'string', 'max:120'],
       'familiares.*.genero_id' => ['required', 'exists:generos,id'],
     ];
   }
