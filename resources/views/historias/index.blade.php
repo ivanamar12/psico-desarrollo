@@ -57,8 +57,11 @@
                               id="paciente_id" name="paciente_id">
                               <option selected disabled>Seleccione el paciente</option>
                             </select>
-                            <small class="form-text text-muted">Seleccione al paciente
-                              registrado previamente en el sistema.</small>
+                            <small class="form-text text-muted">
+                              Busque por: <strong>nombre del paciente</strong> o <strong>cédula del
+                                representante</strong>.
+                              Solo se muestran pacientes que no tienen historia clínica registrada.
+                            </small>
                           </div>
 
                           <!-- Código de Historia -->
@@ -754,32 +757,16 @@
     $(function() {
       const pacientes = @json($pacientes);
 
+      // Filtrar solo pacientes sin historia clínica
+      const pacientesSinHistoria = pacientes.filter(p => p.historias_count === 0);
+
       $('#paciente_id').select2({
-        placeholder: 'Seleccione el paciente sin historia',
+        placeholder: 'Seleccione el paciente',
         allowClear: true,
-        minimumInputLength: 1,
-        ajax: {
-          transport: function(params, success) {
-            const term = (params.data.term || '').toLowerCase().trim();
-
-            const filtrados = pacientes.filter(function(p) {
-              if (p.historias_clinicas_count > 0) return false; // solo sin historia
-              return p.nombre.toLowerCase().includes(term) ||
-                p.apellido.toLowerCase().includes(term);
-            });
-
-            const results = filtrados.map(function(p) {
-              return {
-                id: p.id,
-                text: `${p.nombre} ${p.apellido} (${p.id})`
-              };
-            });
-
-            success({
-              results: results
-            });
-          }
-        }
+        data: pacientesSinHistoria.map((p) => ({
+          id: p.id,
+          text: `${p.nombre} ${p.apellido} ${p.representante ? '(CI: ' + p.representante.ci + ')' : '(Sin CI)'}`
+        }))
       });
     });
   </script>
