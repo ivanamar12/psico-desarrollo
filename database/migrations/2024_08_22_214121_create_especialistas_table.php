@@ -24,10 +24,10 @@ class CreateEspecialistasTable extends Migration
       $table->string('fvp', 120);
       $table->foreignId('user_id')
         ->constrained();
+      $table->foreignId('genero_id')
+        ->constrained();
       $table->unsignedBigInteger('especialidad_id')->nullable();
       $table->foreign('especialidad_id')->references('id')->on('especialidads')->onDelete('cascade');
-      $table->unsignedBigInteger('genero_id')->nullable();
-      $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');
       $table->unsignedBigInteger('direccion_id')->nullable();
       $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
       $table->timestamps();

@@ -25,8 +25,8 @@ class CreateParentescosTable extends Migration
       $table->string('tipo_discapacidad', 120);
       $table->string('enfermedad_cronica', 120);
       $table->string('tipo_enfermedad', 120);
-      $table->unsignedBigInteger('genero_id')->nullable();
-      $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');
+      $table->foreignId('genero_id')
+        ->constrained();
       $table->timestamps();
     });
   }

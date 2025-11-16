@@ -24,8 +24,8 @@ class CreateSecretariasTable extends Migration
       $table->string('email');
       $table->foreignId('user_id')
         ->constrained();
-      $table->unsignedBigInteger('genero_id')->nullable();
-      $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');
+      $table->foreignId('genero_id')
+        ->constrained();
       $table->unsignedBigInteger('direccion_id')->nullable();
       $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
       $table->timestamps();
