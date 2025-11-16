@@ -338,6 +338,12 @@
         data: representantesData,
       });
 
+      $('#genero_id').select2({
+        placeholder: "Seleccione su género",
+        allowClear: false,
+        minimumResultsForSearch: -1
+      });
+
       var tablaPaciente = $('#tab-paciente').DataTable({
         language: {
           url: "{{ asset('js/datatables/es-ES.json') }}",
@@ -406,13 +412,63 @@
       });
 
       $("#siguiente2").click(function() {
-        // Validar que al menos haya un familiar si es necesario
+        let valid = true;
+
         if ($('#miembrosContainer').children().length === 0) {
           toastr.warning("Se recomienda agregar al menos un familiar que viva en el hogar.");
         }
 
-        $("#paso2").hide();
-        $("#paso3").show();
+        // Validar cada formulario de familiar
+        $('#miembrosContainer .fila-formulario').each(function() {
+          // Validar campos requeridos básicos
+          $(this).find(':input[required]').each(function() {
+            if ($(this).val() === '' || $(this).val() === null) {
+              $(this).addClass('is-invalid');
+              valid = false;
+            } else {
+              $(this).removeClass('is-invalid');
+            }
+          });
+
+          // Obtener el índice real del formulario
+          const formId = $(this).attr('id');
+          const index = formId.replace('formulario-familiar-', '');
+
+          // Validaciones específicas para campos condicionales
+          const discapacidadSi = $(this).find(`input[name="familiares[${index}][discapacidad]"][value="si"]`)
+            .is(':checked');
+          if (discapacidadSi) {
+            const tipoDiscapacidad = $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`)
+              .val();
+            if (!tipoDiscapacidad || tipoDiscapacidad.trim() === '') {
+              $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`).addClass('is-invalid');
+              toastr.error(`Debe describir el tipo de discapacidad del familiar.`);
+              valid = false;
+            } else {
+              $(this).find(`input[name="familiares[${index}][tipo_discapacidad]"]`).removeClass('is-invalid');
+            }
+          }
+
+          const enfermedadSi = $(this).find(
+            `input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+          if (enfermedadSi) {
+            const tipoEnfermedad = $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).val();
+            if (!tipoEnfermedad || tipoEnfermedad.trim() === '') {
+              $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).addClass('is-invalid');
+              toastr.error(`Debe describir el tipo de enfermedad del familiar.`);
+              valid = false;
+            } else {
+              $(this).find(`input[name="familiares[${index}][tipo_enfermedad]"]`).removeClass('is-invalid');
+            }
+          }
+        });
+
+        if (valid) {
+          $("#paso2").hide();
+          $("#paso3").show();
+        } else {
+          toastr.error("Debe completar todos los campos requeridos de los familiares antes de continuar.");
+        }
       });
 
       $("#regresar2").click(function() {
@@ -502,7 +558,11 @@
         $("#miembrosContainer").append(nuevoFormulario);
 
         // Inicializar Select2 para el nuevo select
-        $(`select[name="familiares[${contadorFamiliares}][genero_id]"]`).select2();
+        $(`select[name="familiares[${contadorFamiliares}][genero_id]"]`).select2({
+          placeholder: "Seleccione su género",
+          allowClear: false,
+          minimumResultsForSearch: -1
+        });
 
         // Establecer el rango de fechas para el nuevo campo
         establecerFechaMaximaFamiliares();
@@ -569,25 +629,31 @@
     // Funciones para mostrar/ocultar campos condicionales
     window.toggleTipoDiscapacidad = function(index) {
       const discapacidadSi = $(`input[name="familiares[${index}][discapacidad]"][value="si"]`).is(':checked');
+      const tipoDiscapacidadInput = $(`#tipo-discapacidad-${index}`);
+      const tipoDiscapacidadContainer = $(`#tipo-discapacidad-container-${index}`);
+
       if (discapacidadSi) {
-        $(`#tipo-discapacidad-container-${index}`).show();
-        $(`#tipo-discapacidad-${index}`).prop('required', true);
+        tipoDiscapacidadContainer.show();
+        tipoDiscapacidadInput.prop('required', true);
       } else {
-        $(`#tipo-discapacidad-container-${index}`).hide();
-        $(`#tipo-discapacidad-${index}`).prop('required', false);
-        $(`#tipo-discapacidad-${index}`).val('');
+        tipoDiscapacidadContainer.hide();
+        tipoDiscapacidadInput.prop('required', false);
+        tipoDiscapacidadInput.val('').removeClass('is-invalid');
       }
     };
 
     window.toggleTipoEnfermedad = function(index) {
       const enfermedadSi = $(`input[name="familiares[${index}][enfermedad_cronica]"][value="si"]`).is(':checked');
+      const tipoEnfermedadInput = $(`#tipo-enfermedad-${index}`);
+      const tipoEnfermedadContainer = $(`#tipo-enfermedad-container-${index}`);
+
       if (enfermedadSi) {
-        $(`#tipo-enfermedad-container-${index}`).show();
-        $(`#tipo-enfermedad-${index}`).prop('required', true);
+        tipoEnfermedadContainer.show();
+        tipoEnfermedadInput.prop('required', true);
       } else {
-        $(`#tipo-enfermedad-container-${index}`).hide();
-        $(`#tipo-enfermedad-${index}`).prop('required', false);
-        $(`#tipo-enfermedad-${index}`).val('');
+        tipoEnfermedadContainer.hide();
+        tipoEnfermedadInput.prop('required', false);
+        tipoEnfermedadInput.val('').removeClass('is-invalid');
       }
     };
 

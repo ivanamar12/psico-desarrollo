@@ -422,6 +422,14 @@
         ]
       });
 
+      $('#genero_id').select2({
+        placeholder: "Seleccione su género",
+        allowClear: false,
+        minimumResultsForSearch: -1,
+        width: '100%',
+        dropdownParent: $('#new-representante')
+      });
+
       $("#paso1").show();
       $("#paso2").hide();
 
@@ -474,6 +482,7 @@
               $('#estado_id').val(null).trigger('change');
               $('#municipio_id').val(null).trigger('change');
               $('#parroquia_id').val(null).trigger('change');
+              $('#genero_id').val(null).trigger('change');
 
               $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
@@ -518,6 +527,14 @@
         $('#telefono2').val(representante.telefono);
         $('#email2').val(representante.email);
         $('#genero_id2').val(representante.genero_id).trigger('change');
+
+        $('#genero_id2').select2({
+          placeholder: "Seleccione su género",
+          allowClear: false,
+          minimumResultsForSearch: -1,
+          width: '100%',
+          dropdownParent: $('#modalEditarRepresentante')
+        });
 
         if (representante.direccion) {
           const estado = estados.find(e => e.id == representante.direccion.estado_id);

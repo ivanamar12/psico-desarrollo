@@ -45,7 +45,6 @@ document.addEventListener("DOMContentLoaded", function () {
 function validarTexto(input) {
   let texto = input.value.replace(/[^a-zA-ZÁÉÍÓÚÑáéíóúñ\s]/g, "");
   texto = texto.toLowerCase().replace(/\b\w/g, (letra) => letra.toUpperCase());
-  if (texto.length > 50) texto = texto.slice(0, 50);
   input.value = texto;
 }
 

@@ -454,6 +454,14 @@
         ]
       });
 
+      $('#genero_id').select2({
+        placeholder: "Seleccione su género",
+        allowClear: false,
+        minimumResultsForSearch: -1,
+        width: '100%',
+        dropdownParent: $('#new-secretaria')
+      });
+
       $("#paso1").show();
       $("#paso2").hide();
 
@@ -506,6 +514,7 @@
               $('#estado_id').val(null).trigger('change');
               $('#municipio_id').val(null).trigger('change');
               $('#parroquia_id').val(null).trigger('change');
+              $('#genero_id').val(null).trigger('change');
 
               $(".email-verificar, .telefono-verificar, .ci-verificar").removeClass("is-valid is-invalid");
 
@@ -552,6 +561,14 @@
         $('#telefono2').val(secretaria.telefono);
         $('#email2').val(secretaria.email);
         $('#genero_id2').val(secretaria.genero_id).trigger('change');
+
+        $('#genero_id2').select2({
+          placeholder: "Seleccione su género",
+          allowClear: false,
+          minimumResultsForSearch: -1,
+          width: '100%',
+          dropdownParent: $('#modalEditarSecretaria')
+        });
 
         if (secretaria.direccion) {
           const estado = estados.find(e => e.id == secretaria.direccion.estado_id);
