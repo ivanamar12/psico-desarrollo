@@ -100,9 +100,17 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Aplicación de la prueba</h3>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Aplicación de la prueba
+          </h3>
         </div>
+
         <div class="modal-body">
           <!-- Barra de progreso -->
           <div class="progress" style="height: 20px;">
@@ -126,8 +134,17 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Resultados de la prueba</h3>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Resultados de la prueba
+          </h3>
         </div>
+
         <div class="modal-body">
           <div id="contenidoPruebaVer">
             <p>Cargando resultados...</p>
@@ -442,19 +459,19 @@
           ) {
             contenido += `<td>
                 <label>Derecha <input type="checkbox" name="lateralidad_${item.id}" 
-                  value="derecha" ${lateralidadGuardada.includes("derecha") ? "checked" : ""}></label>
+                  value="derecha" ${lateralidadGuardada.includes("derecha") ? "checked" : ""} required></label>
                 <label>Izquierda <input type="checkbox" name="lateralidad_${item.id}" 
-                  value="izquierda" ${lateralidadGuardada.includes("izquierda") ? "checked" : ""}></label>
+                  value="izquierda" ${lateralidadGuardada.includes("izquierda") ? "checked" : ""} required></label>
               </td>`;
           }
 
           if (subescala.sub_escala === "Atencion" || subescala.sub_escala === "Fluidez Verbal") {
             contenido +=
-              `<td><input class="form-control input-numerico" type="number" name="respuesta_${item.id}" min="0" value="${respuestaGuardada}"></td>`;
+              `<td><input class="form-control input-numerico" type="number" name="respuesta_${item.id}" min="0" value="${respuestaGuardada}" required></td>`;
           } else {
             contenido += `<td>
-                <label>Sí <input type="radio" name="respuesta_${item.id}" value="si" ${respuestaGuardada === "si" ? "checked" : ""}></label>
-                <label>No <input type="radio" name="respuesta_${item.id}" value="no" ${respuestaGuardada === "no" ? "checked" : ""}></label>
+                <label>Sí <input type="radio" name="respuesta_${item.id}" value="si" ${respuestaGuardada === "si" ? "checked" : ""} required></label>
+                <label>No <input type="radio" name="respuesta_${item.id}" value="no" ${respuestaGuardada === "no" ? "checked" : ""} required></label>
               </td>`;
           }
 
@@ -487,30 +504,89 @@
         $("#progresoTexto").text(`Paso ${step + 1} de ${subescalas.length}`);
       }
 
-      function validarObservaciones() {
+      function validarTodosLosCampos() {
         let subescala = subescalas[currentStep];
+        let todosCompletos = true;
+        let mensajesError = [];
+
+        // Validar campo de observaciones
         let idSanitizado = sanitizarNombreSubescala(subescala.sub_escala);
         let campoObservaciones = $(`#observaciones_${idSanitizado}`);
 
-        if (campoObservaciones.length === 0) {
-          console.warn(
-            "Campo de observaciones no encontrado:",
-            `observaciones_${idSanitizado}`
-          );
-          return true;
+        if (campoObservaciones.length > 0) {
+          let observaciones = campoObservaciones.val().trim();
+          if (!observaciones) {
+            mensajesError.push("Las observaciones son obligatorias");
+            todosCompletos = false;
+            campoObservaciones.addClass('is-invalid');
+          } else {
+            campoObservaciones.removeClass('is-invalid');
+          }
         }
 
-        let observaciones = campoObservaciones.val().trim();
+        // Validar inputs de tipo radio (Sí/No)
+        $(`input[type=radio][name^="respuesta_"]`).each(function() {
+          let name = $(this).attr('name');
+          let checked = $(`input[name="${name}"]:checked`).length > 0;
 
-        if (!observaciones) {
-          toastr.error(
-            "Por favor, complete las observaciones antes de continuar.",
-            "Campo obligatorio"
-          );
-          return false;
-        } else {
-          return true;
+          if (!checked) {
+            let itemId = name.split('_')[1];
+            let itemNombre = subescala.items.find((i) => i.id == itemId)?.item;
+            mensajesError.push(`El ítem "${itemNombre}" requiere una respuesta (Sí/No)`);
+            todosCompletos = false;
+            $(`input[name="${name}"]`).closest('td').addClass('bg-danger');
+          } else {
+            $(`input[name="${name}"]`).closest('td').removeClass('bg-danger');
+          }
+        });
+
+        // Validar inputs numéricos (Atención, Fluidez Verbal)
+        $(`input[type=number].input-numerico`).each(function() {
+          let valor = $(this).val().trim();
+          if (valor === '' || isNaN(valor)) {
+            let name = $(this).attr('name');
+            let itemId = name.split('_')[1];
+            let itemNombre = subescala.items.find((i) => i.id == itemId)?.item;
+            mensajesError.push(`El ítem "${itemNombre}" requiere un valor numérico`);
+            todosCompletos = false;
+            $(this).addClass('is-invalid');
+          } else {
+            $(this).removeClass('is-invalid');
+          }
+        });
+
+        // Validar checkboxes de lateralidad (si aplica)
+        if (["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo"].includes(subescala.sub_escala)) {
+          $(`input[type=checkbox][name^="lateralidad_"]`).each(function() {
+            let name = $(this).attr('name');
+            let checked = $(`input[name="${name}"]:checked`).length > 0;
+
+            if (!checked) {
+              let itemId = name.split('_')[1];
+              let itemNombre = subescala.items.find((i) => i.id == itemId)?.item;
+              mensajesError.push(`El ítem "${itemNombre}" requiere seleccionar lateralidad (Derecha/Izquierda)`);
+              todosCompletos = false;
+              $(this).closest('td').addClass('bg-danger');
+            } else {
+              $(this).closest('td').removeClass('bg-danger');
+            }
+          });
         }
+
+        // Mostrar errores si los hay
+        if (!todosCompletos) {
+          let mensajeUnico = mensajesError.length > 0 ? mensajesError[0] : 'Complete todos los campos requeridos';
+          toastr.error(mensajeUnico, "Campos incompletos", {
+            timeOut: 5000,
+          });
+
+          // Si hay múltiples errores, mostrar en consola para debug
+          if (mensajesError.length > 1) {
+            console.log("Todos los errores:", mensajesError);
+          }
+        }
+
+        return todosCompletos;
       }
 
       function guardarRespuestasActuales() {
@@ -572,7 +648,7 @@
       }
 
       $("#btnSiguiente").click(function() {
-        if (validarObservaciones()) {
+        if (validarTodosLosCampos()) {
           guardarRespuestasActuales();
           currentStep++;
           mostrarSubescala(currentStep);
@@ -580,7 +656,7 @@
       });
 
       $("#btnAnterior").click(function() {
-        if (validarObservaciones()) {
+        if (validarTodosLosCampos()) {
           guardarRespuestasActuales();
           currentStep--;
           mostrarSubescala(currentStep);
@@ -590,7 +666,7 @@
       $("#btnFinalizar")
         .off("click")
         .on("click", function() {
-          if (validarObservaciones()) {
+          if (validarTodosLosCampos()) {
             guardarRespuestasActuales();
 
             $("#btnFinalizar").prop('disabled', true).html(
