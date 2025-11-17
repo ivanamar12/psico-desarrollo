@@ -22,12 +22,9 @@ class CreateSecretariasTable extends Migration
       $table->string('grado', 120);
       $table->string('telefono', 12)->unique();
       $table->string('email');
-      $table->foreignId('user_id')
-        ->constrained();
-      $table->foreignId('genero_id')
-        ->constrained();
-      $table->unsignedBigInteger('direccion_id')->nullable();
-      $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
+      $table->foreignId('user_id')->constrained();
+      $table->foreignId('genero_id')->constrained();
+      $table->foreignId('direccion_id')->constrained();
       $table->timestamps();
     });
   }

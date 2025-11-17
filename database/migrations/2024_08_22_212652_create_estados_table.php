@@ -6,28 +6,28 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateEstadosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('estados', function (Blueprint $table) {
-            $table->id();
-            $table->string('estado',30);
-            $table->string('iso_3166-2',30);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('estados', function (Blueprint $table) {
+      $table->id();
+      $table->string('estado', 30);
+      $table->string('iso_3166-2', 30);
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('estados');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('estados');
+  }
 }

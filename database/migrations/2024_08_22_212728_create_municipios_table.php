@@ -6,32 +6,30 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateMunicipiosTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
-    public function up()
-    {
-        Schema::create('municipios', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('estado_id')
-                  ->nullable()
-                  ->constrained('estados')
-                  ->cascadeOnUpdate()
-                  ->cascadeOnDelete();
-            $table->string('municipio',200);
-            $table->timestamps();
-        });
-    }
+  /**
+   * Run the migrations.
+   *
+   * @return void
+   */
+  public function up()
+  {
+    Schema::create('municipios', function (Blueprint $table) {
+      $table->id();
+      $table->foreignId('estado_id')
+        ->nullable()
+        ->constrained();
+      $table->string('municipio', 200);
+      $table->timestamps();
+    });
+  }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::dropIfExists('municipios');
-    }
+  /**
+   * Reverse the migrations.
+   *
+   * @return void
+   */
+  public function down()
+  {
+    Schema::dropIfExists('municipios');
+  }
 }

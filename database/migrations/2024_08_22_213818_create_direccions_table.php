@@ -15,13 +15,10 @@ class CreateDireccionsTable extends Migration
   {
     Schema::create('direccions', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('estado_id')->nullable();
-      $table->foreign('estado_id')->references('id')->on('estados')->onDelete('cascade');
-      $table->unsignedBigInteger('municipio_id')->nullable();
-      $table->foreign('municipio_id')->references('id')->on('municipios')->onDelete('cascade');
-      $table->unsignedBigInteger('parroquia_id')->nullable();
-      $table->foreign('parroquia_id')->references('id')->on('parroquias')->onDelete('cascade');
       $table->string('sector', 150);
+      $table->foreignId('estado_id')->constrained();
+      $table->foreignId('municipio_id')->constrained();
+      $table->foreignId('parroquia_id')->constrained();
       $table->timestamps();
     });
   }

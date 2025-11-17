@@ -18,10 +18,8 @@ class CreatePacientesTable extends Migration
       $table->string('nombre', 120);
       $table->string('apellido', 120);
       $table->date('fecha_nac');
-      $table->foreignId('genero_id')
-        ->constrained();
-      $table->unsignedBigInteger('representante_id')->nullable();
-      $table->foreign('representante_id')->references('id')->on('representantes')->onDelete('cascade');
+      $table->foreignId('genero_id')->constrained();
+      $table->foreignId('representante_id')->constrained();
       $table->unsignedBigInteger('datoseconomico_id')->nullable();
       $table->foreign('datoseconomico_id')->references('id')->on('datos_economicos')->onDelete('cascade');
       $table->timestamps();

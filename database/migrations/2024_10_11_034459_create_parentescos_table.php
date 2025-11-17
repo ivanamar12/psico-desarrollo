@@ -15,8 +15,6 @@ class CreateParentescosTable extends Migration
   {
     Schema::create('parentescos', function (Blueprint $table) {
       $table->id();
-      $table->unsignedBigInteger('paciente_id')->nullable();
-      $table->foreign('paciente_id')->references('id')->on('pacientes')->onDelete('cascade');
       $table->string('nombre', 120);
       $table->string('apellido', 120);
       $table->date('fecha_nac');
@@ -25,8 +23,8 @@ class CreateParentescosTable extends Migration
       $table->string('tipo_discapacidad', 120);
       $table->string('enfermedad_cronica', 120);
       $table->string('tipo_enfermedad', 120);
-      $table->foreignId('genero_id')
-        ->constrained();
+      $table->foreignId('paciente_id')->constrained();
+      $table->foreignId('genero_id')->constrained();
       $table->timestamps();
     });
   }

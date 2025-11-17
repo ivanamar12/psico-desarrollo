@@ -22,14 +22,10 @@ class CreateEspecialistasTable extends Migration
       $table->string('telefono', 12)->unique();
       $table->string('email');
       $table->string('fvp', 120);
-      $table->foreignId('user_id')
-        ->constrained();
-      $table->foreignId('genero_id')
-        ->constrained();
-      $table->unsignedBigInteger('especialidad_id')->nullable();
-      $table->foreign('especialidad_id')->references('id')->on('especialidads')->onDelete('cascade');
-      $table->unsignedBigInteger('direccion_id')->nullable();
-      $table->foreign('direccion_id')->references('id')->on('direccions')->onDelete('cascade');
+      $table->foreignId('user_id')->constrained();
+      $table->foreignId('genero_id')->constrained();
+      $table->foreignId('especialidad_id')->constrained();
+      $table->foreignId('direccion_id')->constrained();
       $table->timestamps();
     });
   }

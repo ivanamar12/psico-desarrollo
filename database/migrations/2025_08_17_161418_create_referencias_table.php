@@ -23,10 +23,8 @@ class CreateReferenciasTable extends Migration
       $table->text('antecedentes')->nullable();
       $table->text('indicadores_psicologicos')->nullable();
       $table->text('sugerencias')->nullable();
-      $table->foreignId('especialista_id')
-        ->constrained('especialistas');
-      $table->foreignId('paciente_id')
-        ->constrained('pacientes');
+      $table->foreignId('especialista_id')->constrained();
+      $table->foreignId('paciente_id')->constrained();
       $table->timestamps();
     });
   }

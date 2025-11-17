@@ -27,10 +27,8 @@ class CreateInformesTable extends Migration
       $table->text('afectiva_social')->nullable();
       $table->text('conclusion')->nullable();
       $table->text('recomendaciones')->nullable();
-      $table->foreignId('especialista_id')
-        ->constrained('especialistas');
-      $table->foreignId('paciente_id')
-        ->constrained('pacientes');
+      $table->foreignId('especialista_id')->constrained();
+      $table->foreignId('paciente_id')->constrained();
       $table->timestamps();
     });
   }
