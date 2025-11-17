@@ -9,7 +9,6 @@ class Kernel extends ConsoleKernel
 {
   protected function schedule(Schedule $schedule)
   {
-    $schedule->command('notificar:citas')->dailyAt('07:00');
     $schedule->command('ban:delete-expired')->everyMinute();
   }
 
