@@ -117,12 +117,16 @@
       aria-hidden="true">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
-
           <div class="modal-header">
-            <h3 class="modal-title w-100 text-center" style="color: white;">Agendar Cita</h3>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <div style="width: 100%; display: flex; justify-content: end">
+              <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+                style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+              Agendar Cita
+            </h3>
           </div>
 
           <div class="modal-body">
@@ -135,7 +139,10 @@
                   name="paciente_id">
                   <option selected disabled>Seleccione el paciente</option>
                   @foreach ($pacientes as $paciente)
-                    <option value="{{ $paciente->id }}">{{ $paciente->nombre }} {{ $paciente->apellido }}</option>
+                    <option value="{{ $paciente->id }}">
+                      {{ "P: {$paciente->nombre} {$paciente->apellido}" }} |
+                      {{ "R: {$paciente->representante->nombre} {$paciente->representante->apellido} {$paciente->representante->ci}" }}
+                    </option>
                   @endforeach
                 </select>
                 <small class="form-text text-muted">Busque al paciente por su nombre.</small>
@@ -144,8 +151,8 @@
               <!-- Especialista -->
               <div class="form-group">
                 <label>Especialista <span class="text-danger">*</span></label>
-                <select class="form-control form-control-solid select2" required style="width: 100%;" id="especialista_id"
-                  name="especialista_id">
+                <select class="form-control form-control-solid select2" required style="width: 100%;"
+                  id="especialista_id" name="especialista_id">
                   <option selected disabled>Seleccione el especialista</option>
                   @foreach ($especialistas as $especialista)
                     <option value="{{ $especialista->id }}">{{ $especialista->nombre }} {{ $especialista->apellido }}
@@ -186,11 +193,17 @@
       <div class="modal-dialog" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h3 class="modal-title w-100 text-center" style="color: white;">Descripción del estado de la cita</h3>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">&times;</span>
-            </button>
+            <div style="width: 100%; display: flex; justify-content: end">
+              <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+                style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+              Descripción del estado de la cita
+            </h3>
           </div>
+
           <div class="modal-body">
             <p>Selecciona el estado de la cita:</p>
             <div class="form-check">
@@ -382,7 +395,6 @@
               // ✅ Validar que el paciente no tenga otra cita el mismo día
               const pacienteTieneCita = citasDelDia.some(event => {
                 if (!event.extendedProps || !event.extendedProps.paciente_id) {
-                  console.warn('Cita sin paciente_id:', event);
                   return false;
                 }
                 return event.extendedProps.paciente_id == pacienteId;
@@ -443,8 +455,18 @@
                   reloadEvents();
                 },
                 error: function(xhr) {
-                  toastr.error('Error al crear la cita');
-                  console.error(xhr);
+                  if (xhr.status === 422) {
+                    const errors = xhr.responseJSON.errors;
+                    for (const field in errors) {
+                      errors[field].forEach(error => {
+                        toastr.error(error, 'Error', {
+                          timeOut: 5000
+                        });
+                      });
+                    }
+                  } else {
+                    toastr.error('Error al crear la cita');
+                  }
                 }
               });
             }
@@ -562,8 +584,18 @@
           reloadEvents();
         },
         error: function(xhr) {
-          console.error(xhr);
-          toastr.error('Error al actualizar el estado de la cita');
+          if (xhr.status === 422) {
+            const errors = xhr.responseJSON.errors;
+            for (const field in errors) {
+              errors[field].forEach(error => {
+                toastr.error(error, 'Error', {
+                  timeOut: 5000
+                });
+              });
+            }
+          } else {
+            toastr.error('Error al actualizar el estado de la cita');
+          }
         }
       });
     }

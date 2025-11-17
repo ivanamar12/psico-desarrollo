@@ -165,25 +165,12 @@ Route::middleware('auth')->group(function () {
   /**
    * Citas
    */
-
-  // Ruta para pacientes y especialistas
-  Route::get('citas', [CitaController::class, 'index'])
-    ->name('citas.index');
+  Route::resource('citas', CitaController::class)
+    ->except(['create', 'destroy', 'show']);
 
   // Ruta para mostrar las citas 
   Route::get('citas/calendario', [CitaController::class, 'calendario'])
     ->name('citas.calendario');
-
-  // Ruta para agendar nueva cita
-  Route::post('citas', [CitaController::class, 'store'])
-    ->name('citas.store');
-
-  Route::get('citas/{id}/edit', [CitaController::class, 'edit'])
-    ->name('citas.edit');
-
-  // Ruta para actualizar el status de la cita
-  Route::put('citas/{id}', [CitaController::class, 'update'])
-    ->name('citas.update');
 
   // Pdfs
 

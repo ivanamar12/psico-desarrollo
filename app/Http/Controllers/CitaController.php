@@ -49,7 +49,7 @@ class CitaController extends Controller
     }
 
     $especialistas = Especialista::all();
-    $pacientes = Paciente::all();
+    $pacientes = Paciente::with('representante')->get();
 
     $citasQuery = Cita::query();
 
@@ -102,46 +102,38 @@ class CitaController extends Controller
         'status' => $status,
       ]);
 
-      return response()->json(['message' => 'Cita creada con éxito', 'cita' => $cita]);
+      return response()->json(['message' => 'Cita creada con éxito!', 'cita' => $cita]);
     } catch (\Exception $e) {
       return response()->json(['error' => 'Error al crear la cita: ' . $e->getMessage()], 500);
     }
   }
 
-  public function edit($id)
+  public function edit(Cita $cita)
   {
-    try {
-      $cita = Cita::with(['paciente.representante', 'especialista'])->findOrFail($id);
-      return response()->json([
-        'id' => $cita->id,
-        'hora' => $cita->hora,
-        'paciente_nombre' => $cita->paciente->nombre . ' ' . $cita->paciente->apellido,
-        'especialista_nombre' => $cita->especialista->nombre . ' ' . $cita->especialista->apellido,
-        'representante_nombre' => $cita->paciente->representante
-          ? $cita->paciente->representante->nombre . ' ' . $cita->paciente->representante->apellido
-          : 'No registrado',
-        'status' => $cita->status,
-      ]);
-    } catch (\Exception $e) {
-      return response()->json(['error' => 'Cita no encontrada'], 404);
-    }
+    $cita->load(['paciente.representante', 'especialista']);
+
+    return response()->json([
+      'id' => $cita->id,
+      'hora' => $cita->hora,
+      'paciente_nombre' => $cita->paciente->nombre . ' ' . $cita->paciente->apellido,
+      'especialista_nombre' => $cita->especialista->nombre . ' ' . $cita->especialista->apellido,
+      'representante_nombre' => $cita->paciente->representante
+        ? $cita->paciente->representante->nombre . ' ' . $cita->paciente->representante->apellido
+        : 'No registrado',
+      'status' => $cita->status,
+    ]);
   }
 
-  public function update(Request $request, $id)
+  public function update(Request $request, Cita $cita)
   {
-    try {
-      $request->validate([
-        'status' => 'required|string|in:confirmada,cancelada,asistio,no asistio',
-      ]);
-      $cita = Cita::findOrFail($id);
+    $request->validate([
+      'status' => 'required|string|in:confirmada,cancelada,asistio,no asistio',
+    ]);
 
-      $cita->status = $request->status;
-      $cita->save();
+    $cita->status = $request->status;
+    $cita->save();
 
-      return response()->json(['message' => 'Estado de la cita actualizado con éxito']);
-    } catch (\Exception $e) {
-      return response()->json(['error' => 'Error al actualizar el estado de la cita: ' . $e->getMessage()], 500);
-    }
+    return response()->json(['message' => 'Estado de la cita actualizado con éxito!']);
   }
 
   /**
