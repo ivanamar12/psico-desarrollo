@@ -168,11 +168,10 @@
                 <input type="time" class="form-control" id="hora" name="hora" required
                   onchange="validateHour()">
                 <small class="form-text text-muted">
-                  El horario disponible es de <strong>7:30 a.m. a 11:00 p.m.</strong> y de <strong>1:00 p.m. a 3:00
+                  El horario disponible es de <strong>7:30 a.m. a 11:00 a.m.</strong> y de <strong>1:00 p.m. a 3:00
                     p.m.</strong>
                 </small>
               </div>
-
             </form>
           </div>
 
@@ -180,7 +179,6 @@
             <button type="button" class="btn btn-regresar" data-dismiss="modal" style="color: white;">Cerrar</button>
             <button type="button" class="btn btn-custom" id="saveEvent" style="color: white;">Agendar Cita</button>
           </div>
-
         </div>
       </div>
     </section>
@@ -429,7 +427,7 @@
 
               if (conflictoHora) {
                 toastr.warning(
-                  'Este especialista ya tiene una cita en esta hora o muy cercana. Deben pasar al menos 1h30 entre sus citas.'
+                  'Este especialista ya tiene una cita en esta hora o muy cercana. Deben pasar al menos 1h 30m entre sus citas.'
                 );
                 $('#calendar').fullCalendar('unselect');
                 return;
@@ -509,11 +507,6 @@
                 $('#saveStatusButton').show();
               } else if (data.status === 'pendiente') {
                 $('#asistioRadio, #noAsistioRadio').closest('.form-check').hide();
-                if (!citaYaPaso) {
-                  $('#statusModal .modal-body').append(
-                    '<p class="text-info"><small>Las opciones "Asistió" y "No Asistió" estarán disponibles después de la fecha y hora de la cita.</small></p>'
-                  );
-                }
                 $('#saveStatusButton').show();
               } else {
                 $('.form-check').hide();
