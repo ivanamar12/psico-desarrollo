@@ -482,24 +482,38 @@
             type: 'GET',
             success: function(data) {
               $('#statusModal .modal-body').prepend(`
-                <p><strong>Hora:</strong> ${data.hora}</p>
+                <p><strong>Fecha y Hora:</strong> ${event.start.format('DD/MM/YYYY')} ${data.hora}</p>
                 <p><strong>Representante:</strong> ${data.representante_nombre}</p>
                 <p><strong>Paciente:</strong> ${data.paciente_nombre}</p>
                 <p><strong>Especialista:</strong> ${data.especialista_nombre}</p>
-              `);
+            `);
 
-              // Reset radios
+              // Reset radios y mostrar todos inicialmente
               $('#confirmRadio, #cancelRadio, #asistioRadio, #noAsistioRadio').prop('checked', false);
+              $('.form-check').show();
               $('#errorMessage').hide();
 
-              // Mostrar opciones según estado
+              const ahora = moment();
+              const fechaHoraCita = moment(event.start);
+              const citaYaPaso = fechaHoraCita.isBefore(ahora);
+
+              // Mostrar/ocultar opciones según estado y tiempo
               if (data.status === 'confirmada') {
                 $('#confirmRadio, #cancelRadio').closest('.form-check').hide();
-                $('#asistioRadio, #noAsistioRadio').closest('.form-check').show();
+                if (!citaYaPaso) {
+                  $('#asistioRadio').closest('.form-check').hide();
+                  $('#statusModal .modal-body').append(
+                    '<p class="text-info"><small>La opción "Asistió" estará disponible después de la fecha y hora de la cita.</small></p>'
+                  );
+                }
                 $('#saveStatusButton').show();
               } else if (data.status === 'pendiente') {
-                $('#confirmRadio, #cancelRadio').closest('.form-check').show();
                 $('#asistioRadio, #noAsistioRadio').closest('.form-check').hide();
+                if (!citaYaPaso) {
+                  $('#statusModal .modal-body').append(
+                    '<p class="text-info"><small>La opción "Asistió" estará disponible después de la fecha y hora de la cita.</small></p>'
+                  );
+                }
                 $('#saveStatusButton').show();
               } else {
                 $('.form-check').hide();
@@ -521,8 +535,18 @@
               });
             },
             error: function(xhr) {
-              toastr.error('Error al obtener los detalles de la cita');
-              console.error(xhr);
+              if (xhr.status === 422) {
+                const errors = xhr.responseJSON.errors;
+                for (const field in errors) {
+                  errors[field].forEach(error => {
+                    toastr.error(error, 'Error', {
+                      timeOut: 5000
+                    });
+                  });
+                }
+              } else {
+                toastr.error('Error al obtener los detalles de la cita');
+              }
             }
           });
         }
@@ -557,8 +581,18 @@
           callback(events);
         },
         error: function(xhr) {
-          console.error(xhr);
-          toastr.error('Error al cargar las citas.');
+          if (xhr.status === 422) {
+            const errors = xhr.responseJSON.errors;
+            for (const field in errors) {
+              errors[field].forEach(error => {
+                toastr.error(error, 'Error', {
+                  timeOut: 5000
+                });
+              });
+            }
+          } else {
+            toastr.error('Error al cargar las citas.');
+          }
         }
       });
     }

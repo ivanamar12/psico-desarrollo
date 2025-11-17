@@ -130,6 +130,17 @@ class CitaController extends Controller
       'status' => 'required|string|in:confirmada,cancelada,asistio,no asistio',
     ]);
 
+    if ($request->status === 'asistio') {
+      $fechaHoraCita = $cita->fecha_consulta . ' ' . $cita->hora;
+      $now = now();
+
+      if (strtotime($fechaHoraCita) > strtotime($now)) {
+        return response()->json([
+          'error' => 'No se puede marcar como "asistió" una cita que aún no ha ocurrido.'
+        ], 422);
+      }
+    }
+
     $cita->status = $request->status;
     $cita->save();
 
