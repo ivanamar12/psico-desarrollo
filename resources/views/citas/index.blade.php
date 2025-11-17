@@ -501,9 +501,9 @@
               if (data.status === 'confirmada') {
                 $('#confirmRadio, #cancelRadio').closest('.form-check').hide();
                 if (!citaYaPaso) {
-                  $('#asistioRadio').closest('.form-check').hide();
+                  $('#asistioRadio, #noAsistioRadio').closest('.form-check').hide();
                   $('#statusModal .modal-body').append(
-                    '<p class="text-info"><small>La opción "Asistió" estará disponible después de la fecha y hora de la cita.</small></p>'
+                    '<p class="text-info"><small>Las opciones "Asistió" y "No Asistió" estarán disponibles después de la fecha y hora de la cita.</small></p>'
                   );
                 }
                 $('#saveStatusButton').show();
@@ -511,7 +511,7 @@
                 $('#asistioRadio, #noAsistioRadio').closest('.form-check').hide();
                 if (!citaYaPaso) {
                   $('#statusModal .modal-body').append(
-                    '<p class="text-info"><small>La opción "Asistió" estará disponible después de la fecha y hora de la cita.</small></p>'
+                    '<p class="text-info"><small>Las opciones "Asistió" y "No Asistió" estarán disponibles después de la fecha y hora de la cita.</small></p>'
                   );
                 }
                 $('#saveStatusButton').show();
