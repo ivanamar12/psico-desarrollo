@@ -50,19 +50,15 @@ class HistoriaClinicaController extends Controller
     $historiaDesarrollos = HistoriaDesarrollo::all();
     $historiaEscolares = HistoriaEscolar::all();
     $parentescos = Parentesco::all();
-    $pacientes = Paciente::select(
-      'pacientes.id',
-      'pacientes.nombre',
-      'pacientes.apellido',
-      'pacientes.representante_id',
-      DB::raw('COUNT(historia_clinicas.id) as historias_count')
-    )
-      ->leftJoin('historia_clinicas', 'pacientes.id', '=', 'historia_clinicas.paciente_id')
-      ->groupBy('pacientes.id', 'pacientes.nombre', 'pacientes.apellido', 'pacientes.representante_id')
+    $pacientes = Paciente::withCount('historiaClinicas')
       ->with(['representante' => function ($query) {
         $query->select('id', 'ci');
       }])
-      ->get();
+      ->get()
+      ->map(function ($paciente) {
+        $paciente->historias_count = $paciente->historia_clinicas_count;
+        return $paciente;
+      });
 
     return view('historias.index', [
       'antecedentesMedicos' => $antecedentesMedicos,
