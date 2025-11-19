@@ -757,8 +757,12 @@
     $(function() {
       const pacientes = @json($pacientes);
 
-      // Filtrar solo pacientes sin historia clínica
-      const pacientesSinHistoria = pacientes.filter(p => p.historias_count === 0);
+      const pacientesSinHistoria = pacientes.filter(p => {
+        const count = typeof p.historias_count === 'string' ?
+          parseInt(p.historias_count) :
+          p.historias_count;
+        return count === 0;
+      });
 
       $('#paciente_id').select2({
         placeholder: 'Seleccione el paciente',
