@@ -207,10 +207,6 @@ Route::middleware('auth')->group(function () {
   Route::post('historias', [HistoriaClinicaController::class, 'store'])
     ->name('historias.store');
 
-  // Ruta para eliminar una historia
-  Route::delete('historias/{id}', [HistoriaClinicaController::class, 'destroy'])
-    ->name('historias.destroy');
-
   // Ruta para descargar reporte de una historia clínica
   Route::get('historias/report/{id}', [HistoriaClinicaController::class, 'report'])
     ->name('historias.report');

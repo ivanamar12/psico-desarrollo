@@ -723,28 +723,6 @@
     </section>
   </section>
 
-  <!-- Modal de Confirmación -->
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
 @endsection
 
 @section('js')
@@ -1161,44 +1139,6 @@
             }
           }
         });
-      });
-    });
-  </script>
-
-  {{-- Eliminar historia --}}
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    var id;
-    $(document).on('click', '.delete', function() {
-      id = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      $.ajax({
-        url: "/historias/" + id,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.warning('El registro se eliminó correctamente', 'Eliminar Registro', {
-            timeOut: 5000
-          });
-          $('#tab-historias').DataTable().ajax.reload();
-        },
-        error: function(xhr, status, error) {
-          console.error('Error al eliminar el registro:', error);
-          toastr.error('No se pudo eliminar el registro', 'Error', {
-            timeOut: 5000
-          });
-        }
       });
     });
   </script>

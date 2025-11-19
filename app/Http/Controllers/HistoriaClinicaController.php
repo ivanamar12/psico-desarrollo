@@ -38,7 +38,6 @@ class HistoriaClinicaController extends Controller
       return DataTables::of($historias)
         ->addColumn('action', function ($historia) {
           $acciones = '<a href="' . route('historias.report', $historia->id) . '" class="btn btn-primary btn-raised btn-xs"><i class="zmdi zmdi-file-text"></i> PDF Completo</a>';
-          $acciones .= '<button type="button" name="delete" id="' . $historia->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
           return $acciones;
         })
         ->rawColumns(['action'])
@@ -174,18 +173,6 @@ class HistoriaClinicaController extends Controller
       'success' => true,
       'message' => 'Registro creado exitosamente.'
     ], 201);
-  }
-
-  public function destroy($id)
-  {
-    $historia = HistoriaClinica::find($id);
-    if (!$historia) {
-      return response()->json(['message' => 'Historia clínica no encontrada'], 404);
-    }
-
-    $historia->delete();
-
-    return response()->json(['success' => true]);
   }
 
   public function report($id)
