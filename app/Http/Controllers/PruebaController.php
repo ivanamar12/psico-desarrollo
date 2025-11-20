@@ -26,10 +26,6 @@ class PruebaController extends BaseController
         ->addColumn('action', function ($prueba) {
           $acciones = '';
 
-          if ($prueba->tipo !== 'Estandarizada') {
-            $acciones .= '<button type="button" name="delete" id="' . $prueba->id . '" class="delete btn btn-danger btn-raised btn-xs"><i class="zmdi zmdi-delete"></i></button>';
-          }
-
           $acciones .= '<button type="button" class="btn btn-info btn-raised btn-xs ver-prueba" data-id="' . $prueba->id . '"><i class="zmdi zmdi-eye"></i></button>';
 
           return $acciones;
@@ -110,21 +106,5 @@ class PruebaController extends BaseController
         ", [$id]);
 
     return response()->json($data);
-  }
-
-  public function destroy($id)
-  {
-    $prueba = Prueba::find($id);
-    if (!$prueba) {
-      return response()->json(['message' => 'Prueba no encontrada'], 404);
-    }
-
-    if ($prueba->tipo === 'Estandarizada') {
-      return response()->json(['message' => 'No se puede eliminar una prueba Estandarizada'], 403);
-    }
-
-    $prueba->delete();
-
-    return response()->json(['success' => true]);
   }
 }

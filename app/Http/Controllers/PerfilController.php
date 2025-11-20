@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Notifications\PasswordUpdatedNotification;
-use DataTables;
+use Yajra\DataTables\Facades\DataTables;
 
 class PerfilController extends Controller
 {
@@ -63,7 +63,6 @@ class PerfilController extends Controller
     return response()->json(['success' => true, 'message' => 'Perfil actualizado correctamente']);
   }
 
-
   public function list()
   {
     return datatables()->of(
@@ -84,21 +83,15 @@ class PerfilController extends Controller
       })
       ->addColumn('action', function ($usuario) {
         return '
-            <button class="btn btn-info btn-raised btn-xs ver-usuario" data-id="' . $usuario->id . '">
-                <i class="zmdi zmdi-eye"></i>
-            </button>
-            <button class="delete btn btn-danger btn-raised btn-xs eliminar-usuario" data-id="' . $usuario->id . '" data-toggle="modal" data-target="#confirmarEliminar">
-                <i class="zmdi zmdi-delete"></i>
-            </button>
+          <button class="btn btn-info btn-raised btn-xs ver-usuario" data-id="' . $usuario->id . '">
+              <i class="zmdi zmdi-eye"></i>
+          </button>
         ';
       })
       ->rawColumns(['estado', 'action'])
       ->make(true);
   }
 
-
-
-  // Obtiene la lista de usuarios excluyendo al administrador
   public function getUsuarios(Request $request)
   {
     if ($request->ajax()) {
@@ -118,21 +111,16 @@ class PerfilController extends Controller
         })
         ->addColumn('action', function ($usuario) {
           return '
-                        <button class="btn btn-info btn-xs ver-usuario" data-id="' . $usuario->id . '">
-                            <i class="zmdi zmdi-eye"></i>
-                        </button>
-                        <button class="btn btn-danger btn-xs eliminar-usuario" data-id="' . $usuario->id . '" data-toggle="modal" data-target="#confirmarEliminar">
-                            <i class="zmdi zmdi-delete"></i>
-                        </button>
-
-                    ';
+            <button class="btn btn-info btn-xs ver-usuario" data-id="' . $usuario->id . '">
+                <i class="zmdi zmdi-eye"></i>
+            </button>
+          ';
         })
         ->rawColumns(['estado', 'action'])
         ->make(true);
     }
   }
 
-  // Muestra los detalles de un usuario en el modal de visualización
   public function show($id)
   {
     $usuario = User::with('roles')->find($id); // Carga el rol con `with()`
@@ -149,8 +137,6 @@ class PerfilController extends Controller
     ]);
   }
 
-
-  // Obtiene la información de un usuario para edición
   public function edit($id)
   {
     $usuario = User::find($id);
@@ -158,23 +144,5 @@ class PerfilController extends Controller
       return response()->json(['error' => 'Usuario no encontrado'], 404);
     }
     return response()->json($usuario);
-  }
-
-  public function destroy($id)
-  {
-    $usuario = User::find($id);
-
-    if (!$usuario) {
-      return response()->json(['error' => 'Usuario no encontrado'], 404);
-    }
-
-    // No permitir que un usuario se elimine a sí mismo
-    if (Auth::id() == $usuario->id) {
-      return response()->json(['error' => 'No puedes eliminar tu propia cuenta'], 403);
-    }
-
-    $usuario->delete();
-
-    return response()->json(['success' => 'Usuario eliminado correctamente']);
   }
 }

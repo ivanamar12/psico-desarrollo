@@ -55,8 +55,8 @@ class ConstanciaAsistenciaController extends Controller
 
       $pacienteData = [
         'nombre_edad' => "{$paciente->nombre} {$paciente->apellido} de {$paciente->tiempo_transcurrido} de edad",
-        $pacienteData['modalidad_educacion'] = 'no aplica',
-        $pacienteData['nombre_escuela'] = 'no aplica',
+        'modalidad_educacion' => 'no aplica',
+        'nombre_escuela' => 'no aplica',
         'representante' => "{$paciente->representante->nombre} {$paciente->representante->apellido} {$paciente->representante->ci}"
       ];
 
@@ -78,7 +78,7 @@ class ConstanciaAsistenciaController extends Controller
 
       return $pdf->stream();
     } catch (\Exception $e) {
-      return back()->withErrors(['citas_seleccionadas' => 'Error al generar reporte.']);
+      return back()->withErrors(['citas_seleccionadas' => 'Error al generar reporte. ' . $e]);
     }
   }
 }

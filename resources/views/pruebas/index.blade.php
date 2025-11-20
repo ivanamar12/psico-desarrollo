@@ -173,28 +173,6 @@
     </div>
   </section>
 
-  <!-- modal eliminar-->
-  <section class="modal fade" id="confirModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Confirmación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          ¿Desea eliminar el registro seleccionado?
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cancelar</button>
-          <button type="button" id="btnEliminar" name="btnEliminar" class="btn btn-eliminar"
-            style="color: white;">Eliminar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
 @endsection
 
 @section('js')
@@ -397,49 +375,6 @@
         },
         error: function(xhr) {
           toastr.error('Error al cargar los datos de la prueba');
-        }
-      });
-    });
-
-    // Configuración CSRF para AJAX
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-
-    // Eliminar prueba
-    let idEliminar = null;
-
-    $(document).on('click', '.delete', function() {
-      idEliminar = $(this).attr('id');
-      $('#confirModal').modal('show');
-    });
-
-    $('#btnEliminar').click(function() {
-      if (!idEliminar) return;
-
-      $.ajax({
-        url: "/pruebas/" + idEliminar,
-        type: 'DELETE',
-        beforeSend: function() {
-          $('#btnEliminar').prop('disabled', true).text('Eliminando...');
-        },
-        success: function(data) {
-          $('#confirModal').modal('hide');
-          toastr.success('La prueba se eliminó correctamente', 'Eliminar Prueba', {
-            timeOut: 5000
-          });
-          $('#tab-prueba').DataTable().ajax.reload(null, false);
-        },
-        error: function(xhr, status, error) {
-          toastr.error('No se pudo eliminar la prueba', 'Error', {
-            timeOut: 5000
-          });
-        },
-        complete: function() {
-          $('#btnEliminar').prop('disabled', false).text('Eliminar');
-          idEliminar = null;
         }
       });
     });

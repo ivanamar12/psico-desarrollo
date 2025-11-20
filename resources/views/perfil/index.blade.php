@@ -4,6 +4,27 @@
 
 @section('css')
   <link href="{{ asset('css/datatables/datatables.min.css') }}" rel="stylesheet">
+  <style>
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 70%;
+      transform: translateY(-50%);
+      cursor: pointer;
+      z-index: 10;
+      background: none;
+      border: none;
+      font-size: 16px;
+    }
+
+    .password-container input {
+      padding-right: 40px;
+    }
+  </style>
 @endsection
 
 @section('content')
@@ -88,11 +109,17 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Editar Perfil</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true" style="color: white;">&times;</span>
-          </button>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Editar perfil
+          </h3>
         </div>
+
         <div class="modal-body">
           <form id="formEditarPerfil">
             @csrf
@@ -109,13 +136,13 @@
             <div class="mb-3 password-container">
               <label for="password" class="form-label">Nueva Contraseña (Opcional)</label>
               <input type="password" class="form-control" id="password" name="password">
-              <span class="toggle-password" style="cursor: pointer" data-target="password">👁️</span>
+              <span class="toggle-password" data-target="password">👁️</span>
             </div>
 
             <div class="mb-3 password-container">
               <label for="password_confirmation" class="form-label">Confirmar Contraseña</label>
               <input type="password" class="form-control" id="password_confirmation" name="password_confirmation">
-              <span class="toggle-password" style="cursor: pointer" data-target="password_confirmation">👁️</span>
+              <span class="toggle-password" data-target="password_confirmation">👁️</span>
             </div>
 
             <div class="form-group">
@@ -152,38 +179,20 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title w-100 text-center" style="color: white;">Detalles de la Historia</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
+          <div style="width: 100%; display: flex; justify-content: end">
+            <button type="button" class="no-shadow-on-click" data-dismiss="modal"
+              style="color: black; background: #aeadad; border: none; border-radius: 20%; width: 22px; height: 22px; padding: 0;">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <h3 class="modal-title w-100 text-center" style="color: white; margin-bottom: 12px;">
+            Información del Usuario
+          </h3>
         </div>
-        <div class="modal-body">
 
-        </div>
+        <div class="modal-body"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-custom" data-dismiss="modal" style="color: white;">Cerrar</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Modal de Confirmación -->
-  <section class="modal fade" id="confirmarEliminar" tabindex="-1" aria-labelledby="confirmarEliminarLabel"
-    aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title w-100 text-center">Confirmar Eliminación</h3>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p>¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.</p>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-          <button type="button" class="btn btn-danger" id="confirmarEliminarBtn">Eliminar</button>
         </div>
       </div>
     </div>
@@ -290,41 +299,6 @@
 
       // Evento para editar usuario
       let usuarioId; // Variable global para almacenar el ID del usuario a eliminar
-
-      // Cuando se hace clic en el botón eliminar, se guarda el ID y se muestra el modal
-      $(document).on('click', '.eliminar-usuario', function() {
-        usuarioId = $(this).data('id');
-        $('#confirmarEliminar').modal('show');
-      });
-
-      // Cuando el usuario confirma la eliminación
-      $('#confirmarEliminarBtn').click(function() {
-        $.ajax({
-          url: "{{ url('perfil/delete') }}/" + usuarioId,
-          type: 'DELETE',
-          data: {
-            _token: "{{ csrf_token() }}"
-          },
-          success: function(response) {
-            $('#confirmarEliminar').modal('hide'); // Cierra el modal
-            $('#tabla-usuarios').DataTable().ajax
-              .reload(); // Recarga la tabla (opcional si quieres recargar la página)
-
-            // Muestra toast de éxito
-            toastr.success(response.success, 'Éxito', {
-              timeOut: 3000,
-              onHidden: function() {
-                window.location.reload(); // Recarga la página después de cerrar el toast
-              }
-            });
-          },
-          error: function(xhr) {
-            toastr.error(xhr.responseJSON.error, 'Error', {
-              timeOut: 3000
-            });
-          }
-        });
-      });
     });
   </script>
 

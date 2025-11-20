@@ -226,9 +226,6 @@ Route::middleware('auth')->group(function () {
   Route::get('pruebas/{id}', [PruebaController::class, 'show'])
     ->name('pruebas.show');
 
-  Route::delete('pruebas/{id}', [PruebaController::class, 'destroy'])
-    ->name('pruebas.destroy');
-
   /**
    * Aplicacion de Pruebas
    */
