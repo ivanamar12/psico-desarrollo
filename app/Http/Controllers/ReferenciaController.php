@@ -49,12 +49,8 @@ class ReferenciaController extends Controller
       }
     }
 
-    $pacientes = Paciente::with([
-      'historiaClinicas' => function ($q) {
-        $q->orderByDesc('created_at')->limit(1);
-      }
-    ])
-      ->whereHas('historiaClinicas')
+    $pacientes = Paciente::with(['historiaClinicas'])
+      ->whereHas('historiaclinicas')
       ->get();
 
     return view('referencias.index', [

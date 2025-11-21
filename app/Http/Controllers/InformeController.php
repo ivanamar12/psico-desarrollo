@@ -74,11 +74,7 @@ class InformeController extends Controller
 		}
 
 		if (!empty($pacientesConPruebas)) {
-			$pacientes = Paciente::with([
-				'historiaClinicas' => function ($q) {
-					$q->orderByDesc('created_at')->limit(1);
-				}
-			])
+			$pacientes = Paciente::with(['historiaClinicas'])
 				->whereIn('id', $pacientesConPruebas)
 				->whereHas('historiaClinicas')
 				->get();
