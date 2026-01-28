@@ -1,0 +1,76 @@
+<?php
+
+namespace Database\Seeders;
+
+use Illuminate\Database\Seeder;
+use App\Models\SubEscala;
+
+class BenderSubescalasSeeder extends Seeder
+{
+    public function run()
+    {
+        // Figura A
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura A',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 1
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 1',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 2
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 2',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 3
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 3',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 4
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 4',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 5
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 5',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 6
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 6',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 7
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 7',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+
+        // Figura 8
+        SubEscala::create([
+            'prueba_id' => 3,
+            'sub_escala' => 'Figura 8',
+            'descripcion' => 'Tarjeta de evaluación'
+        ]);
+    }
+}
+

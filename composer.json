@@ -14,6 +14,7 @@
         "laravel/breeze": "1.9.2",
         "laravel/framework": "^8.75",
         "laravel/sanctum": "^2.11",
+        "laravel/telescope": "^5.15",
         "laravel/tinker": "^2.5",
         "pavel-mironchik/laravel-backup-panel": "^2.2",
         "setasign/fpdf": "^1.8",
