@@ -26,7 +26,7 @@ Route::middleware('guest')->group(function () {
 });
 
 /**
- * Auth Routes 
+ * Auth Routes
  */
 require __DIR__ . '/auth.php';
 
@@ -168,7 +168,7 @@ Route::middleware('auth')->group(function () {
   Route::resource('citas', CitaController::class)
     ->except(['create', 'destroy', 'show']);
 
-  // Ruta para mostrar las citas 
+  // Ruta para mostrar las citas
   Route::get('citas/calendario', [CitaController::class, 'calendario'])
     ->name('citas.calendario');
 
@@ -246,6 +246,9 @@ Route::middleware('auth')->group(function () {
 
   Route::get('aplicar-prueba/report/koppitz/{id}', [PdfPruebasController::class, 'reportKoppitz'])
     ->name('aplicar-prueba.report.koppitz');
+
+  Route::get('aplicar-prueba/report/bender/{id}', [PdfPruebasController::class, 'reportBender'])
+    ->name('aplicar-prueba.report.bender');
 
   Route::get('aplicar-prueba/report/no-estandarizada/{id}', [PdfPruebasController::class, 'reportNoEstandarizada'])
     ->name('aplicar-prueba.report.no-estandarizada');

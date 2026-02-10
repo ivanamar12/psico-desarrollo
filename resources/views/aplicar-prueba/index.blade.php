@@ -458,9 +458,9 @@
             ["Psicomotricidad", "Escritura", "Estructuración espacial", "Ritmo"].includes(subescala.sub_escala)
           ) {
             contenido += `<td>
-                <label>Derecha <input type="checkbox" name="lateralidad_${item.id}" 
+                <label>Derecha <input type="checkbox" name="lateralidad_${item.id}"
                   value="derecha" ${lateralidadGuardada.includes("derecha") ? "checked" : ""} required></label>
-                <label>Izquierda <input type="checkbox" name="lateralidad_${item.id}" 
+                <label>Izquierda <input type="checkbox" name="lateralidad_${item.id}"
                   value="izquierda" ${lateralidadGuardada.includes("izquierda") ? "checked" : ""} required></label>
               </td>`;
           }
@@ -800,6 +800,83 @@
             }
 
             contenidoHTML += `</tbody></table>`;
+          } else if (prueba.nombre === "Bender") {
+            contenidoHTML += `
+              <h5><strong>Resultados Bender - Edad: ${aplicacion_prueba.resultados_finales.edad_meses} meses</strong></h5>
+              <table class="table table-bordered">
+                <thead>
+                  <tr>
+                    <th>Indicador</th>
+                    <th>Valor</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Puntaje de Desarrollo</strong></td>
+                    <td>${resultados_finales.resultados.puntaje_desarrollo}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Indicadores Significativos</strong></td>
+                    <td>${resultados_finales.resultados.indicadores_significativos}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Altamente Significativos</strong></td>
+                    <td>${resultados_finales.resultados.altamente_significativos}</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Puntaje de Daño Cerebral</strong></td>
+                    <td>${resultados_finales.resultados.puntaje_dano_cerebral}</td>
+                  </tr>
+                </tbody>
+              </table>`;
+
+            if (resultados_finales.resultados.detalles_items && resultados_finales.resultados.detalles_items.length > 0) {
+              contenidoHTML += `
+                <h5><strong>Detalles por Figura:</strong></h5>`;
+
+              // Agrupar ítems por subescala
+              let itemsPorSubescala = {};
+              resultados_finales.resultados.detalles_items.forEach(detalle => {
+                if (!itemsPorSubescala[detalle.subescala]) {
+                  itemsPorSubescala[detalle.subescala] = [];
+                }
+                itemsPorSubescala[detalle.subescala].push(detalle);
+              });
+
+              // Crear tabla para cada subescala
+              for (let subescala in itemsPorSubescala) {
+                let items = itemsPorSubescala[subescala];
+                let observacionSubescala = resultados_finales.resultados.observaciones_por_subescala[subescala] || 'Sin observaciones';
+
+                contenidoHTML += `
+                  <h6><strong>${subescala}</strong></h6>
+                  <table class="table table-bordered">
+                    <thead>
+                      <tr>
+                        <th>Ítem</th>
+                        <th>Respuesta</th>
+                        <th>Tipo</th>
+                      </tr>
+                    </thead>
+                    <tbody>`;
+
+                items.forEach(detalle => {
+                  let tipo = '';
+                  if (detalle.es_altamente_significativo) tipo = 'Altamente Significativo';
+                  else if (detalle.es_indicador_significativo) tipo = 'Indicador Significativo';
+
+                  contenidoHTML += `
+                    <tr>
+                      <td>${detalle.item}</td>
+                      <td>${detalle.respuesta}</td>
+                      <td>${tipo}</td>
+                    </tr>`;
+                });
+
+                contenidoHTML += `</tbody></table>`;
+                contenidoHTML += `<p><strong>Observaciones:</strong> ${observacionSubescala}</p><hr>`;
+              }
+            }
           } else if (prueba.nombre === "CUMANIN") {
             contenidoHTML += `
               <h5><strong>Resultados CUMANIN - Edad: ${aplicacion_prueba.resultados_finales.edad_meses} meses</strong></h5>

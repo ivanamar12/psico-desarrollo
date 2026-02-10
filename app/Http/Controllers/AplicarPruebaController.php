@@ -30,6 +30,8 @@ class AplicarPruebaController extends Controller
             $btn .= ' <a href="' . route('aplicar-prueba.report.cumanin', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           } elseif ($aplicacion->prueba->nombre === 'Koppitz') {
             $btn .= ' <a href="' . route('aplicar-prueba.report.koppitz', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
+          } elseif ($aplicacion->prueba->nombre === 'Bender') {
+            $btn .= ' <a href="' . route('aplicar-prueba.report.bender', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           } elseif ($aplicacion->prueba->tipo === 'NO-Estandarizada') {
             $btn .= ' <a href="' . route('aplicar-prueba.report.no-estandarizada', $aplicacion->id) . '" class="btn btn-primary btn-raised btn-xs" target="_blank"><i class="zmdi zmdi-file"></i></a>';
           }
@@ -74,6 +76,8 @@ class AplicarPruebaController extends Controller
         $resultados = $this->analizarCumaninPHP($request->respuestas, $paciente->fecha_nac);
       } elseif ($prueba->nombre === 'Koppitz') {
         $resultados = $this->analizarKoppitzPHP($request->respuestas, $edadMeses, $paciente->genero_id);
+      } elseif ($prueba->nombre === 'Bender') {
+        $resultados = $this->analizarBenderPHP($request->respuestas, $edadMeses);
       } else {
         $resultados = $this->analizarNoEstandarizada($request->respuestas, $edadMeses);
       }
@@ -240,6 +244,95 @@ class AplicarPruebaController extends Controller
         'categoria' => $categoria
       ],
       'observaciones' => $observaciones
+    ];
+  }
+
+  private function analizarBenderPHP($respuestas, $edadMeses)
+  {
+    $totalItems = 0;
+    $puntajeDesarrollo = 0;
+    $indicadoresSignificativos = 0;
+    $altamenteSignificativos = 0;
+    $detallesItems = [];
+    $observacionesPorSubescala = [];
+
+    $itemsIS = [
+      'Figura A' => [
+        'Distorsión de la forma (Una u otra forma excesivamente distorsionada)',
+        'Rotación (45° o más)',
+        'Integración (Figuras no unidas)'
+      ],
+      'Figura 1' => ['Distorsión de la forma (5 o más circulos)'],
+      'Figura 4' => ['1/8 de pulgada o más entr las figuras'],
+      'Figura 5' => ['Rotación (45° o más)'],
+      'Figura 6' => ['Distorsión de la forma (30 o más angulos)', 'Integración (ausencia de cruces)']
+    ];
+
+    $itemsAS = [
+      'Figura 1' => ['Distorsión de la forma (5 o más circulos)'],
+      'Figura 3' => ['Integración (Lineas en vez de puntos)'],
+      'Figura 4' => ['Rotación (45° o más)'],
+      'Figura 5' => ['Integración (Lineas en vez de puntos)'],
+      'Figura 6' => ['Distorsión de la forma (ausencia de curvas y lineas rectas)']
+    ];
+
+    foreach ($respuestas as $subescala => $datos) {
+      if (!isset($datos['respuestas'])) continue;
+
+      $observacionSubescala = $datos['observaciones'] ?? 'Sin observaciones';
+      $observacionesPorSubescala[$subescala] = $observacionSubescala;
+
+      foreach ($datos['respuestas'] as $item => $respuesta) {
+        $totalItems++;
+
+        // Determinar si es indicador significativo
+        $esIS = false;
+        if (isset($itemsIS[$subescala]) && in_array($item, $itemsIS[$subescala])) {
+          $esIS = true;
+        }
+
+        // Determinar si es altamente significativo
+        $esAS = false;
+        if (isset($itemsAS[$subescala]) && in_array($item, $itemsAS[$subescala])) {
+          $esAS = true;
+        }
+
+        $detallesItems[] = [
+          'subescala' => $subescala,
+          'item' => $item,
+          'respuesta' => $respuesta,
+          'es_indicador_significativo' => $esIS,
+          'es_altamente_significativo' => $esAS
+        ];
+
+        if ($respuesta === 'si') {
+          $puntajeDesarrollo++;
+
+          // Indicadores Significativos
+          if ($esIS) {
+            $indicadoresSignificativos++;
+          }
+
+          // Altamente Significativos
+          if ($esAS) {
+            $altamenteSignificativos++;
+          }
+        }
+      }
+    }
+
+    $puntajeDanoCerebral = $indicadoresSignificativos + $altamenteSignificativos;
+
+    return [
+      'edad_meses' => $edadMeses,
+      'resultados' => [
+        'puntaje_desarrollo' => $puntajeDesarrollo . '/' . $totalItems,
+        'indicadores_significativos' => $indicadoresSignificativos,
+        'altamente_significativos' => $altamenteSignificativos,
+        'puntaje_dano_cerebral' => $puntajeDanoCerebral,
+        'detalles_items' => $detallesItems,
+        'observaciones_por_subescala' => $observacionesPorSubescala
+      ],
     ];
   }
 

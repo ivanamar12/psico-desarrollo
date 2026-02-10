@@ -25,5 +25,10 @@ class DatabaseSeeder extends Seeder
     $this->call(SubEscalaSeeder::class);
     $this->call(ItemSeeder::class);
     $this->call(BaremosSeeder::class);
+    // Bender
+    $this->call(BenderPruebaSeeder::class);
+    $this->call(BenderSubescalasSeeder::class);
+    $this->call(BenderItemsSeeder::class);
   }
 }
+

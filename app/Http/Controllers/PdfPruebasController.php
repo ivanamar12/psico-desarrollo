@@ -65,6 +65,42 @@ class PdfPruebasController extends Controller
     return $pdf->stream("resultados_koppitz_{$aplicacion->paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
   }
 
+  public function reportBender($id)
+  {
+    $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'especialista.user'])
+      ->findOrFail($id);
+
+    $datosFinales = json_decode($aplicacion->resultados_finales, true);
+    $resultados = $datosFinales['resultados'] ?? [];
+
+    $figurasDetalles = [];
+    $detallesItems = $resultados['detalles_items'] ?? [];
+    $observacionesPorSubescala = $resultados['observaciones_por_subescala'] ?? [];
+
+    // Agrupar ítems por subescala
+    foreach ($detallesItems as $item) {
+      $subescala = $item['subescala'];
+
+      if (!isset($figurasDetalles[$subescala])) {
+        $figurasDetalles[$subescala] = [
+          'items' => [],
+          'observaciones' => $observacionesPorSubescala[$subescala] ?? 'Sin observaciones'
+        ];
+      }
+
+      $figurasDetalles[$subescala]['items'][] = $item;
+    }
+
+    $pdf = Pdf::loadView('pdf.report-bender', compact(
+      'aplicacion',
+      'datosFinales',
+      'resultados',
+      'figurasDetalles'
+    ))->setPaper('a4', 'portrait');
+
+    return $pdf->stream("resultados_bender_{$aplicacion->paciente->nombre}_{$aplicacion->created_at->format('Y-m-d')}.pdf");
+  }
+
   public function reportNoEstandarizada($id)
   {
     $aplicacion = AplicacionPrueba::with(['paciente', 'prueba', 'especialista.user'])
