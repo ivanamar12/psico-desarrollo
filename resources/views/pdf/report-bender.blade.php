@@ -93,7 +93,7 @@
 
 <body>
   <!-- Header -->
-  <div style="background-color: #8e44ad; color: white; text-align: center; padding: 15px 0; margin-bottom: 20px;">
+  <div style="background-color: #00869b; color: white; text-align: center; padding: 15px 0; margin-bottom: 20px;">
     <img src="{{ public_path('img/logo.png') }}" alt="Logo de PSICODESARROLLO"
       style="width: 70px; height: 70px; border-radius: 50%; border: 2px solid #fff; margin-bottom: 3px">
     <h1 style="margin: 0; font-size: 20px;">PSICODESARROLLO</h1>
@@ -216,9 +216,9 @@
   </div>
 
   <!-- Footer -->
-  <div style="background-color: #8e44ad; color: white; text-align: center; padding: 10px 0; margin-top: 30px;">
+  <div style="background-color: #00869b; color: white; text-align: center; padding: 10px 0; margin-top: 30px;">
     <p style="margin: 0; font-size: 11px;">
-      © PSICODESARROLLO {{ now()->year }} • Evaluación Neuropsicológica Infantil • www.psicodesarrollo.com
+      © PSICODESARROLLO {{ now()->year }} • Av. Principal, Edificio XYZ • Teléfono: 0212-5555555
     </p>
   </div>
 
