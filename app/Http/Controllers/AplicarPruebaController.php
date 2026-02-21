@@ -16,12 +16,16 @@ class AplicarPruebaController extends Controller
 {
   public function index(Request $request)
   {
+    $especialistaId = Especialista::where('user_id', Auth::id())->value('id');
+
     if ($request->ajax()) {
-      $aplicaciones = AplicacionPrueba::with('paciente', 'prueba')->get();
+      $aplicaciones = AplicacionPrueba::with(['paciente', 'prueba'])
+        ->where('especialista_id', $especialistaId)
+        ->get();
 
       return DataTables::of($aplicaciones)
         ->addColumn('fecha', function ($aplicacion) {
-          return $aplicacion->created_at->format('d/m/Y');
+          return $aplicacion->created_at->format('d/m/Y - g:i A');
         })
         ->addColumn('action', function ($aplicacion) {
           $btn = '<button type="button" class="btn btn-info btn-raised btn-xs ver-resultados" data-id="' . $aplicacion->id . '"><i class="zmdi zmdi-eye"></i></button>';

@@ -25,6 +25,9 @@
           <button class="tab-trigger" data-tab="graficos-distribucion-demografica">Distribución Demográfica</button>
         </li>
         <li>
+          <button class="tab-trigger" data-tab="graficos-analisis-pruebas">Pruebas Psicológicas</button>
+        </li>
+        <li>
           <button class="tab-trigger" data-tab="graficos-escalas-riesgos">Evaluación de Riesgos</button>
         </li>
         <li>
@@ -142,6 +145,48 @@
               <p>
                 Visualización de la composición de la población de pacientes, segmentada por género y grupos de
                 edad en meses.
+              </p>
+            </section>
+          </section>
+        </section>
+
+        <section class="tab-pane" data-tab="graficos-analisis-pruebas">
+          <section class="container-fluid">
+            <section style="padding: 12px">
+              <h2>Análisis de Pruebas Psicológicas</h2>
+            </section>
+
+            <section class="row">
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-star"></i> &nbsp; TOP 3 PRUEBAS MÁS APLICADAS
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaTopPruebas"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading text-titles text-center">
+                    <i class="zmdi zmdi-trending-up"></i> &nbsp; TENDENCIA DE APLICACIONES
+                  </div>
+                  <div class="panel-body">
+                    <div class="chart-container" style="position: relative; height:300px; width:100%">
+                      <canvas id="graficaTendenciaPruebas"></canvas>
+                    </div>
+                  </div>
+                </div>
+              </article>
+            </section>
+
+            <section>
+              <p>
+                Monitoreo de la demanda de pruebas y volumen de actividad clínica mensual.
               </p>
             </section>
           </section>
@@ -465,6 +510,92 @@
             'Error', {
               timeOut: 5000
             });
+        });
+
+      fetch("{{ route('estadisticas.pruebas') }}")
+        .then((response) => {
+          if (!response.ok) throw new Error("Error en la respuesta del servidor");
+          return response.json();
+        })
+        .then((data) => {
+          const fontFamily = "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif";
+          const colorTexto = "#333";
+
+          // Gráfica Top 3 Pruebas (Horizontal tipo Filament)
+          new Chart(document.getElementById("graficaTopPruebas"), {
+            type: "bar",
+            data: {
+              labels: data.top.labels,
+              datasets: [{
+                label: "Total de Aplicaciones",
+                data: data.top.data,
+                backgroundColor: ["#673AB7", "#9C27B0", "#E91E63"],
+                borderWidth: 1,
+              }],
+            },
+            options: {
+              indexAxis: 'y', // Hace que la barra sea horizontal
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: { display: false },
+                y: {
+                  ticks: { font: { family: fontFamily }, color: colorTexto },
+                  grid: { display: false }
+                }
+              },
+              plugins: {
+                legend: { display: false },
+                tooltip: { bodyFont: { family: fontFamily } }
+              }
+            }
+          });
+
+          // Gráfica de Tendencia Mensual (Línea)
+          new Chart(document.getElementById("graficaTendenciaPruebas"), {
+            type: "line",
+            data: {
+              labels: data.tendencia.labels,
+              datasets: [{
+                label: "Aplicaciones por Mes",
+                data: data.tendencia.data,
+                borderColor: "#2196F3",
+                backgroundColor: "rgba(33, 150, 243, 0.1)",
+                fill: true,
+                tension: 0.4,
+                pointRadius: 5,
+                pointBackgroundColor: "#2196F3"
+              }]
+            },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: { font: { family: fontFamily }, color: colorTexto, stepSize: 1 },
+                  grid: { color: "rgba(0,0,0,0.05)" }
+                },
+                x: {
+                  ticks: { font: { family: fontFamily }, color: colorTexto },
+                  grid: { display: false }
+                }
+              },
+              plugins: {
+                legend: {
+                  position: "top",
+                  labels: { font: { family: fontFamily }, color: colorTexto }
+                }
+              }
+            }
+          });
+        })
+        .catch((error) => {
+          toastr.error(
+            "Error al cargar las estadísticas de pruebas. Intenta recargar la página.",
+            'Error de Datos',
+            { timeOut: 5000 }
+          );
         });
 
       fetch("{{ route('estadisticas.escolarizacion') }}")

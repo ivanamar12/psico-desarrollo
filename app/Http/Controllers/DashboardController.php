@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Paciente;
-use App\Models\Representante;
+use App\Enums\Role;
+use App\Models\AplicacionPrueba;
 use App\Models\Especialista;
 use App\Models\HistoriaEscolar;
-use App\Models\Secretaria;
+use App\Models\Paciente;
+use App\Models\Prueba;
+use App\Models\Representante;
 use App\Models\RiesgoPaciente;
+use App\Models\Secretaria;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class DashboardController extends Controller
 {
@@ -115,4 +119,52 @@ class DashboardController extends Controller
       return response()->json(['error' => $e->getMessage()], 500);
     }
   }
+
+
+  public function estadisticasPruebas()
+  {
+    try {
+      $user = Auth::user();
+      $query = AplicacionPrueba::query();
+
+      if ($user->hasRole(Role::ESPECIALISTA->value)) {
+        $especialistaId = Especialista::where('user_id', $user->id)->value('id');
+        $query->where('especialista_id', $especialistaId);
+      }
+
+      // Top 3 Pruebas (Barras horizontales)
+      $topPruebas = (clone $query)
+        ->join('pruebas', 'aplicacion_pruebas.prueba_id', '=', 'pruebas.id')
+        ->select('pruebas.nombre', DB::raw('count(*) as total'))
+        ->groupBy('pruebas.nombre', 'pruebas.id')
+        ->orderBy('total', 'desc')
+        ->limit(3)
+        ->get();
+
+      // Tendencia últimos 6 meses (Línea)
+      $tendencia = (clone $query)
+        ->select(
+          DB::raw("DATE_FORMAT(created_at, '%b') as mes"),
+          DB::raw('count(*) as total')
+        )
+        ->where('created_at', '>=', now()->subMonths(6))
+        ->groupBy('mes', DB::raw("MONTH(created_at)"))
+        ->orderBy(DB::raw("MONTH(created_at)"))
+        ->get();
+
+      return response()->json([
+        'top' => [
+          'labels' => $topPruebas->pluck('nombre'),
+          'data'   => $topPruebas->pluck('total')
+        ],
+        'tendencia' => [
+          'labels' => $tendencia->pluck('mes'),
+          'data'   => $tendencia->pluck('total')
+        ]
+      ]);
+    } catch (\Exception $e) {
+      return response()->json(['error' => $e->getMessage()], 500);
+    }
+  }
 }
+

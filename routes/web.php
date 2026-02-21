@@ -49,6 +49,9 @@ Route::middleware('auth')->group(function () {
   Route::get('/estadisticas/pacientes', [DashboardController::class, 'estadisticasPacientes'])
     ->name('estadisticas.pacientes');
 
+  Route::get('/estadisticas/pruebas', [DashboardController::class, 'estadisticasPruebas'])
+    ->name('estadisticas.pruebas');
+
   /**
    * Rutas para especialidad
    */
