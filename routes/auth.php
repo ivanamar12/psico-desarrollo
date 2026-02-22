@@ -26,6 +26,7 @@ Route::middleware(['guest'])->group(function () {
     ->name('user-unlock.request');
 
   Route::post('/user-unlock', [UnlockUserController::class, 'sendEmail'])
+    ->middleware('throttle:3,10')
     ->name('user-unlock.email');
 
   Route::get('/unlock-user', [UnlockUserController::class, 'update'])
