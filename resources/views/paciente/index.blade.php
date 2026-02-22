@@ -20,7 +20,10 @@
       <div class="row">
         <div class="col-xs-12">
           <ul class="nav nav-tabs" style="margin-bottom: 15px;">
-            <li class="active"><a href="#list-paciente" data-toggle="tab">Lista</a></li>
+            <li class="active"><a href="#list-paciente" data-toggle="tab">Todos los pacientes</a></li>
+            @if (auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
+              <li><a href="#mis-pacientes" data-toggle="tab">Mis Pacientes</a></li>
+            @endif
             @if (auth()->user()->can('registrar paciente'))
               <li><a href="#new-paciente" data-toggle="tab">Nuevo</a></li>
             @endif
@@ -34,12 +37,31 @@
                       <th style="text-align: center">#</th>
                       <th style="text-align: center">Nombre</th>
                       <th style="text-align: center">Apellido</th>
+                      <th style="text-align: center">Fecha Nacimiento. (Edad)</th>
                       <th style="text-align: center">Acciones</th>
                     </tr>
                   </thead>
                 </table>
               </div>
             </section>
+
+            @if (auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
+              <section class="tab-pane fade in" id="mis-pacientes">
+                <div class="table-responsive">
+                  <table class="table table-hover text-center" id="tab-mis-pacientes">
+                    <thead>
+                      <tr>
+                        <th style="text-align: center">#</th>
+                        <th style="text-align: center">Nombre</th>
+                        <th style="text-align: center">Apellido</th>
+                        <th style="text-align: center">Fecha Nacimiento. (Edad)</th>
+                        <th style="text-align: center">Acciones</th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+              </section>
+            @endif
 
             <section class="tab-pane fade in" id="new-paciente">
               <div class="container-fluid">
@@ -615,6 +637,14 @@
         minimumResultsForSearch: -1
       });
 
+      let columnas = [
+        { data: 'id' },
+        { data: 'nombre' },
+        { data: 'apellido' },
+        { data: 'fecha_nac_formatted' },
+        { data: 'action', orderable: false }
+      ];
+
       var tablaPaciente = $('#tab-paciente').DataTable({
         language: {
           url: "{{ asset('js/datatables/es-ES.json') }}",
@@ -624,21 +654,23 @@
         ajax: {
           url: "{{ route('pacientes.index') }}",
         },
-        columns: [{
-            data: 'id'
-          },
-          {
-            data: 'nombre'
-          },
-          {
-            data: 'apellido'
-          },
-          {
-            data: 'action',
-            orderable: false
-          }
-        ]
+        columns: columnas,
       });
+
+      @if (auth()->user()->hasRole(App\Enums\Role::ESPECIALISTA->value))
+        $('#tab-mis-pacientes').DataTable({
+          language: {
+            url: "{{ asset('js/datatables/es-ES.json') }}",
+          },
+          processing: true,
+          serverSide: true,
+          ajax: {
+            url: "{{ route('pacientes.index') }}",
+            data: { mis_pacientes: 1 }
+          },
+          columns: columnas,
+        });
+      @endif
 
       // Control de pasos
       $("#paso1").show();
@@ -885,7 +917,9 @@
               toastr.success(response.message, 'Éxito', {
                 timeOut: 5000
               });
+
               tablaPaciente.ajax.reload();
+
               $('.nav-tabs a[href="#list-paciente"]').tab('show');
             }
           },
@@ -1111,17 +1145,17 @@
       const nuevoFormulario = `
             <div class="fila-formulario row mb-3 p-3 border rounded" id="formulario-familiar-edit-${id}">
                 <input type="hidden" name="familiares[${id}][id]" value="${familiarId}">
-                
+
                 <div class="form-group col-md-6">
                     <label>Nombre <span class="text-danger">*</span></label>
-                    <input class="form-control" name="familiares[${id}][nombre]" type="text" required maxlength="120" 
+                    <input class="form-control" name="familiares[${id}][nombre]" type="text" required maxlength="120"
                         oninput="validarTexto(this)" value="${nombre}">
                     <small class="form-text text-muted">Ingrese el nombre del familiar.</small>
                 </div>
 
                 <div class="form-group col-md-6">
                     <label>Apellido <span class="text-danger">*</span></label>
-                    <input class="form-control" name="familiares[${id}][apellido]" type="text" required maxlength="120" 
+                    <input class="form-control" name="familiares[${id}][apellido]" type="text" required maxlength="120"
                         oninput="validarTexto(this)" value="${apellido}">
                     <small class="form-text text-muted">Ingrese el apellido del familiar.</small>
                 </div>
@@ -1134,7 +1168,7 @@
 
                 <div class="form-group col-md-6">
                     <label>Parentesco <span class="text-danger">*</span></label>
-                    <input class="form-control" name="familiares[${id}][parentesco]" type="text" required maxlength="120" 
+                    <input class="form-control" name="familiares[${id}][parentesco]" type="text" required maxlength="120"
                         oninput="validarTexto(this)" value="${parentesco}">
                     <small class="form-text text-muted">Ejemplo: madre, padre, hermano(a), etc.</small>
                 </div>
@@ -1153,21 +1187,21 @@
                 <div class="form-group col-md-6">
                     <label>¿Tiene alguna discapacidad? <span class="text-danger">*</span></label>
                     <div>
-                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="si" 
-                            ${discapacidad === 'si' ? 'checked' : ''} 
+                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="si"
+                            ${discapacidad === 'si' ? 'checked' : ''}
                             onclick="toggleTipoDiscapacidadEdit(${id})"> Sí</label>
-                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="no" 
-                            ${discapacidad === 'no' ? 'checked' : ''} 
+                        <label><input type="radio" name="familiares[${id}][discapacidad]" value="no"
+                            ${discapacidad === 'no' ? 'checked' : ''}
                             onclick="toggleTipoDiscapacidadEdit(${id})"> No</label>
                     </div>
                     <small class="form-text text-muted">Indique si tiene alguna discapacidad.</small>
                 </div>
 
-                <div class="form-group col-md-6" id="tipo-discapacidad-container-edit-${id}" 
+                <div class="form-group col-md-6" id="tipo-discapacidad-container-edit-${id}"
                     style="${discapacidad === 'si' ? '' : 'display: none;'}">
                     <label>Tipo de discapacidad</label>
-                    <input class="form-control" id="tipo-discapacidad-edit-${id}" 
-                        name="familiares[${id}][tipo_discapacidad]" type="text" 
+                    <input class="form-control" id="tipo-discapacidad-edit-${id}"
+                        name="familiares[${id}][tipo_discapacidad]" type="text"
                         placeholder="Describa el tipo de discapacidad" maxlength="120" value="${tipoDiscapacidad}">
                     <small class="form-text text-muted">Describa la discapacidad si aplica.</small>
                 </div>
@@ -1175,21 +1209,21 @@
                 <div class="form-group col-md-6">
                     <label>¿Tiene alguna enfermedad crónica? <span class="text-danger">*</span></label>
                     <div>
-                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="si" 
-                            ${enfermedadCronica === 'si' ? 'checked' : ''} 
+                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="si"
+                            ${enfermedadCronica === 'si' ? 'checked' : ''}
                             onclick="toggleTipoEnfermedadEdit(${id})"> Sí</label>
-                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="no" 
-                            ${enfermedadCronica === 'no' ? 'checked' : ''} 
+                        <label><input type="radio" name="familiares[${id}][enfermedad_cronica]" value="no"
+                            ${enfermedadCronica === 'no' ? 'checked' : ''}
                             onclick="toggleTipoEnfermedadEdit(${id})"> No</label>
                     </div>
                     <small class="form-text text-muted">Indique si tiene alguna enfermedad crónica.</small>
                 </div>
 
-                <div class="form-group col-md-6" id="tipo-enfermedad-container-edit-${id}" 
+                <div class="form-group col-md-6" id="tipo-enfermedad-container-edit-${id}"
                     style="${enfermedadCronica === 'si' ? '' : 'display: none;'}">
                     <label>Tipo de enfermedad</label>
-                    <input class="form-control" id="tipo-enfermedad-edit-${id}" 
-                        name="familiares[${id}][tipo_enfermedad]" type="text" 
+                    <input class="form-control" id="tipo-enfermedad-edit-${id}"
+                        name="familiares[${id}][tipo_enfermedad]" type="text"
                         placeholder="Describa el tipo de Enfermedad" maxlength="120" value="${tipoEnfermedad}">
                     <small class="form-text text-muted">Describa la enfermedad si aplica.</small>
                 </div>
@@ -1409,6 +1443,7 @@
               toastr.info(response.message, 'Éxito', {
                 timeOut: 5000
               });
+
               $('#tab-paciente').DataTable().ajax.reload();
             }
           },
@@ -1571,10 +1606,10 @@
                     <div class="col-md-6">
                       <p><strong>Género:</strong> ${formatValue(parentesco.genero?.genero)}</p>
                       <p><strong>Discapacidad:</strong> ${formatValue(parentesco.discapacidad)}</p>
-                      ${parentesco.discapacidad === 'si' ? 
+                      ${parentesco.discapacidad === 'si' ?
                         `<p><strong>Tipo Discapacidad:</strong> ${formatValue(parentesco.tipo_discapacidad)}</p>` : ''}
                       <p><strong>Enfermedad Crónica:</strong> ${formatValue(parentesco.enfermedad_cronica)}</p>
-                      ${parentesco.enfermedad_cronica === 'si' ? 
+                      ${parentesco.enfermedad_cronica === 'si' ?
                         `<p><strong>Tipo Enfermedad:</strong> ${formatValue(parentesco.tipo_enfermedad)}</p>` : ''}
                     </div>
                   </div>

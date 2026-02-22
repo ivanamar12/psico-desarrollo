@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\Role;
 use App\Http\Requests\Paciente\StorePacienteRequest;
 use App\Http\Requests\Paciente\UpdatePacienteRequest;
-use App\Models\Paciente;
-use App\Models\Genero;
 use App\Models\DatosEconomico;
+use App\Models\Especialista;
+use App\Models\Genero;
+use App\Models\Paciente;
 use App\Models\Parentesco;
 use App\Models\Representante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -17,7 +20,17 @@ class PacienteController extends Controller
 {
   public function index(Request $request)
   {
-    $pacientes = Paciente::all();
+    $query = Paciente::query();
+
+    if ($request->has('mis_pacientes') && $request->mis_pacientes == 1) {
+      $especialistaId = Especialista::where('user_id', Auth::id())->value('id');
+      $query->whereHas('aplicacionPruebas', function($q) use ($especialistaId) {
+        $q->where('especialista_id', $especialistaId);
+      });
+    }
+
+    $pacientes = $query->get();
+
     if ($request->ajax()) {
       return DataTables::of($pacientes)
         ->addColumn('action', function ($paciente) {

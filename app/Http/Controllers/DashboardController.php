@@ -11,8 +11,8 @@ use App\Models\Prueba;
 use App\Models\Representante;
 use App\Models\RiesgoPaciente;
 use App\Models\Secretaria;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {

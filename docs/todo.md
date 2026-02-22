@@ -6,6 +6,8 @@
 
 - Mejora del modulo de pruebas: si
 
+- mostrar la mejora del layout para la carga rapida de las paginas
+
 - Graficas de pruebas:
 
 - filtrar pacientes en especialistas
